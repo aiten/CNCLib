@@ -1,0 +1,621 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:controls="clr-namespace:CNCLib.WpfClient.Controls"
+    x:Class="CNCLib.WpfClient.Views.ManualControlPage"
+    Title="ManualControlPage" Width="830" MinHeight="550">
+    <!--
+<Page.DataContext>
+        <vm:ManualControlViewModel />
+    </Page.DataContext>
+-->
+    <DockPanel ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <StackPanel DockPanel.Dock="Top" Margin="5,5,5,0" HorizontalAlignment="Stretch">
+            <StackPanel Orientation="Horizontal">
+                <TabControl Custom:TabControlHelper.IsUnderlined="True">
+                    <TabItem Header="XYZ" Custom:ControlsHelper.HeaderFontSize="15">
+                        <controls:MoveUserControl
+                            Right="{Binding Move.SendRightCommand}"
+                            Left="{Binding Move.SendLeftCommand}"
+                            Up="{Binding Move.SendUpCommand}"
+                            Down="{Binding Move.SendDownCommand}"
+                            ZUp="{Binding Move.SendZUpCommand}"
+                            ZDown="{Binding Move.SendZDownCommand}"
+                            Height="200" />
+                    </TabItem>
+                    <TabItem Header="Move XYZ" Custom:ControlsHelper.HeaderFontSize="15">
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Vertical" MinWidth="70" Margin="0,0,5,0"
+                                        Visibility="{Binding AxisX.Visibility}">
+                                <Button Command="{Binding AxisX.SendPlus100Command}" Content="X +100" />
+                                <Button Command="{Binding AxisX.SendPlus10Command}" Content="X +10" />
+                                <Button Command="{Binding AxisX.SendPlus1Command}" Content="X +1" />
+                                <Button Command="{Binding AxisX.SendPlus01Command}" Content="X +0.1" />
+                                <Button Command="{Binding AxisX.SendPlus001Command}" Content="X +0.01" />
+                                <Button Command="{Binding AxisX.SendMinus001Command}" Content="X -0.01" />
+                                <Button Command="{Binding AxisX.SendMinus01Command}" Content="X -0.1" />
+                                <Button Command="{Binding AxisX.SendMinus1Command}" Content="X -1" />
+                                <Button Command="{Binding AxisX.SendMinus10Command}" Content="X -10" />
+                                <Button Command="{Binding AxisX.SendMinus100Command}" Content="X -100" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" MinWidth="70" Margin="0,0,5,0"
+                                        Visibility="{Binding AxisY.Visibility}">
+                                <Button Command="{Binding AxisY.SendPlus100Command}" Content="Y +100" />
+                                <Button Command="{Binding AxisY.SendPlus10Command}" Content="Y +10" />
+                                <Button Command="{Binding AxisY.SendPlus1Command}" Content="Y +1" />
+                                <Button Command="{Binding AxisY.SendPlus01Command}" Content="Y +0.1" />
+                                <Button Command="{Binding AxisY.SendPlus001Command}" Content="Y +0.01" />
+                                <Button Command="{Binding AxisY.SendMinus001Command}" Content="Y -0.01" />
+                                <Button Command="{Binding AxisY.SendMinus01Command}" Content="Y -0.1" />
+                                <Button Command="{Binding AxisY.SendMinus1Command}" Content="Y -1" />
+                                <Button Command="{Binding AxisY.SendMinus10Command}" Content="Y -10" />
+                                <Button Command="{Binding AxisY.SendMinus100Command}" Content="Y -100" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" MinWidth="70" Margin="0,0,5,0"
+                                        Visibility="{Binding AxisZ.Visibility}">
+                                <Button Command="{Binding AxisZ.SendPlus100Command}" Content="Z +100" />
+                                <Button Command="{Binding AxisZ.SendPlus10Command}" Content="Z +10" />
+                                <Button Command="{Binding AxisZ.SendPlus1Command}" Content="Z +1" />
+                                <Button Command="{Binding AxisZ.SendPlus01Command}" Content="Z +0.1" />
+                                <Button Command="{Binding AxisZ.SendPlus001Command}" Content="Z +0.01" />
+                                <Button Command="{Binding AxisZ.SendMinus001Command}" Content="Z -0.01" />
+                                <Button Command="{Binding AxisZ.SendMinus01Command}" Content="Z -0.1" />
+                                <Button Command="{Binding AxisZ.SendMinus1Command}" Content="Z -1" />
+                                <Button Command="{Binding AxisZ.SendMinus10Command}" Content="Z -10" />
+                                <Button Command="{Binding AxisZ.SendMinus100Command}" Content="Z -100" />
+                            </StackPanel>
+                        </StackPanel>
+                    </TabItem>
+                    <TabItem Header="Move ABC" Visibility="{Binding AxisA.Visibility}"
+                             Custom:ControlsHelper.HeaderFontSize="15">
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Vertical" MinWidth="70" Margin="0,0,5,0"
+                                        Visibility="{Binding AxisA.Visibility}">
+                                <Button Command="{Binding AxisA.SendPlus100Command}" Content="A +100" />
+                                <Button Command="{Binding AxisA.SendPlus10Command}" Content="A +10" />
+                                <Button Command="{Binding AxisA.SendPlus1Command}" Content="A +1" />
+                                <Button Command="{Binding AxisA.SendPlus01Command}" Content="A +0.1" />
+                                <Button Command="{Binding AxisA.SendPlus001Command}" Content="A +0.01" />
+                                <Button Command="{Binding AxisA.SendMinus001Command}" Content="A -0.01" />
+                                <Button Command="{Binding AxisA.SendMinus01Command}" Content="A -0.1" />
+                                <Button Command="{Binding AxisA.SendMinus1Command}" Content="A -1" />
+                                <Button Command="{Binding AxisA.SendMinus10Command}" Content="A -10" />
+                                <Button Command="{Binding AxisA.SendMinus100Command}" Content="A -100" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" MinWidth="70" Margin="0,0,5,0"
+                                        Visibility="{Binding AxisB.Visibility}">
+                                <Button Command="{Binding AxisB.SendPlus100Command}" Content="B +100" />
+                                <Button Command="{Binding AxisB.SendPlus10Command}" Content="B +10" />
+                                <Button Command="{Binding AxisB.SendPlus1Command}" Content="B +1" />
+                                <Button Command="{Binding AxisB.SendPlus01Command}" Content="B +0.1" />
+                                <Button Command="{Binding AxisB.SendPlus001Command}" Content="B +0.01" />
+                                <Button Command="{Binding AxisB.SendMinus001Command}" Content="B -0.01" />
+                                <Button Command="{Binding AxisB.SendMinus01Command}" Content="B -0.1" />
+                                <Button Command="{Binding AxisB.SendMinus1Command}" Content="B -1" />
+                                <Button Command="{Binding AxisB.SendMinus10Command}" Content="B -10" />
+                                <Button Command="{Binding AxisB.SendMinus100Command}" Content="B -100" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" MinWidth="70" Margin="0,0,5,0"
+                                        Visibility="{Binding AxisC.Visibility}">
+                                <Button Command="{Binding AxisC.SendPlus100Command}" Content="C +100" />
+                                <Button Command="{Binding AxisC.SendPlus10Command}" Content="C +10" />
+                                <Button Command="{Binding AxisC.SendPlus1Command}" Content="C +1" />
+                                <Button Command="{Binding AxisC.SendPlus01Command}" Content="C +0.1" />
+                                <Button Command="{Binding AxisC.SendPlus001Command}" Content="C +0.01" />
+                                <Button Command="{Binding AxisC.SendMinus001Command}" Content="C -0.01" />
+                                <Button Command="{Binding AxisC.SendMinus01Command}" Content="C -0.1" />
+                                <Button Command="{Binding AxisC.SendMinus1Command}" Content="C -1" />
+                                <Button Command="{Binding AxisC.SendMinus10Command}" Content="C -10" />
+                                <Button Command="{Binding AxisC.SendMinus100Command}" Content="C -100" />
+                            </StackPanel>
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
+                <TabControl Margin="5,0,5,0" Custom:TabControlHelper.IsUnderlined="True">
+                    <TabItem Header="Machine position" Custom:ControlsHelper.HeaderFontSize="15">
+                        <StackPanel Orientation="Vertical" Margin="0,0,3,0">
+                            <Button Command="{Binding Tool.ReadPositionCommand}" Content="Read positions" />
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Absolute" Width="60" Margin="10,0,0,0" />
+                                <Label Content="Current" Width="50" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding AxisX.Visibility}">
+                                <Label Content="X:" Width="20" />
+                                <TextBox Text="{Binding AxisX.Pos, Mode=OneWay}" HorizontalContentAlignment="Right"
+                                         IsReadOnly="True" Width="50" VerticalContentAlignment="Center" />
+                                <TextBox Text="{Binding AxisX.RelPos, Mode=OneWay}" HorizontalContentAlignment="Right"
+                                         IsReadOnly="True" Width="50" VerticalContentAlignment="Center" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding AxisY.Visibility}">
+                                <Label Content="Y:" Width="20" />
+                                <TextBox Text="{Binding AxisY.Pos, Mode=OneWay}" HorizontalContentAlignment="Right"
+                                         IsReadOnly="True" MinWidth="50" VerticalContentAlignment="Center" />
+                                <TextBox Text="{Binding AxisY.RelPos, Mode=OneWay}" HorizontalContentAlignment="Right"
+                                         IsReadOnly="True" MinWidth="50" VerticalContentAlignment="Center" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding AxisZ.Visibility}">
+                                <Label Content="Z:" Width="20" />
+                                <TextBox Text="{Binding AxisZ.Pos, Mode=OneWay}" HorizontalContentAlignment="Right"
+                                         IsReadOnly="True" MinWidth="50" VerticalContentAlignment="Center" />
+                                <TextBox Text="{Binding AxisZ.RelPos, Mode=OneWay}" HorizontalContentAlignment="Right"
+                                         IsReadOnly="True" MinWidth="50" VerticalContentAlignment="Center" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding AxisA.Visibility}">
+                                <Label Content="A:" Width="20" />
+                                <TextBox Text="{Binding AxisA.Pos, Mode=OneWay}" HorizontalContentAlignment="Right"
+                                         IsReadOnly="True" MinWidth="50" VerticalContentAlignment="Center" />
+                                <TextBox Text="{Binding AxisA.RelPos, Mode=OneWay}" HorizontalContentAlignment="Right"
+                                         IsReadOnly="True" MinWidth="50" VerticalContentAlignment="Center" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding AxisB.Visibility}">
+                                <Label Content="B:" Width="20" />
+                                <TextBox Text="{Binding AxisB.Pos, Mode=OneWay}" HorizontalContentAlignment="Right"
+                                         IsReadOnly="True" MinWidth="50" VerticalContentAlignment="Center" />
+                                <TextBox Text="{Binding AxisB.RelPos, Mode=OneWay}" HorizontalContentAlignment="Right"
+                                         IsReadOnly="True" MinWidth="50" VerticalContentAlignment="Center" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding AxisC.Visibility}">
+                                <Label Content="C:" Width="20" />
+                                <TextBox Text="{Binding AxisC.Pos, Mode=OneWay}" HorizontalContentAlignment="Right"
+                                         IsReadOnly="True" MinWidth="50" VerticalContentAlignment="Center" />
+                                <TextBox Text="{Binding AxisC.RelPos, Mode=OneWay}" HorizontalContentAlignment="Right"
+                                         IsReadOnly="True" MinWidth="50" VerticalContentAlignment="Center" />
+                            </StackPanel>
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
+                <TabControl Custom:TabControlHelper.IsUnderlined="True">
+                    <TabItem Header="Send Commands" Custom:ControlsHelper.HeaderFontSize="15">
+                        <StackPanel Orientation="Vertical" Width="400">
+                            <DockPanel Margin="0,5,0,5">
+                                <Label Content="Command:" Width="70" />
+                                <Button Command="{Binding DirectCommand.SendDirectCommand}" Content="Send Command"
+                                        Width="70" DockPanel.Dock="Right" />
+                                <DockPanel Margin="5,0,5,0">
+                                    <ComboBox
+                                        Text="{Binding DirectCommand.DirectCommand, UpdateSourceTrigger=PropertyChanged}"
+                                        ItemsSource="{Binding DirectCommand.DirectCommandHistory}"
+                                        VerticalContentAlignment="Center" VerticalAlignment="Center" IsEditable="True">
+                                        <ComboBox.InputBindings>
+                                            <KeyBinding Command="{Binding DirectCommand.SendDirectCommand}" Key="Enter" />
+                                        </ComboBox.InputBindings>
+                                    </ComboBox>
+                                </DockPanel>
+                            </DockPanel>
+                            <DockPanel>
+                                <Label Content="File" Width="70" />
+                                <Button Command="{Binding SD.SendFileDirectCommand}" Content="Send File" Width="70"
+                                        DockPanel.Dock="Right" />
+                                <DockPanel Margin="5,0,5,0">
+                                    <TextBox Text="{Binding SD.FileName, UpdateSourceTrigger=PropertyChanged}"
+                                             VerticalAlignment="Center" VerticalContentAlignment="Center" />
+                                    <Button Content="?" Command="{Binding SD.BrowseForSDFileCommand}" />
+                                </DockPanel>
+                            </DockPanel>
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
+            </StackPanel>
+            <TabControl Margin="0,10,0,10" Custom:TabControlHelper.IsUnderlined="True">
+                <TabItem Header="Custom" Custom:ControlsHelper.HeaderFontSize="15">
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,5">
+                            <Button Command="{Binding Custom.Send00Command}" Content="{Binding Custom.Desc00}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send01Command}" Content="{Binding Custom.Desc01}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send02Command}" Content="{Binding Custom.Desc02}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send03Command}" Content="{Binding Custom.Desc03}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send04Command}" Content="{Binding Custom.Desc04}"
+                                    Margin="0,0,2,1" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,5">
+                            <Button Command="{Binding Custom.Send10Command}" Content="{Binding Custom.Desc10}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send11Command}" Content="{Binding Custom.Desc11}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send12Command}" Content="{Binding Custom.Desc12}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send13Command}" Content="{Binding Custom.Desc13}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send14Command}" Content="{Binding Custom.Desc14}"
+                                    Margin="0,0,2,1" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,5">
+                            <Button Command="{Binding Custom.Send20Command}" Content="{Binding Custom.Desc20}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send21Command}" Content="{Binding Custom.Desc21}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send22Command}" Content="{Binding Custom.Desc22}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send23Command}" Content="{Binding Custom.Desc23}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send24Command}" Content="{Binding Custom.Desc24}"
+                                    Margin="0,0,2,1" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,5">
+                            <Button Command="{Binding Custom.Send30Command}" Content="{Binding Custom.Desc30}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send31Command}" Content="{Binding Custom.Desc31}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send32Command}" Content="{Binding Custom.Desc32}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send33Command}" Content="{Binding Custom.Desc33}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send34Command}" Content="{Binding Custom.Desc34}"
+                                    Margin="0,0,2,1" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,5">
+                            <Button Command="{Binding Custom.Send40Command}" Content="{Binding Custom.Desc40}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send41Command}" Content="{Binding Custom.Desc41}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send42Command}" Content="{Binding Custom.Desc42}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send43Command}" Content="{Binding Custom.Desc43}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send44Command}" Content="{Binding Custom.Desc44}"
+                                    Margin="0,0,2,1" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,5">
+                            <Button Command="{Binding Custom.Send50Command}" Content="{Binding Custom.Desc50}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send51Command}" Content="{Binding Custom.Desc51}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send52Command}" Content="{Binding Custom.Desc52}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send53Command}" Content="{Binding Custom.Desc53}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send54Command}" Content="{Binding Custom.Desc54}"
+                                    Margin="0,0,2,1" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,5">
+                            <Button Command="{Binding Custom.Send60Command}" Content="{Binding Custom.Desc60}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send61Command}" Content="{Binding Custom.Desc61}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send62Command}" Content="{Binding Custom.Desc62}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send63Command}" Content="{Binding Custom.Desc63}"
+                                    Margin="0,0,2,1" />
+                            <Button Command="{Binding Custom.Send64Command}" Content="{Binding Custom.Desc64}"
+                                    Margin="0,0,2,1" />
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="Extras" Custom:ControlsHelper.HeaderFontSize="15">
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
+                            <Button Command="{Binding Tool.SendM03SpindleOnCommand}" Content="Spindle On" />
+                            <Button Command="{Binding Tool.SendM05SpindleOffCommand}" Content="Spindle Off" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
+                            <Button Command="{Binding Tool.SendM07CoolantOnCommand}" Content="Coolant On" />
+                            <Button Command="{Binding Tool.SendM09CoolantOffCommand}" Content="Coolant Off" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
+                            <Button Command="{Binding Tool.SendM106LaserOnCommand}" Content="Laser On" />
+                            <Button Command="{Binding Tool.SendM107LaserOffCommand}" Content="Laser Off" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Width="100">
+                            <Button Command="{Binding Tool.SendM106LaserOnMinCommand}" Content="Laser On(min)" />
+                            <Button Command="{Binding AxisZ.SendHomeCommand}" Content="Z Home" />
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="Zero shift" Custom:ControlsHelper.HeaderFontSize="15">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,0"
+                                        Visibility="{Binding AxisX.Visibility}">
+                                <TextBox Text="{Binding AxisX.Param, UpdateSourceTrigger=PropertyChanged}"
+                                         HorizontalContentAlignment="Right" VerticalContentAlignment="Center" />
+                                <Button Command="{Binding AxisX.SendG92Command}" Content="Set X" />
+                                <Button Command="{Binding AxisX.SendG31Command}" Content="Probe X" Margin="0,5,0,0" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,0"
+                                        Visibility="{Binding AxisY.Visibility}">
+                                <TextBox Text="{Binding AxisY.Param, UpdateSourceTrigger=PropertyChanged}"
+                                         VerticalContentAlignment="Center" HorizontalContentAlignment="Right" />
+                                <Button Command="{Binding AxisY.SendG92Command}" Content="Set Y" />
+                                <Button Command="{Binding AxisY.SendG31Command}" Content="Probe Y" Margin="0,5,0,0" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,0"
+                                        Visibility="{Binding AxisZ.Visibility}">
+                                <TextBox Text="{Binding AxisZ.Param, UpdateSourceTrigger=PropertyChanged}"
+                                         VerticalContentAlignment="Center" HorizontalContentAlignment="Right" />
+                                <Button Command="{Binding AxisZ.SendG92Command}" Content="Set Z" />
+                                <Button Command="{Binding AxisZ.SendG31Command}" Content="Probe Z" Margin="0,5,0,0" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,0"
+                                        Visibility="{Binding AxisA.Visibility}">
+                                <TextBox Text="{Binding AxisA.Param, UpdateSourceTrigger=PropertyChanged}"
+                                         VerticalContentAlignment="Center" HorizontalContentAlignment="Right" />
+                                <Button Command="{Binding AxisA.SendG92Command}" Content="Set A" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,0"
+                                        Visibility="{Binding AxisB.Visibility}">
+                                <TextBox Text="{Binding AxisB.Param, UpdateSourceTrigger=PropertyChanged}"
+                                         VerticalContentAlignment="Center" HorizontalContentAlignment="Right" />
+                                <Button Command="{Binding AxisB.SendG92Command}" Content="Set B" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,0"
+                                        Visibility="{Binding AxisC.Visibility}">
+                                <TextBox Text="{Binding AxisC.Param, UpdateSourceTrigger=PropertyChanged}"
+                                         VerticalContentAlignment="Center" HorizontalContentAlignment="Right" />
+                                <Button Command="{Binding AxisC.SendG92Command}" Content="Set C" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,0">
+                                <Button Command="{Binding Shift.SendG92Command}" Content="Clear All" MinWidth="100"
+                                        Margin="0,0,0,8" />
+                                <Button Command="{Binding Tool.SendM100ProbeDefaultCommand}" Content="Probe-Default" />
+                                <Button Command="{Binding Tool.SendM101ProbeInvertCommand}" Content="Probe-Invert" />
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="Work offset" Custom:ControlsHelper.HeaderFontSize="15">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Select work offset:" />
+                            <!--                            <Button Command="{Binding WorkOffset.SendG53Command}" Content="G53" Width="90" Margin="0,0,5,0" /> -->
+                            <Button Command="{Binding WorkOffset.SendG54Command}" Content="1" Width="90"
+                                    Margin="0,0,5,0" />
+                            <Button Command="{Binding WorkOffset.SendG55Command}" Content="2" Width="90"
+                                    Margin="0,0,5,0" />
+                            <Button Command="{Binding WorkOffset.SendG56Command}" Content="3" Width="90"
+                                    Margin="0,0,5,0" />
+                            <Button Command="{Binding WorkOffset.SendG57Command}" Content="4" Width="90"
+                                    Margin="0,0,5,0" />
+                            <Button Command="{Binding WorkOffset.SendG58Command}" Content="5" Width="90"
+                                    Margin="0,0,5,0" />
+                            <Button Command="{Binding WorkOffset.SendG59Command}" Content="6" Width="90"
+                                    Margin="0,0,5,0" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel>
+                                <Label Content="Offset 1" Width="100" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="X:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G54X}"
+                                             VerticalContentAlignment="Center" HorizontalAlignment="Right" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Y:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G54Y}"
+                                             VerticalContentAlignment="Center" HorizontalAlignment="Right" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <Label Content="Z:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G54Z}"
+                                             VerticalContentAlignment="Center" HorizontalAlignment="Right" />
+                                </StackPanel>
+                                <UniformGrid Margin="5,0,0,0" Rows="1" Columns="3">
+                                    <Button Command="{Binding WorkOffset.GetG54Command}" Content="Get" />
+                                    <Button Command="{Binding WorkOffset.SetG54Command}" Content="Set" />
+                                    <Button Command="{Binding WorkOffset.SetG54RelCommand}" Content="Rel" />
+                                </UniformGrid>
+                            </StackPanel>
+                            <StackPanel>
+                                <Label Content="Offset 2" Width="100" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="X:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G55X}"
+                                             VerticalContentAlignment="Center" HorizontalAlignment="Right" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Y:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G55Y}"
+                                             VerticalContentAlignment="Center" HorizontalAlignment="Right" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <Label Content="Z:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G55Z}"
+                                             VerticalContentAlignment="Center" HorizontalAlignment="Right" />
+                                </StackPanel>
+                                <UniformGrid Margin="5,0,0,0" Rows="1" Columns="3">
+                                    <Button Command="{Binding WorkOffset.GetG55Command}" Content="Get" />
+                                    <Button Command="{Binding WorkOffset.SetG55Command}" Content="Set" />
+                                    <Button Command="{Binding WorkOffset.SetG55RelCommand}" Content="Rel" />
+                                </UniformGrid>
+                            </StackPanel>
+                            <StackPanel>
+                                <Label Content="Offset 3" Width="100" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="X:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G56X}"
+                                             VerticalContentAlignment="Center" HorizontalAlignment="Right" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Y:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G56Y}"
+                                             VerticalContentAlignment="Center" HorizontalAlignment="Right" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <Label Content="Z:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G56Z}"
+                                             VerticalContentAlignment="Center" HorizontalAlignment="Right" />
+                                </StackPanel>
+                                <UniformGrid Margin="5,0,0,0" Rows="1" Columns="3">
+                                    <Button Command="{Binding WorkOffset.GetG56Command}" Content="Get" />
+                                    <Button Command="{Binding WorkOffset.SetG56Command}" Content="Set" />
+                                    <Button Command="{Binding WorkOffset.SetG56RelCommand}" Content="Rel" />
+                                </UniformGrid>
+                            </StackPanel>
+                            <StackPanel>
+                                <Label Content="Offset 4" Width="100" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="X:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G57X}"
+                                             VerticalContentAlignment="Center" HorizontalAlignment="Right" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Y:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G57Y}"
+                                             VerticalContentAlignment="Center" HorizontalAlignment="Right" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <Label Content="Z:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G57Z}"
+                                             VerticalContentAlignment="Center" HorizontalAlignment="Right" />
+                                </StackPanel>
+                                <UniformGrid Margin="5,0,0,0" Rows="1" Columns="3">
+                                    <Button Command="{Binding WorkOffset.GetG57Command}" Content="Get" />
+                                    <Button Command="{Binding WorkOffset.SetG57Command}" Content="Set" />
+                                    <Button Command="{Binding WorkOffset.SetG57RelCommand}" Content="Rel" />
+                                </UniformGrid>
+                            </StackPanel>
+                            <StackPanel>
+                                <Label Content="Offset 5" Width="100" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="X:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G58X}"
+                                             VerticalContentAlignment="Center" HorizontalAlignment="Right" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Y:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G58Y}"
+                                             VerticalContentAlignment="Center" HorizontalAlignment="Right" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <Label Content="Z:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G58Z}"
+                                             VerticalContentAlignment="Center" HorizontalAlignment="Right" />
+                                </StackPanel>
+                                <UniformGrid Margin="5,0,0,0" Rows="1" Columns="3">
+                                    <Button Command="{Binding WorkOffset.GetG58Command}" Content="Get" />
+                                    <Button Command="{Binding WorkOffset.SetG58Command}" Content="Set" />
+                                    <Button Command="{Binding WorkOffset.SetG58RelCommand}" Content="Rel" />
+                                </UniformGrid>
+                            </StackPanel>
+                            <StackPanel>
+                                <Label Content="Offset 6" Width="100" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="X:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G59X}"
+                                             VerticalContentAlignment="Center" HorizontalAlignment="Right" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Y:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G59Y}"
+                                             VerticalContentAlignment="Center" HorizontalAlignment="Right" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <Label Content="Z:" Width="20" />
+                                    <TextBox Width="80" Text="{Binding WorkOffset.G59Z}"
+                                             VerticalContentAlignment="Center" HorizontalAlignment="Right" />
+                                </StackPanel>
+                                <UniformGrid Margin="5,0,0,0" Rows="1" Columns="3">
+                                    <Button Command="{Binding WorkOffset.GetG59Command}" Content="Get" />
+                                    <Button Command="{Binding WorkOffset.SetG59Command}" Content="Set" />
+                                    <Button Command="{Binding WorkOffset.SetG59RelCommand}" Content="Rel" />
+                                </UniformGrid>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="Rotate" Custom:ControlsHelper.HeaderFontSize="15">
+                    <StackPanel>
+                        <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                            <Button Command="{Binding Rotate.SendG69Command}" Content="G69 - Clear" MinWidth="100"
+                                    Margin="0,0,5,0" />
+                            <Button Command="{Binding Rotate.SendG68X0Y0R90Command}" Content="G68:X0Y0R90"
+                                    MinWidth="100" Margin="0,0,5,0" />
+                            <Button Command="{Binding Rotate.SendG68X0Y0R270Command}" Content="G68:X0Y0R270"
+                                    MinWidth="100" Margin="0,0,5,0" />
+                        </StackPanel>
+                        <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                            <Button Command="{Binding Rotate.SendG6810Command}" Content="G68.10 - Clear" MinWidth="100"
+                                    Margin="0,0,5,0" />
+                            <Button Command="{Binding Rotate.SendG6811Command}" Content="G68.11 - Offset"
+                                    MinWidth="100" Margin="0,0,5,0" />
+                            <Button Command="{Binding Rotate.SendG6813Command}" Content="G68.13 - RotateYZ"
+                                    MinWidth="100" Margin="0,0,5,0" />
+                            <Button Command="{Binding Rotate.SendG6814Command}" Content="G68.14 - RotateX"
+                                    MinWidth="100" Margin="0,0,5,0" />
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="SD" Custom:ControlsHelper.HeaderFontSize="15">
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
+                            <Button Command="{Binding SD.SendM24FileCommand}" Content="M24 - Start" />
+                            <Button Command="{Binding SD.SendM28FileCommand}" Content="M28 - Copy(File)" />
+                            <Button Command="{Binding SD.SendM28PreViewCommand}" Content="M28 - Copy(Preview)" />
+                            <Button Command="{Binding SD.SendM30FileCommand}" Content="M30 - Del" />
+                            <Button Command="{Binding SD.SendM20FileCommand}" Content="M20 - Dir" />
+                        </StackPanel>
+                        <StackPanel Margin="0,0,5,0">
+                            <StackPanel Orientation="Horizontal" />
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="SDFile" MinWidth="100" />
+                                <TextBox Text="{Binding SD.SDFileName, UpdateSourceTrigger=PropertyChanged}"
+                                         VerticalAlignment="Center" MinWidth="200" VerticalContentAlignment="Center" />
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
+                            <Button Command="{Binding SD.AddToFileCommand}" Content="Add To File" Margin="0,40,0,0" />
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="Ref" Custom:ControlsHelper.HeaderFontSize="15">
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal">
+                            <Button Command="{Binding AxisX.SendRefMoveCommand}" Content="X ref"
+                                    Visibility="{Binding AxisX.Visibility}" Width="100" Margin="0,0,5,0" />
+                            <Button Command="{Binding AxisY.SendRefMoveCommand}" Content="Y ref"
+                                    Visibility="{Binding AxisY.Visibility}" Width="100" Margin="0,0,5,0" />
+                            <Button Command="{Binding AxisZ.SendRefMoveCommand}" Content="Z ref"
+                                    Visibility="{Binding AxisZ.Visibility}" Width="100" Margin="0,0,5,0" />
+                            <Button Command="{Binding AxisA.SendRefMoveCommand}" Content="A ref"
+                                    Visibility="{Binding AxisA.Visibility}" Width="100" Margin="0,0,5,0" />
+                            <Button Command="{Binding AxisB.SendRefMoveCommand}" Content="B ref"
+                                    Visibility="{Binding AxisB.Visibility}" Width="100" Margin="0,0,5,0" />
+                            <Button Command="{Binding AxisC.SendRefMoveCommand}" Content="C ref"
+                                    Visibility="{Binding AxisC.Visibility}" Width="100" Margin="0,0,5,0" />
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem>
+            </TabControl>
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <Button Command="{Binding CommandHistory.ClearHistoryCommand}" Content="Clear" Width="55"
+                            Margin="0,0,5,0" />
+                    <Button Command="{Binding CommandHistory.RefreshHistoryCommand}" Content="Refresh" Width="55"
+                            Margin="0,0,5,0" />
+                    <Button Command="{Binding Tool.SendInfoCommand}" Content="Info" Width="55" Margin="0,0,5,0" />
+                    <Button Command="{Binding Tool.SendVersionCommand}" Content="Version" Width="55" Margin="0,0,5,0" />
+                    <Button Command="{Binding Tool.SendDebugCommand}" Content="Debug" Width="55" Margin="0,0,5,0" />
+                    <Button Command="{Binding Tool.SendAbortCommand}" Content="Abort" Width="55" Margin="0,0,5,0" />
+                    <Button Command="{Binding Tool.SendResurrectCommand}" Content="Resurrect" Width="60" />
+                    <Label Content="Pending Commands:" />
+                    <TextBox
+                        Text="{Binding Tool.PendingCommandCount, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        HorizontalContentAlignment="Right" IsReadOnly="True" MinWidth="50"
+                        VerticalContentAlignment="Center" Margin="0,0,5,0" />
+                    <Button Command="{Binding Tool.SendClearQueue}" Content="Clear Queue" Width="60" />
+                    <Button Command="{Binding Tool.WritePendingCommands}" Content="WritePending" Width="60" />
+                    <CheckBox IsChecked="{Binding Tool.Pause}" Content="Pause" Width="60" Margin="10,0,0,0"
+                              VerticalAlignment="Center" />
+                    <Button Command="{Binding Tool.SendNextCommands}" Content="SendNext" Width="60" />
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+        <DataGrid ItemsSource="{Binding CommandHistory.CommandHistoryCollection}" MinHeight="100" DockPanel.Dock="Top"
+                  AutoGenerateColumns="False" ScrollViewer.CanContentScroll="True"
+                  ScrollViewer.VerticalScrollBarVisibility="Visible"
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto" CanUserAddRows="False" IsReadOnly="True"
+                  Margin="10,0,10,10" MinRowHeight="1">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding CommandDate, StringFormat=\{0:yyyy.MM.dd HH:mm:ss.ff\}}"
+                                    MinWidth="150" IsReadOnly="True" Header="Date" />
+                <DataGridTextColumn Binding="{Binding CommandText}" Header="CommandText" MinWidth="200"
+                                    IsReadOnly="True" />
+                <DataGridTextColumn Binding="{Binding Result}" MinWidth="350" IsReadOnly="True" Header="Result" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</Page>

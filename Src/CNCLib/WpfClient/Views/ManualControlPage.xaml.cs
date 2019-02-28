@@ -1,0 +1,57 @@
+﻿/*
+  This file is part of CNCLib - A library for stepper motors.
+
+  Copyright (c) 2013-2019 Herbert Aitenbichler
+
+  CNCLib is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  CNCLib is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  http://www.gnu.org/licenses/
+*/
+
+using System.Windows.Controls;
+
+using CNCLib.WpfClient.ViewModels;
+
+using Framework.Dependency;
+using Framework.Wpf.Views;
+
+namespace CNCLib.WpfClient.Views
+{
+    /// <summary>
+    /// Interaction logic for ManualControl.xaml
+    /// </summary>
+    public partial class ManualControlPage : Page
+    {
+        public ManualControlPage()
+        {
+            var vm = Dependency.Resolve<ManualControlViewModel>();
+            DataContext = vm;
+
+            InitializeComponent();
+
+            vm.SD.DefaultInitForBaseViewModel();
+            this.DefaultInitForBaseViewModel();
+        }
+
+        public bool IsConnected
+        {
+            get
+            {
+                var vm = DataContext as ManualControlViewModel;
+                if (vm != null)
+                {
+                    return vm.Connected;
+                }
+
+                return false;
+            }
+        }
+    }
+}

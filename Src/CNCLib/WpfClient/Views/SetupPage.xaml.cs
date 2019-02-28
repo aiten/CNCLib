@@ -1,0 +1,86 @@
+﻿/*
+  This file is part of CNCLib - A library for stepper motors.
+
+  Copyright (c) 2013-2019 Herbert Aitenbichler
+
+  CNCLib is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  CNCLib is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  http://www.gnu.org/licenses/
+*/
+
+using System.Threading.Tasks;
+using System.Windows.Controls;
+
+using CNCLib.WpfClient.ViewModels;
+
+using Framework.Dependency;
+using Framework.Wpf.Views;
+
+namespace CNCLib.WpfClient.Views
+{
+    /// <summary>
+    /// Interaction logic for SetupPage.xaml
+    /// </summary>
+    public partial class SetupPage : Page
+    {
+        public SetupPage()
+        {
+            var vm = Dependency.Resolve<SetupWindowViewModel>();
+            DataContext = vm;
+
+            InitializeComponent();
+
+            this.DefaultInitForBaseViewModel();
+/*
+            RoutedEventHandler loaded =null;
+			loaded = new RoutedEventHandler(async (object v, RoutedEventArgs e) =>
+			{
+				var vmm = DataContext as BaseViewModel;
+				await vmm.Loaded();
+				((SetupPage)e.Source).Loaded -= loaded;
+			});
+
+			Loaded += loaded;
+*/
+            if (vm.EditMachine == null)
+            {
+                vm.EditMachine = mId =>
+                {
+                    var dlg = new MachineView();
+                    if (dlg.DataContext is MachineViewModel viewModel)
+                    {
+                        Task.Run(() => { viewModel.LoadMachine(mId).ConfigureAwait(false).GetAwaiter().GetResult(); }).Wait();
+                        dlg.ShowDialog();
+                    }
+                };
+            }
+
+            if (vm.ShowEeprom == null)
+            {
+                vm.ShowEeprom = () =>
+                {
+                    var dlg       = new EepromView();
+                    var viewModel = dlg.DataContext as EepromViewModel;
+                    dlg.ShowDialog();
+                };
+            }
+
+            if (vm.EditJoystick == null)
+            {
+                vm.EditJoystick = () =>
+                {
+                    var dlg       = new JoystickView();
+                    var viewModel = dlg.DataContext as JoystickView;
+                    dlg.ShowDialog();
+                };
+            }
+        }
+    }
+}

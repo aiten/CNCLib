@@ -1,0 +1,31 @@
+﻿<Controls:MetroWindow x:Class="CNCLib.WpfClient.Views.MainWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      mc:Ignorable="d"
+                      Title="CNCLib" Height="750" Width="1000" Closing="Window_Closing">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TabControl Grid.Row="0" Grid.RowSpan="2">
+            <TabItem Header="Setup">
+                <Frame Source="SetupPage.xaml" />
+            </TabItem>
+
+            <TabItem Header="Manual Control">
+                <Frame Source="ManualControlPage.xaml" />
+            </TabItem>
+
+            <TabItem Header="Preview">
+                <Frame Source="PreviewPage.xaml" />
+            </TabItem>
+
+        </TabControl>
+        <TextBlock Grid.Row="2" Text="Statusleiste" />
+    </Grid>
+</Controls:MetroWindow>

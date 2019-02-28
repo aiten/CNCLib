@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+ 
+
+  <PropertyGroup>
+    <TargetFramework>$(TargetFrameworkForAppAndTests)</TargetFramework>
+    <AssemblyName>$(SolutionNamespace).$(AssemblyName)</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+    
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <IsPackable>false</IsPackable>
+
+    <!-- Set this to true if you enable server-side prerendering -->
+    <BuildServerSideRenderer>false</BuildServerSideRenderer>
+    <UserSecretsId>9e493059-bac1-4626-9c54-5bb7ddd3301b</UserSecretsId>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ben.Demystifier" Version="0.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.All" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Azure.WebSites.DataProtection" Version="0.1.78-alpha" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Logging\Framework.Logging.csproj" />
+    <ProjectReference Include="..\..\Framework\Tools\Framework.Tools.csproj" />
+    <ProjectReference Include="..\..\Framework\Arduino.Linux\Framework.Arduino.Linux.csproj" />
+    <ProjectReference Include="..\..\Framework\Arduino\Framework.Arduino.csproj" />
+    <ProjectReference Include="..\..\Framework\WebAPI\Framework.WebAPI.csproj" />
+    <ProjectReference Include="..\Serial.Shared\Serial.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

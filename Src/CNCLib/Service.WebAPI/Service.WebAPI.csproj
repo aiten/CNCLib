@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  
+   <PropertyGroup>
+	<TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
+    <AssemblyName>$(SolutionNamespace).$(AssemblyName)</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+    
+  </PropertyGroup>
+   <ItemGroup>
+     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
+     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Pattern\Framework.Pattern.csproj" />
+    <ProjectReference Include="..\..\Framework\Tools\Framework.Tools.csproj" />
+    <ProjectReference Include="..\Logic.Contract.DTO\Logic.Contract.DTO.csproj">
+    </ProjectReference>
+    <ProjectReference Include="..\Logic.Contract\Logic.Contract.csproj">
+    </ProjectReference>
+    <ProjectReference Include="..\Service.Contract\Service.Contract.csproj" />
+  </ItemGroup>
+</Project>

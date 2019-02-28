@@ -1,9 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(ProjectDir)..\SolutionItems\CNCLib.targets" />
-   <PropertyGroup>
-	<TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
-   <ItemGroup>
-     <ProjectReference Include="..\..\Framework\Framework.Repository.Abstraction\Framework.Repository.Abstraction.csproj" />
-   </ItemGroup>
-</Project>

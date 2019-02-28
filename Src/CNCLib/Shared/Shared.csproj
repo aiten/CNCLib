@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  
+   <PropertyGroup>
+	<TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
+    <AssemblyName>$(SolutionNamespace).$(AssemblyName)</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+    
+  </PropertyGroup>
+   <ItemGroup>
+     <ProjectReference Include="..\..\Framework\Tools\Framework.Tools.csproj" />
+   </ItemGroup>
+</Project>

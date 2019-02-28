@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+   <PropertyGroup>
+	<TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
+    <AssemblyName>$(SolutionNamespace).$(AssemblyName)</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+    
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Logic\Framework.Logic.csproj">    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Tools\Framework.Tools.csproj">    </ProjectReference>
+    <ProjectReference Include="..\GCode\GCode.csproj">    </ProjectReference>
+    <ProjectReference Include="..\Logic.Client\Logic.Client.csproj">    </ProjectReference>
+    <ProjectReference Include="..\Logic.Contract.DTO\Logic.Contract.DTO.csproj">    </ProjectReference>
+    <ProjectReference Include="..\Logic.Contract\Logic.Contract.csproj">    </ProjectReference>
+    <ProjectReference Include="..\Repository.Contract\Repository.Contract.csproj">    </ProjectReference>
+    <ProjectReference Include="..\Shared\Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+  </ItemGroup>
+</Project>

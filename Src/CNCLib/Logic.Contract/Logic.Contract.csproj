@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  
+   <PropertyGroup>
+	<TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
+    <AssemblyName>$(SolutionNamespace).$(AssemblyName)</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+    
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Logic.Abstraction\Framework.Logic.Abstraction.csproj" />
+    <ProjectReference Include="..\Logic.Contract.DTO\Logic.Contract.DTO.csproj">    </ProjectReference>
+  </ItemGroup>
+</Project>

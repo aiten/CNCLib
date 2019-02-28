@@ -1,0 +1,22 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup Label="Versioning">
+    <Authors>Herbert Aitenbichler</Authors>
+    <Company>Herbert Aitenbichler</Company>
+    <Version>1.1.0</Version>
+    <Copyright>Herbert Aitenbichler</Copyright>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+  
+  <PropertyGroup Label="Custom Variables">
+    <SolutionNamespace>CNCLib</SolutionNamespace>
+    <TargetFrameworkForProjects>netstandard2.0</TargetFrameworkForProjects>
+    <TargetFrameworkForAppAndTests>netcoreapp2.2</TargetFrameworkForAppAndTests>
+    <TargetFrameworkForFull>net471</TargetFrameworkForFull>
+  </PropertyGroup>
+
+</Project>

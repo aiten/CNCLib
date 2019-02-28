@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+   <PropertyGroup>
+	<TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
+  </PropertyGroup>
+   <ItemGroup>
+     <ProjectReference Include="..\Dependency\Framework.Dependency.csproj" />
+   </ItemGroup>
+ 
+</Project>
