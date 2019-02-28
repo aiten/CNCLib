@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 using CNCLib.Logic.Contract.DTO;
-using CNCLib.Service.Contract;
+using CNCLib.Logic.Contract;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,14 +32,14 @@ namespace CNCLib.WebAPI.Controllers
     [Route("api/[controller]")]
     public class CambamController : Controller
     {
-        public CambamController(ILoadOptionsService loadOptionsService, ICNCLibUserContext userContext)
+        public CambamController(ILoadOptionsManager loadOptionsManager, ICNCLibUserContext userContext)
         {
-            _loadOptionsService = loadOptionsService ?? throw new ArgumentNullException();
+            _loadOptionsManager = loadOptionsManager ?? throw new ArgumentNullException();
             _userContext        = userContext ?? throw new ArgumentNullException();
             ((CNCLibUserContext)_userContext).InitFromController(this);
         }
 
-        readonly ILoadOptionsService _loadOptionsService;
+        readonly ILoadOptionsManager _loadOptionsManager;
         readonly ICNCLibUserContext  _userContext;
 
         [HttpPost]
@@ -54,7 +54,7 @@ namespace CNCLib.WebAPI.Controllers
         [HttpPut]
         public async Task<string> Put([FromBody] CreateGCode input)
         {
-            LoadOptions opt  = await _loadOptionsService.Get(input.LoadOptionsId);
+            LoadOptions opt  = await _loadOptionsManager.Get(input.LoadOptionsId);
             var         load = GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, opt);
             var         sw   = new StringWriter();
             new XmlSerializer(typeof(GCode.CamBam.CamBam)).Serialize(sw, load.CamBam);

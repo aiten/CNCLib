@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using CNCLib.Logic.Contract.DTO;
-using CNCLib.Service.Contract;
+using CNCLib.Logic.Contract;
 using CNCLib.Shared;
 
 using Framework.WebAPI.Controller;
@@ -31,12 +31,12 @@ namespace CNCLib.WebAPI.Controllers
     [Route("api/[controller]")]
     public class MachineController : Controller
     {
-        private readonly IMachineService    _service;
+        private readonly IMachineManager    _manager;
         private readonly ICNCLibUserContext _userContext;
 
-        public MachineController(IMachineService service, ICNCLibUserContext userContext)
+        public MachineController(IMachineManager manager, ICNCLibUserContext userContext)
         {
-            _service     = service ?? throw new ArgumentNullException();
+            _manager     = manager ?? throw new ArgumentNullException();
             _userContext = userContext ?? throw new ArgumentNullException();
             ((CNCLibUserContext)_userContext).InitFromController(this);
         }
@@ -46,33 +46,33 @@ namespace CNCLib.WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Machine>>> Get()
         {
-            return await this.GetAll(_service);
+            return await this.GetAll(_manager);
         }
 
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Machine>> Get(int id)
         {
-            return await this.Get(_service, id);
+            return await this.Get(_manager, id);
         }
 
         [HttpPost]
         public async Task<ActionResult<Machine>> Add([FromBody] Machine value)
         {
-            return await this.Add<Machine, int>(_service, value);
+            return await this.Add<Machine, int>(_manager, value);
         }
 
         [HttpPut]
         [Route("{id:int}")]
         public async Task<ActionResult> Update(int id, [FromBody] Machine value)
         {
-            return await this.Update<Machine, int>(_service, id, value.MachineId, value);
+            return await this.Update<Machine, int>(_manager, id, value.MachineId, value);
         }
 
         [HttpDelete]
         [Route("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {
-            return await this.Delete<Machine, int>(_service, id);
+            return await this.Delete<Machine, int>(_manager, id);
         }
 
         #endregion
@@ -83,21 +83,21 @@ namespace CNCLib.WebAPI.Controllers
         [Route("bulk")]
         public async Task<ActionResult<IEnumerable<UriAndValue<Machine>>>> Add([FromBody] IEnumerable<Machine> values)
         {
-            return await this.Add<Machine, int>(_service, values);
+            return await this.Add<Machine, int>(_manager, values);
         }
 
         [HttpPut]
         [Route("bulk")]
         public async Task<ActionResult> Update([FromBody] IEnumerable<Machine> values)
         {
-            return await this.Update<Machine, int>(_service, values);
+            return await this.Update<Machine, int>(_manager, values);
         }
 
         [HttpDelete]
         [Route("bulk")]
         public async Task<ActionResult> Delete(int[] ids)
         {
-            return await this.Delete<Machine, int>(_service, ids);
+            return await this.Delete<Machine, int>(_manager, ids);
         }
 
         #endregion
@@ -106,7 +106,7 @@ namespace CNCLib.WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<Machine>> DefaultMachine()
         {
-            var m = await _service.DefaultMachine();
+            var m = await _manager.DefaultMachine();
             if (m == null)
             {
                 return NotFound();
@@ -121,7 +121,7 @@ namespace CNCLib.WebAPI.Controllers
         //Always explicitly state the accepted HTTP method
         public async Task<ActionResult<int>> GetDefaultMachine()
         {
-            int id = await _service.GetDefaultMachine();
+            int id = await _manager.GetDefaultMachine();
             return Ok(id);
         }
 
@@ -131,7 +131,7 @@ namespace CNCLib.WebAPI.Controllers
         //Always explicitly state the accepted HTTP method
         public async Task<ActionResult> SetDefaultMachine(int id)
         {
-            await _service.SetDefaultMachine(id);
+            await _manager.SetDefaultMachine(id);
             return StatusCode(204);
         }
     }

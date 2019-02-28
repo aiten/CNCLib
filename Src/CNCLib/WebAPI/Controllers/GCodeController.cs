@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using CNCLib.Logic.Contract.DTO;
-using CNCLib.Service.Contract;
+using CNCLib.Logic.Contract;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,12 +31,12 @@ namespace CNCLib.WebAPI.Controllers
     [Route("api/[controller]")]
     public class GCodeController : Controller
     {
-        private readonly ILoadOptionsService _loadOptionsService;
+        private readonly ILoadOptionsManager _loadOptionsManager;
         private readonly ICNCLibUserContext  _userContext;
 
-        public GCodeController(ILoadOptionsService loadOptionsService, ICNCLibUserContext userContext)
+        public GCodeController(ILoadOptionsManager loadOptionsManager, ICNCLibUserContext userContext)
         {
-            _loadOptionsService = loadOptionsService ?? throw new ArgumentNullException();
+            _loadOptionsManager = loadOptionsManager ?? throw new ArgumentNullException();
             _userContext        = userContext ?? throw new ArgumentNullException();
             ((CNCLibUserContext)_userContext).InitFromController(this);
         }
@@ -50,7 +50,7 @@ namespace CNCLib.WebAPI.Controllers
         [HttpPut]
         public async Task<IEnumerable<string>> Put([FromBody] CreateGCode input)
         {
-            LoadOptions opt = await _loadOptionsService.Get(input.LoadOptionsId);
+            LoadOptions opt = await _loadOptionsManager.Get(input.LoadOptionsId);
             return GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, opt).Commands.ToStringList();
         }
     }

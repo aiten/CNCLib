@@ -57,8 +57,6 @@
     <ProjectReference Include="..\Repository.Contract\Repository.Contract.csproj" />
     <ProjectReference Include="..\Repository.SqlServer\Repository.SqlServer.csproj" />
     <ProjectReference Include="..\Repository\Repository.csproj" />
-    <ProjectReference Include="..\Service.Logic\Service.Logic.csproj" />
-    <ProjectReference Include="..\Service.Contract\Service.Contract.csproj" />
     <ProjectReference Include="..\WebAPI\WebAPI.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>

@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using CNCLib.Logic.Contract.DTO;
-using CNCLib.Service.Contract;
+using CNCLib.Logic.Contract;
 using CNCLib.Shared;
 
 using Framework.WebAPI.Controller;
@@ -31,12 +31,12 @@ namespace CNCLib.WebAPI.Controllers
     [Route("api/[controller]")]
     public class ItemController : Controller
     {
-        private readonly IItemService       _service;
+        private readonly IItemManager       _manager;
         private readonly ICNCLibUserContext _userContext;
 
-        public ItemController(IItemService service, ICNCLibUserContext userContext)
+        public ItemController(IItemManager manager, ICNCLibUserContext userContext)
         {
-            _service     = service ?? throw new ArgumentNullException();
+            _manager     = manager ?? throw new ArgumentNullException();
             _userContext = userContext ?? throw new ArgumentNullException();
             ((CNCLibUserContext)_userContext).InitFromController(this);
         }
@@ -46,10 +46,10 @@ namespace CNCLib.WebAPI.Controllers
         {
             if (classname == null)
             {
-                return await this.GetAll(_service);
+                return await this.GetAll(_manager);
             }
 
-            IEnumerable<Item> m = await _service.GetByClassName(classname);
+            IEnumerable<Item> m = await _manager.GetByClassName(classname);
             return await this.NotFoundOrOk(m);
         }
 
@@ -59,33 +59,33 @@ namespace CNCLib.WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Item>>> Get()
         {
-            return await this.GetAll(_service);
+            return await this.GetAll(_manager);
         }
 */
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Item>> Get(int id)
         {
-            return await this.Get<Item, int>(_service, id);
+            return await this.Get<Item, int>(_manager, id);
         }
 
         [HttpPost]
         public async Task<ActionResult<Item>> Add([FromBody] Item value)
         {
-            return await this.Add<Item, int>(_service, value);
+            return await this.Add<Item, int>(_manager, value);
         }
 
         [HttpPut]
         [Route("{id:int}")]
         public async Task<ActionResult> Update(int id, [FromBody] Item value)
         {
-            return await this.Update<Item, int>(_service, id, value.ItemId, value);
+            return await this.Update<Item, int>(_manager, id, value.ItemId, value);
         }
 
         [HttpDelete]
         [Route("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {
-            return await this.Delete<Item, int>(_service, id);
+            return await this.Delete<Item, int>(_manager, id);
         }
 
         #endregion
