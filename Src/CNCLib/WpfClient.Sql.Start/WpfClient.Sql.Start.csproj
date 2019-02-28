@@ -1,7 +1,8 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.68">
    <PropertyGroup>
 	<TargetFramework>$(TargetFrameworkForFull)</TargetFramework>
-    <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
+    <AssemblyName>$(SolutionNamespace).$(AssemblyName)</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
     
 	<OutputType>WinExe</OutputType>
 	<StartupObject>CNCLib.WpfClient.Sql.Start.App</StartupObject>

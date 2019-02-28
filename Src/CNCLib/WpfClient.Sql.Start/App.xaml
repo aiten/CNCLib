@@ -1,7 +1,7 @@
 ﻿<Application x:Class="CNCLib.WpfClient.Sql.Start.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="pack://application:,,,/WpfClient;component/Views/MainWindow.xaml"
+             StartupUri="pack://application:,,,/CNCLib.WpfClient;component/Views/MainWindow.xaml"
              Startup="AppStartup">
     <Application.Resources>
         <ResourceDictionary>

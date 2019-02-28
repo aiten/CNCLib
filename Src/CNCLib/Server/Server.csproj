@@ -1,10 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  
-
   <PropertyGroup>
     <TargetFramework>$(TargetFrameworkForAppAndTests)</TargetFramework>
-    <RootNamespace>$(SolutionNamespace).$(AssemblyName)</RootNamespace>
+    <AssemblyName>$(SolutionNamespace).$(AssemblyName)</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
     
     <UserSecretsId>01a35a57-f2ce-48a8-a405-32b243eeec85</UserSecretsId>
   </PropertyGroup>
