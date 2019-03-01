@@ -14,15 +14,11 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.Text;
-using System.Collections.Generic;
-
 namespace Framework.Tools.Uri
 {
     public class UriPathBuilder
     {
-        public string Path { get; set; }
+        public string Path  { get; set; }
         public string Query { get; set; }
 
         public string Build()
@@ -31,10 +27,11 @@ namespace Framework.Tools.Uri
             {
                 return $"{Path}";
             }
+
             return $"{Path}?{Query}";
         }
 
-        public static string Build(string path, string query=null)
+        public static string Build(string path, string query = null)
         {
             return new UriPathBuilder() { Path = path, Query = query }.Build();
         }

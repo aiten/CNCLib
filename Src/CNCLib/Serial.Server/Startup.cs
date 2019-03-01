@@ -66,15 +66,14 @@ namespace CNCLib.Serial.Server
             services.AddTransient<UnhandledExceptionFilter>();
             services.AddTransient<ValidateRequestDataFilter>();
             services.AddMvc(
-                options =>
-                {
-                    options.Filters.AddService<ValidateRequestDataFilter>();
-                    options.Filters.AddService<UnhandledExceptionFilter>();
-                })
+                    options =>
+                    {
+                        options.Filters.AddService<ValidateRequestDataFilter>();
+                        options.Filters.AddService<UnhandledExceptionFilter>();
+                    })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
                 .AddApplicationPart(controllerAssembly);
-
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
@@ -99,6 +98,7 @@ namespace CNCLib.Serial.Server
             Services = app.ApplicationServices;
 
             SerialPortWrapper.OnCreateHub = () => Hub;
+
             //Services = serviceProvider;
 
             if (env.IsDevelopment())

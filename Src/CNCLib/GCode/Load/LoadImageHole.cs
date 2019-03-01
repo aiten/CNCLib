@@ -413,7 +413,7 @@ namespace CNCLib.GCode.Load
 
             hsizeX2 *= 0.9;
             hsizeY2 =  hsizeX2;
-            double mr = mirror?-1.0:1.0;
+            double mr = mirror ? -1.0 : 1.0;
 
             Command c = new G00Command();
             c.AddVariable('X', ToGCode(x));

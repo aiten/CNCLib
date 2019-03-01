@@ -42,7 +42,7 @@ namespace CNCLib.Service.WebAPI
                 var paramUri = new UriQueryBuilder();
                 paramUri.Add("classname", classname);
 
-                HttpResponseMessage response = await client.GetAsync(UriPathBuilder.Build(Api,paramUri));
+                HttpResponseMessage response = await client.GetAsync(UriPathBuilder.Build(Api, paramUri));
                 if (response.IsSuccessStatusCode)
                 {
                     IEnumerable<Item> items = await response.Content.ReadAsAsync<IEnumerable<Item>>();

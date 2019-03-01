@@ -141,26 +141,27 @@ namespace CNCLib.WpfClient.ViewModels.ManualControl
 
         public void GetG5x(int offsetG)
         {
-            RunAndUpdate(async () =>
-            {
-                var gX = await GetParameterValue(5221 + offsetG * 20);
-                if (gX.HasValue)
+            RunAndUpdate(
+                async () =>
                 {
-                    SetField(0, offsetG, gX);
-                }
+                    var gX = await GetParameterValue(5221 + offsetG * 20);
+                    if (gX.HasValue)
+                    {
+                        SetField(0, offsetG, gX);
+                    }
 
-                var gY = await GetParameterValue(5222 + offsetG * 20);
-                if (gY.HasValue)
-                {
-                    SetField(1, offsetG, gY);
-                }
+                    var gY = await GetParameterValue(5222 + offsetG * 20);
+                    if (gY.HasValue)
+                    {
+                        SetField(1, offsetG, gY);
+                    }
 
-                var gZ = await GetParameterValue(5223 + offsetG * 20);
-                if (gZ.HasValue)
-                {
-                    SetField(2, offsetG, gZ);
-                }
-            });
+                    var gZ = await GetParameterValue(5223 + offsetG * 20);
+                    if (gZ.HasValue)
+                    {
+                        SetField(2, offsetG, gZ);
+                    }
+                });
         }
 
         public bool CanGetG5x(int offsetG)

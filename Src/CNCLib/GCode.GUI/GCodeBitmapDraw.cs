@@ -431,7 +431,7 @@ namespace CNCLib.GCode.GUI
 
         void InitPen(PenSet set, Func<Color, Color> colorConverter)
         {
-            float cutSize  = CutterSize > 0?(float)ToClientSizeX(CutterSize):2;
+            float cutSize  = CutterSize > 0 ? (float)ToClientSizeX(CutterSize) : 2;
             float fastSize = 0.5f;
 
             set._cutPen = new Pen(colorConverter(CutColor), cutSize)
@@ -495,7 +495,7 @@ namespace CNCLib.GCode.GUI
                     break;
                 }
 
-                g1.DrawLine(((i % 10) == 0)?_helpLinePen10:_helpLinePen, ToClientF(new Point3D(i * 10.0, 0, 0)), ToClientF(new Point3D(i * 10.0, SizeY, 0)));
+                g1.DrawLine(((i % 10) == 0) ? _helpLinePen10 : _helpLinePen, ToClientF(new Point3D(i * 10.0, 0, 0)), ToClientF(new Point3D(i * 10.0, SizeY, 0)));
             }
 
             for (int i = 1;; i++)
@@ -506,7 +506,7 @@ namespace CNCLib.GCode.GUI
                     break;
                 }
 
-                g1.DrawLine(((i % 10) == 0)?_helpLinePen10:_helpLinePen, ToClientF(new Point3D(0, i * 10.0, 0)), ToClientF(new Point3D(SizeX, i * 10.0, 0)));
+                g1.DrawLine(((i % 10) == 0) ? _helpLinePen10 : _helpLinePen, ToClientF(new Point3D(0, i * 10.0, 0)), ToClientF(new Point3D(SizeX, i * 10.0, 0)));
             }
 
             commands?.Paint(this, ee);
@@ -801,7 +801,7 @@ namespace CNCLib.GCode.GUI
 
         private Pen GetPen(DrawType moveType, LineDrawType drawType)
         {
-            PenSet set = (moveType & DrawType.Selected) == DrawType.Selected?_selected:_dithered;
+            PenSet set = (moveType & DrawType.Selected) == DrawType.Selected ? _selected : _dithered;
 
             if ((moveType & DrawType.Draw) == 0)
             {
@@ -813,10 +813,10 @@ namespace CNCLib.GCode.GUI
 
             if (isLaser)
             {
-                return isCut?set._laserCutPen:set._laserFastPen;
+                return isCut ? set._laserCutPen : set._laserFastPen;
             }
 
-            return isCut?set._cutPens[(int)drawType]:set._fastPen;
+            return isCut ? set._cutPens[(int)drawType] : set._fastPen;
         }
 
         #endregion

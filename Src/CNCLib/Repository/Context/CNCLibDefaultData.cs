@@ -40,20 +40,20 @@ namespace CNCLib.Repository.Context
 
         private User[] UserSeed(CNCLibContext context)
         {
-            var userImport = new CSVImport<User>();
+            var userImport = new CsvImport<User>();
             var users      = userImport.Read(DefaultDataDir + @"\DefaultData\User.csv").ToArray();
             return users;
         }
 
         private void MachineSeed(CNCLibContext context, User[] users)
         {
-            var machineImport = new CSVImport<Machine>();
+            var machineImport = new CsvImport<Machine>();
             var machines      = machineImport.Read(DefaultDataDir + @"\DefaultData\Machine.csv").ToArray();
 
-            var machineCommandImport = new CSVImport<MachineCommand>();
+            var machineCommandImport = new CsvImport<MachineCommand>();
             var machineCommands      = machineCommandImport.Read(DefaultDataDir + @"\DefaultData\MachineCommand.csv").ToArray();
 
-            var machineInitCommandImport = new CSVImport<MachineInitCommand>();
+            var machineInitCommandImport = new CsvImport<MachineInitCommand>();
             var machineInitCommands      = machineInitCommandImport.Read(DefaultDataDir + @"\DefaultData\MachineInitCommand.csv").ToArray();
 
             foreach (var machineInitCommand in machineInitCommands)
@@ -89,10 +89,10 @@ namespace CNCLib.Repository.Context
 
         private void ItemSeed(CNCLibContext context)
         {
-            var itemImport = new CSVImport<Item>();
+            var itemImport = new CsvImport<Item>();
             var items      = itemImport.Read(DefaultDataDir + @"\DefaultData\Item.csv").ToArray();
 
-            var itemPropertyImport = new CSVImport<ItemProperty>();
+            var itemPropertyImport = new CsvImport<ItemProperty>();
             var itemProperties     = itemPropertyImport.Read(DefaultDataDir + @"\DefaultData\ItemProperty.csv").ToArray();
 
             foreach (var itemProperty in itemProperties)
@@ -114,7 +114,7 @@ namespace CNCLib.Repository.Context
         {
             if (isTest)
             {
-                var configurationImport = new CSVImport<Configuration>();
+                var configurationImport = new CsvImport<Configuration>();
                 var configurations      = configurationImport.Read(DefaultDataDir + @"\DefaultData\Configuration.csv").ToArray();
 
                 context.Configurations.AddRange(configurations);

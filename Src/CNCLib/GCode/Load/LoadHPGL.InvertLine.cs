@@ -121,7 +121,7 @@ namespace CNCLib.GCode.Load
 
                         if (LoadOptions.LaserSize != 0)
                         {
-                            linesOnLevel = OffsetLines(_scale / 2.0 * (double)LoadOptions.LaserSize * ((level % 2 == 0)?1.0:-1.0), linesOnLevel);
+                            linesOnLevel = OffsetLines(_scale / 2.0 * (double)LoadOptions.LaserSize * ((level % 2 == 0) ? 1.0 : -1.0), linesOnLevel);
                         }
 
                         orderedList.AddRange(OptimizeDistance(linesOnLevel));

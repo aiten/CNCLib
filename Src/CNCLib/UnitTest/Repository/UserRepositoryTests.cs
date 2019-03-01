@@ -26,8 +26,8 @@ using CNCLib.Repository.Contract.Entities;
 using FluentAssertions;
 
 using Framework.Repository;
-using Framework.Test.Repository;
 using Framework.Tools;
+using Framework.UnitTest.Repository;
 
 using Microsoft.EntityFrameworkCore;
 

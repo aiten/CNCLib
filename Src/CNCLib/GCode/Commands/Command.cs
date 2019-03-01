@@ -54,7 +54,7 @@ namespace CNCLib.GCode.Commands
         public Command PrevCommand { get; set; }
 
         public Point3D CalculatedStartPosition =>
-            PrevCommand == null?new Point3D():PrevCommand.CalculatedEndPosition;
+            PrevCommand == null ? new Point3D() : PrevCommand.CalculatedEndPosition;
 
         public Point3D CalculatedEndPosition => _calculatedEndPosition;
 
@@ -330,7 +330,7 @@ namespace CNCLib.GCode.Commands
 
         protected string GCodeLineNumber(string postString)
         {
-            return LineNumber.HasValue?$"N{LineNumber}{postString}":"";
+            return LineNumber.HasValue ? $"N{LineNumber}{postString}" : "";
         }
 
         public virtual string[] GetGCodeCommands(Point3D startFrom, CommandState state)
@@ -377,7 +377,7 @@ namespace CNCLib.GCode.Commands
             }
             else
             {
-                _calculatedEndPosition = PrevCommand == null?new Point3D():PrevCommand._calculatedEndPosition;
+                _calculatedEndPosition = PrevCommand == null ? new Point3D() : PrevCommand._calculatedEndPosition;
             }
         }
 

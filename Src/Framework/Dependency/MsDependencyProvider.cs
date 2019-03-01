@@ -25,18 +25,16 @@ namespace Framework.Dependency
     /// </summary>
     public sealed class MsDependencyProvider : IDependencyProvider
     {
-        private readonly IDependencyContainer _dependencyContainer;
-
         public MsDependencyProvider()
         {
-            _dependencyContainer = new MsDependencyContainer();
+            Container = new MsDependencyContainer();
         }
 
         public MsDependencyProvider(IServiceCollection services)
         {
-            _dependencyContainer = new MsDependencyContainer(services);
+            Container = new MsDependencyContainer(services);
         }
 
-        public IDependencyContainer Container => _dependencyContainer;
+        public IDependencyContainer Container { get; }
     }
 }

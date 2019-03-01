@@ -14,28 +14,20 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace Framework.UnitTest
+namespace Framework.UnitTest.Repository
 {
-    using System;
+    using Microsoft.EntityFrameworkCore;
 
-    using Framework.Tools.Abstraction;
+    using Xunit;
 
-    public class CurrentDateTimeMock : ICurrentDateTime
+    [Collection("Framework.Repository.UnitTest")]
+    public class RepositoryTestBase<TDbContext> : UnitTestBase where TDbContext : DbContext
     {
-        public CurrentDateTimeMock(DateTime now)
+        protected RepositoryTestBase(RepositoryTestFixtureBase<TDbContext> testFixture)
         {
-            Now   = now;
-            ToDay = now.Date;
+            TestFixture = testFixture;
         }
 
-        public CurrentDateTimeMock()
-        {
-            Now   = DateTime.Now;
-            ToDay = Now.Date;
-        }
-
-        public DateTime Now { get; private set; }
-
-        public DateTime ToDay { get; private set; }
+        public RepositoryTestFixtureBase<TDbContext> TestFixture { get; }
     }
 }

@@ -20,8 +20,7 @@ using CNCLib.Shared;
 
 using Framework.Dependency;
 using Framework.Repository.Abstraction;
-using Framework.Test;
-using Framework.Test.Repository;
+using Framework.UnitTest;
 
 using Microsoft.EntityFrameworkCore;
 

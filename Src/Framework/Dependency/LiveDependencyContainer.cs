@@ -21,8 +21,5 @@ namespace Framework.Dependency
     /// </summary>
     public sealed class LiveDependencyContainer : MsDependencyContainer
     {
-        public LiveDependencyContainer()
-        {
-        }
     }
 }

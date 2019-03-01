@@ -127,7 +127,6 @@ namespace Framework.WebAPI.Controller
             return controller.Ok((await AddIntern(controller, manager, values)).ToUrisAndValues());
         }
 
-
         public static async Task<ActionResult<T>> AddNoGet<T, TKey>(this Controller controller, ICRUDManager<T, TKey> manager, T value, Action<T, TKey> setIdFunc)
             where T : class where TKey : IComparable
         {

@@ -29,7 +29,7 @@ namespace CNCLib.WpfClient.Models
 
         public static Machine Convert(this MachineDto from, IMapper mapper)
         {
-            var to  = mapper.Map<Machine>(from);
+            var to = mapper.Map<Machine>(from);
 
             // AutoMapper do not mapper readonly observable collections
             foreach (var m in from.MachineCommands)

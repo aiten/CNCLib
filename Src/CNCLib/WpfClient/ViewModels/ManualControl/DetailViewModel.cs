@@ -24,13 +24,13 @@ namespace CNCLib.WpfClient.ViewModels.ManualControl
 {
     public class DetailViewModel : BaseViewModel
     {
-        private readonly Global _global;
-        protected IManualControlViewModel Vm { get; set; }
+        private readonly Global                  _global;
+        protected        IManualControlViewModel Vm { get; set; }
 
         public DetailViewModel(IManualControlViewModel vm, Global global)
         {
             _global = global ?? throw new ArgumentNullException();
-            Vm = vm;
+            Vm      = vm;
         }
 
         public bool Connected => _global.Com.Current.IsConnected;

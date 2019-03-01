@@ -21,7 +21,7 @@ namespace Framework.Tools.Tools
     using System.Linq;
     using System.Reflection;
 
-    public class CSVImport<T> : CSVImportBase where T : new()
+    public class CsvImport<T> : CsvImportBase where T : new()
     {
         public IList<T> Read(string fileName)
         {

@@ -14,19 +14,17 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-
-using Framework.Test.Dependency;
-using Framework.Tools.Abstraction;
-
-namespace Framework.Test
+namespace Framework.UnitTest
 {
+    using Framework.Tools.Abstraction;
+    using Framework.UnitTest.Dependency;
+
     /// <summary>
     /// Base class for *all* unit tests. 
     /// </summary>
     public class UnitTestBase
     {
-        private static object _lockObject = new object();
+        private static readonly object _lockObject = new object();
 
         protected UnitTestBase()
         {

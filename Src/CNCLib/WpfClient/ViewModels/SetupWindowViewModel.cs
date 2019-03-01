@@ -42,17 +42,18 @@ namespace CNCLib.WpfClient.ViewModels
 
         public SetupWindowViewModel(IFactory<IMachineService> machineService, IFactory<IJoystickService> joystickService, IMapper mapper, Global global)
         {
-            _machineService = machineService ?? throw new ArgumentNullException();
+            _machineService  = machineService ?? throw new ArgumentNullException();
             _joystickService = joystickService ?? throw new ArgumentNullException();
-            _mapper         = mapper ?? throw new ArgumentNullException();
-            _global         = global ?? throw new ArgumentNullException(); ;
-            ResetOnConnect  = false;
+            _mapper          = mapper ?? throw new ArgumentNullException();
+            _global          = global ?? throw new ArgumentNullException();
+            ;
+            ResetOnConnect = false;
         }
 
-        readonly IFactory<IMachineService> _machineService;
+        readonly         IFactory<IMachineService>  _machineService;
         private readonly IFactory<IJoystickService> _joystickService;
-        private readonly IMapper _mapper;
-        private readonly Global _global;
+        private readonly IMapper                    _mapper;
+        private readonly Global                     _global;
 
         public override async Task Loaded()
         {
@@ -101,7 +102,6 @@ namespace CNCLib.WpfClient.ViewModels
         {
             using (var scope = _joystickService.Create())
             {
-
                 Joystick = (await scope.Instance.Load()).Item1;
 
                 _global.Joystick = Joystick;

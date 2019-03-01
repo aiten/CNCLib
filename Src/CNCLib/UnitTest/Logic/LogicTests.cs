@@ -18,7 +18,7 @@ using AutoMapper;
 
 using CNCLib.Logic;
 
-using Framework.Test;
+using Framework.UnitTest;
 
 namespace CNCLib.Test.Logic
 {
@@ -43,6 +43,5 @@ namespace CNCLib.Test.Logic
                 Mapper = config.CreateMapper();
             }
         }
-
     }
 }

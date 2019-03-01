@@ -1,8 +1,6 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.68">
   <PropertyGroup>
     <TargetFramework>$(TargetFrameworkForFull)</TargetFramework>
-    <AssemblyName>$(SolutionNamespace).$(AssemblyName)</AssemblyName>
-    <RootNamespace>$(AssemblyName)</RootNamespace>
 <!--     -->
     <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
   </PropertyGroup>
@@ -65,15 +63,15 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Dependency\Framework.Dependency.csproj" />
-    <ProjectReference Include="..\..\Framework\Drawing\Framework.Drawing.csproj" />
-    <ProjectReference Include="..\..\Framework\Logging\Framework.Logging.csproj" />
-    <ProjectReference Include="..\..\Framework\Logic\Framework.Logic.csproj" />
-    <ProjectReference Include="..\..\Framework\Pattern\Framework.Pattern.csproj" />
-    <ProjectReference Include="..\..\Framework\Service.Abstraction\Framework.Service.Abstraction.csproj" />
-    <ProjectReference Include="..\..\Framework\Tools\Framework.Tools.csproj" />
-    <ProjectReference Include="..\..\Framework\Wpf\Framework.Wpf.csproj" />
-    <ProjectReference Include="..\..\Framework\Arduino\Framework.Arduino.csproj" />
+    <ProjectReference Include="..\..\Framework\Dependency\Dependency.csproj" />
+    <ProjectReference Include="..\..\Framework\Drawing\Drawing.csproj" />
+    <ProjectReference Include="..\..\Framework\Logging\Logging.csproj" />
+    <ProjectReference Include="..\..\Framework\Logic\Logic.csproj" />
+    <ProjectReference Include="..\..\Framework\Pattern\Pattern.csproj" />
+    <ProjectReference Include="..\..\Framework\Service.Abstraction\Service.Abstraction.csproj" />
+    <ProjectReference Include="..\..\Framework\Tools\Tools.csproj" />
+    <ProjectReference Include="..\..\Framework\Wpf\Wpf.csproj" />
+    <ProjectReference Include="..\..\Framework\Arduino\Arduino.csproj" />
     <ProjectReference Include="..\GCode.GUI\GCode.GUI.csproj" />
     <ProjectReference Include="..\GCode\GCode.csproj" />
     <ProjectReference Include="..\Logic.Client\Logic.Client.csproj" />

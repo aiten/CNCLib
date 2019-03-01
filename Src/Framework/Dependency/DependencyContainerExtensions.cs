@@ -185,7 +185,6 @@ namespace Framework.Dependency
         /// <param name="container">Dependency container.</param>
         /// <typeparam name="TInterface">Interface for which the registered type is looked up.</typeparam>
         /// <returns>An instance of the interface that was registered with the container earlier.</returns>
-        /// <exception cref="ResolutionFailedException">Thrown when no type was registered for the given interface.</exception>
         public static TInterface Resolve<TInterface>(this IDependencyContainer container)
         {
             object obj = container.GetResolver().Resolve(typeof(TInterface));

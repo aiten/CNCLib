@@ -31,7 +31,7 @@ namespace CNCLib.Serial.WebAPI.SerialPort
         #region ctr/SignalR
 
         public static Func<IHubContext<CNCLibHub>> OnCreateHub { get; set; }
-    
+
         public void InitPort()
         {
             if (Serial == null)

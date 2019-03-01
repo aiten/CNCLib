@@ -7,8 +7,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
   </ItemGroup>  
   <ItemGroup>
-    <ProjectReference Include="..\Dependency\Framework.Dependency.csproj" />
-    <ProjectReference Include="..\Logic.Abstraction\Framework.Logic.Abstraction.csproj" />
+    <ProjectReference Include="..\Dependency\Dependency.csproj" />
+    <ProjectReference Include="..\Logic.Abstraction\Logic.Abstraction.csproj" />
   </ItemGroup>  
   <ItemGroup>
     <Folder Include="Abstraction\" />

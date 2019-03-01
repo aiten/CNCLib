@@ -58,7 +58,7 @@ namespace CNCLib.GCode.Commands
 
         public Command CreateOrDefault(string name)
         {
-            string commandName = char.ToUpper(name[0]) == 'M'?"MXX":"GXX";
+            string commandName = char.ToUpper(name[0]) == 'M' ? "MXX" : "GXX";
             int    spaceIdx    = name.IndexOf(' ');
             if (spaceIdx >= 0)
             {

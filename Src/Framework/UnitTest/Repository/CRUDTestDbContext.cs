@@ -14,11 +14,11 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace Framework.Test.Repository
+namespace Framework.UnitTest.Repository
 {
-    using Microsoft.EntityFrameworkCore;
-
     using Framework.Repository.Abstraction;
+
+    using Microsoft.EntityFrameworkCore;
 
     public class CRUDTestDbContext<TDbContext, TEntity, TKey, TIRepository> : GetTestDbContext<TDbContext, TEntity, TKey, TIRepository>
         where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey> where TDbContext : DbContext

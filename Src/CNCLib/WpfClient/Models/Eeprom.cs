@@ -406,7 +406,7 @@ namespace CNCLib.WpfClient.Models
 
             public override string ToString()
             {
-                return Size.ToString() + (RefMove == EReverenceType.NoReference?"":$",{RefMove}");
+                return Size.ToString() + (RefMove == EReverenceType.NoReference ? "" : $",{RefMove}");
             }
         };
 
@@ -544,7 +544,7 @@ namespace CNCLib.WpfClient.Models
                 GetAxis(i).RefHitValueMin = ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMin];
                 GetAxis(i).RefHitValueMax = ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMax];
 
-                GetAxis(i).InitPosition   = ee[i, EepromV1.EAxisOffsets32.InitPosition];
+                GetAxis(i).InitPosition = ee[i, EepromV1.EAxisOffsets32.InitPosition];
 
                 GetAxis(i).StepperDirection = (ee[EepromV1.EValueOffsets8.StepperDirection] & (1 << i)) != 0;
 

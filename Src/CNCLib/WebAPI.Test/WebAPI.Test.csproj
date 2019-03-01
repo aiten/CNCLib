@@ -3,8 +3,8 @@
 
   <PropertyGroup>
     <TargetFramework>$(TargetFrameworkForFull)</TargetFramework>
-    <AssemblyName>$(SolutionNamespace).$(AssemblyName)</AssemblyName>
-    <RootNamespace>$(AssemblyName)</RootNamespace>
+
+    
     
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Tools\Framework.Tools.csproj" />
+    <ProjectReference Include="..\..\Framework\Tools\Tools.csproj" />
     <ProjectReference Include="..\Logic.Contract.DTO\Logic.Contract.DTO.csproj" />
     <ProjectReference Include="..\Logic.Contract\Logic.Contract.csproj" />
   </ItemGroup>
