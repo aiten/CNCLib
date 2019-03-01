@@ -8,6 +8,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference
-      Include="..\..\Framework\Repository.Abstraction\Framework.Repository.Abstraction.csproj" />
+      Include="..\..\Framework\Repository.Abstraction\Repository.Abstraction.csproj" />
   </ItemGroup>
 </Project>

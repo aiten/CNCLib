@@ -17,6 +17,8 @@
 
   <PropertyGroup Label="Compiler Settings">
     <LangVersion>latest</LangVersion>
+    <AssemblyName>$(SolutionNamespace).$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>$(SolutionNamespace).$(MSBuildProjectName)</RootNamespace>
   </PropertyGroup>
 
 </Project>

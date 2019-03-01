@@ -11,8 +11,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Repository\Framework.Repository.csproj" />
-    <ProjectReference Include="..\..\Framework\Tools\Framework.Tools.csproj">    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Repository\Repository.csproj" />
+    <ProjectReference Include="..\..\Framework\Tools\Tools.csproj">    </ProjectReference>
     <ProjectReference Include="..\Repository.Contract\Repository.Contract.csproj">    </ProjectReference>
     <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>

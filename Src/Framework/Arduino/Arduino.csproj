@@ -6,8 +6,8 @@
     <PackageReference Include="System.IO.Ports" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dependency\Framework.Dependency.csproj" />
-    <ProjectReference Include="..\Logging\Framework.Logging.csproj" />
-    <ProjectReference Include="..\WinAPI\Framework.WinAPI.csproj" />
+    <ProjectReference Include="..\Dependency\Dependency.csproj" />
+    <ProjectReference Include="..\Logging\Logging.csproj" />
+    <ProjectReference Include="..\WinAPI\WinAPI.csproj" />
   </ItemGroup>
 </Project>

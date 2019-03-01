@@ -7,6 +7,6 @@
     
   </PropertyGroup>
    <ItemGroup>
-     <ProjectReference Include="..\..\Framework\Tools\Framework.Tools.csproj" />
+     <ProjectReference Include="..\..\Framework\Tools\Tools.csproj" />
    </ItemGroup>
 </Project>

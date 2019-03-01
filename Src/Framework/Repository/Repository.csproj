@@ -7,6 +7,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.0" />
   </ItemGroup>  
   <ItemGroup>
-    <ProjectReference Include="..\Repository.Abstraction\Framework.Repository.Abstraction.csproj" />
+    <ProjectReference Include="..\Repository.Abstraction\Repository.Abstraction.csproj" />
   </ItemGroup>
 </Project>

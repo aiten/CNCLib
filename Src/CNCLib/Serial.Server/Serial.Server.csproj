@@ -45,11 +45,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Logging\Framework.Logging.csproj" />
-    <ProjectReference Include="..\..\Framework\Tools\Framework.Tools.csproj" />
-    <ProjectReference Include="..\..\Framework\Arduino.Linux\Framework.Arduino.Linux.csproj" />
-    <ProjectReference Include="..\..\Framework\Arduino\Framework.Arduino.csproj" />
-    <ProjectReference Include="..\..\Framework\WebAPI\Framework.WebAPI.csproj" />
+    <ProjectReference Include="..\..\Framework\Logging\Logging.csproj" />
+    <ProjectReference Include="..\..\Framework\Tools\Tools.csproj" />
+    <ProjectReference Include="..\..\Framework\Arduino.Linux\Arduino.Linux.csproj" />
+    <ProjectReference Include="..\..\Framework\Arduino\Arduino.csproj" />
+    <ProjectReference Include="..\..\Framework\WebAPI\WebAPI.csproj" />
     <ProjectReference Include="..\Serial.Shared\Serial.Shared.csproj" />
     <ProjectReference Include="..\Serial.WebAPI\Serial.WebAPI.csproj" />
   </ItemGroup>

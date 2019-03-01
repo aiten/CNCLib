@@ -17,7 +17,7 @@
      </PackageReference>
    </ItemGroup>
    <ItemGroup>
-     <ProjectReference Include="..\..\Framework\UnitTest\Framework.UnitTest.csproj" />
+     <ProjectReference Include="..\..\Framework\UnitTest\UnitTest.csproj" />
      <ProjectReference Include="..\GCode\GCode.csproj" />
      <ProjectReference Include="..\Logic\Logic.csproj" />
      <ProjectReference Include="..\Repository.SqLite\Repository.SqLite.csproj" />

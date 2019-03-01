@@ -12,8 +12,8 @@
      <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
    </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Arduino\Framework.Arduino.csproj" />
-    <ProjectReference Include="..\..\Framework\Pattern\Framework.Pattern.csproj" />
+    <ProjectReference Include="..\..\Framework\Arduino\Arduino.csproj" />
+    <ProjectReference Include="..\..\Framework\Pattern\Pattern.csproj" />
     <ProjectReference Include="..\Serial.Shared\Serial.Shared.csproj" />
   </ItemGroup>
 </Project>

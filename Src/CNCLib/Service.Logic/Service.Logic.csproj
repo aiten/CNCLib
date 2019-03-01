@@ -7,8 +7,8 @@
     
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Pattern\Framework.Pattern.csproj" />
-    <ProjectReference Include="..\..\Framework\Service\Framework.Service.csproj" />
+    <ProjectReference Include="..\..\Framework\Pattern\Pattern.csproj" />
+    <ProjectReference Include="..\..\Framework\Service\Service.csproj" />
     <ProjectReference Include="..\Logic.Contract.DTO\Logic.Contract.DTO.csproj">    </ProjectReference>
     <ProjectReference Include="..\Logic.Contract\Logic.Contract.csproj">    </ProjectReference>
     <ProjectReference Include="..\Service.Contract\Service.Contract.csproj" />

@@ -7,9 +7,9 @@
 
    </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Drawing\Framework.Drawing.csproj" />
-    <ProjectReference Include="..\..\Framework\Parser\Framework.Parser.csproj" />
-    <ProjectReference Include="..\..\Framework\Tools\Framework.Tools.csproj">
+    <ProjectReference Include="..\..\Framework\Drawing\Drawing.csproj" />
+    <ProjectReference Include="..\..\Framework\Parser\Parser.csproj" />
+    <ProjectReference Include="..\..\Framework\Tools\Tools.csproj">
     </ProjectReference>
     <ProjectReference Include="..\Logic.Contract.DTO\Logic.Contract.DTO.csproj">
     </ProjectReference>

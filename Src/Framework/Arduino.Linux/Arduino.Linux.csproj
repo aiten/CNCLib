@@ -18,7 +18,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\Arduino\Framework.Arduino.csproj" />
+    <ProjectReference Include="..\Arduino\Arduino.csproj" />
   </ItemGroup>
   
   <ItemGroup>

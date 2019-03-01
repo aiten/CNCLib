@@ -3,9 +3,8 @@
 	<TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
   </PropertyGroup>  
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="8.0.0" />
-  </ItemGroup>  
-  <ItemGroup>
-    <ProjectReference Include="..\Dependency\Framework.Dependency.csproj" />
+    <ProjectReference Include="..\Dependency\Dependency.csproj" />
   </ItemGroup>
+
+  
 </Project>

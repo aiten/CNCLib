@@ -16,14 +16,14 @@
      </PackageReference>
    </ItemGroup>
    <ItemGroup>
-     <ProjectReference Include="..\Arduino\Framework.Arduino.csproj" />
-     <ProjectReference Include="..\Dependency\Framework.Dependency.csproj" />
-     <ProjectReference Include="..\Drawing\Framework.Drawing.csproj" />
-     <ProjectReference Include="..\Logic\Framework.Logic.csproj" />
-     <ProjectReference Include="..\Parser\Framework.Parser.csproj" />
-     <ProjectReference Include="..\Repository\Framework.Repository.csproj" />
-     <ProjectReference Include="..\Service\Framework.Service.csproj" />
-     <ProjectReference Include="..\Tools\Framework.Tools.csproj" />
+     <ProjectReference Include="..\Arduino\Arduino.csproj" />
+     <ProjectReference Include="..\Dependency\Dependency.csproj" />
+     <ProjectReference Include="..\Drawing\Drawing.csproj" />
+     <ProjectReference Include="..\Logic\Logic.csproj" />
+     <ProjectReference Include="..\Parser\Parser.csproj" />
+     <ProjectReference Include="..\Repository\Repository.csproj" />
+     <ProjectReference Include="..\Service\Service.csproj" />
+     <ProjectReference Include="..\Tools\Tools.csproj" />
    </ItemGroup>
 
   
