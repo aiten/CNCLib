@@ -14,20 +14,20 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace Framework.Test.Repository
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+using FluentAssertions;
+
+using Framework.Repository;
+using Framework.Repository.Abstraction;
+
+using Microsoft.EntityFrameworkCore;
+
+namespace Framework.UnitTest.Repository
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-
-    using FluentAssertions;
-
-    using Framework.Repository;
-    using Framework.Repository.Abstraction;
-
-    using Microsoft.EntityFrameworkCore;
-
     public class CRUDRepositoryTests<TDbContext, TEntity, TKey, TIRepository> : GetRepositoryTests<TDbContext, TEntity, TKey, TIRepository>
         where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey> where TDbContext : DbContext
     {
@@ -53,9 +53,10 @@ namespace Framework.Test.Repository
 
             var allWithAdd = await GetAll();
             allWithAdd.Should().NotBeNull();
-            allWithAdd.Count().Should().Be(allWithoutAdd.Count() + 1);
+            allWithAdd.Count.Should().Be(allWithoutAdd.Count() + 1);
 
             // read again and update 
+
             using (var ctx = CreateTestDbContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
@@ -69,6 +70,7 @@ namespace Framework.Test.Repository
             }
 
             // read again
+
             using (var ctx = CreateTestDbContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
@@ -77,6 +79,7 @@ namespace Framework.Test.Repository
             }
 
             // update (with method update)
+
             using (var ctx = CreateTestDbContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {
@@ -90,6 +93,7 @@ namespace Framework.Test.Repository
             }
 
             // read again and delete 
+
             using (var ctx = CreateTestDbContext())
             using (var trans = ctx.UnitOfWork.BeginTransaction())
             {

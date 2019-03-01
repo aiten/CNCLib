@@ -16,9 +16,6 @@
 
 namespace Framework.Repository.Abstraction
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-
     public interface IQueryRepository<TEntity> : IRepository
         where TEntity : class
     {

@@ -14,35 +14,20 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using AutoMapper;
-
-using CNCLib.Logic;
-
-using Framework.UnitTest;
-
-namespace CNCLib.Test.Logic
+namespace Framework.UnitTest.Repository
 {
-    public class LogicTests : UnitTestBase
+    using Microsoft.EntityFrameworkCore;
+
+    using Xunit;
+
+    [Collection("Framework.Repository.UnitTest")]
+    public class RepositoryTestBase<TDbContext> : UnitTestBase where TDbContext : DbContext
     {
-        public static IMapper Mapper { get; private set; }
-
-        protected LogicTests()
+        protected RepositoryTestBase(RepositoryTestFixtureBase<TDbContext> testFixture)
         {
-            if (Mapper == null)
-            {
-                var config = new MapperConfiguration(
-                    cfg =>
-                    {
-                        cfg.AddProfile<LogicAutoMapperProfile>();
-
-                        //                cfg.AddProfile<WpfAutoMapperProfile>();
-                        //                cfg.AddProfile<GCodeGUIAutoMapperProfile>();
-                    });
-                config.AssertConfigurationIsValid();
-
-                Mapper = config.CreateMapper();
-            }
+            TestFixture = testFixture;
         }
 
+        public RepositoryTestFixtureBase<TDbContext> TestFixture { get; }
     }
 }

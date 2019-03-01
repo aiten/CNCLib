@@ -14,16 +14,16 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace Framework.Test.Drawing
+using System;
+
+using FluentAssertions;
+
+using Framework.Drawing;
+
+using Xunit;
+
+namespace Framework.UnitTest.Drawing
 {
-    using System;
-
-    using FluentAssertions;
-
-    using Framework.Drawing;
-
-    using Xunit;
-
     public class Rotate3DTest
     {
         [Fact]

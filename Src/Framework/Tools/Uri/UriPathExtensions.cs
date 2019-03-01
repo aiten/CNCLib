@@ -14,13 +14,11 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Web;
-
 namespace Framework.Tools.Uri
 {
+    using System;
+    using System.Web;
+
     public static class UriPathExtensions
     {
         public static string ToUriAsQuery(this object val)
@@ -29,7 +27,7 @@ namespace Framework.Tools.Uri
             {
                 if (dt.TimeOfDay != TimeSpan.Zero)
                 {
-                    return HttpUtility.UrlEncode(((DateTime)val).ToString("o"));
+                    return HttpUtility.UrlEncode(dt.ToString("o"));
                 }
 
                 return dt.ToString("yyyy-MM-dd");

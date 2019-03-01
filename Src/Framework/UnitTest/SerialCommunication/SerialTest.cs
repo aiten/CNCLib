@@ -14,26 +14,25 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace Framework.Test.SerialCommunication
+using System.IO;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+using FluentAssertions;
+
+using Framework.Arduino.SerialCommunication;
+using Framework.Arduino.SerialCommunication.Abstraction;
+using Framework.Dependency;
+using Framework.Logging;
+using Framework.Logging.Abstraction;
+
+using NSubstitute;
+
+using Xunit;
+
+namespace Framework.UnitTest.SerialCommunication
 {
-    using System.IO;
-    using System.Text;
-    using System.Threading;
-    using System.Threading.Tasks;
-
-    using FluentAssertions;
-
-    using NSubstitute;
-
-    using Framework.Arduino.SerialCommunication;
-    using Framework.Arduino.SerialCommunication.Abstraction;
-    using Framework.Dependency;
-
-    using Logging;
-    using Logging.Abstraction;
-
-    using Xunit;
-
     public class SerialTest : UnitTestBase
     {
         int  _resultIdx;
@@ -54,8 +53,8 @@ namespace Framework.Test.SerialCommunication
             Encoding encoding = Encoding.GetEncoding(1200);
             serialPort.Encoding.ReturnsForAnyArgs(encoding);
 
-            Dependency.Container.ResetContainer();
-            Dependency.Container.RegisterInstance(serialPort);
+            Framework.Dependency.Dependency.Container.ResetContainer();
+            Framework.Dependency.Dependency.Container.RegisterInstance(serialPort);
 
             _resultIdx = 0;
             _sendReply = false;

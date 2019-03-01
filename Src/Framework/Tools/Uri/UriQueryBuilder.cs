@@ -14,17 +14,17 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Framework.Tools.Uri
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class UriQueryBuilder
     {
-        private List<Tuple<string, object>> _list = new List<Tuple<string, object>>();
-        private string                      _old  = "";
+        private readonly List<Tuple<string, object>> _list = new List<Tuple<string, object>>();
+        private readonly string                      _old  = "";
 
         public UriQueryBuilder()
         {

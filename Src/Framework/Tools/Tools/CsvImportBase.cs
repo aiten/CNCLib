@@ -22,26 +22,30 @@ namespace Framework.Tools.Tools
     using System.IO;
     using System.Text;
 
-    public class CSVImportBase
+    public class CsvImportBase
     {
         private readonly NumberFormatInfo _nfi;
 
         public Encoding Encoding { get; set; } = Encoding.Default;
 
-        public CSVImportBase()
+        public CsvImportBase()
         {
             // Retrieve a writable NumberFormatInfo object.
             CultureInfo enUS = CultureInfo.CreateSpecificCulture("en-US");
             _nfi = enUS.NumberFormat;
+        }
 
-            //_nfi.NumberDecimalSeparator = ",";
-            //_nfi.NumberGroupSeparator   = ".";
+        public NumberFormatInfo NumberFormat => _nfi;
+
+        public void SetAustriaNumberFormat()
+        {
+            _nfi.NumberDecimalSeparator = ",";
+            _nfi.NumberGroupSeparator   = ".";
         }
 
         public IList<IList<string>> ReadStringMatrixFromCsv(string fileName, bool skipTitleLine)
         {
             string[] lines     = File.ReadAllLines(fileName, Encoding);
-            int      lineCount = lines.Length;
 
             var  elements  = new List<IList<string>>();
             bool firstLine = skipTitleLine;
