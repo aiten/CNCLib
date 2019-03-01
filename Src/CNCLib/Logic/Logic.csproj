@@ -1,10 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-   <PropertyGroup>
-	<TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
-    <AssemblyName>$(SolutionNamespace).$(AssemblyName)</AssemblyName>
-    <RootNamespace>$(AssemblyName)</RootNamespace>
-    
+
+  <PropertyGroup>
+    <TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
   </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Logic\Framework.Logic.csproj">    </ProjectReference>
     <ProjectReference Include="..\..\Framework\Tools\Framework.Tools.csproj">    </ProjectReference>

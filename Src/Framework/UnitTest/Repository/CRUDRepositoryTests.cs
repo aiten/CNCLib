@@ -14,20 +14,20 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-using FluentAssertions;
-
-using Framework.Repository;
-using Framework.Repository.Abstraction;
-
-using Microsoft.EntityFrameworkCore;
-
 namespace Framework.UnitTest.Repository
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using FluentAssertions;
+
+    using Framework.Repository;
+    using Framework.Repository.Abstraction;
+
+    using Microsoft.EntityFrameworkCore;
+
     public class CRUDRepositoryTests<TDbContext, TEntity, TKey, TIRepository> : GetRepositoryTests<TDbContext, TEntity, TKey, TIRepository>
         where TEntity : class where TIRepository : ICRUDRepository<TEntity, TKey> where TDbContext : DbContext
     {

@@ -4,8 +4,8 @@
 
   <PropertyGroup>
     <TargetFramework>$(TargetFrameworkForAppAndTests)</TargetFramework>
-    <AssemblyName>$(SolutionNamespace).$(AssemblyName)</AssemblyName>
-    <RootNamespace>$(AssemblyName)</RootNamespace>
+
+    
     
     <ApplicationIcon />
     <OutputType>Library</OutputType>

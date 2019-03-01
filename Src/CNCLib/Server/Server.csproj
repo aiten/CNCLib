@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>$(TargetFrameworkForAppAndTests)</TargetFramework>
-    <AssemblyName>$(SolutionNamespace).$(AssemblyName)</AssemblyName>
-    <RootNamespace>$(AssemblyName)</RootNamespace>
+
+    
     
     <UserSecretsId>01a35a57-f2ce-48a8-a405-32b243eeec85</UserSecretsId>
   </PropertyGroup>

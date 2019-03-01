@@ -3,8 +3,8 @@
 
   <PropertyGroup>
     <TargetFramework>$(TargetFrameworkForFull)</TargetFramework>
-    <AssemblyName>$(SolutionNamespace).$(AssemblyName)</AssemblyName>
-    <RootNamespace>$(AssemblyName)</RootNamespace>
+
+    
     
     <IsPackable>false</IsPackable>
   </PropertyGroup>

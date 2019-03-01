@@ -14,25 +14,25 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.IO;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-
-using FluentAssertions;
-
-using Framework.Arduino.SerialCommunication;
-using Framework.Arduino.SerialCommunication.Abstraction;
-using Framework.Dependency;
-using Framework.Logging;
-using Framework.Logging.Abstraction;
-
-using NSubstitute;
-
-using Xunit;
-
 namespace Framework.UnitTest.SerialCommunication
 {
+    using System.IO;
+    using System.Text;
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    using FluentAssertions;
+
+    using Framework.Arduino.SerialCommunication;
+    using Framework.Arduino.SerialCommunication.Abstraction;
+    using Framework.Dependency;
+    using Framework.Logging;
+    using Framework.Logging.Abstraction;
+
+    using NSubstitute;
+
+    using Xunit;
+
     public class SerialTest : UnitTestBase
     {
         int  _resultIdx;

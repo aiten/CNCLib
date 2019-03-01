@@ -14,14 +14,14 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-
-using Framework.Repository.Abstraction;
-
-using Microsoft.EntityFrameworkCore;
-
 namespace Framework.UnitTest.Repository
 {
+    using System;
+
+    using Framework.Repository.Abstraction;
+
+    using Microsoft.EntityFrameworkCore;
+
     public class TestDbContext<TDbContext, TIRepository> : IDisposable where TIRepository : IRepository where TDbContext : DbContext
     {
         public TDbContext   DbContext  { get; private set; }

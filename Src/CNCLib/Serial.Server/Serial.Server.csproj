@@ -3,8 +3,6 @@
 
   <PropertyGroup>
     <TargetFramework>$(TargetFrameworkForAppAndTests)</TargetFramework>
-    <AssemblyName>$(SolutionNamespace).$(AssemblyName)</AssemblyName>
-    <RootNamespace>$(AssemblyName)</RootNamespace>
     
 
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>

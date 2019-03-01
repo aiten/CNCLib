@@ -2,8 +2,6 @@
    <PropertyGroup>
 	<TargetFramework>$(TargetFrameworkForFull)</TargetFramework>
     
-    <AssemblyName>$(SolutionNamespace).$(AssemblyName)</AssemblyName>
-    <RootNamespace>$(AssemblyName)</RootNamespace>
 	<ApplicationIcon>Properties\CNCLib.ico</ApplicationIcon>
 	<OutputType>WinExe</OutputType>
 	<StartupObject>CNCLib.WpfClient.WebAPI.Start.App</StartupObject>
