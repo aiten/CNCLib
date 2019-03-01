@@ -18,7 +18,7 @@ namespace Framework.Tools.Uri
 {
     public class UriPathBuilder
     {
-        public string Path { get; set; }
+        public string Path  { get; set; }
         public string Query { get; set; }
 
         public string Build()
@@ -27,10 +27,11 @@ namespace Framework.Tools.Uri
             {
                 return $"{Path}";
             }
+
             return $"{Path}?{Query}";
         }
 
-        public static string Build(string path, string query=null)
+        public static string Build(string path, string query = null)
         {
             return new UriPathBuilder() { Path = path, Query = query }.Build();
         }

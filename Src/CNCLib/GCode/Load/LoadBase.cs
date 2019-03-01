@@ -209,7 +209,7 @@ namespace CNCLib.GCode.Load
 
         protected void AddComment(string propertyName, decimal? propertyValue)
         {
-            AddComment(propertyName, propertyValue.HasValue?propertyValue.Value.ToString(CultureInfo.InvariantCulture):"");
+            AddComment(propertyName, propertyValue.HasValue ? propertyValue.Value.ToString(CultureInfo.InvariantCulture) : "");
         }
 
         protected void AddComment(string propertyName, double propertyValue)

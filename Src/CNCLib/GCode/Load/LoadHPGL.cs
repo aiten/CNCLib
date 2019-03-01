@@ -84,7 +84,7 @@ namespace CNCLib.GCode.Load
                                 list.Add(
                                     new HPGLCommand
                                     {
-                                        CommandType = isPenUp?HPGLCommand.HPGLCommandType.PenUp:HPGLCommand.HPGLCommandType.PenDown,
+                                        CommandType = isPenUp ? HPGLCommand.HPGLCommandType.PenUp : HPGLCommand.HPGLCommandType.PenDown,
                                         PointTo     = pt
                                     });
 

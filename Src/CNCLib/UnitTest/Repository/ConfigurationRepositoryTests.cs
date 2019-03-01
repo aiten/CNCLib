@@ -48,11 +48,11 @@ namespace CNCLib.Test.Repository
                     var rep     = new ConfigurationRepository(context, UserContext);
                     return new CRUDTestDbContext<CNCLibContext, Configuration, ConfigurationPrimary, IConfigurationRepository>(context, uow, rep);
                 },
-                GetEntityKey  = (entity) => new ConfigurationPrimary() { Group = entity.Group, Name = entity.Name },
-                SetEntityKey  = (entity,    key) =>
+                GetEntityKey = (entity) => new ConfigurationPrimary() { Group = entity.Group, Name = entity.Name },
+                SetEntityKey = (entity, key) =>
                 {
                     entity.Group = key.Group;
-                    entity.Name = key.Name;
+                    entity.Name  = key.Name;
                 },
                 CompareEntity = (entity1, entity2) => CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new string[0])
             };

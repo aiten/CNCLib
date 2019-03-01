@@ -486,7 +486,7 @@ namespace CNCLib.GCode.GUI.Controls
                     _sw.Start();
                     Mouse.Capture(this);
 
-                    _draggingType = e.RightButton == MouseButtonState.Pressed?EDraggingType.RotateAngle:EDraggingType.Position;
+                    _draggingType = e.RightButton == MouseButtonState.Pressed ? EDraggingType.RotateAngle : EDraggingType.Position;
                 }
             }
         }
@@ -546,7 +546,7 @@ namespace CNCLib.GCode.GUI.Controls
                     double rotateX = diffX / maxDiffX;
                     double rotateY = diffY / maxDiffY;
 
-                    RotateAngle = 2.0 * Math.PI * (Math.Abs(rotateX) > Math.Abs(rotateY)?rotateX:rotateY);
+                    RotateAngle = 2.0 * Math.PI * (Math.Abs(rotateX) > Math.Abs(rotateY) ? rotateX : rotateY);
 
                     RotateVector[1] = diffX;
                     RotateVector[0] = -diffY;

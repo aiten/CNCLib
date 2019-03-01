@@ -39,7 +39,7 @@ namespace CNCLib.Logic.Client
         public async Task<DynItem> Get(int id)
         {
             Item item = await _itemService.Get(id);
-            return item == null?null:Convert(item);
+            return item == null ? null : Convert(item);
         }
 
         public async Task<IEnumerable<DynItem>> GetAll(Type t)
@@ -180,7 +180,7 @@ namespace CNCLib.Logic.Client
                     }
                     else if (pi.PropertyType == typeof(bool))
                     {
-                        value = (bool)pi.GetValue(obj)?"true":"false";
+                        value = (bool)pi.GetValue(obj) ? "true" : "false";
                     }
                     else if (pi.PropertyType == typeof(decimal))
                     {

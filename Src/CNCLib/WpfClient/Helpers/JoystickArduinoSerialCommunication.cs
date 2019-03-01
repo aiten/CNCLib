@@ -33,11 +33,7 @@ namespace CNCLib.WpfClient.Helpers
 
         public void RunCommandInNewTask(Action todo)
         {
-            Task.Run(
-                () =>
-                {
-                    todo();
-                });
+            Task.Run(() => { todo(); });
         }
 
         protected override void OnReplyReceived(SerialEventArgs info)
@@ -49,12 +45,13 @@ namespace CNCLib.WpfClient.Helpers
                 string initCommands = Global.Instance.Joystick?.InitCommands;
                 if (initCommands != null)
                 {
-                    RunCommandInNewTask(async () =>
-                    {
-                        string[] separators = { @"\n" };
-                        string[] cmds       = initCommands.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-                        await QueueCommandsAsync(cmds);
-                    });
+                    RunCommandInNewTask(
+                        async () =>
+                        {
+                            string[] separators = { @"\n" };
+                            string[] cmds       = initCommands.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+                            await QueueCommandsAsync(cmds);
+                        });
                 }
             }
             else

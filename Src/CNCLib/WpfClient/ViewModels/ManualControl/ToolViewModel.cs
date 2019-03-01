@@ -34,7 +34,7 @@ namespace CNCLib.WpfClient.ViewModels.ManualControl
 
         public ToolViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
         {
-            _global = global ?? throw new ArgumentNullException();
+            _global                                   =  global ?? throw new ArgumentNullException();
             _global.Com.LocalCom.CommandQueueChanged  += OnCommandQueueChanged;
             _global.Com.RemoteCom.CommandQueueChanged += OnCommandQueueChanged;
         }
@@ -106,6 +106,7 @@ namespace CNCLib.WpfClient.ViewModels.ManualControl
         {
             RunAndUpdate(() => { _global.Com.Current.QueueCommand("&"); });
         }
+
         public void SendVersion()
         {
             RunAndUpdate(() => { _global.Com.Current.QueueCommand("@"); });
@@ -285,7 +286,7 @@ namespace CNCLib.WpfClient.ViewModels.ManualControl
 
         public ICommand SendInfoCommand             => new DelegateCommand(SendInfo,             CanSend);
         public ICommand SendDebugCommand            => new DelegateCommand(SendDebug,            CanSend);
-        public ICommand SendVersionCommand          => new DelegateCommand(SendVersion, CanSend);
+        public ICommand SendVersionCommand          => new DelegateCommand(SendVersion,          CanSend);
         public ICommand SendAbortCommand            => new DelegateCommand(SendAbort,            CanSend);
         public ICommand SendResurrectCommand        => new DelegateCommand(SendResurrect,        CanSend);
         public ICommand SendClearQueue              => new DelegateCommand(ClearQueue,           CanSend);

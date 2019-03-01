@@ -24,11 +24,11 @@ namespace Framework.UnitTest.Repository
 
     using Microsoft.EntityFrameworkCore;
 
-    public abstract class RepositoryTestFixtureBase<TDbContext> : IDisposable  where TDbContext : DbContext
+    public abstract class RepositoryTestFixtureBase<TDbContext> : IDisposable where TDbContext : DbContext
     {
         public RepositoryTestFixtureBase()
         {
-            ScriptDir = $"{ Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) }\\Repository\\SQL\\";
+            ScriptDir = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\Repository\\SQL\\";
         }
 
         public void InitializeDatabase()
@@ -50,7 +50,7 @@ namespace Framework.UnitTest.Repository
         }
 
         public abstract TDbContext CreateDbContext();
-        
+
         private async Task RestoreTestDb()
         {
             await DropAllTablesAsync();

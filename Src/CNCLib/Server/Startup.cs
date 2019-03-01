@@ -63,16 +63,15 @@ namespace CNCLib.Server
             services.AddTransient<ValidateRequestDataFilter>();
             services.AddTransient<MethodCallLogFilter>();
             services.AddMvc(
-                options =>
-                {
-                    options.Filters.AddService<ValidateRequestDataFilter>();
-                    options.Filters.AddService<UnhandledExceptionFilter>();
-                    options.Filters.AddService<MethodCallLogFilter>();
-                })
+                    options =>
+                    {
+                        options.Filters.AddService<ValidateRequestDataFilter>();
+                        options.Filters.AddService<UnhandledExceptionFilter>();
+                        options.Filters.AddService<MethodCallLogFilter>();
+                    })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
                 .AddApplicationPart(controllerAssembly);
-
 
             // Register the Swagger generator, defining one or more Swagger documents
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "CNCLib API", Version = "v1" }); });

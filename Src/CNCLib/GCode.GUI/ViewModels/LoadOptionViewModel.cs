@@ -135,6 +135,7 @@ namespace CNCLib.GCode.GUI.ViewModels
         {
             return _mapper.Map<LoadOptions>(dto);
         }
+
         public LoadOptionsDto MapLoadOptions(LoadOptions model)
         {
             return _mapper.Map<LoadOptionsDto>(model);
@@ -273,7 +274,7 @@ namespace CNCLib.GCode.GUI.ViewModels
                     using (var sr = new StreamReader(filename))
                     {
                         var serializer = new XmlSerializer(typeof(LoadOptionsDto));
-                        var opt        = (LoadOptionsDto) serializer.Deserialize(sr);
+                        var opt        = (LoadOptionsDto)serializer.Deserialize(sr);
                         sr.Close();
 
                         if (_allLoadOptions.FirstOrDefault(o => o.SettingName == opt.SettingName) != null)
@@ -334,35 +335,45 @@ namespace CNCLib.GCode.GUI.ViewModels
         public ICommand BrowseGCodeFileNameCommand => new DelegateCommand(BrowseGCodeFileName, Can);
         public ICommand BrowseImageFileNameCommand => new DelegateCommand(BrowseImageFileName, Can);
 
-        public ICommand SetSameDPICommand => new DelegateCommand(() =>
-        {
-            LoadOptionsValue.ImageDPIY = LoadOptionsValue.ImageDPIX;
-            RaiseLoadOptionsChanged();
-        }, Can);
+        public ICommand SetSameDPICommand => new DelegateCommand(
+            () =>
+            {
+                LoadOptionsValue.ImageDPIY = LoadOptionsValue.ImageDPIX;
+                RaiseLoadOptionsChanged();
+            },
+            Can);
 
-        public ICommand SetSameScaleToCommand => new DelegateCommand(() =>
-        {
-            LoadOptionsValue.ScaleY = LoadOptionsValue.ScaleX;
-            RaiseLoadOptionsChanged();
-        }, Can);
+        public ICommand SetSameScaleToCommand => new DelegateCommand(
+            () =>
+            {
+                LoadOptionsValue.ScaleY = LoadOptionsValue.ScaleX;
+                RaiseLoadOptionsChanged();
+            },
+            Can);
 
-        public ICommand SetSameOfsCommand => new DelegateCommand(() =>
-        {
-            LoadOptionsValue.OfsY = LoadOptionsValue.OfsX;
-            RaiseLoadOptionsChanged();
-        }, Can);
+        public ICommand SetSameOfsCommand => new DelegateCommand(
+            () =>
+            {
+                LoadOptionsValue.OfsY = LoadOptionsValue.OfsX;
+                RaiseLoadOptionsChanged();
+            },
+            Can);
 
-        public ICommand SetSameDotSizeCommand => new DelegateCommand(() =>
-        {
-            LoadOptionsValue.DotSizeY = LoadOptionsValue.DotSizeX;
-            RaiseLoadOptionsChanged();
-        }, Can);
+        public ICommand SetSameDotSizeCommand => new DelegateCommand(
+            () =>
+            {
+                LoadOptionsValue.DotSizeY = LoadOptionsValue.DotSizeX;
+                RaiseLoadOptionsChanged();
+            },
+            Can);
 
-        public ICommand SetSameDotDistCommand => new DelegateCommand(() =>
-        {
-            LoadOptionsValue.DotDistY = LoadOptionsValue.DotDistX;
-            RaiseLoadOptionsChanged();
-        }, Can);
+        public ICommand SetSameDotDistCommand => new DelegateCommand(
+            () =>
+            {
+                LoadOptionsValue.DotDistY = LoadOptionsValue.DotDistX;
+                RaiseLoadOptionsChanged();
+            },
+            Can);
 
         public ICommand SaveSettingCommand => new DelegateCommand(async () => await SaveSettings(), CanSave).ObservesProperty(() => Busy);
 

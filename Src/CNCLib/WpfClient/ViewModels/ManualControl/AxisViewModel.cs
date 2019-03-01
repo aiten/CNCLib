@@ -78,7 +78,7 @@ namespace CNCLib.WpfClient.ViewModels.ManualControl
 
         public bool Enabled => _global.Machine.Axis > AxisIndex && Size > 0m;
 
-        public Visibility Visibility => IsDesignTime || Enabled?Visibility.Visible:Visibility.Hidden;
+        public Visibility Visibility => IsDesignTime || Enabled ? Visibility.Visible : Visibility.Hidden;
 
         private void MachineChanged()
         {

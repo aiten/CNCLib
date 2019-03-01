@@ -43,6 +43,5 @@ namespace CNCLib.Test.Logic
                 Mapper = config.CreateMapper();
             }
         }
-
     }
 }

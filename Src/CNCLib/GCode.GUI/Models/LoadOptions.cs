@@ -153,13 +153,13 @@ namespace CNCLib.GCode.GUI.Models
         public bool SmoothEnabled
         {
             get => SmoothType != SmoothTypeEnum.NoSmooth;
-            set => SmoothType = value?SmoothTypeEnum.SplitLine:SmoothTypeEnum.NoSmooth;
+            set => SmoothType = value ? SmoothTypeEnum.SplitLine : SmoothTypeEnum.NoSmooth;
         }
 
         public bool ConvertEnabled
         {
             get => ConvertType != ConvertTypeEnum.NoConvert;
-            set => ConvertType = value?ConvertTypeEnum.InvertLineSequence:ConvertTypeEnum.NoConvert;
+            set => ConvertType = value ? ConvertTypeEnum.InvertLineSequence : ConvertTypeEnum.NoConvert;
         }
 
         //IMG

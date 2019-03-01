@@ -41,7 +41,7 @@ namespace CNCLib.WpfClient.ViewModels
 
         public PreviewViewModel(Global global)
         {
-            _global = global ?? throw new ArgumentNullException();
+            _global                              =  global ?? throw new ArgumentNullException();
             _global.Com.LocalCom.CommandSending  += CommandSending;
             _global.Com.RemoteCom.CommandSending += CommandSending;
         }
@@ -60,8 +60,8 @@ namespace CNCLib.WpfClient.ViewModels
             set
             {
                 SetProperty(() => _commands == value, () => _commands = value);
-                _global.Commands = value;
-                _currentDrawSeqIdToCmd   = null;
+                _global.Commands       = value;
+                _currentDrawSeqIdToCmd = null;
             }
         }
 
@@ -256,53 +256,58 @@ namespace CNCLib.WpfClient.ViewModels
 
         public void SendTo()
         {
-            Task.Run(async () =>
-            {
-                _loadingOrSending = true;
-
-                try
+            Task.Run(
+                async () =>
                 {
-                    _global.Com.Current.ClearCommandHistory();
-                    var cmdDefList = new List<CommandToIndex>();
+                    _loadingOrSending = true;
 
-                    if (_global.Machine.CommandSyntax == CommandSyntax.HPGL && IsHPGLAndPlotter())
+                    try
                     {
-                        Commands.ForEach(cmd =>
+                        _global.Com.Current.ClearCommandHistory();
+                        var cmdDefList = new List<CommandToIndex>();
+
+                        if (_global.Machine.CommandSyntax == CommandSyntax.HPGL && IsHPGLAndPlotter())
                         {
-                            string cmdStr = cmd.ImportInfo;
-                            if (!string.IsNullOrEmpty(cmdStr))
-                            {
-                                cmdDefList.Add(new CommandToIndex()
+                            Commands.ForEach(
+                                cmd =>
                                 {
-                                    Cmd         = cmd,
-                                    CommandText = new[] { cmdStr }
+                                    string cmdStr = cmd.ImportInfo;
+                                    if (!string.IsNullOrEmpty(cmdStr))
+                                    {
+                                        cmdDefList.Add(
+                                            new CommandToIndex()
+                                            {
+                                                Cmd         = cmd,
+                                                CommandText = new[] { cmdStr }
+                                            });
+                                    }
                                 });
-                            }
-                        });
-                    }
-                    else
-                    {
-                        Command last  = null;
-                        var     state = new CommandState();
-
-                        Commands.ForEach(cmd =>
+                        }
+                        else
                         {
-                            cmdDefList.Add(new CommandToIndex()
-                            {
-                                Cmd         = cmd,
-                                CommandText = cmd.GetGCodeCommands(last?.CalculatedEndPosition, state)
-                            });
-                            last = cmd;
-                        });
-                    }
+                            Command last  = null;
+                            var     state = new CommandState();
 
-                    await SendCommands(cmdDefList);
-                }
-                finally
-                {
-                    _loadingOrSending = false;
-                }
-            });
+                            Commands.ForEach(
+                                cmd =>
+                                {
+                                    cmdDefList.Add(
+                                        new CommandToIndex()
+                                        {
+                                            Cmd         = cmd,
+                                            CommandText = cmd.GetGCodeCommands(last?.CalculatedEndPosition, state)
+                                        });
+                                    last = cmd;
+                                });
+                        }
+
+                        await SendCommands(cmdDefList);
+                    }
+                    finally
+                    {
+                        _loadingOrSending = false;
+                    }
+                });
         }
 
         public async Task Load()
@@ -356,6 +361,7 @@ namespace CNCLib.WpfClient.ViewModels
         public void ResetViewXY()
         {
             Zoom = 1;
+
             // set Zoom first, set Zoom adjusts OffsetX/Y
             OffsetX     = 0;
             OffsetY     = 0;
@@ -365,6 +371,7 @@ namespace CNCLib.WpfClient.ViewModels
         public void ResetViewXZ()
         {
             Zoom = 1;
+
             // set Zoom first, set Zoom adjusts OffsetX/Y
             OffsetX      = 0;
             OffsetY      = 0;
@@ -375,6 +382,7 @@ namespace CNCLib.WpfClient.ViewModels
         public void ResetViewYZ()
         {
             Zoom = 1;
+
             // set Zoom first, set Zoom adjusts OffsetX/Y
             OffsetX      = 0;
             OffsetY      = 0;

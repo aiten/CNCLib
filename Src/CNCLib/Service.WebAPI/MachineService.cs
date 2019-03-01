@@ -67,7 +67,7 @@ namespace CNCLib.Service.WebAPI
             {
                 var paramUri = new UriQueryBuilder();
                 paramUri.Add("id", id);
-                HttpResponseMessage response = await client.PutAsJsonAsync(UriPathBuilder.Build(Api + "/defaultmachine",paramUri), "dummy");
+                HttpResponseMessage response = await client.PutAsJsonAsync(UriPathBuilder.Build(Api + "/defaultmachine", paramUri), "dummy");
 
                 if (response.IsSuccessStatusCode)
                 {

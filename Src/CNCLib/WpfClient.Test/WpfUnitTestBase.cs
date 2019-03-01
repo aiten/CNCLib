@@ -28,11 +28,7 @@ namespace WpfClient.Test
         {
             if (Mapper == null)
             {
-                var config = new MapperConfiguration(
-                    cfg =>
-                    {
-                        cfg.AddProfile<WpfAutoMapperProfile>();
-                    });
+                var config = new MapperConfiguration(cfg => { cfg.AddProfile<WpfAutoMapperProfile>(); });
                 config.AssertConfigurationIsValid();
 
                 Mapper = config.CreateMapper();

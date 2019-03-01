@@ -45,7 +45,7 @@ namespace Framework.Tools.Tools
 
         public IList<IList<string>> ReadStringMatrixFromCsv(string fileName, bool skipTitleLine)
         {
-            string[] lines     = File.ReadAllLines(fileName, Encoding);
+            string[] lines = File.ReadAllLines(fileName, Encoding);
 
             var  elements  = new List<IList<string>>();
             bool firstLine = skipTitleLine;

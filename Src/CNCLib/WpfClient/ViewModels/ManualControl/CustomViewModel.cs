@@ -31,7 +31,8 @@ namespace CNCLib.WpfClient.ViewModels.ManualControl
 
         public CustomViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
         {
-            _global = global ?? throw new ArgumentNullException(); ;
+            _global = global ?? throw new ArgumentNullException();
+            ;
             _global.PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName == "Machine")
@@ -139,7 +140,7 @@ namespace CNCLib.WpfClient.ViewModels.ManualControl
         private string GetDesc(int x, int y)
         {
             MachineCommand cmd = GetCmd(x, y);
-            return cmd == null?"":cmd.CommandName;
+            return cmd == null ? "" : cmd.CommandName;
         }
 
         #region Commands / CanCommands

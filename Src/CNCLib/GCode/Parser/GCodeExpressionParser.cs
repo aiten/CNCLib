@@ -86,7 +86,7 @@ namespace CNCLib.GCode.Parser
             {
                 // assigned in ReadIdent
                 int paramNo = int.Parse(varName.TrimStart('#'));
-                answer = ParameterValues.ContainsKey(paramNo)?ParameterValues[paramNo]:0.0;
+                answer = ParameterValues.ContainsKey(paramNo) ? ParameterValues[paramNo] : 0.0;
 
                 return true;
             }

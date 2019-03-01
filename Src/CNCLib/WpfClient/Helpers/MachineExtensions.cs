@@ -45,7 +45,6 @@ namespace CNCLib.WpfClient.Helpers
             return null;
         }
 
-
         public static string JoystickReplyReceived(this Machine machine, string trim)
         {
             // ;btn5		=> look for ;btn5
@@ -63,8 +62,8 @@ namespace CNCLib.WpfClient.Helpers
             }
             else
             {
-                string btn = trim.Substring(0, idx + 1);
-                var machineCommands = machine.MachineCommands.Where(m => m.JoystickMessage?.Length > idx && m.JoystickMessage.Substring(0, idx + 1) == btn).ToList();
+                string btn             = trim.Substring(0, idx + 1);
+                var    machineCommands = machine.MachineCommands.Where(m => m.JoystickMessage?.Length > idx && m.JoystickMessage.Substring(0, idx + 1) == btn).ToList();
 
                 uint max = 0;
                 foreach (var m in machineCommands)
@@ -86,7 +85,7 @@ namespace CNCLib.WpfClient.Helpers
                 {
                     // try to find ;btn3 (without :)  
                     findCmd = trim.Substring(0, idx);
-                    mc = machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == findCmd);
+                    mc      = machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == findCmd);
                 }
 
                 if (mc != null)

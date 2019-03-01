@@ -62,6 +62,7 @@ namespace CNCLib.Repository
 
             return base.AddOptionalWhere(query);
         }
+
         protected override void AssignValuesGraph(Item trackingEntity, Item values)
         {
             base.AssignValuesGraph(trackingEntity, values);
