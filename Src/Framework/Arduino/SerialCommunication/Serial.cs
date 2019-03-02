@@ -192,6 +192,7 @@ namespace Framework.Arduino.SerialCommunication
 
         private async Task Disconnect(bool join)
         {
+            await Task.Delay(5);
             Logger?.Trace($"Disconnecting: {join.ToString()}");
             Aborted = true;
             _serialPortCancellationTokenSource?.Cancel();
