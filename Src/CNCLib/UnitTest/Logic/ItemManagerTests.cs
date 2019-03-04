@@ -14,14 +14,13 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 using CNCLib.Logic.Manager;
-using CNCLib.Repository.Contract;
-using CNCLib.Repository.Contract.Entities;
+using CNCLib.Repository.Abstraction;
+using CNCLib.Repository.Abstraction.Entities;
 
 using FluentAssertions;
 
@@ -31,9 +30,9 @@ using NSubstitute;
 
 using Xunit;
 
-using ItemDto = CNCLib.Logic.Contract.DTO.Item;
+using ItemDto = CNCLib.Logic.Abstraction.DTO.Item;
 
-namespace CNCLib.Test.Logic
+namespace CNCLib.UnitTest.Logic
 {
     public class ItemManagerTests : LogicTests
     {

@@ -23,7 +23,7 @@ using System.Xml.Serialization;
 
 using CNCLib.GCode.Commands;
 using CNCLib.GCode.Load;
-using CNCLib.Logic.Contract.DTO;
+using CNCLib.Logic.Abstraction.DTO;
 
 namespace CNCLib.GCode
 {

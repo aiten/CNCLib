@@ -18,9 +18,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
+using CNCLib.Logic.Abstraction.DTO;
 using CNCLib.Logic.Client;
-using CNCLib.Logic.Contract.DTO;
-using CNCLib.Service.Contract;
+using CNCLib.Service.Abstraction;
 
 using FluentAssertions;
 
@@ -28,7 +28,7 @@ using NSubstitute;
 
 using Xunit;
 
-namespace CNCLib.Test.Logic
+namespace CNCLib.UnitTest.Logic
 {
     public class DynItemManagerTests : LogicTests
     {

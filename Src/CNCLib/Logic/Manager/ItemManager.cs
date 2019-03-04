@@ -20,16 +20,16 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using CNCLib.Logic.Contract;
-using CNCLib.Logic.Contract.DTO;
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
 using CNCLib.Logic.Converter;
-using CNCLib.Repository.Contract;
+using CNCLib.Repository.Abstraction;
 using CNCLib.Shared;
 
 using Framework.Logic;
 using Framework.Repository.Abstraction;
 
-using ItemEntity = CNCLib.Repository.Contract.Entities.Item;
+using ItemEntity = CNCLib.Repository.Abstraction.Entities.Item;
 
 namespace CNCLib.Logic.Manager
 {

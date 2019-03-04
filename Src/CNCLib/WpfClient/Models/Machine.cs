@@ -17,7 +17,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
-using CNCLib.Logic.Contract.DTO;
+using CNCLib.Logic.Abstraction.DTO;
 
 namespace CNCLib.WpfClient.Models
 {

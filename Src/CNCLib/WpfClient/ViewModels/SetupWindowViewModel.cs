@@ -25,7 +25,7 @@ using System.Windows.Input;
 
 using AutoMapper;
 
-using CNCLib.Service.Contract;
+using CNCLib.Service.Abstraction;
 using CNCLib.WpfClient.Models;
 using CNCLib.WpfClient.Services;
 

@@ -28,7 +28,7 @@ using CNCLib.WpfClient.Models;
 using Framework.Arduino.SerialCommunication;
 using Framework.Arduino.SerialCommunication.Abstraction;
 
-using Machine = CNCLib.Logic.Contract.DTO.Machine;
+using Machine = CNCLib.Logic.Abstraction.DTO.Machine;
 
 namespace CNCLib.WpfClient.Helpers
 {

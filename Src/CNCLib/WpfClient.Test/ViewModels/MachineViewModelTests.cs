@@ -18,9 +18,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-using CNCLib.Logic.Contract.DTO;
-using CNCLib.Service.Contract;
-using CNCLib.WpfClient;
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Service.Abstraction;
 using CNCLib.WpfClient.ViewModels;
 
 using FluentAssertions;
@@ -31,7 +30,7 @@ using NSubstitute;
 
 using Xunit;
 
-namespace WpfClient.Test.ViewModels
+namespace CNCLib.WpfClient.Test.ViewModels
 {
     public class MachineViewModelTests : WpfUnitTestBase
     {

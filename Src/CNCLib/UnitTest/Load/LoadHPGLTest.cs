@@ -20,13 +20,13 @@ using System.Text;
 
 using CNCLib.GCode.Commands;
 using CNCLib.GCode.Load;
-using CNCLib.Logic.Contract.DTO;
+using CNCLib.Logic.Abstraction.DTO;
 
 using FluentAssertions;
 
 using Xunit;
 
-namespace CNCLib.Test.Load
+namespace CNCLib.UnitTest.Load
 {
     public class LoadHPGLTest
     {

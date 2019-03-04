@@ -17,7 +17,7 @@
 using System;
 using System.ComponentModel;
 
-namespace CNCLib.Test
+namespace CNCLib.UnitTest
 {
     static class Tools
     {

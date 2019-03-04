@@ -21,7 +21,7 @@ using System.IO;
 using System.Linq;
 
 using CNCLib.GCode.Commands;
-using CNCLib.Logic.Contract.DTO;
+using CNCLib.Logic.Abstraction.DTO;
 
 using Framework.Drawing;
 using Framework.Parser;

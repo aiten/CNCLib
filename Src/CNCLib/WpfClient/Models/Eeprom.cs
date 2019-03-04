@@ -19,7 +19,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 using CNCLib.GCode;
-using CNCLib.Logic.Contract.DTO;
+using CNCLib.Logic.Abstraction.DTO;
 
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 

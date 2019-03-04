@@ -18,7 +18,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-using CNCLib.Repository.Contract.Entities;
+using CNCLib.Repository.Abstraction.Entities;
 
 using Framework.Tools.Tools;
 

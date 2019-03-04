@@ -22,7 +22,7 @@ using System.Windows.Input;
 
 using AutoMapper;
 
-using CNCLib.Service.Contract;
+using CNCLib.Service.Abstraction;
 using CNCLib.WpfClient.Helpers;
 using CNCLib.WpfClient.Models;
 
@@ -31,7 +31,7 @@ using Framework.Pattern;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;
 
-using MachineDto = CNCLib.Logic.Contract.DTO.Machine;
+using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;
 
 namespace CNCLib.WpfClient.ViewModels
 {

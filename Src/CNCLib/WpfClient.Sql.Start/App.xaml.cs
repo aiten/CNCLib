@@ -36,6 +36,8 @@ using Framework.Dependency;
 using Framework.Mapper;
 using Framework.Tools;
 
+using Microsoft.EntityFrameworkCore;
+
 using NLog;
 
 namespace CNCLib.WpfClient.Sql.Start
@@ -46,6 +48,8 @@ namespace CNCLib.WpfClient.Sql.Start
 
         private void AppStartup(object sender, StartupEventArgs e)
         {
+            string connectString = MigrationCNCLibContext.ConnectString;
+
             GlobalDiagnosticsContext.Set("logDir",           $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib.Sql/logs");
             GlobalDiagnosticsContext.Set("connectionString", MigrationCNCLibContext.ConnectString);
 
@@ -72,7 +76,7 @@ namespace CNCLib.WpfClient.Sql.Start
 
             Dependency.Container.RegisterFrameWorkTools();
             Framework.Logging.LiveDependencyRegisterExtensions.RegisterFrameWorkLogging(Dependency.Container);
-            Dependency.Container.RegisterRepository();
+            Dependency.Container.RegisterRepository((options)=>options.UseSqlServer(connectString));
             Dependency.Container.RegisterLogic();
             Dependency.Container.RegisterLogicClient();
             Dependency.Container.RegisterSerialCommunication();

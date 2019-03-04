@@ -17,8 +17,8 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using CNCLib.Logic.Contract.DTO;
-using CNCLib.Service.Contract;
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Service.Abstraction;
 
 using Framework.Tools.Uri;
 

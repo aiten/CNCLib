@@ -19,14 +19,14 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using CNCLib.Logic.Contract;
-using CNCLib.Logic.Contract.DTO;
-using CNCLib.Repository.Contract;
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Repository.Abstraction;
 
 using Framework.Logic;
 using Framework.Repository.Abstraction;
 
-using UserEntity = CNCLib.Repository.Contract.Entities.User;
+using UserEntity = CNCLib.Repository.Abstraction.Entities.User;
 
 namespace CNCLib.Logic.Manager
 {

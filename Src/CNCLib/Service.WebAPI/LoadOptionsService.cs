@@ -14,8 +14,8 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using CNCLib.Logic.Contract.DTO;
-using CNCLib.Service.Contract;
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Service.Abstraction;
 
 namespace CNCLib.Service.WebAPI
 {

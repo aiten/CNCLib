@@ -19,8 +19,8 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using CNCLib.Logic.Manager;
-using CNCLib.Repository.Contract;
-using CNCLib.Repository.Contract.Entities;
+using CNCLib.Repository.Abstraction;
+using CNCLib.Repository.Abstraction.Entities;
 
 using FluentAssertions;
 
@@ -30,11 +30,11 @@ using NSubstitute;
 
 using Xunit;
 
-using MachineDto = CNCLib.Logic.Contract.DTO.Machine;
-using MachineInitCommandDto = CNCLib.Logic.Contract.DTO.MachineInitCommand;
-using MachineCommandDto = CNCLib.Logic.Contract.DTO.MachineCommand;
+using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;
+using MachineInitCommandDto = CNCLib.Logic.Abstraction.DTO.MachineInitCommand;
+using MachineCommandDto = CNCLib.Logic.Abstraction.DTO.MachineCommand;
 
-namespace CNCLib.Test.Logic
+namespace CNCLib.UnitTest.Logic
 {
     public class MachineManagerTests : LogicTests
     {

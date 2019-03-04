@@ -16,7 +16,7 @@
 
 using AutoMapper;
 
-using CNCLib.Logic.Contract.DTO;
+using CNCLib.Logic.Abstraction.DTO;
 
 namespace CNCLib.GCode.GUI
 {

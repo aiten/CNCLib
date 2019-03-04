@@ -9,8 +9,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Pattern\Pattern.csproj" />
     <ProjectReference Include="..\..\Framework\Service\Service.csproj" />
-    <ProjectReference Include="..\Logic.Contract.DTO\Logic.Contract.DTO.csproj">    </ProjectReference>
-    <ProjectReference Include="..\Logic.Contract\Logic.Contract.csproj">    </ProjectReference>
-    <ProjectReference Include="..\Service.Contract\Service.Contract.csproj" />
+    <ProjectReference Include="..\Logic.Abstraction.DTO\Logic.Abstraction.DTO.csproj">    </ProjectReference>
+    <ProjectReference Include="..\Logic.Abstraction\Logic.Abstraction.csproj">    </ProjectReference>
+    <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
   </ItemGroup> 
 </Project>

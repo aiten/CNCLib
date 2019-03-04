@@ -18,8 +18,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
+using CNCLib.Logic.Abstraction.DTO;
 using CNCLib.Logic.Client;
-using CNCLib.Logic.Contract.DTO;
 using CNCLib.Logic.Manager;
 
 using FluentAssertions;
@@ -28,7 +28,7 @@ using NSubstitute;
 
 using Xunit;
 
-namespace CNCLib.Test.Logic
+namespace CNCLib.UnitTest.Logic
 {
     public class LoadOptionsManagerTests : LogicTests
     {

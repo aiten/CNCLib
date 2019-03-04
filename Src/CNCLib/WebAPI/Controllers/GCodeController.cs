@@ -18,8 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using CNCLib.Logic.Contract.DTO;
-using CNCLib.Logic.Contract;
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
 
 using Microsoft.AspNetCore.Mvc;
 

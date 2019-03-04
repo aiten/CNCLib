@@ -20,7 +20,7 @@ using CNCLib.Logic;
 
 using Framework.UnitTest;
 
-namespace CNCLib.Test.Logic
+namespace CNCLib.UnitTest.Logic
 {
     public class LogicTests : UnitTestBase
     {

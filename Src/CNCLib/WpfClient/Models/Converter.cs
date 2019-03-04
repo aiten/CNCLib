@@ -16,7 +16,7 @@
 
 using AutoMapper;
 
-using MachineDto = CNCLib.Logic.Contract.DTO.Machine;
+using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;
 
 namespace CNCLib.WpfClient.Models
 {

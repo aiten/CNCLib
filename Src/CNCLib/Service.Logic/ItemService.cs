@@ -18,9 +18,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using CNCLib.Logic.Contract;
-using CNCLib.Logic.Contract.DTO;
-using CNCLib.Service.Contract;
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Service.Abstraction;
 
 using Framework.Service;
 

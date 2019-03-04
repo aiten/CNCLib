@@ -32,9 +32,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_SolutionItems", "_Solution
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository.Contract", "Repository.Contract\Repository.Contract.csproj", "{0ECC8284-505B-43CC-9DF9-AC5D5EEF786A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository.Abstraction", "Repository.Abstraction\Repository.Abstraction.csproj", "{0ECC8284-505B-43CC-9DF9-AC5D5EEF786A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic.Contract", "Logic.Contract\Logic.Contract.csproj", "{08D4C722-AD44-4BA4-BFF6-D5F00B2BE561}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic.Abstraction", "Logic.Abstraction\Logic.Abstraction.csproj", "{08D4C722-AD44-4BA4-BFF6-D5F00B2BE561}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest", "..\Framework\UnitTest\UnitTest.csproj", "{BBECB408-5426-4CE7-B7B6-970BDE436486}"
 EndProject
@@ -49,9 +49,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{A7A2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "..\Framework\WebAPI\WebAPI.csproj", "{2E4BAA13-7562-4336-91A4-B8211816D936}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic.Contract.DTO", "Logic.Contract.DTO\Logic.Contract.DTO.csproj", "{53FDF483-4A15-4069-8B21-E553D58BA742}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic.Abstraction.DTO", "Logic.Abstraction.DTO\Logic.Abstraction.DTO.csproj", "{53FDF483-4A15-4069-8B21-E553D58BA742}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.Contract", "Service.Contract\Service.Contract.csproj", "{F4C854C1-3154-4E73-85B0-2C9FCBC9AD17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.Abstraction", "Service.Abstraction\Service.Abstraction.csproj", "{F4C854C1-3154-4E73-85B0-2C9FCBC9AD17}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.Logic", "Service.Logic\Service.Logic.csproj", "{F6696F23-9DCC-4D9A-9418-E7D1FED7EABD}"
 EndProject
