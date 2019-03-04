@@ -75,9 +75,9 @@
     <ProjectReference Include="..\GCode.GUI\GCode.GUI.csproj" />
     <ProjectReference Include="..\GCode\GCode.csproj" />
     <ProjectReference Include="..\Logic.Client\Logic.Client.csproj" />
-    <ProjectReference Include="..\Logic.Contract.DTO\Logic.Contract.DTO.csproj" />
+    <ProjectReference Include="..\Logic.Abstraction.DTO\Logic.Abstraction.DTO.csproj" />
     <ProjectReference Include="..\Serial.Client\Serial.Client.csproj" />
-    <ProjectReference Include="..\Service.Contract\Service.Contract.csproj" />
+    <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
   <ItemGroup>
