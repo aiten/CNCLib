@@ -16,7 +16,7 @@
 
 using System;
 
-using CNCLib.Logic.Contract.DTO;
+using CNCLib.Logic.Abstraction.DTO;
 
 using Framework.Wpf.ViewModels;
 

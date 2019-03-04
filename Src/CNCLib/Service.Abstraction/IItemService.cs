@@ -18,11 +18,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using CNCLib.Logic.Contract.DTO;
+using CNCLib.Logic.Abstraction.DTO;
 
 using Framework.Service.Abstraction;
 
-namespace CNCLib.Service.Contract
+namespace CNCLib.Service.Abstraction
 {
     public interface IItemService : IDisposable, ICRUDService<Item, int>
     {

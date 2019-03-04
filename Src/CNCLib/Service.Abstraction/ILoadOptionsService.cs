@@ -16,11 +16,11 @@
 
 using System;
 
-using CNCLib.Logic.Contract.DTO;
+using CNCLib.Logic.Abstraction.DTO;
 
 using Framework.Service.Abstraction;
 
-namespace CNCLib.Service.Contract
+namespace CNCLib.Service.Abstraction
 {
     public interface ILoadOptionsService : IDisposable, ICRUDService<LoadOptions, int>
     {

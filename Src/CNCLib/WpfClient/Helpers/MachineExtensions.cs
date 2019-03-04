@@ -16,7 +16,7 @@
 
 using System.Linq;
 
-using CNCLib.Logic.Contract.DTO;
+using CNCLib.Logic.Abstraction.DTO;
 
 namespace CNCLib.WpfClient.Helpers
 {

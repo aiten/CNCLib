@@ -19,8 +19,8 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-using CNCLib.Logic.Contract.DTO;
-using CNCLib.Logic.Contract;
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
 
 using Microsoft.AspNetCore.Mvc;
 

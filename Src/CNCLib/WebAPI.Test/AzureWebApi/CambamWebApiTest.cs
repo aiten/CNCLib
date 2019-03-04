@@ -21,7 +21,7 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Threading.Tasks;
 
-using CNCLib.Logic.Contract.DTO;
+using CNCLib.Logic.Abstraction.DTO;
 
 using FluentAssertions;
 

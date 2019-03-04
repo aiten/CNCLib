@@ -27,14 +27,14 @@ using System.Xml.Serialization;
 using AutoMapper;
 
 using CNCLib.GCode.GUI.Models;
-using CNCLib.Service.Contract;
+using CNCLib.Service.Abstraction;
 
 using Framework.Pattern;
 using Framework.Tools;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;
 
-using LoadOptionsDto = CNCLib.Logic.Contract.DTO.LoadOptions;
+using LoadOptionsDto = CNCLib.Logic.Abstraction.DTO.LoadOptions;
 
 namespace CNCLib.GCode.GUI.ViewModels
 {

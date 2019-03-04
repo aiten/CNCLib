@@ -17,7 +17,7 @@
 using System;
 using System.Linq;
 
-using CNCLib.Repository.Contract.Entities;
+using CNCLib.Repository.Abstraction.Entities;
 using CNCLib.Repository.Mappings;
 
 using Framework.Repository.Abstraction.Entities;
@@ -105,6 +105,12 @@ namespace CNCLib.Repository.Context
             foreach (var item in Items.Where(i => i.ClassName == @"CNCLib.Logic.Contracts.DTO.LoadOptions,CNCLib.Logic.Contracts.DTO"))
             {
                 item.ClassName = @"CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO";
+            }
+
+            // Contract => Abstraction
+            foreach (var item in Items.Where(i => i.ClassName == @"CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO"))
+            {
+                item.ClassName = @"CNCLib.Logic.Abstraction.DTO.LoadOptions,CNCLib.Logic.Abstraction.DTO";
             }
         }
     }

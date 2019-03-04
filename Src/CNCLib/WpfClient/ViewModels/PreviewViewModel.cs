@@ -24,7 +24,7 @@ using System.Windows.Media;
 
 using CNCLib.GCode;
 using CNCLib.GCode.Commands;
-using CNCLib.Logic.Contract.DTO;
+using CNCLib.Logic.Abstraction.DTO;
 
 using Framework.Arduino.SerialCommunication;
 using Framework.Drawing;

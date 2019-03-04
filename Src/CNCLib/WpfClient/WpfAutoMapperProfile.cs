@@ -16,9 +16,9 @@
 
 using AutoMapper;
 
-using MachineDto = CNCLib.Logic.Contract.DTO.Machine;
-using MachineInitCommandDto = CNCLib.Logic.Contract.DTO.MachineInitCommand;
-using MachineCommandDto = CNCLib.Logic.Contract.DTO.MachineCommand;
+using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;
+using MachineInitCommandDto = CNCLib.Logic.Abstraction.DTO.MachineInitCommand;
+using MachineCommandDto = CNCLib.Logic.Abstraction.DTO.MachineCommand;
 
 namespace CNCLib.WpfClient
 {

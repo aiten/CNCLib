@@ -19,16 +19,16 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using CNCLib.Logic.Contract;
-using CNCLib.Logic.Contract.DTO;
-using CNCLib.Repository.Contract;
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Repository.Abstraction;
 using CNCLib.Shared;
 
 using Framework.Logic;
 using Framework.Repository.Abstraction;
 
-using ConfigurationEntity = CNCLib.Repository.Contract.Entities.Configuration;
-using MachineEntity = CNCLib.Repository.Contract.Entities.Machine;
+using ConfigurationEntity = CNCLib.Repository.Abstraction.Entities.Configuration;
+using MachineEntity = CNCLib.Repository.Abstraction.Entities.Machine;
 
 namespace CNCLib.Logic.Manager
 {

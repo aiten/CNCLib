@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 
-using CNCLib.Logic.Contract.DTO;
+using CNCLib.Logic.Abstraction.DTO;
 
 namespace CNCLib.GCode
 {

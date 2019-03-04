@@ -19,9 +19,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using CNCLib.Repository.Abstraction;
+using CNCLib.Repository.Abstraction.Entities;
 using CNCLib.Repository.Context;
-using CNCLib.Repository.Contract;
-using CNCLib.Repository.Contract.Entities;
 using CNCLib.Shared;
 
 using Framework.Repository;

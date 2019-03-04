@@ -18,7 +18,7 @@ using System;
 using System.Linq;
 using System.Windows.Input;
 
-using CNCLib.Logic.Contract.DTO;
+using CNCLib.Logic.Abstraction.DTO;
 using CNCLib.WpfClient.Helpers;
 
 using Framework.Wpf.Helpers;

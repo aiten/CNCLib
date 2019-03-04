@@ -17,7 +17,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace CNCLib.Logic.Contract
+namespace CNCLib.Logic.Abstraction
 {
     public interface IEepromConfigurationManager : IDisposable
     {

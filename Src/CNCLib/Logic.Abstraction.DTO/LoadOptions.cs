@@ -16,7 +16,7 @@
 
 using System;
 
-namespace CNCLib.Logic.Contract.DTO
+namespace CNCLib.Logic.Abstraction.DTO
 {
     public class LoadOptions
     {

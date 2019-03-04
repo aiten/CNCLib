@@ -19,9 +19,9 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using CNCLib.Repository;
+using CNCLib.Repository.Abstraction;
+using CNCLib.Repository.Abstraction.Entities;
 using CNCLib.Repository.Context;
-using CNCLib.Repository.Contract;
-using CNCLib.Repository.Contract.Entities;
 
 using FluentAssertions;
 
@@ -29,11 +29,9 @@ using Framework.Repository;
 using Framework.Tools;
 using Framework.UnitTest.Repository;
 
-using Microsoft.EntityFrameworkCore;
-
 using Xunit;
 
-namespace CNCLib.Test.Repository
+namespace CNCLib.UnitTest.Repository
 {
     public class UserRepositoryTests : RepositoryTests<CNCLibContext>
     {

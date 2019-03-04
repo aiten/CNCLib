@@ -16,9 +16,7 @@
 
 using AutoMapper;
 
-using CNCLib.WpfClient;
-
-namespace WpfClient.Test
+namespace CNCLib.WpfClient.Test
 {
     public class WpfUnitTestBase
     {

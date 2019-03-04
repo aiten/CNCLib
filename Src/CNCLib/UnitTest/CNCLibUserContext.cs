@@ -16,7 +16,7 @@
 
 using CNCLib.Shared;
 
-namespace CNCLib.Test
+namespace CNCLib.UnitTest
 {
     public class CNCLibUserContext : ICNCLibUserContextRW
     {

@@ -17,11 +17,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using CNCLib.Repository.Contract.Entities;
+using CNCLib.Repository.Abstraction.Entities;
 
 using Framework.Repository.Abstraction;
 
-namespace CNCLib.Repository.Contract
+namespace CNCLib.Repository.Abstraction
 {
     public interface IMachineRepository : ICRUDRepository<Machine, int>
     {

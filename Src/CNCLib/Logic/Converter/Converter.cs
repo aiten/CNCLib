@@ -18,33 +18,33 @@ using System.Collections.Generic;
 
 using AutoMapper;
 
-using CNCLib.Logic.Contract.DTO;
+using CNCLib.Logic.Abstraction.DTO;
 
 namespace CNCLib.Logic.Converter
 {
     internal static class Converter
     {
-        public static Machine ToDto(this Repository.Contract.Entities.Machine from, IMapper mapper)
+        public static Machine ToDto(this Repository.Abstraction.Entities.Machine from, IMapper mapper)
         {
             return mapper.Map<Machine>(from);
         }
 
-        public static Repository.Contract.Entities.Machine ToEntity(this Machine from, IMapper mapper)
+        public static Repository.Abstraction.Entities.Machine ToEntity(this Machine from, IMapper mapper)
         {
-            return mapper.Map<Repository.Contract.Entities.Machine>(from);
+            return mapper.Map<Repository.Abstraction.Entities.Machine>(from);
         }
 
-        public static Item ToDto(this Repository.Contract.Entities.Item from, IMapper mapper)
+        public static Item ToDto(this Repository.Abstraction.Entities.Item from, IMapper mapper)
         {
             return mapper.Map<Item>(from);
         }
 
-        public static Repository.Contract.Entities.Item ToEntity(this Item from, IMapper mapper)
+        public static Repository.Abstraction.Entities.Item ToEntity(this Item from, IMapper mapper)
         {
-            return mapper.Map<Repository.Contract.Entities.Item>(from);
+            return mapper.Map<Repository.Abstraction.Entities.Item>(from);
         }
 
-        public static IEnumerable<Item> ToDto(this IEnumerable<Repository.Contract.Entities.Item> items, IMapper mapper)
+        public static IEnumerable<Item> ToDto(this IEnumerable<Repository.Abstraction.Entities.Item> items, IMapper mapper)
         {
             return mapper.Map<IEnumerable<Item>>(items);
         }

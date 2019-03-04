@@ -19,7 +19,7 @@ using System.Globalization;
 using System.IO;
 
 using CNCLib.GCode.Commands;
-using CNCLib.Logic.Contract.DTO;
+using CNCLib.Logic.Abstraction.DTO;
 
 using Framework.Drawing;
 using Framework.Tools;

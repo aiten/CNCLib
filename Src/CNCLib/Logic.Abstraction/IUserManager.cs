@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 using Framework.Logic.Abstraction;
 
-namespace CNCLib.Logic.Contract
+namespace CNCLib.Logic.Abstraction
 {
     public interface IUserManager : IDisposable, ICRUDManager<DTO.User, int>
     {
