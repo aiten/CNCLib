@@ -35,6 +35,8 @@ using Framework.Logging;
 using Framework.Mapper;
 using Framework.Tools;
 
+using Microsoft.EntityFrameworkCore;
+
 using NLog;
 
 namespace CNCLib.WpfClient.Start
@@ -49,9 +51,10 @@ namespace CNCLib.WpfClient.Start
             AppDomain.CurrentDomain.SetData("DataDirectory", userProfilePath);
 
             string dbFile = userProfilePath + @"\CNCLib.db";
+            string connectString = $"Data Source={dbFile}";
 
             GlobalDiagnosticsContext.Set("logDir",           $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib/logs");
-            GlobalDiagnosticsContext.Set("connectionString", $"Data Source={dbFile}");
+            GlobalDiagnosticsContext.Set("connectionString", connectString);
 
             LogManager.ThrowExceptions = true;
             var logger = LogManager.GetLogger("foo");
@@ -65,7 +68,7 @@ namespace CNCLib.WpfClient.Start
 
             Dependency.Container.RegisterFrameWorkTools();
             Dependency.Container.RegisterFrameWorkLogging();
-            Dependency.Container.RegisterRepository();
+            Dependency.Container.RegisterRepository((options)=> options.UseSqlite(connectString));
             Dependency.Container.RegisterLogic();
             Dependency.Container.RegisterLogicClient();
             Dependency.Container.RegisterSerialCommunication();

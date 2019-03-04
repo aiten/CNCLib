@@ -14,6 +14,8 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
+using System;
+
 using CNCLib.Repository.Context;
 
 using Framework.Dependency;
@@ -21,12 +23,18 @@ using Framework.Dependency.Abstraction;
 using Framework.Repository;
 using Framework.Repository.Abstraction;
 
+using Microsoft.EntityFrameworkCore;
+
 namespace CNCLib.Repository
 {
     public static class LiveDependencyRegisterExtensions
     {
-        public static IDependencyContainer RegisterRepository(this IDependencyContainer container)
+        public static IDependencyContainer RegisterRepository(this IDependencyContainer container, Action<DbContextOptionsBuilder> optionsAction)
         {
+            var options = new DbContextOptionsBuilder<CNCLibContext>();
+            optionsAction(options);
+
+            Dependency.Container.RegisterInstance<DbContextOptions<CNCLibContext>>(options.Options);
             Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
             Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 

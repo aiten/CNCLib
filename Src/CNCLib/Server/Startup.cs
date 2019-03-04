@@ -14,12 +14,16 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
+using System;
+using System.Reflection;
+
 using AutoMapper;
 
 using CNCLib.Logic;
 using CNCLib.Logic.Client;
 using CNCLib.Repository;
 using CNCLib.Repository.SqlServer;
+using CNCLib.Service.Logic;
 using CNCLib.Shared;
 using CNCLib.WebAPI;
 using CNCLib.WebAPI.Controllers;
@@ -33,6 +37,7 @@ using Framework.WebAPI.Filter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -49,6 +54,12 @@ namespace CNCLib.Server
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            string sqlConnectString = GetConnectString();
+
+            GlobalDiagnosticsContext.Set("connectionString", sqlConnectString);
+            GlobalDiagnosticsContext.Set("version",          Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            GlobalDiagnosticsContext.Set("application",      "CNCLib.WebAPI.Server");
+            GlobalDiagnosticsContext.Set("username",         Environment.UserName);
         }
 
         public IConfiguration Configuration { get; }
@@ -80,30 +91,29 @@ namespace CNCLib.Server
 
             Dependency.Container.RegisterFrameWorkTools();
             Dependency.Container.RegisterFrameWorkLogging();
-            Dependency.Container.RegisterRepository();
+            Dependency.Container.RegisterRepository(options => options.UseSqlServer(GetConnectString()));
             Dependency.Container.RegisterLogic();
             Dependency.Container.RegisterLogicClient();
+            Dependency.Container.RegisterServiceAsLogic(); // used for Logic.Client
+
 
             Dependency.Container.RegisterTypeScoped<ICNCLibUserContext, CNCLibUserContext>();
 
             Dependency.Container.RegisterMapper(new MapperConfiguration(cfg => { cfg.AddProfile<LogicAutoMapperProfile>(); }));
         }
 
+        private string GetConnectString()
+        {
+            return Microsoft.Azure.Web.DataProtection.Util.IsAzureEnvironment()
+                ? $"Data Source = cnclibdb.database.windows.net; Initial Catalog = CNCLibDb; Persist Security Info = True; User ID = {Xxx}; Password = {Yyy};"
+                : MigrationCNCLibContext.ConnectString;
+        }
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            string sqlConnectString = $"Data Source = cnclibdb.database.windows.net; Initial Catalog = CNCLibDb; Persist Security Info = True; User ID = {Xxx}; Password = {Yyy};";
+            string sqlConnectString = GetConnectString();
 
             // Open Database here
-
-            if (env.IsDevelopment())
-            {
-                sqlConnectString = null;
-                GlobalDiagnosticsContext.Set("connectionString", MigrationCNCLibContext.ConnectString);
-            }
-            else
-            {
-                GlobalDiagnosticsContext.Set("connectionString", sqlConnectString);
-            }
 
             Repository.SqlServer.MigrationCNCLibContext.InitializeDatabase(sqlConnectString, false, false);
 
