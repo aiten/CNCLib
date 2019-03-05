@@ -26,6 +26,8 @@ using CNCLib.GCode.GUI;
 using CNCLib.Logic;
 using CNCLib.Logic.Client;
 using CNCLib.Repository;
+using CNCLib.Repository.Context;
+using CNCLib.Repository.SqLite;
 using CNCLib.Service.Logic;
 using CNCLib.Shared;
 
@@ -50,8 +52,10 @@ namespace CNCLib.WpfClient.Start
             string userProfilePath = Environment.GetEnvironmentVariable(@"USERPROFILE");
             AppDomain.CurrentDomain.SetData("DataDirectory", userProfilePath);
 
+
             string dbFile = userProfilePath + @"\CNCLib.db";
-            string connectString = $"Data Source={dbFile}";
+            DatabaseTools.DatabaseFile = dbFile;
+            string connectString = DatabaseTools.ConnectString;
 
             GlobalDiagnosticsContext.Set("logDir",           $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib/logs");
             GlobalDiagnosticsContext.Set("connectionString", connectString);
@@ -68,7 +72,7 @@ namespace CNCLib.WpfClient.Start
 
             Dependency.Container.RegisterFrameWorkTools();
             Dependency.Container.RegisterFrameWorkLogging();
-            Dependency.Container.RegisterRepository((options)=> options.UseSqlite(connectString));
+            Dependency.Container.RegisterRepository((options)=> options.UseSqlite(connectString, x => x.MigrationsAssembly(typeof(DatabaseTools).Assembly.GetName().Name)));
             Dependency.Container.RegisterLogic();
             Dependency.Container.RegisterLogicClient();
             Dependency.Container.RegisterSerialCommunication();
@@ -90,7 +94,7 @@ namespace CNCLib.WpfClient.Start
 
             try
             {
-                Repository.SqLite.MigrationCNCLibContext.InitializeDatabase(dbFile, false, false);
+                CNCLibContext.InitializeDatabase2(false, false);
             }
             catch (Exception ex)
             {

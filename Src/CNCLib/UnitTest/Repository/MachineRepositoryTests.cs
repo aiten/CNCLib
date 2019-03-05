@@ -33,9 +33,13 @@ using Xunit;
 
 namespace CNCLib.UnitTest.Repository
 {
-    public class MachineRepositoryTests : RepositoryTests<CNCLibContext>
+    public class MachineRepositoryTests : RepositoryTests, IClassFixture<RepositoryTestFixture>
     {
         #region crt and overrides
+
+        public MachineRepositoryTests(RepositoryTestFixture testFixture) : base(testFixture)
+        {
+        }
 
         protected CRUDRepositoryTests<CNCLibContext, Machine, int, IMachineRepository> CreateTestContext()
         {
@@ -43,7 +47,7 @@ namespace CNCLib.UnitTest.Repository
             {
                 CreateTestDbContext = () =>
                 {
-                    var context = new CNCLibContext();
+                    var context = TestFixture.CreateDbContext();
                     var uow     = new UnitOfWork<CNCLibContext>(context);
                     var rep     = new MachineRepository(context, UserContext);
                     return new CRUDTestDbContext<CNCLibContext, Machine, int, IMachineRepository>(context, uow, rep);

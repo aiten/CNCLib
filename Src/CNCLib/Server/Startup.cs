@@ -22,6 +22,7 @@ using AutoMapper;
 using CNCLib.Logic;
 using CNCLib.Logic.Client;
 using CNCLib.Repository;
+using CNCLib.Repository.Context;
 using CNCLib.Repository.SqlServer;
 using CNCLib.Service.Logic;
 using CNCLib.Shared;
@@ -91,7 +92,7 @@ namespace CNCLib.Server
 
             Dependency.Container.RegisterFrameWorkTools();
             Dependency.Container.RegisterFrameWorkLogging();
-            Dependency.Container.RegisterRepository(options => options.UseSqlServer(GetConnectString()));
+            Dependency.Container.RegisterRepository(options => options.UseSqlServer(GetConnectString(), x => x.MigrationsAssembly(typeof(DatabaseTools).Assembly.GetName().Name)));
             Dependency.Container.RegisterLogic();
             Dependency.Container.RegisterLogicClient();
             Dependency.Container.RegisterServiceAsLogic(); // used for Logic.Client
@@ -106,16 +107,17 @@ namespace CNCLib.Server
         {
             return Microsoft.Azure.Web.DataProtection.Util.IsAzureEnvironment()
                 ? $"Data Source = cnclibdb.database.windows.net; Initial Catalog = CNCLibDb; Persist Security Info = True; User ID = {Xxx}; Password = {Yyy};"
-                : MigrationCNCLibContext.ConnectString;
+                : DatabaseTools.ConnectString;
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             string sqlConnectString = GetConnectString();
+            DatabaseTools.ConnectString = sqlConnectString;
 
             // Open Database here
 
-            Repository.SqlServer.MigrationCNCLibContext.InitializeDatabase(sqlConnectString, false, false);
+            CNCLibContext.InitializeDatabase2(false, false);
 
             if (env.IsDevelopment())
             {

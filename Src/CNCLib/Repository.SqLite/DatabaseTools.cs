@@ -14,7 +14,6 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Linq;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -22,30 +21,9 @@ using CNCLib.Repository.Context;
 
 namespace CNCLib.Repository.SqLite
 {
-    public class MigrationCNCLibContext : CNCLibContext
+    public class DatabaseTools
     {
         public static string DatabaseFile { get; set; } = $"{System.IO.Path.GetTempPath()}\\CNCLib.db";
-
-        static MigrationCNCLibContext()
-        {
-            OnConfigure = (optionsBuilder) => { optionsBuilder.UseSqlite($"Data Source={DatabaseFile}"); };
-        }
-
-        public static void InitializeDatabase(string databaseFile, bool dropDatabase, bool isTest)
-        {
-            DatabaseFile = databaseFile;
-
-            using (var ctx = new MigrationCNCLibContext())
-            {
-                if (dropDatabase)
-                {
-                    ctx.Database.EnsureDeleted();
-                }
-
-                ctx.Database.Migrate();
-
-                ctx.InitOrUpdateDatabase(isTest);
-            }
-        }
+        public static string ConnectString =>  $"Data Source={DatabaseFile}";
     }
 }

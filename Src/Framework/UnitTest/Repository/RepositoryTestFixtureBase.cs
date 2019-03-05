@@ -29,7 +29,7 @@ namespace Framework.UnitTest.Repository
         {
             ScriptDir = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\\Repository\\SQL\\";
         }
-
+/*
         public void InitializeDatabase()
         {
             Context = CreateDbContext();
@@ -37,7 +37,7 @@ namespace Framework.UnitTest.Repository
 
             Context = null;
         }
-
+*/
         public string ScriptDir { get; set; }
 
         private TDbContext Context { get; set; }
@@ -49,28 +49,6 @@ namespace Framework.UnitTest.Repository
         }
 
         public abstract TDbContext CreateDbContext();
-
-        private async Task RestoreTestDb()
-        {
-            await DropAllTablesAsync();
-            await CreateAllTablesAsync();
-            await InsertDefaultDataAsync();
-        }
-
-        private async Task CreateAllTablesAsync()
-        {
-            await ExecSqlScriptAsync($"{ScriptDir}CreateAllTables.sql");
-        }
-
-        private async Task DropAllTablesAsync()
-        {
-            await ExecSqlScriptAsync($"{ScriptDir}DropOrDeleteAllTables.sql", "DROP TABLE");
-        }
-
-        private async Task InsertDefaultDataAsync()
-        {
-            await ExecSqlScriptAsync($"{ScriptDir}InsertDefaultData.sql");
-        }
 
         private async Task ExecSqlScriptAsync(string filePath, string replace = null)
         {

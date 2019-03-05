@@ -14,48 +14,20 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
+using CNCLib.Repository.Context;
 using CNCLib.Shared;
 
-using Framework.UnitTest;
-
-using Microsoft.EntityFrameworkCore;
+using Framework.UnitTest.Repository;
 
 using Xunit;
 
 namespace CNCLib.UnitTest.Repository
 {
     [Collection("RepositoryTests")]
-    public abstract class RepositoryTests<TDbContext> : UnitTestBase
-        where TDbContext : DbContext
+    public abstract class RepositoryTests : RepositoryTestBase<CNCLibContext>
     {
-        static bool _init = false;
-
-        public RepositoryTests()
+        protected RepositoryTests(RepositoryTestFixture testFixture) : base(testFixture)
         {
-            ClassInitBase();
-        }
-
-        public static void ClassInitBase()
-        {
-            if (_init == false)
-            {
-                //drop and recreate the test Db every time the tests are run. 
-                //               string dbDir     = testContext.TestDeploymentDir;
-                string dbDir     = System.IO.Path.GetTempPath();
-                string pathRoot  = System.IO.Path.GetPathRoot(dbDir);
-                var    driveInfo = new System.IO.DriveInfo(pathRoot);
-
-                if (driveInfo.DriveType == System.IO.DriveType.Network)
-                {
-                    // a db file doesn't work on network-drive 
-                    dbDir = System.IO.Path.GetTempPath();
-                }
-
-                string dbFile = $@"{dbDir}\CNCLibTest.db";
-                CNCLib.Repository.SqLite.MigrationCNCLibContext.InitializeDatabase(dbFile, true, true);
-
-                _init = true;
-            }
         }
 
         private   ICNCLibUserContext _userContext = new CNCLibUserContext();

@@ -76,12 +76,12 @@ namespace CNCLib.Repository
 
         public async Task<IList<MachineCommand>> GetMachineCommands(int machineId)
         {
-            return await Context.MachineCommands.Where(c => c.MachineId == machineId).ToListAsync();
+            return await Context.Set<MachineCommand>().Where(c => c.MachineId == machineId).ToListAsync();
         }
 
         public async Task<IList<MachineInitCommand>> GetMachineInitCommands(int machineId)
         {
-            return await Context.MachineInitCommands.Where(c => c.MachineId == machineId).ToListAsync();
+            return await Context.Set<MachineInitCommand>().Where(c => c.MachineId == machineId).ToListAsync();
         }
 
         #endregion
