@@ -117,5 +117,17 @@ namespace CNCLib.Repository.Context
                 item.ClassName = @"CNCLib.Logic.Abstraction.DTO.LoadOptions,CNCLib.Logic.Abstraction.DTO";
             }
         }
+
+        public void InitializeDatabase(bool dropDatabase, bool isTest)
+        {
+            if (dropDatabase)
+            {
+                Database.EnsureDeleted();
+            }
+
+            Database.Migrate();
+
+            InitOrUpdateDatabase(isTest);
+        }
     }
 }
