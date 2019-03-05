@@ -53,7 +53,7 @@ namespace CNCLib.Repository
 
             int id = user.UserId;
 
-            var userInDb = await Context.Users.Where(m => m.UserId == id).FirstOrDefaultAsync();
+            var userInDb = await Query.Where(m => m.UserId == id).FirstOrDefaultAsync();
 
             if (userInDb == default(User))
             {

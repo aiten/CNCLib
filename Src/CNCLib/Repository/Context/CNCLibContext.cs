@@ -20,6 +20,7 @@ using System.Linq;
 using CNCLib.Repository.Abstraction.Entities;
 using CNCLib.Repository.Mappings;
 
+using Framework.Dependency;
 using Framework.Repository.Abstraction.Entities;
 using Framework.Repository.Mappings;
 
@@ -30,12 +31,6 @@ namespace CNCLib.Repository.Context
 {
     public class CNCLibContext : DbContext
     {
-        public static Action<DbContextOptionsBuilder> OnConfigure;
-
-        public CNCLibContext()
-        {
-        }
-
         public CNCLibContext(DbContextOptions<CNCLibContext> options) : base(options)
         {
         }
@@ -43,16 +38,7 @@ namespace CNCLib.Repository.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
-            OnConfigure?.Invoke(optionsBuilder);
         }
-
-        public DbSet<User>               Users               { get; set; }
-        public DbSet<Machine>            Machines            { get; set; }
-        public DbSet<MachineCommand>     MachineCommands     { get; set; }
-        public DbSet<MachineInitCommand> MachineInitCommands { get; set; }
-        public DbSet<Configuration>      Configurations      { get; set; }
-        public DbSet<Item>               Items               { get; set; }
-        public DbSet<ItemProperty>       ItemProperties      { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -91,7 +77,7 @@ namespace CNCLib.Repository.Context
 
         protected void InitOrUpdateDatabase(bool isTest)
         {
-            if (Machines.Any())
+            if (Set<Machine>().Any())
             {
                 ModifyWrongData();
                 SaveChanges();
@@ -106,17 +92,25 @@ namespace CNCLib.Repository.Context
         private void ModifyWrongData()
         {
             // Contracts => Contract
-            foreach (var item in Items.Where(i => i.ClassName == @"CNCLib.Logic.Contracts.DTO.LoadOptions,CNCLib.Logic.Contracts.DTO"))
+            foreach (var item in Set<Item>().Where(i => i.ClassName == @"CNCLib.Logic.Contracts.DTO.LoadOptions,CNCLib.Logic.Contracts.DTO"))
             {
                 item.ClassName = @"CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO";
             }
 
             // Contract => Abstraction
-            foreach (var item in Items.Where(i => i.ClassName == @"CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO"))
+            foreach (var item in Set<Item>().Where(i => i.ClassName == @"CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO"))
             {
                 item.ClassName = @"CNCLib.Logic.Abstraction.DTO.LoadOptions,CNCLib.Logic.Abstraction.DTO";
             }
         }
+
+        public static void InitializeDatabase2(bool dropDatabase, bool isTest)
+        {
+            using (var ctx = Dependency.Container.Resolve<CNCLibContext>())
+            {
+                ctx.InitializeDatabase(dropDatabase, isTest);
+            }
+        } 
 
         public void InitializeDatabase(bool dropDatabase, bool isTest)
         {

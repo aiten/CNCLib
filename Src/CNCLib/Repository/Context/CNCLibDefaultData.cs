@@ -35,7 +35,7 @@ namespace CNCLib.Repository.Context
             ItemSeed(context);
             ConfigurationSeed(context, isTest);
 
-            context.Users.AddRange(users);
+            context.Set<User>().AddRange(users);
         }
 
         private User[] UserSeed(CNCLibContext context)
@@ -82,9 +82,9 @@ namespace CNCLib.Repository.Context
                 user.UserId = 0;
             }
 
-            context.Machines.AddRange(machines);
-            context.MachineCommands.AddRange(machineCommands);
-            context.MachineInitCommands.AddRange(machineInitCommands);
+            context.Set<Machine>().AddRange(machines);
+            context.Set<MachineCommand>().AddRange(machineCommands);
+            context.Set<MachineInitCommand>().AddRange(machineInitCommands);
         }
 
         private void ItemSeed(CNCLibContext context)
@@ -106,8 +106,8 @@ namespace CNCLib.Repository.Context
                 item.ItemId = 0;
             }
 
-            context.Items.AddRange(items);
-            context.ItemProperties.AddRange(itemProperties);
+            context.Set<Item>().AddRange(items);
+            context.Set<ItemProperty>().AddRange(itemProperties);
         }
 
         private void ConfigurationSeed(CNCLibContext context, bool isTest)
@@ -117,7 +117,7 @@ namespace CNCLib.Repository.Context
                 var configurationImport = new CsvImport<Configuration>();
                 var configurations      = configurationImport.Read(DefaultDataDir + @"\DefaultData\Configuration.csv").ToArray();
 
-                context.Configurations.AddRange(configurations);
+                context.Set<Configuration>().AddRange(configurations);
             }
         }
     }

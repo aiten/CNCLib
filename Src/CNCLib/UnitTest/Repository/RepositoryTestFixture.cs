@@ -15,6 +15,7 @@
 */
 
 using CNCLib.Repository.Context;
+using CNCLib.Repository.SqLite;
 
 using Framework.UnitTest.Repository;
 
@@ -41,15 +42,17 @@ namespace CNCLib.UnitTest.Repository
             }
 
             string dbFile = $@"{dbDir}\CNCLibTest.db";
-            CNCLib.Repository.SqLite.MigrationCNCLibContext.InitializeDatabase(dbFile, true, true);
+            DatabaseTools.DatabaseFile = dbFile;
 
-            ConnectString = $"Data Source={dbFile}";
+            ConnectString = DatabaseTools.ConnectString;
+
+            CreateDbContext().InitializeDatabase(true, true);
         }
 
         public override CNCLibContext CreateDbContext()
         {
             var optionsBuilder = new DbContextOptionsBuilder<CNCLibContext>();
-            optionsBuilder.UseSqlite(ConnectString);
+            optionsBuilder.UseSqlite(ConnectString, x => x.MigrationsAssembly(typeof(DatabaseTools).Assembly.GetName().Name));
             return new CNCLibContext(optionsBuilder.Options);
         }
     }

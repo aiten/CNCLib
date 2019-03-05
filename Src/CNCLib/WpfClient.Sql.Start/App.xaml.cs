@@ -27,6 +27,7 @@ using CNCLib.GCode.GUI;
 using CNCLib.Logic;
 using CNCLib.Logic.Client;
 using CNCLib.Repository;
+using CNCLib.Repository.Context;
 using CNCLib.Repository.SqlServer;
 using CNCLib.Service.Logic;
 using CNCLib.Shared;
@@ -48,10 +49,10 @@ namespace CNCLib.WpfClient.Sql.Start
 
         private void AppStartup(object sender, StartupEventArgs e)
         {
-            string connectString = MigrationCNCLibContext.ConnectString;
+            string connectString = DatabaseTools.ConnectString;
 
             GlobalDiagnosticsContext.Set("logDir",           $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib.Sql/logs");
-            GlobalDiagnosticsContext.Set("connectionString", MigrationCNCLibContext.ConnectString);
+            GlobalDiagnosticsContext.Set("connectionString", connectString);
 
             try
             {
@@ -76,7 +77,7 @@ namespace CNCLib.WpfClient.Sql.Start
 
             Dependency.Container.RegisterFrameWorkTools();
             Framework.Logging.LiveDependencyRegisterExtensions.RegisterFrameWorkLogging(Dependency.Container);
-            Dependency.Container.RegisterRepository((options)=>options.UseSqlServer(connectString));
+            Dependency.Container.RegisterRepository((options)=>options.UseSqlServer(connectString, x => x.MigrationsAssembly(typeof(DatabaseTools).Assembly.GetName().Name)));
             Dependency.Container.RegisterLogic();
             Dependency.Container.RegisterLogicClient();
             Dependency.Container.RegisterSerialCommunication();
@@ -94,14 +95,11 @@ namespace CNCLib.WpfClient.Sql.Start
             var userContext = new CNCLibUserContext();
             Dependency.Container.RegisterInstance((ICNCLibUserContext)userContext);
 
-            //	        string sqlConnectString = @"Data Source = (LocalDB)\MSSQLLocalDB; Initial Catalog = CNCLib; Integrated Security = True";
-            string sqlConnectString = null;
-
             // Open Database here
 
             try
             {
-                Repository.SqlServer.MigrationCNCLibContext.InitializeDatabase(sqlConnectString, false, false);
+                CNCLibContext.InitializeDatabase2(false, false);
             }
             catch (Exception ex)
             {

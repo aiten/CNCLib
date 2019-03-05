@@ -15,29 +15,14 @@
 */
 
 
-using Microsoft.EntityFrameworkCore;
-
 using CNCLib.Repository.Context;
 
-namespace CNCLib.Repository.SqLite
+using Microsoft.EntityFrameworkCore;
+
+namespace CNCLib.Repository.SqlServer
 {
-    public class MigrationCNCLibContext : CNCLibContext
+    public class DatabaseTools
     {
-        public static string DatabaseFile { get; set; } = $"{System.IO.Path.GetTempPath()}\\CNCLib.db";
-
-        static MigrationCNCLibContext()
-        {
-            OnConfigure = (optionsBuilder) => { optionsBuilder.UseSqlite($"Data Source={DatabaseFile}"); };
-        }
-
-        public static void InitializeDatabase(string databaseFile, bool dropDatabase, bool isTest)
-        {
-            DatabaseFile = databaseFile;
-
-            using (var ctx = new MigrationCNCLibContext())
-            {
-                ctx.InitializeDatabase(dropDatabase,isTest);
-            }
-        }
+        public static string ConnectString { get; set; } = @"Data Source = (LocalDB)\MSSQLLocalDB; Initial Catalog = CNCLib; Integrated Security = True";
     }
 }
