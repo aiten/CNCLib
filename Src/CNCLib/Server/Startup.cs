@@ -55,7 +55,12 @@ namespace CNCLib.Server
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            string sqlConnectString = GetConnectString();
+            string sqlConnectString = 
+                Microsoft.Azure.Web.DataProtection.Util.IsAzureEnvironment()
+                ? $"Data Source = cnclibdb.database.windows.net; Initial Catalog = CNCLibDb; Persist Security Info = True; User ID = {Xxx}; Password = {Yyy};"
+                : SqlServerDatabaseTools.ConnectString;
+
+            SqlServerDatabaseTools.ConnectString = sqlConnectString;
 
             GlobalDiagnosticsContext.Set("connectionString", sqlConnectString);
             GlobalDiagnosticsContext.Set("version",          Assembly.GetExecutingAssembly().GetName().Version.ToString());
@@ -92,7 +97,7 @@ namespace CNCLib.Server
 
             Dependency.Container.RegisterFrameWorkTools();
             Dependency.Container.RegisterFrameWorkLogging();
-            Dependency.Container.RegisterRepository(options => options.UseSqlServer(GetConnectString(), x => x.MigrationsAssembly(typeof(DatabaseTools).Assembly.GetName().Name)));
+            Dependency.Container.RegisterRepository(SqlServerDatabaseTools.OptionBuilder);
             Dependency.Container.RegisterLogic();
             Dependency.Container.RegisterLogicClient();
             Dependency.Container.RegisterServiceAsLogic(); // used for Logic.Client
@@ -103,18 +108,8 @@ namespace CNCLib.Server
             Dependency.Container.RegisterMapper(new MapperConfiguration(cfg => { cfg.AddProfile<LogicAutoMapperProfile>(); }));
         }
 
-        private string GetConnectString()
-        {
-            return Microsoft.Azure.Web.DataProtection.Util.IsAzureEnvironment()
-                ? $"Data Source = cnclibdb.database.windows.net; Initial Catalog = CNCLibDb; Persist Security Info = True; User ID = {Xxx}; Password = {Yyy};"
-                : DatabaseTools.ConnectString;
-        }
-
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            string sqlConnectString = GetConnectString();
-            DatabaseTools.ConnectString = sqlConnectString;
-
             // Open Database here
 
             CNCLibContext.InitializeDatabase2(false, false);

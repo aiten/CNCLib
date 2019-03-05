@@ -54,8 +54,8 @@ namespace CNCLib.WpfClient.Start
 
 
             string dbFile = userProfilePath + @"\CNCLib.db";
-            DatabaseTools.DatabaseFile = dbFile;
-            string connectString = DatabaseTools.ConnectString;
+            SqliteDatabaseTools.DatabaseFile = dbFile;
+            string connectString = SqliteDatabaseTools.ConnectString;
 
             GlobalDiagnosticsContext.Set("logDir",           $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib/logs");
             GlobalDiagnosticsContext.Set("connectionString", connectString);
@@ -72,7 +72,7 @@ namespace CNCLib.WpfClient.Start
 
             Dependency.Container.RegisterFrameWorkTools();
             Dependency.Container.RegisterFrameWorkLogging();
-            Dependency.Container.RegisterRepository((options)=> options.UseSqlite(connectString, x => x.MigrationsAssembly(typeof(DatabaseTools).Assembly.GetName().Name)));
+            Dependency.Container.RegisterRepository(SqliteDatabaseTools.OptionBuilder);
             Dependency.Container.RegisterLogic();
             Dependency.Container.RegisterLogicClient();
             Dependency.Container.RegisterSerialCommunication();

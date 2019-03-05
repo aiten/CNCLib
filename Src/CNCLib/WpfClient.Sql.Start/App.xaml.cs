@@ -49,7 +49,7 @@ namespace CNCLib.WpfClient.Sql.Start
 
         private void AppStartup(object sender, StartupEventArgs e)
         {
-            string connectString = DatabaseTools.ConnectString;
+            string connectString = SqlServerDatabaseTools.ConnectString;
 
             GlobalDiagnosticsContext.Set("logDir",           $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib.Sql/logs");
             GlobalDiagnosticsContext.Set("connectionString", connectString);
@@ -77,7 +77,7 @@ namespace CNCLib.WpfClient.Sql.Start
 
             Dependency.Container.RegisterFrameWorkTools();
             Framework.Logging.LiveDependencyRegisterExtensions.RegisterFrameWorkLogging(Dependency.Container);
-            Dependency.Container.RegisterRepository((options)=>options.UseSqlServer(connectString, x => x.MigrationsAssembly(typeof(DatabaseTools).Assembly.GetName().Name)));
+            Dependency.Container.RegisterRepository(SqlServerDatabaseTools.OptionBuilder);
             Dependency.Container.RegisterLogic();
             Dependency.Container.RegisterLogicClient();
             Dependency.Container.RegisterSerialCommunication();

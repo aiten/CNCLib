@@ -14,15 +14,21 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-
-using CNCLib.Repository.Context;
+using System;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace CNCLib.Repository.SqlServer
+using CNCLib.Repository.Context;
+
+namespace CNCLib.Repository.SqLite
 {
-    public class DatabaseTools
+    public class SqliteDatabaseTools
     {
-        public static string ConnectString { get; set; } = @"Data Source = (LocalDB)\MSSQLLocalDB; Initial Catalog = CNCLib; Integrated Security = True";
+        public static string DatabaseFile { get; set; } = $"{System.IO.Path.GetTempPath()}\\CNCLib.db";
+        public static string ConnectString =>  $"Data Source={DatabaseFile}";
+        public static void OptionBuilder(DbContextOptionsBuilder option)
+        {
+            option.UseSqlite(ConnectString, x => x.MigrationsAssembly(typeof(SqliteDatabaseTools).Assembly.GetName().Name));
+        }
     }
 }
