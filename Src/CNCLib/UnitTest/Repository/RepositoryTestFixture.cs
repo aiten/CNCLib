@@ -25,8 +25,6 @@ namespace CNCLib.UnitTest.Repository
 {
     public class RepositoryTestFixture : RepositoryTestFixtureBase<CNCLibContext>
     { 
-        public string ConnectString { get; private set; }
-
         public RepositoryTestFixture()
         {
             //drop and recreate the test Db every time the tests are run. 
@@ -42,9 +40,7 @@ namespace CNCLib.UnitTest.Repository
             }
 
             string dbFile = $@"{dbDir}\CNCLibTest.db";
-            DatabaseTools.DatabaseFile = dbFile;
-
-            ConnectString = DatabaseTools.ConnectString;
+            SqliteDatabaseTools.DatabaseFile = dbFile;
 
             CreateDbContext().InitializeDatabase(true, true);
         }
@@ -52,7 +48,7 @@ namespace CNCLib.UnitTest.Repository
         public override CNCLibContext CreateDbContext()
         {
             var optionsBuilder = new DbContextOptionsBuilder<CNCLibContext>();
-            optionsBuilder.UseSqlite(ConnectString, x => x.MigrationsAssembly(typeof(DatabaseTools).Assembly.GetName().Name));
+            SqliteDatabaseTools.OptionBuilder(optionsBuilder);
             return new CNCLibContext(optionsBuilder.Options);
         }
     }
