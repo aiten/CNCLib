@@ -7,6 +7,7 @@
    </ItemGroup>
    <ItemGroup>
      <ProjectReference Include="..\Logic.Abstraction\Logic.Abstraction.csproj" />
+     <ProjectReference Include="..\Pattern\Pattern.csproj" />
      <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
    </ItemGroup>
 </Project>

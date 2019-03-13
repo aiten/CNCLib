@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace CNCLib.Logic.Abstraction
 {
-    public interface IEepromConfigurationManager : IDisposable
+    public interface IEepromConfigurationManager
     {
         Task<DTO.EepromConfiguration> CalculateConfig(DTO.EepromConfigurationInput param);
     }

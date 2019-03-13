@@ -16,9 +16,7 @@
 
 namespace Framework.Logic
 {
-    using Pattern;
-
-    public class ManagerBase : DisposeWrapper
+    public class ManagerBase
     {
     }
 }
