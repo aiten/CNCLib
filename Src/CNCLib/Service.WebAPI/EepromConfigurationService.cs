@@ -21,7 +21,7 @@ using CNCLib.Logic.Abstraction.DTO;
 using CNCLib.Service.Abstraction;
 
 using Framework.Service.WebAPI;
-using Framework.Tools.Uri;
+using Framework.Service.WebAPI.Uri;
 
 namespace CNCLib.Service.WebAPI
 {
