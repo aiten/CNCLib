@@ -14,11 +14,26 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace Framework.Service
-{
-    using Framework.Pattern;
+using System;
+using System.Web;
 
-    public class ServiceBase : DisposeWrapper
+namespace Framework.Service.WebAPI.Uri
+{
+    public static class UriPathExtensions
     {
+        public static string ToUriAsQuery(this object val)
+        {
+            if (val is DateTime dt)
+            {
+                if (dt.TimeOfDay != TimeSpan.Zero)
+                {
+                    return HttpUtility.UrlEncode(dt.ToString("o"));
+                }
+
+                return dt.ToString("yyyy-MM-dd");
+            }
+
+            return HttpUtility.UrlEncode(val.ToString());
+        }
     }
 }

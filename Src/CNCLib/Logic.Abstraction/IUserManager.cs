@@ -21,7 +21,7 @@ using Framework.Logic.Abstraction;
 
 namespace CNCLib.Logic.Abstraction
 {
-    public interface IUserManager : IDisposable, ICRUDManager<DTO.User, int>
+    public interface IUserManager : ICRUDManager<DTO.User, int>
     {
         Task<DTO.User> GetByName(string username);
     }

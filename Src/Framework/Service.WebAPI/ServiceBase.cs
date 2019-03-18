@@ -15,26 +15,58 @@
 */
 
 using System;
-using System.Configuration;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 using Framework.Pattern;
 
-namespace CNCLib.Service.WebAPI
+namespace Framework.Service.WebAPI
 {
     public abstract class ServiceBase : DisposeWrapper
     {
-        protected readonly string _webServerUri = ConfigurationManager.AppSettings["CNCLibWebApi"] ?? @"http://cnclibwebapi.azurewebsites.net";
+//        protected readonly string _webServerUri = ConfigurationManager.AppSettings["CNCLibWebApi"] ?? @"http://cnclibwebapi.azurewebsites.net";
+        protected readonly string _webServerUri = @"http://cnclibwebapi.azurewebsites.net";
 
         protected abstract string Api { get; }
 
         protected HttpClient CreateHttpClient()
         {
-            var client = new HttpClient { BaseAddress = new Uri(_webServerUri) };
+            var client = new HttpClient { BaseAddress = new System.Uri(_webServerUri) };
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             return client;
         }
+        protected async Task<IList<T>> CreateHttpClientAndReadList<T>(string uri)
+        {
+            using (var client = CreateHttpClient())
+            {
+                HttpResponseMessage response = await client.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    var items = await response.Content.ReadAsAsync<IList<T>>();
+                    return items;
+                }
+
+                return null;
+            }
+        }
+
+        protected async Task<T> CreateHttpClientAndRead<T>(string uri)
+        {
+            using (var client = CreateHttpClient())
+            {
+                HttpResponseMessage response = await client.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    var item = await response.Content.ReadAsAsync<T>();
+                    return item;
+                }
+
+                return default(T);
+            }
+        }
+
     }
 }

@@ -21,7 +21,8 @@ using System.Threading.Tasks;
 using CNCLib.Logic.Abstraction.DTO;
 using CNCLib.Service.Abstraction;
 
-using Framework.Tools.Uri;
+using Framework.Service.WebAPI;
+using Framework.Service.WebAPI.Uri;
 
 namespace CNCLib.Service.WebAPI
 {

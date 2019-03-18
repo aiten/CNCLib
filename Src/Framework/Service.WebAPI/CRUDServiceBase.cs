@@ -19,7 +19,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace CNCLib.Service.WebAPI
+using Framework.Service.WebAPI.Uri;
+
+namespace Framework.Service.WebAPI
 {
     public abstract class CRUDServiceBase<T, TKey> : ServiceBase where T : class where TKey : IComparable
     {
@@ -29,7 +31,7 @@ namespace CNCLib.Service.WebAPI
         {
             using (HttpClient client = CreateHttpClient())
             {
-                HttpResponseMessage response = await client.GetAsync(Api + "/" + id);
+                HttpResponseMessage response = await client.GetAsync(UriPathBuilder.Build(new [] { Api, id.ToString() } ));
                 if (response.IsSuccessStatusCode)
                 {
                     T value = await response.Content.ReadAsAsync<T>();
@@ -94,7 +96,7 @@ namespace CNCLib.Service.WebAPI
         {
             using (HttpClient client = CreateHttpClient())
             {
-                HttpResponseMessage response = await client.DeleteAsync(Api + "/" + key);
+                HttpResponseMessage response = await client.DeleteAsync(UriPathBuilder.Build(new[] { Api, key.ToString() }));
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -114,7 +116,7 @@ namespace CNCLib.Service.WebAPI
         {
             using (HttpClient client = CreateHttpClient())
             {
-                HttpResponseMessage response = await client.PutAsJsonAsync(Api + "/" + GetKey(value), value);
+                HttpResponseMessage response = await client.PutAsJsonAsync(UriPathBuilder.Build(new[] { Api, GetKey(value).ToString() }), value);
             }
         }
 

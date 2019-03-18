@@ -20,7 +20,7 @@ using CNCLib.Logic.Abstraction;
 using CNCLib.Logic.Abstraction.DTO;
 using CNCLib.Service.Abstraction;
 
-using Framework.Service;
+using Framework.Service.Logic;
 
 namespace CNCLib.Service.Logic
 {

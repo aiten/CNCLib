@@ -14,7 +14,10 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace Framework.Tools.Uri
+using System.Linq;
+using System.Web;
+
+namespace Framework.Service.WebAPI.Uri
 {
     public class UriPathBuilder
     {
@@ -29,6 +32,18 @@ namespace Framework.Tools.Uri
             }
 
             return $"{Path}?{Query}";
+        }
+
+        public static string Build(string[] pathElements, string query = null)
+        {
+            var path = string.Join("/", pathElements.Select(HttpUtility.UrlEncode));
+            return new UriPathBuilder() { Path = path, Query = query }.Build();
+        }
+
+        public static string Build(string[] pathElements, UriQueryBuilder filter)
+        {
+            var path = string.Join("/", pathElements.Select(HttpUtility.UrlEncode));
+            return new UriPathBuilder() { Path = path, Query = filter.ToString() }.Build();
         }
 
         public static string Build(string path, string query = null)
