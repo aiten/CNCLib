@@ -22,7 +22,6 @@
      <ProjectReference Include="..\Logic\Logic.csproj" />
      <ProjectReference Include="..\Parser\Parser.csproj" />
      <ProjectReference Include="..\Repository\Repository.csproj" />
-     <ProjectReference Include="..\Service\Service.csproj" />
      <ProjectReference Include="..\Tools\Tools.csproj" />
    </ItemGroup>
 

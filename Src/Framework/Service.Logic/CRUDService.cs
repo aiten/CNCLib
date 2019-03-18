@@ -15,28 +15,60 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using CNCLib.Logic.Abstraction;
-using CNCLib.Logic.Abstraction.DTO;
-using CNCLib.Service.Abstraction;
+using Framework.Logic.Abstraction;
 
-using Framework.Service.Logic;
-
-namespace CNCLib.Service.Logic
+namespace Framework.Service.Logic
 {
-    public class UserService : CRUDService<User, int>, IUserService
+    public abstract class CRUDService<T, TKey> : GetService<T, TKey> where T : class
     {
-        readonly IUserManager _manager;
+        private readonly ICRUDManager<T, TKey> _manager;
 
-        public UserService(IUserManager manager) : base(manager)
+        protected CRUDService(ICRUDManager<T, TKey> manager) : base(manager)
         {
             _manager = manager ?? throw new ArgumentNullException();
         }
 
-        public async Task<User> GetByName(string username)
+        public async Task<TKey> Add(T value)
         {
-            return await _manager.GetByName(username);
+            return await _manager.Add(value);
+        }
+
+        public async Task<IEnumerable<TKey>> Add(IEnumerable<T> values)
+        {
+            return await _manager.Add(values);
+        }
+
+        public async Task Delete(T value)
+        {
+            await _manager.Delete(value);
+        }
+
+        public async Task Delete(IEnumerable<T> values)
+        {
+            await _manager.Delete(values);
+        }
+
+        public async Task Delete(TKey key)
+        {
+            await _manager.Delete(key);
+        }
+
+        public async Task Delete(IEnumerable<TKey> keys)
+        {
+            await _manager.Delete(keys);
+        }
+
+        public async Task Update(T value)
+        {
+            await _manager.Update(value);
+        }
+
+        public async Task Update(IEnumerable<T> values)
+        {
+            await _manager.Update(values);
         }
     }
 }

@@ -17,6 +17,8 @@
 using CNCLib.Logic.Abstraction.DTO;
 using CNCLib.Service.Abstraction;
 
+using Framework.Service.WebAPI;
+
 namespace CNCLib.Service.WebAPI
 {
     public class LoadOptionsService : CRUDServiceBase<LoadOptions, int>, ILoadOptionsService

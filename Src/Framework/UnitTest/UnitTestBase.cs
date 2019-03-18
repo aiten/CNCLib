@@ -17,24 +17,14 @@
 namespace Framework.UnitTest
 {
     using Framework.Tools.Abstraction;
-    using Framework.UnitTest.Dependency;
 
     /// <summary>
     /// Base class for *all* unit tests. 
     /// </summary>
     public class UnitTestBase
     {
-        private static readonly object _lockObject = new object();
-
         protected UnitTestBase()
         {
-            lock (_lockObject)
-            {
-                if (Framework.Dependency.Dependency.IsInitialized == false)
-                {
-                    Framework.Dependency.Dependency.Initialize(new UnitTestDependencyProvider());
-                }
-            }
         }
 
         protected virtual void InitializeDependencies()

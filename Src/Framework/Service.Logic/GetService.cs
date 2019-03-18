@@ -14,61 +14,36 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace Framework.Service
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using Framework.Logic.Abstraction;
+
+namespace Framework.Service.Logic
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-
-    using Logic.Abstraction;
-
-    public abstract class CRUDService<T, TKey> : GetService<T, TKey> where T : class
+    public abstract class GetService<T, TKey> : ServiceBase where T : class
     {
         private readonly ICRUDManager<T, TKey> _manager;
 
-        protected CRUDService(ICRUDManager<T, TKey> manager) : base(manager)
+        protected GetService(ICRUDManager<T, TKey> manager)
         {
             _manager = manager ?? throw new ArgumentNullException();
         }
 
-        public async Task<TKey> Add(T value)
+        public async Task<T> Get(TKey id)
         {
-            return await _manager.Add(value);
+            return await _manager.Get(id);
         }
 
-        public async Task<IEnumerable<TKey>> Add(IEnumerable<T> values)
+        public async Task<IEnumerable<T>> Get(IEnumerable<TKey> ids)
         {
-            return await _manager.Add(values);
+            return await _manager.Get(ids);
         }
 
-        public async Task Delete(T value)
+        public async Task<IEnumerable<T>> GetAll()
         {
-            await _manager.Delete(value);
-        }
-
-        public async Task Delete(IEnumerable<T> values)
-        {
-            await _manager.Delete(values);
-        }
-
-        public async Task Delete(TKey key)
-        {
-            await _manager.Delete(key);
-        }
-
-        public async Task Delete(IEnumerable<TKey> keys)
-        {
-            await _manager.Delete(keys);
-        }
-
-        public async Task Update(T value)
-        {
-            await _manager.Update(value);
-        }
-
-        public async Task Update(IEnumerable<T> values)
-        {
-            await _manager.Update(values);
+            return await _manager.GetAll();
         }
     }
 }

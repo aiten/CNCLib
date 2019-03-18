@@ -12,6 +12,7 @@
    </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Pattern\Pattern.csproj" />
+    <ProjectReference Include="..\..\Framework\Service.WebAPI\Service.WebAPI.csproj" />
     <ProjectReference Include="..\..\Framework\Tools\Tools.csproj" />
     <ProjectReference Include="..\Logic.Abstraction.DTO\Logic.Abstraction.DTO.csproj">
     </ProjectReference>

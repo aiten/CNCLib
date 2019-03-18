@@ -15,17 +15,17 @@
 */
 
 using System;
-using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
 using Framework.Pattern;
 
-namespace CNCLib.Service.WebAPI
+namespace Framework.Service.WebAPI
 {
     public abstract class ServiceBase : DisposeWrapper
     {
-        protected readonly string _webServerUri = ConfigurationManager.AppSettings["CNCLibWebApi"] ?? @"http://cnclibwebapi.azurewebsites.net";
+//        protected readonly string _webServerUri = ConfigurationManager.AppSettings["CNCLibWebApi"] ?? @"http://cnclibwebapi.azurewebsites.net";
+        protected readonly string _webServerUri = @"http://cnclibwebapi.azurewebsites.net";
 
         protected abstract string Api { get; }
 

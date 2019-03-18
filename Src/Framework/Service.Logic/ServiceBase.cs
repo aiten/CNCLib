@@ -14,36 +14,11 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace Framework.Service
+using Framework.Pattern;
+
+namespace Framework.Service.Logic
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-
-    using Logic.Abstraction;
-
-    public abstract class GetService<T, TKey> : ServiceBase where T : class
+    public class ServiceBase : DisposeWrapper
     {
-        private readonly ICRUDManager<T, TKey> _manager;
-
-        protected GetService(ICRUDManager<T, TKey> manager)
-        {
-            _manager = manager ?? throw new ArgumentNullException();
-        }
-
-        public async Task<T> Get(TKey id)
-        {
-            return await _manager.Get(id);
-        }
-
-        public async Task<IEnumerable<T>> Get(IEnumerable<TKey> ids)
-        {
-            return await _manager.Get(ids);
-        }
-
-        public async Task<IEnumerable<T>> GetAll()
-        {
-            return await _manager.GetAll();
-        }
     }
 }
