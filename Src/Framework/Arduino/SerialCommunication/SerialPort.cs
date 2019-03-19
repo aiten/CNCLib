@@ -21,7 +21,7 @@ namespace Framework.Arduino.SerialCommunication
     /// <summary>
     /// Implementation for ISerialPort for dependency injection 
     /// </summary>
-    internal class SerialPort : System.IO.Ports.SerialPort, ISerialPort
+    public class SerialPort : System.IO.Ports.SerialPort, ISerialPort
     {
         public new string[] GetPortNames()
         {

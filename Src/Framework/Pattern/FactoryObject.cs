@@ -14,65 +14,70 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.Linq;
-using System.Web;
-
-namespace Framework.Service.WebAPI.Uri
+namespace Framework.Pattern
 {
-    public class UriPathBuilder
+    using System;
+
+    public sealed class ScopeDispose<T> : IScope<T>, IDisposable where T : class, IDisposable
     {
-        public string Path { get; set; }
-        public string Query { get; set; }
+        private readonly T _instance;
 
-        public string Build()
+        private bool _isDisposed;
+
+        public ScopeDispose(T instance)
         {
-            if (string.IsNullOrEmpty(Query))
-            {
-                return $"{Path}";
-            }
-
-            return $"{Path}?{Query}";
+            _instance = instance;
         }
 
-        public UriPathBuilder AddPath(string path)
+        public T Instance
         {
-            if (string.IsNullOrEmpty(Path))
+            get
             {
-                Path = path;
-            }
-            else
-            {
-                if (Path[Path.Length - 1] != '/')
+                if (_isDisposed)
                 {
-                    Path += '/';
+                    throw new ObjectDisposedException("this", "Bad person.");
                 }
 
-                Path += path;
+                return _instance;
             }
-
-            return this;
         }
 
-        public UriPathBuilder AddPath(string[] pathElements)
+        public void Dispose()
         {
-            return AddPath(string.Join("/", pathElements.Select(HttpUtility.UrlEncode)));
-        }
-
-        public UriPathBuilder AddQuery(string query)
-        {
-            if (!string.IsNullOrEmpty(Query))
+            if (_isDisposed)
             {
-                throw new ArgumentException();
+                return;
             }
 
-            Query = query;
-            return this;
+            _isDisposed = true;
+            _instance.Dispose();
+        }
+    }
+
+    public class FactoryNew<T> : IFactory<T> where T : class, IDisposable, new()
+    {
+        public FactoryNew()
+        {
         }
 
-        public UriPathBuilder AddQuery(UriQueryBuilder filter)
+        IScope<T> IFactory<T>.Create()
         {
-            return AddQuery(filter.ToString());
+            return new ScopeDispose<T>(new T());
+        }
+    }
+
+    public class FactoryCreate<T> : IFactory<T> where T : class, IDisposable
+    {
+        public FactoryCreate(Func<T> createObjectFunc)
+        {
+            _createObjectFunc = createObjectFunc;
+        }
+
+        private Func<T> _createObjectFunc;
+
+        IScope<T> IFactory<T>.Create()
+        {
+            return new ScopeDispose<T>(_createObjectFunc());
         }
     }
 }

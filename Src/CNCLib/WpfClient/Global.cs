@@ -21,6 +21,7 @@ using CNCLib.GCode.Commands;
 using CNCLib.WpfClient.Helpers;
 using CNCLib.WpfClient.Models;
 
+using Framework.Arduino.SerialCommunication;
 using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Logging;
 using Framework.Pattern;
@@ -111,7 +112,7 @@ namespace CNCLib.WpfClient
 
         public SerialProxy Com { get; set; } = new SerialProxy();
 
-        private JoystickArduinoSerialCommunication _joystickSerialCommunication = new JoystickArduinoSerialCommunication(new Logger<Framework.Arduino.SerialCommunication.Serial>());
+        private JoystickArduinoSerialCommunication _joystickSerialCommunication = new JoystickArduinoSerialCommunication(new FactoryCreate<ISerialPort>(() => new SerialPort()), new Logger<Framework.Arduino.SerialCommunication.Serial>());
 
         public ISerial ComJoystick => _joystickSerialCommunication;
 

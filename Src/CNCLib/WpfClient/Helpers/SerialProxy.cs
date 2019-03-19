@@ -14,6 +14,7 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
+using Framework.Arduino.SerialCommunication;
 using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Logging;
 using Framework.Pattern;
@@ -29,7 +30,7 @@ namespace CNCLib.WpfClient.Helpers
 
         public ISerial RemoteCom => Singleton<Serial.Client.SerialService>.Instance;
 
-        private static Framework.Arduino.SerialCommunication.Serial _localSerial = new Framework.Arduino.SerialCommunication.Serial(new Logger<Framework.Arduino.SerialCommunication.Serial>());
+        private static Framework.Arduino.SerialCommunication.Serial _localSerial = new Framework.Arduino.SerialCommunication.Serial(new FactoryCreate<ISerialPort>(() => new SerialPort()), new Logger<Framework.Arduino.SerialCommunication.Serial>());
 
         public ISerial LocalCom => _localSerial;
 

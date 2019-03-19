@@ -31,7 +31,7 @@ namespace Framework.Service.WebAPI
         {
             using (HttpClient client = CreateHttpClient())
             {
-                HttpResponseMessage response = await client.GetAsync(UriPathBuilder.Build(new [] { Api, id.ToString() } ));
+                HttpResponseMessage response = await client.GetAsync(CreatePathBuilder().AddPath(id.ToString()).Build());
                 if (response.IsSuccessStatusCode)
                 {
                     T value = await response.Content.ReadAsAsync<T>();
@@ -51,7 +51,7 @@ namespace Framework.Service.WebAPI
         {
             using (HttpClient client = CreateHttpClient())
             {
-                HttpResponseMessage response = await client.GetAsync(Api);
+                HttpResponseMessage response = await client.GetAsync(CreatePathBuilder().Build());
                 if (response.IsSuccessStatusCode)
                 {
                     IEnumerable<T> dtos = await response.Content.ReadAsAsync<IEnumerable<T>>();
@@ -66,7 +66,7 @@ namespace Framework.Service.WebAPI
         {
             using (HttpClient client = CreateHttpClient())
             {
-                HttpResponseMessage response = await client.PostAsJsonAsync(Api, value);
+                HttpResponseMessage response = await client.PostAsJsonAsync(CreatePathBuilder().Build(), value);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -96,7 +96,7 @@ namespace Framework.Service.WebAPI
         {
             using (HttpClient client = CreateHttpClient())
             {
-                HttpResponseMessage response = await client.DeleteAsync(UriPathBuilder.Build(new[] { Api, key.ToString() }));
+                HttpResponseMessage response = await client.DeleteAsync(CreatePathBuilder().AddPath(key.ToString()).Build());
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -116,7 +116,7 @@ namespace Framework.Service.WebAPI
         {
             using (HttpClient client = CreateHttpClient())
             {
-                HttpResponseMessage response = await client.PutAsJsonAsync(UriPathBuilder.Build(new[] { Api, GetKey(value).ToString() }), value);
+                HttpResponseMessage response = await client.PutAsJsonAsync(CreatePathBuilder().AddPath(GetKey(value).ToString()).Build(), value);
             }
         }
 
