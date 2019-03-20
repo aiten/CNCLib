@@ -18,13 +18,13 @@ namespace Framework.Pattern
 {
     using System;
 
-    public sealed class ScopeDispose<T> : IScope<T>, IDisposable where T : class, IDisposable
+    public sealed class ScopeInstance<T> : IScope<T>, IDisposable where T : class
     {
         private readonly T _instance;
 
         private bool _isDisposed;
 
-        public ScopeDispose(T instance)
+        public ScopeInstance(T instance)
         {
             _instance = instance;
         }
@@ -35,7 +35,7 @@ namespace Framework.Pattern
             {
                 if (_isDisposed)
                 {
-                    throw new ObjectDisposedException("this", "Bad person.");
+                    throw new ObjectDisposedException("this", "Instance is not valid after Dispose.");
                 }
 
                 return _instance;
@@ -50,34 +50,6 @@ namespace Framework.Pattern
             }
 
             _isDisposed = true;
-            _instance.Dispose();
-        }
-    }
-
-    public class FactoryNew<T> : IFactory<T> where T : class, IDisposable, new()
-    {
-        public FactoryNew()
-        {
-        }
-
-        IScope<T> IFactory<T>.Create()
-        {
-            return new ScopeDispose<T>(new T());
-        }
-    }
-
-    public class FactoryCreate<T> : IFactory<T> where T : class, IDisposable
-    {
-        public FactoryCreate(Func<T> createObjectFunc)
-        {
-            _createObjectFunc = createObjectFunc;
-        }
-
-        private Func<T> _createObjectFunc;
-
-        IScope<T> IFactory<T>.Create()
-        {
-            return new ScopeDispose<T>(_createObjectFunc());
         }
     }
 }

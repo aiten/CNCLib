@@ -30,9 +30,14 @@ namespace Framework.Service.WebAPI
 
         public string BaseApi { get; set; }
 
-        public HttpClient CreateHttpClient()
+        protected virtual HttpClient CreateHttpClient()
         {
-            var client = new HttpClient { BaseAddress = new System.Uri(BaseUri) };
+            var client = new HttpClient() { BaseAddress = new System.Uri(BaseUri) };
+            return ConfigureHttpClient(client);
+        }
+
+        protected virtual HttpClient ConfigureHttpClient(HttpClient client)
+        {
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             return client;
@@ -70,6 +75,26 @@ namespace Framework.Service.WebAPI
                 }
 
                 return default(T);
+            }
+        }
+
+        public async Task<string> CreateHttpClientAndReadString(UriPathBuilder pathBuilder)
+        {
+            return await CreateHttpClientAndReadString(pathBuilder.Build());
+        }
+
+        public async Task<string> CreateHttpClientAndReadString(string uri)
+        {
+            using (var client = CreateHttpClient())
+            {
+                HttpResponseMessage response = await client.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    var item = await response.Content.ReadAsStringAsync();
+                    return item;
+                }
+
+                return null;
             }
         }
 

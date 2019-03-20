@@ -144,7 +144,7 @@ namespace Framework.Logic
 
                 var mergeJoin = entitiesInDb.Join(entities, GetKey, GetKey, (entityInDb, entity) => new { EntityInDb = entityInDb, Entity = entity });
 
-                if (entities.Count() != entitiesInDb.Count() || entities.Count() != mergeJoin.Count())
+                if (entities.Count() != entitiesInDb.Count || entities.Count() != mergeJoin.Count())
                 {
                     throw new ArgumentException();
                 }

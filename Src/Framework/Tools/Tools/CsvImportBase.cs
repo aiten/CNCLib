@@ -43,10 +43,8 @@ namespace Framework.Tools.Tools
             _nfi.NumberGroupSeparator   = ".";
         }
 
-        public IList<IList<string>> ReadStringMatrixFromCsv(string fileName, bool skipTitleLine)
+        public IList<IList<string>> ReadStringMatrixFromCsv(string[] lines, bool skipTitleLine)
         {
-            string[] lines = File.ReadAllLines(fileName, Encoding);
-
             var  elements  = new List<IList<string>>();
             bool firstLine = skipTitleLine;
 
@@ -65,6 +63,12 @@ namespace Framework.Tools.Tools
             return elements;
         }
 
+        public IList<IList<string>> ReadStringMatrixFromCsv(string fileName, bool skipTitleLine)
+        {
+            string[] lines = File.ReadAllLines(fileName, Encoding);
+            return ReadStringMatrixFromCsv(lines, skipTitleLine);
+        }
+
         private IList<string> ReadLine(string line)
         {
             // remark: newline in Quote not implemented 
@@ -75,10 +79,8 @@ namespace Framework.Tools.Tools
             char quoteChar   = noQuoteChar;
             char lastCh      = noQuoteChar;
 
-            for (int i = 0; i < line.Length; i++)
+            foreach (var ch in line)
             {
-                char ch = line[i];
-
                 if (ch == quoteChar)
                 {
                     quoteChar = noQuoteChar;
@@ -194,6 +196,19 @@ namespace Framework.Tools.Tools
             }
         }
 
+        public object ExcelTimeSpan(string excelField)
+        {
+            try
+            {
+                var timeSpan = TimeSpan.Parse(excelField);
+                return timeSpan;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.StackTrace);
+            }
+        }
+
         public DateTime ExcelDateTimeYMD(string excelField)
         {
             try
@@ -202,13 +217,26 @@ namespace Framework.Tools.Tools
                 // e.g. string dateString = "2017/09/20 00:00:00.000";
 
                 bool   hasFraction = excelField.IndexOf('.') > 0;
-                string format      = hasFraction ? "yyyy/MM/dd hh:mm:ss.fff" : "yyyy/MM/dd hh:mm:ss";
+                string format      = hasFraction ? "yyyy/MM/dd HH:mm:ss.fff" : "yyyy/MM/dd HH:mm:ss";
 
                 CultureInfo provider = CultureInfo.InvariantCulture;
 
                 return DateTime.ParseExact(excelField, format, provider);
             }
             catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public object ExcelEnum(Type enumType, string excelField)
+        {
+            try
+            {
+                var enumValue = Enum.Parse(enumType, excelField);
+                return enumValue;
+            }
+            catch (Exception e)
             {
                 throw;
             }
