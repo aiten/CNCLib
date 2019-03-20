@@ -16,18 +16,40 @@
 
 namespace Framework.Pattern
 {
-    public class FactoryInstance<T> : IFactory<T> where T : class
+    using System;
+
+    public sealed class ScopeInstance<T> : IScope<T>, IDisposable where T : class
     {
-        public FactoryInstance(T obj)
+        private readonly T _instance;
+
+        private bool _isDisposed;
+
+        public ScopeInstance(T instance)
         {
-            _obj = obj;
+            _instance = instance;
         }
 
-        private readonly T _obj;
-
-        IScope<T> IFactory<T>.Create()
+        public T Instance
         {
-            return new ScopeInstance<T>(_obj);
+            get
+            {
+                if (_isDisposed)
+                {
+                    throw new ObjectDisposedException("this", "Instance is not valid after Dispose.");
+                }
+
+                return _instance;
+            }
+        }
+
+        public void Dispose()
+        {
+            if (_isDisposed)
+            {
+                return;
+            }
+
+            _isDisposed = true;
         }
     }
 }

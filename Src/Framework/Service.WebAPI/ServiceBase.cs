@@ -14,31 +14,36 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 using Framework.Pattern;
+using Framework.Service.WebAPI.Uri;
 
 namespace Framework.Service.WebAPI
 {
-    public abstract class ServiceBase : DisposeWrapper
+    public class ServiceBase : DisposeWrapper
     {
-//        protected readonly string _webServerUri = ConfigurationManager.AppSettings["CNCLibWebApi"] ?? @"http://cnclibwebapi.azurewebsites.net";
-        protected readonly string _webServerUri = @"http://cnclibwebapi.azurewebsites.net";
+        public string BaseUri { get; set; }
 
-        protected abstract string Api { get; }
+        public string BaseApi { get; set; }
 
-        protected HttpClient CreateHttpClient()
+        protected virtual HttpClient CreateHttpClient()
         {
-            var client = new HttpClient { BaseAddress = new System.Uri(_webServerUri) };
+            var client = new HttpClient() { BaseAddress = new System.Uri(BaseUri) };
+            return ConfigureHttpClient(client);
+        }
+
+        protected virtual HttpClient ConfigureHttpClient(HttpClient client)
+        {
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             return client;
         }
-        protected async Task<IList<T>> CreateHttpClientAndReadList<T>(string uri)
+
+        public async Task<IList<T>> CreateHttpClientAndReadList<T>(string uri)
         {
             using (var client = CreateHttpClient())
             {
@@ -53,7 +58,12 @@ namespace Framework.Service.WebAPI
             }
         }
 
-        protected async Task<T> CreateHttpClientAndRead<T>(string uri)
+        public async Task<IList<T>> CreateHttpClientAndReadList<T>(UriPathBuilder pathBuilder)
+        {
+            return await CreateHttpClientAndReadList<T>(pathBuilder.Build());
+        }
+
+        public async Task<T> CreateHttpClientAndRead<T>(string uri)
         {
             using (var client = CreateHttpClient())
             {
@@ -68,5 +78,34 @@ namespace Framework.Service.WebAPI
             }
         }
 
+        public async Task<string> CreateHttpClientAndReadString(UriPathBuilder pathBuilder)
+        {
+            return await CreateHttpClientAndReadString(pathBuilder.Build());
+        }
+
+        public async Task<string> CreateHttpClientAndReadString(string uri)
+        {
+            using (var client = CreateHttpClient())
+            {
+                HttpResponseMessage response = await client.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    var item = await response.Content.ReadAsStringAsync();
+                    return item;
+                }
+
+                return null;
+            }
+        }
+
+        public async Task<T> CreateHttpClientAndRead<T>(UriPathBuilder pathBuilder)
+        {
+            return await CreateHttpClientAndRead<T>(pathBuilder.Build());
+        }
+
+        public UriPathBuilder CreatePathBuilder()
+        {
+            return new UriPathBuilder().AddPath(BaseApi);
+        }
     }
 }

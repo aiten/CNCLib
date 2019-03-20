@@ -23,6 +23,12 @@ namespace Framework.Tools.Tools
 
     public class CsvImport<T> : CsvImportBase where T : new()
     {
+        public IList<T> Read(string[] csvLines)
+        {
+            var lines = ReadStringMatrixFromCsv(csvLines, false);
+            return MapTo(lines);
+        }
+
         public IList<T> Read(string fileName)
         {
             var lines = ReadStringMatrixFromCsv(fileName, false);
@@ -108,6 +114,10 @@ namespace Framework.Tools.Tools
                 {
                     pi.SetValue(obj, ExcelDateOrDateTime(valueAsString));
                 }
+                else if (pi.PropertyType == typeof(TimeSpan))
+                {
+                    pi.SetValue(obj, ExcelTimeSpan(valueAsString));
+                }
                 else if (pi.PropertyType == typeof(double))
                 {
                     pi.SetValue(obj, ExcelDouble(valueAsString));
@@ -124,6 +134,10 @@ namespace Framework.Tools.Tools
                 {
                     pi.SetValue(obj, string.IsNullOrEmpty(valueAsString) ? (byte?)null : ExcelByte(valueAsString));
                 }
+                else if (pi.PropertyType == typeof(bool?))
+                {
+                    pi.SetValue(obj, string.IsNullOrEmpty(valueAsString) ? (bool?)null : ExcelBool(valueAsString));
+                }
                 else if (pi.PropertyType == typeof(double?))
                 {
                     pi.SetValue(obj, string.IsNullOrEmpty(valueAsString) ? (double?)null : ExcelDouble(valueAsString));
@@ -136,19 +150,27 @@ namespace Framework.Tools.Tools
                 {
                     pi.SetValue(obj, string.IsNullOrEmpty(valueAsString) ? (DateTime?)null : ExcelDateOrDateTime(valueAsString));
                 }
-                /*
-                                else if (pi.PropertyType.IsEnum)
-                                {
-                                    pi.SetValue(obj, Enum.Parse(pi.PropertyType, ip.Value));
-                                }
-                                else if (pi.PropertyType == typeof(byte[]))
-                                {
-                                    if (!string.IsNullOrEmpty(ip.Value))
-                                    {
-                                        byte[] bytes = System.Convert.FromBase64String(ip.Value);
-                                        pi.SetValue(obj, bytes);
-                                    }
-                                }
+                else if (pi.PropertyType == typeof(TimeSpan?))
+                {
+                    pi.SetValue(obj, string.IsNullOrEmpty(valueAsString) ? (TimeSpan?)null : ExcelTimeSpan(valueAsString));
+                }
+                else if (pi.PropertyType.IsEnum)
+                {
+                    pi.SetValue(obj, ExcelEnum(pi.PropertyType, valueAsString));
+                }
+                else if (pi.PropertyType.IsGenericType && pi.PropertyType.Name.StartsWith(@"Nullable") && pi.PropertyType.GenericTypeArguments[0].IsEnum)
+                {
+                    pi.SetValue(obj, string.IsNullOrEmpty(valueAsString) ? null : ExcelEnum(pi.PropertyType.GenericTypeArguments[0], valueAsString));
+                }
+/*
+                                                else if (pi.PropertyType == typeof(byte[]))
+                                                {
+                                                    if (!string.IsNullOrEmpty(ip.Value))
+                                                    {
+                                                        byte[] bytes = System.Convert.FromBase64String(ip.Value);
+                                                        pi.SetValue(obj, bytes);
+                                                    }
+                                                }
                 */
                 else
                 {

@@ -16,18 +16,20 @@
 
 namespace Framework.Pattern
 {
-    public class FactoryInstance<T> : IFactory<T> where T : class
+    using System;
+
+    public class FactoryCreate<T> : IFactory<T> where T : class, IDisposable
     {
-        public FactoryInstance(T obj)
+        public FactoryCreate(Func<T> createObjectFunc)
         {
-            _obj = obj;
+            _createObjectFunc = createObjectFunc;
         }
 
-        private readonly T _obj;
+        private readonly Func<T> _createObjectFunc;
 
         IScope<T> IFactory<T>.Create()
         {
-            return new ScopeInstance<T>(_obj);
+            return new ScopeDispose<T>(_createObjectFunc());
         }
     }
 }

@@ -28,6 +28,7 @@ namespace Framework.UnitTest.SerialCommunication
     using Framework.Dependency;
     using Framework.Logging;
     using Framework.Logging.Abstraction;
+    using Framework.Pattern;
 
     using NSubstitute;
 
@@ -37,6 +38,10 @@ namespace Framework.UnitTest.SerialCommunication
     {
         int  _resultIdx;
         bool _sendReply;
+
+        string _OkTag     = @"ok";
+        string _errorTag  = @"error:";
+        string _infoTag   = @"info:";
 
         public SerialTest()
         {
@@ -52,9 +57,6 @@ namespace Framework.UnitTest.SerialCommunication
 
             Encoding encoding = Encoding.GetEncoding(1200);
             serialPort.Encoding.ReturnsForAnyArgs(encoding);
-
-            Framework.Dependency.Dependency.Container.ResetContainer();
-            Framework.Dependency.Dependency.Container.RegisterInstance(serialPort);
 
             _resultIdx = 0;
             _sendReply = false;
@@ -102,8 +104,8 @@ namespace Framework.UnitTest.SerialCommunication
         [Fact]
         public async Task ConnectSerialTest()
         {
-            using (var serial = new Serial(CreateLogger()))
             using (var serialPort = CreateSerialPortMock(new string[0]))
+            using (var serial = new Serial(new FactoryInstance<ISerialPort>(serialPort), CreateLogger()))
             {
                 await serial.ConnectAsync("com2");
                 serial.CommandsInQueue.Should().Be(0);
@@ -115,12 +117,12 @@ namespace Framework.UnitTest.SerialCommunication
         [Fact]
         public async Task WriteOneCommandSerialTest()
         {
-            using (var serial = new Serial(CreateLogger()))
             using (var serialPort = CreateSerialPortMock(
                 new[]
                 {
-                    serial.OkTag + "\n\r"
+                    _OkTag + "\n\r"
                 }))
+            using (var serial = new Serial(new FactoryInstance<ISerialPort>(serialPort), CreateLogger()))
             {
                 await serial.ConnectAsync("com2");
 
@@ -136,12 +138,12 @@ namespace Framework.UnitTest.SerialCommunication
         [Fact]
         public async Task WriteTwoCommandSerialTest()
         {
-            using (var serial = new Serial(CreateLogger()))
             using (var serialPort = CreateSerialPortMock(
                 new[]
                 {
-                    serial.OkTag + "\n\r", serial.OkTag + "\n\r"
+                    _OkTag + "\n\r", _OkTag + "\n\r"
                 }))
+            using (var serial = new Serial(new FactoryInstance<ISerialPort>(serialPort), CreateLogger()))
             {
                 await serial.ConnectAsync("com2");
 
@@ -192,12 +194,12 @@ namespace Framework.UnitTest.SerialCommunication
         public async Task OkEventSerialTest()
 
         {
-            using (var serial = new Serial(CreateLogger()))
             using (var serialPort = CreateSerialPortMock(
                 new[]
                 {
-                    serial.OkTag + "\n\r"
+                    _OkTag + "\n\r"
                 }))
+            using (var serial = new Serial(new FactoryInstance<ISerialPort>(serialPort), CreateLogger()))
             {
                 var eventCalls = SubscribeForEventCall(serial);
 
@@ -226,12 +228,12 @@ namespace Framework.UnitTest.SerialCommunication
         [Fact]
         public async Task InfoEventSerialTest()
         {
-            using (var serial = new Serial(CreateLogger()))
             using (var serialPort = CreateSerialPortMock(
                 new[]
                 {
-                    serial.InfoTag + "\n\r" + serial.OkTag + "\n\r"
+                    _infoTag + "\n\r" + _OkTag + "\n\r"
                 }))
+            using (var serial = new Serial(new FactoryInstance<ISerialPort>(serialPort), CreateLogger()))
             {
                 var eventCalls = SubscribeForEventCall(serial);
 
@@ -260,12 +262,12 @@ namespace Framework.UnitTest.SerialCommunication
         [Fact]
         public async Task ErrorEventWithOkSerialTest()
         {
-            using (var serial = new Serial(CreateLogger()))
             using (var serialPort = CreateSerialPortMock(
                 new[]
                 {
-                    serial.ErrorTag + "\n\r" + serial.OkTag + "\n\r"
+                    _errorTag + "\n\r" + _OkTag + "\n\r"
                 }))
+            using (var serial = new Serial(new FactoryInstance<ISerialPort>(serialPort), CreateLogger()))
             {
                 var eventCalls = SubscribeForEventCall(serial);
 
@@ -296,12 +298,12 @@ namespace Framework.UnitTest.SerialCommunication
         [Fact]
         public async Task ErrorEventWithOutOkSerialTest()
         {
-            using (var serial = new Serial(CreateLogger()))
             using (var serialPort = CreateSerialPortMock(
                 new[]
                 {
-                    serial.ErrorTag + "\n\r"
+                    _errorTag + "\n\r"
                 }))
+            using (var serial = new Serial(new FactoryInstance<ISerialPort>(serialPort), CreateLogger()))
             {
                 var eventCalls = SubscribeForEventCall(serial);
 
@@ -330,12 +332,12 @@ namespace Framework.UnitTest.SerialCommunication
         [Fact]
         public async Task UnknownEventSerialTest()
         {
-            using (var serial = new Serial(CreateLogger()))
             using (var serialPort = CreateSerialPortMock(
                 new[]
                 {
-                    "Hallo\n\r" + serial.OkTag + "\n\r"
+                    "Hallo\n\r" + _OkTag + "\n\r"
                 }))
+            using (var serial = new Serial(new FactoryInstance<ISerialPort>(serialPort), CreateLogger()))
             {
                 var eventCalls = SubscribeForEventCall(serial);
 

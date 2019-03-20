@@ -27,7 +27,11 @@ namespace CNCLib.Service.WebAPI
 {
     public class EepromConfigurationService : ServiceBase, IEepromConfigurationService
     {
-        protected override string Api => @"api/EepromConfiguration";
+        public EepromConfigurationService()
+        {
+            BaseUri = @"http://cnclibwebapi.azurewebsites.net";
+            BaseApi = @"api/EepromConfiguration";
+        }
 
         public async Task<EepromConfiguration> CalculateConfig(EepromConfigurationInput param)
         {
@@ -42,7 +46,7 @@ namespace CNCLib.Service.WebAPI
                     .Add("timeToAcc",              param.TimeToAcc)
                     .Add("timeToDec",              param.TimeToDec);
 
-                HttpResponseMessage response = await client.GetAsync(UriPathBuilder.Build(Api, paramUri));
+                HttpResponseMessage response = await client.GetAsync(CreatePathBuilder().AddQuery(paramUri).Build());
                 if (response.IsSuccessStatusCode)
                 {
                     EepromConfiguration value = await response.Content.ReadAsAsync<EepromConfiguration>();

@@ -14,6 +14,7 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
+using System;
 using System.Linq;
 using System.Web;
 
@@ -21,7 +22,7 @@ namespace Framework.Service.WebAPI.Uri
 {
     public class UriPathBuilder
     {
-        public string Path  { get; set; }
+        public string Path { get; set; }
         public string Query { get; set; }
 
         public string Build()
@@ -34,26 +35,44 @@ namespace Framework.Service.WebAPI.Uri
             return $"{Path}?{Query}";
         }
 
-        public static string Build(string[] pathElements, string query = null)
+        public UriPathBuilder AddPath(string path)
         {
-            var path = string.Join("/", pathElements.Select(HttpUtility.UrlEncode));
-            return new UriPathBuilder() { Path = path, Query = query }.Build();
+            if (string.IsNullOrEmpty(Path))
+            {
+                Path = path;
+            }
+            else
+            {
+                if (Path[Path.Length - 1] != '/')
+                {
+                    Path += '/';
+                }
+
+                Path += path;
+            }
+
+            return this;
         }
 
-        public static string Build(string[] pathElements, UriQueryBuilder filter)
+        public UriPathBuilder AddPath(string[] pathElements)
         {
-            var path = string.Join("/", pathElements.Select(HttpUtility.UrlEncode));
-            return new UriPathBuilder() { Path = path, Query = filter.ToString() }.Build();
+            return AddPath(string.Join("/", pathElements.Select(HttpUtility.UrlEncode)));
         }
 
-        public static string Build(string path, string query = null)
+        public UriPathBuilder AddQuery(string query)
         {
-            return new UriPathBuilder() { Path = path, Query = query }.Build();
+            if (!string.IsNullOrEmpty(Query))
+            {
+                throw new ArgumentException();
+            }
+
+            Query = query;
+            return this;
         }
 
-        public static string Build(string path, UriQueryBuilder filter)
+        public UriPathBuilder AddQuery(UriQueryBuilder filter)
         {
-            return new UriPathBuilder() { Path = path, Query = filter.ToString() }.Build();
+            return AddQuery(filter.ToString());
         }
     }
 }

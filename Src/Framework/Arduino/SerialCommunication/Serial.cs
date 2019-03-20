@@ -30,12 +30,15 @@ namespace Framework.Arduino.SerialCommunication
     using Logging.Abstraction;
 
     using WinAPI;
+    using Framework.Pattern;
 
     public class Serial : ISerial
     {
         #region Private Members
 
         ISerialPort             _serialPort;
+        IFactory<ISerialPort>   _serialPortFactory;
+        IScope<ISerialPort>     _serialPortScope;
         CancellationTokenSource _serialPortCancellationTokenSource;
         Thread                  _readThread;
         Thread                  _writeThread;
@@ -46,9 +49,10 @@ namespace Framework.Arduino.SerialCommunication
 
         #endregion
 
-        public Serial(ILogger<Serial> logger)
+        public Serial(IFactory<ISerialPort> serialPortFactory, ILogger<Serial> logger)
         {
             Logger = logger;
+            _serialPortFactory = serialPortFactory ?? throw new ArgumentException();
         }
 
         #region Events
@@ -234,6 +238,7 @@ namespace Framework.Arduino.SerialCommunication
                 }
 
                 _serialPortCancellationTokenSource?.Dispose();
+                _serialPortScope?.Dispose();
                 _serialPort                        = null;
                 _serialPortCancellationTokenSource = null;
             }
@@ -290,7 +295,8 @@ namespace Framework.Arduino.SerialCommunication
 
         protected virtual void SetupCom(string portName)
         {
-            _serialPort = Dependency.Dependency.Resolve<ISerialPort>();
+            _serialPortScope = _serialPortFactory.Create();
+            _serialPort = _serialPortScope.Instance;
 
             _serialPort.PortName  = portName;
             _serialPort.BaudRate  = BaudRate;

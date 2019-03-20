@@ -19,13 +19,16 @@ namespace Framework.Arduino.SerialCommunication
     using System;
     using System.Collections.Generic;
 
+    using Framework.Pattern;
+    using Framework.Arduino.SerialCommunication.Abstraction;
+
     using Logging.Abstraction;
 
     public class HPGLSerial : Serial
     {
         readonly int maxMessageLength = 128;
 
-        public HPGLSerial(ILogger<Serial> logger) : base(logger)
+        public HPGLSerial(IFactory<ISerialPort> serialPortFactory, ILogger<Serial> logger) : base(serialPortFactory, logger)
         {
         }
 

@@ -16,18 +16,48 @@
 
 namespace Framework.Pattern
 {
-    public class FactoryInstance<T> : IFactory<T> where T : class
+    using System;
+
+    using Dependency;
+    using Dependency.Abstraction;
+
+    // Factory/Scope using Resolve of dependencyInjection
+
+    public sealed class ScopeResolve<T> : IScope<T>, IDisposable where T : class
     {
-        public FactoryInstance(T obj)
+        private readonly IDependencyScope _scope;
+        private readonly T                _instance;
+
+        private bool _isDisposed;
+
+        public ScopeResolve(IDependencyScope scope, T instance)
         {
-            _obj = obj;
+            _scope    = scope;
+            _instance = instance;
         }
 
-        private readonly T _obj;
-
-        IScope<T> IFactory<T>.Create()
+        public T Instance
         {
-            return new ScopeInstance<T>(_obj);
+            get
+            {
+                if (_isDisposed)
+                {
+                    throw new ObjectDisposedException("this", "Dispose must not be called twice.");
+                }
+
+                return _instance;
+            }
+        }
+
+        public void Dispose()
+        {
+            if (_isDisposed)
+            {
+                return;
+            }
+
+            _isDisposed = true;
+            _scope.Dispose();
         }
     }
 }

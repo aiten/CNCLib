@@ -18,7 +18,9 @@ using System;
 using System.Threading.Tasks;
 
 using Framework.Arduino.SerialCommunication;
+using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Logging.Abstraction;
+using Framework.Pattern;
 
 using SerialCom = Framework.Arduino.SerialCommunication.Serial;
 
@@ -26,7 +28,7 @@ namespace CNCLib.WpfClient.Helpers
 {
     class JoystickArduinoSerialCommunication : SerialCom
     {
-        public JoystickArduinoSerialCommunication(ILogger<SerialCom> logger) : base(logger)
+        public JoystickArduinoSerialCommunication(IFactory<ISerialPort> serialPortFactory, ILogger<SerialCom> logger) : base(serialPortFactory, logger)
         {
             OkTag = ""; // every new line is "end of command"
         }

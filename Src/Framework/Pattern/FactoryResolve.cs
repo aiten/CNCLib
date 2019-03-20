@@ -16,50 +16,10 @@
 
 namespace Framework.Pattern
 {
-    using System;
-
     using Dependency;
     using Dependency.Abstraction;
 
     // Factory/Scope using Resolve of dependencyInjection
-
-    public sealed class ScopeResolve<T> : IScope<T>, IDisposable where T : class
-    {
-        private readonly IDependencyScope _scope;
-        private readonly T                _instance;
-
-        private bool _isDisposed;
-
-        public ScopeResolve(IDependencyScope scope, T instance)
-        {
-            _scope    = scope;
-            _instance = instance;
-        }
-
-        public T Instance
-        {
-            get
-            {
-                if (_isDisposed)
-                {
-                    throw new ObjectDisposedException("this", "Bad person.");
-                }
-
-                return _instance;
-            }
-        }
-
-        public void Dispose()
-        {
-            if (_isDisposed)
-            {
-                return;
-            }
-
-            _isDisposed = true;
-            _scope.Dispose();
-        }
-    }
 
     public class FactoryResolve<T> : IFactory<T> where T : class
     {

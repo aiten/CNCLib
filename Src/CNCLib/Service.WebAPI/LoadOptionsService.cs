@@ -23,7 +23,12 @@ namespace CNCLib.Service.WebAPI
 {
     public class LoadOptionsService : CRUDServiceBase<LoadOptions, int>, ILoadOptionsService
     {
-        protected override string Api => @"api/LoadOptions";
+        public LoadOptionsService()
+        {
+            BaseUri = @"http://cnclibwebapi.azurewebsites.net";
+            BaseApi = @"api/LoadOptions";
+        }
+
         protected override int GetKey(LoadOptions value) => value.Id;
     }
 }

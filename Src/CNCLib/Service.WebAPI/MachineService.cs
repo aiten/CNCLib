@@ -27,14 +27,19 @@ namespace CNCLib.Service.WebAPI
 {
     public class MachineService : CRUDServiceBase<Machine, int>, IMachineService
     {
-        protected override string Api => @"api/Machine";
+        public MachineService()
+        {
+            BaseUri = @"http://cnclibwebapi.azurewebsites.net";
+            BaseApi = @"api/Machine";
+        }
+
         protected override int GetKey(Machine m) => m.MachineId;
 
         public async Task<Machine> DefaultMachine()
         {
             using (HttpClient client = CreateHttpClient())
             {
-                HttpResponseMessage response = await client.GetAsync(UriPathBuilder.Build(new[] { Api , "default" }));
+                HttpResponseMessage response = await client.GetAsync(CreatePathBuilder().AddPath("default").Build());
                 if (response.IsSuccessStatusCode)
                 {
                     var value = await response.Content.ReadAsAsync<Machine>();
@@ -50,7 +55,7 @@ namespace CNCLib.Service.WebAPI
         {
             using (HttpClient client = CreateHttpClient())
             {
-                HttpResponseMessage response = await client.GetAsync(UriPathBuilder.Build(new[] { Api, "defaultmachine" }));
+                HttpResponseMessage response = await client.GetAsync(CreatePathBuilder().AddPath("defaultmachine").Build());
                 if (response.IsSuccessStatusCode)
                 {
                     int value = await response.Content.ReadAsAsync<int>();
@@ -68,7 +73,7 @@ namespace CNCLib.Service.WebAPI
             {
                 var paramUri = new UriQueryBuilder();
                 paramUri.Add("id", id);
-                HttpResponseMessage response = await client.PutAsJsonAsync(UriPathBuilder.Build(new[] { Api, "defaultmachine" }, paramUri), "dummy");
+                HttpResponseMessage response = await client.PutAsJsonAsync(CreatePathBuilder().AddPath("defaultmachine").AddQuery(paramUri).Build(), "dummy");
 
                 if (response.IsSuccessStatusCode)
                 {

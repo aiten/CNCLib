@@ -28,8 +28,13 @@ namespace CNCLib.Service.WebAPI
 {
     public class ItemService : CRUDServiceBase<Item, int>, IItemService
     {
-        protected override string Api => @"api/Item";
         protected override int GetKey(Item i) => i.ItemId;
+
+        public ItemService()
+        {
+            BaseUri = @"http://cnclibwebapi.azurewebsites.net";
+            BaseApi = @"api/Item";
+        }
 
         public async Task<Item> DefaultItem()
         {
@@ -43,7 +48,7 @@ namespace CNCLib.Service.WebAPI
                 var paramUri = new UriQueryBuilder();
                 paramUri.Add("classname", classname);
 
-                HttpResponseMessage response = await client.GetAsync(UriPathBuilder.Build(Api, paramUri));
+                HttpResponseMessage response = await client.GetAsync(CreatePathBuilder().AddQuery(paramUri).Build());
                 if (response.IsSuccessStatusCode)
                 {
                     IEnumerable<Item> items = await response.Content.ReadAsAsync<IEnumerable<Item>>();
