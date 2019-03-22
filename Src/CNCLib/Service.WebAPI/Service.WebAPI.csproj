@@ -1,18 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  
-   <PropertyGroup>
-	<TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
-
-    
-    
+  <PropertyGroup>
+    <TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
   </PropertyGroup>
-   <ItemGroup>
-     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
-   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Pattern\Pattern.csproj" />
-    <ProjectReference Include="..\..\Framework\Service.WebAPI\Service.WebAPI.csproj" />
-    <ProjectReference Include="..\..\Framework\Tools\Tools.csproj" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Framework\Pattern\Pattern.csproj" />
+    <ProjectReference Include="..\Framework\Service.WebAPI\Service.WebAPI.csproj" />
+    <ProjectReference Include="..\Framework\Tools\Tools.csproj" />
     <ProjectReference Include="..\Logic.Abstraction.DTO\Logic.Abstraction.DTO.csproj">
     </ProjectReference>
     <ProjectReference Include="..\Logic.Abstraction\Logic.Abstraction.csproj">

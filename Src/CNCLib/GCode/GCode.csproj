@@ -1,15 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-   <PropertyGroup>
-	<TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
-
-    
-    
-
-   </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
+  </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Drawing\Drawing.csproj" />
-    <ProjectReference Include="..\..\Framework\Parser\Parser.csproj" />
-    <ProjectReference Include="..\..\Framework\Tools\Tools.csproj">
+    <ProjectReference Include="..\Framework\Drawing\Drawing.csproj" />
+    <ProjectReference Include="..\Framework\Parser\Parser.csproj" />
+    <ProjectReference Include="..\Framework\Tools\Tools.csproj">
     </ProjectReference>
     <ProjectReference Include="..\Logic.Abstraction.DTO\Logic.Abstraction.DTO.csproj">
     </ProjectReference>

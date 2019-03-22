@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-   <PropertyGroup>
-	<TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
+  <PropertyGroup>
+    <TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
   </PropertyGroup>
-   <ItemGroup>
-     <PackageReference Include="AutoMapper" Version="8.0.0" />
-   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+  </ItemGroup>
 </Project>

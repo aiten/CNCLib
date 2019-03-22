@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-	<TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
+    <TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="libnserial.so">
@@ -16,11 +16,9 @@
   <ItemGroup>
     <PackageReference Include="SerialPortStream" Version="2.2.0" />
   </ItemGroup>
-  
   <ItemGroup>
     <ProjectReference Include="..\Arduino\Arduino.csproj" />
   </ItemGroup>
-  
   <ItemGroup>
     <Folder Include="Lib\" />
   </ItemGroup>

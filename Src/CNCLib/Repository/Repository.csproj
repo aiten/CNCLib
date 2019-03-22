@@ -1,18 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
-
-    
-    
-
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Repository\Repository.csproj" />
-    <ProjectReference Include="..\..\Framework\Tools\Tools.csproj">    </ProjectReference>
+    <ProjectReference Include="..\Framework\Repository\Repository.csproj" />
+    <ProjectReference Include="..\Framework\Tools\Tools.csproj">    </ProjectReference>
     <ProjectReference Include="..\Repository.Abstraction\Repository.Abstraction.csproj">    </ProjectReference>
     <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>

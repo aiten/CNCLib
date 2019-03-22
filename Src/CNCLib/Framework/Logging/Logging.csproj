@@ -1,12 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-	<TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
+    <TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
   </PropertyGroup>
-   <ItemGroup>
-     <PackageReference Include="NLog" Version="4.5.11" />
-   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NLog" Version="4.5.11" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dependency\Dependency.csproj" />
   </ItemGroup>
- 
 </Project>

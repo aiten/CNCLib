@@ -1,16 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  
-   <PropertyGroup>
-	<TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
-
-    
-    
+  <PropertyGroup>
+    <TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
   </PropertyGroup>
-   <ItemGroup>
-     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
-   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Pattern\Pattern.csproj" />
-    <ProjectReference Include="..\..\Framework\Tools\Tools.csproj" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Pattern\Pattern.csproj" />
+    <ProjectReference Include="..\Tools\Tools.csproj" />
   </ItemGroup>
 </Project>
