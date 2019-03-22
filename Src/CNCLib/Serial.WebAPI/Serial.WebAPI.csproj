@@ -1,11 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
- 
-
   <PropertyGroup>
     <TargetFramework>$(TargetFrameworkForAppAndTests)</TargetFramework>
 
-    
-    
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
@@ -30,11 +26,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Logging\Logging.csproj" />
-    <ProjectReference Include="..\..\Framework\Tools\Tools.csproj" />
-    <ProjectReference Include="..\..\Framework\Arduino.Linux\Arduino.Linux.csproj" />
-    <ProjectReference Include="..\..\Framework\Arduino\Arduino.csproj" />
-    <ProjectReference Include="..\..\Framework\WebAPI\WebAPI.csproj" />
+    <ProjectReference Include="..\Framework\Logging\Logging.csproj" />
+    <ProjectReference Include="..\Framework\Tools\Tools.csproj" />
+    <ProjectReference Include="..\Framework\Arduino.Linux\Arduino.Linux.csproj" />
+    <ProjectReference Include="..\Framework\Arduino\Arduino.csproj" />
+    <ProjectReference Include="..\Framework\WebAPI\WebAPI.csproj" />
     <ProjectReference Include="..\Serial.Shared\Serial.Shared.csproj" />
   </ItemGroup>
 

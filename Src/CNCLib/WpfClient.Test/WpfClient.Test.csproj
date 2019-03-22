@@ -1,17 +1,12 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.68">
-   <PropertyGroup>
-	<TargetFramework>$(TargetFrameworkForFull)</TargetFramework>
-
-    
-    
-	
-  <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
+  <PropertyGroup>
+    <TargetFramework>$(TargetFrameworkForFull)</TargetFramework>
+    <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
   </PropertyGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Pattern\Pattern.csproj" />
-    <ProjectReference Include="..\..\Framework\Service.Abstraction\Service.Abstraction.csproj" />
-    <ProjectReference Include="..\..\Framework\Wpf\Wpf.csproj" />
+    <ProjectReference Include="..\Framework\Pattern\Pattern.csproj" />
+    <ProjectReference Include="..\Framework\Service.Abstraction\Service.Abstraction.csproj" />
+    <ProjectReference Include="..\Framework\Wpf\Wpf.csproj" />
     <ProjectReference Include="..\Logic.Abstraction.DTO\Logic.Abstraction.DTO.csproj" />
     <ProjectReference Include="..\Logic.Abstraction\Logic.Abstraction.csproj" />
     <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
@@ -33,5 +28,4 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
- 
 </Project>

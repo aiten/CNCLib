@@ -1,12 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Logic\Logic.csproj">    </ProjectReference>
-    <ProjectReference Include="..\..\Framework\Tools\Tools.csproj">    </ProjectReference>
+    <ProjectReference Include="..\Framework\Logic\Logic.csproj">    </ProjectReference>
+    <ProjectReference Include="..\Framework\Tools\Tools.csproj">    </ProjectReference>
     <ProjectReference Include="..\GCode\GCode.csproj">    </ProjectReference>
     <ProjectReference Include="..\Logic.Client\Logic.Client.csproj">    </ProjectReference>
     <ProjectReference Include="..\Logic.Abstraction.DTO\Logic.Abstraction.DTO.csproj">    </ProjectReference>

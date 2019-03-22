@@ -1,29 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  
-   <PropertyGroup>
-     <TargetFramework>$(TargetFrameworkForAppAndTests)</TargetFramework>
-
-    
-    
-     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  <PropertyGroup>
+    <TargetFramework>$(TargetFrameworkForAppAndTests)</TargetFramework>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
-   <ItemGroup>
-     <PackageReference Include="FluentAssertions" Version="5.6.0" />
-     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
-     <PackageReference Include="NSubstitute" Version="4.0.0" />
-     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
-       <PrivateAssets>all</PrivateAssets>
-       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-     </PackageReference>
-   </ItemGroup>
-   <ItemGroup>
-     <ProjectReference Include="..\..\Framework\UnitTest\UnitTest.csproj" />
-     <ProjectReference Include="..\GCode\GCode.csproj" />
-     <ProjectReference Include="..\Logic\Logic.csproj" />
-     <ProjectReference Include="..\Repository.SqLite\Repository.SqLite.csproj" />
-     <ProjectReference Include="..\Repository\Repository.csproj" />
-     <ProjectReference Include="..\Service.Logic\Service.Logic.csproj" />
-   </ItemGroup>
-
-  
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="5.6.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
+    <PackageReference Include="NSubstitute" Version="4.0.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Framework\UnitTest\UnitTest.csproj" />
+    <ProjectReference Include="..\GCode\GCode.csproj" />
+    <ProjectReference Include="..\Logic\Logic.csproj" />
+    <ProjectReference Include="..\Repository.SqLite\Repository.SqLite.csproj" />
+    <ProjectReference Include="..\Repository\Repository.csproj" />
+    <ProjectReference Include="..\Service.Logic\Service.Logic.csproj" />
+  </ItemGroup>
 </Project>

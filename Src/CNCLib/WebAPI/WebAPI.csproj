@@ -1,33 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  
-
   <PropertyGroup>
     <TargetFramework>$(TargetFrameworkForAppAndTests)</TargetFramework>
-
-    
-    
     <ApplicationIcon />
     <OutputType>Library</OutputType>
     <StartupObject />
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
   </ItemGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Logging\Logging.csproj" />
-    <ProjectReference Include="..\..\Framework\WebAPI\WebAPI.csproj" />
+    <ProjectReference Include="..\Framework\Logging\Logging.csproj" />
+    <ProjectReference Include="..\Framework\WebAPI\WebAPI.csproj" />
     <ProjectReference Include="..\GCode\GCode.csproj" />
     <ProjectReference Include="..\Logic.Client\Logic.Client.csproj" />
     <ProjectReference Include="..\Logic.Abstraction\Logic.Abstraction.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
-
 </Project>
