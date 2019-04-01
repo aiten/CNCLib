@@ -52,5 +52,14 @@ namespace CNCLib.Logic.Manager
         {
             return MapToDto(await _repository.GetByName(username));
         }
+
+        public async Task<bool> IsValidUser(string userName, string password)
+        {
+            var userEntity = await _repository.GetByName(userName);
+
+            return userEntity != null &&
+                  (password == userEntity.UserPassword || 
+                    (string.IsNullOrEmpty(password) && string.IsNullOrEmpty(userEntity.UserPassword)));
+        }
     }
 }

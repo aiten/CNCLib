@@ -45,14 +45,16 @@ namespace CNCLib.WpfClient.Views
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (Global.Instance.Com.LocalCom.IsConnected)
+            var global = Dependency.Resolve<Global>();
+
+            if (global.Com.LocalCom.IsConnected)
             {
-                Global.Instance.Com.LocalCom.DisconnectAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                global.Com.LocalCom.DisconnectAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
 
-            if (Global.Instance.ComJoystick.IsConnected)
+            if (global.ComJoystick.IsConnected)
             {
-                Global.Instance.ComJoystick.DisconnectAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                global.ComJoystick.DisconnectAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
         }
     }

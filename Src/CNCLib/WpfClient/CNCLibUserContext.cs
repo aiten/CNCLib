@@ -39,8 +39,14 @@ namespace CNCLib.WpfClient
 
         public async Task InitUserContext()
         {
+            await InitUserContext(UserName);
+        }
+
+        public async Task InitUserContext(string userName)
+        {
             try
             {
+                UserName = userName;
                 using (var userService = Dependency.Resolve<IUserService>())
                 {
                     var user = await userService.GetByName(UserName);

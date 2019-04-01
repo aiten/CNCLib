@@ -15,10 +15,12 @@
 */
 
 using System;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
-using CNCLib.WpfClient.Services;
+using CNCLib.Service.Abstraction;
 
 using Framework.Pattern;
 using Framework.Wpf.Helpers;
@@ -26,62 +28,60 @@ using Framework.Wpf.ViewModels;
 
 namespace CNCLib.WpfClient.ViewModels
 {
-    public class JoystickViewModel : BaseViewModel
+    public class LoginViewModel : BaseViewModel
     {
-        private readonly IFactory<IJoystickService> _joystickService;
+        private readonly IFactory<IUserService> _userService;
 
         #region crt
 
-        public JoystickViewModel(IFactory<IJoystickService> joystickService)
+        public LoginViewModel(IFactory<IUserService> userService)
         {
-            _joystickService = joystickService ?? throw new ArgumentNullException();
-        }
-
-        public override async Task Loaded()
-        {
-            await base.Loaded();
-            await LoadJoystick();
+            _userService = userService ?? throw new ArgumentNullException();
         }
 
         #endregion
 
         #region Properties
 
-        Models.Joystick _currentJoystick = new Models.Joystick();
-        int             _id              = -1;
+        private string _userName;
 
-        public Models.Joystick Joystick
+        public string UserName
         {
-            get => _currentJoystick;
-            set { SetProperty(() => _currentJoystick == value, () => _currentJoystick = value); }
+            get => _userName;
+            set { SetProperty(() => _userName == value, () => _userName = value); }
+        }
+
+        private string _password;
+
+        public string Password
+        {
+            get => _password;
+            set { SetProperty(() => _password == value, () => _password = value); }
         }
 
         #endregion
 
         #region Operations
 
-        public async Task LoadJoystick()
+        public async Task<bool> VerifyUser(CancellationToken ctk)
         {
-            using (var scope = _joystickService.Create())
+            using (var scope = _userService.Create())
             {
-                var joystick = await scope.Instance.Load();
-                _id      = joystick.Item2;
-                Joystick = joystick.Item1;
+                var IsValidUser = await scope.Instance.IsValidUser(UserName, Password);
 
-                RaisePropertyChanged(nameof(Joystick));
+                if (IsValidUser)
+                {
+                    DialogOKAction();
+                    return true;
+                }
+
+                MessageBox?.Invoke(@"Illegal user/password", @"Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+
             }
         }
 
-        public async void SaveJoystick()
-        {
-            using (var scope = _joystickService.Create())
-            {
-                _id = await scope.Instance.Save(_currentJoystick, _id);
-                CloseAction();
-            }
-        }
-
-        public bool CanSaveJoystick()
+        public bool CanVerifyUser()
         {
             return true;
         }
@@ -90,7 +90,7 @@ namespace CNCLib.WpfClient.ViewModels
 
         #region Commands
 
-        public ICommand SaveJoystickCommand => new DelegateCommand(SaveJoystick, CanSaveJoystick);
+        public ICommand VerifyLoginCommand => new DelegateCommandAsync<bool>(VerifyUser, CanVerifyUser);
 
         #endregion
     }

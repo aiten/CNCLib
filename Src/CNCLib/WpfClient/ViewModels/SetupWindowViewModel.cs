@@ -26,6 +26,7 @@ using System.Windows.Input;
 using AutoMapper;
 
 using CNCLib.Service.Abstraction;
+using CNCLib.Shared;
 using CNCLib.WpfClient.Models;
 using CNCLib.WpfClient.Services;
 
@@ -40,20 +41,22 @@ namespace CNCLib.WpfClient.ViewModels
     {
         #region crt
 
-        public SetupWindowViewModel(IFactory<IMachineService> machineService, IFactory<IJoystickService> joystickService, IMapper mapper, Global global)
+        public SetupWindowViewModel(IFactory<IMachineService> machineService, IFactory<IJoystickService> joystickService, IMapper mapper, Global global, ICNCLibUserContext userContext)
         {
             _machineService  = machineService ?? throw new ArgumentNullException();
             _joystickService = joystickService ?? throw new ArgumentNullException();
             _mapper          = mapper ?? throw new ArgumentNullException();
             _global          = global ?? throw new ArgumentNullException();
-            ;
+            _userContext     = userContext ?? throw new ArgumentNullException();
+
             ResetOnConnect = false;
         }
 
-        readonly         IFactory<IMachineService>  _machineService;
+        private readonly IFactory<IMachineService>  _machineService;
         private readonly IFactory<IJoystickService> _joystickService;
         private readonly IMapper                    _mapper;
         private readonly Global                     _global;
+        private readonly ICNCLibUserContext         _userContext;
 
         public override async Task Loaded()
         {
@@ -112,9 +115,10 @@ namespace CNCLib.WpfClient.ViewModels
 
         #region GUI-forward
 
-        public Action<int> EditMachine  { get; set; }
-        public Action      EditJoystick { get; set; }
-        public Action      ShowEeprom   { get; set; }
+        public Action<int>  EditMachine  { get; set; }
+        public Action       EditJoystick { get; set; }
+        public Action       ShowEeprom   { get; set; }
+        public Func<string> Login        { get; set; }
 
         #endregion
 
@@ -177,6 +181,8 @@ namespace CNCLib.WpfClient.ViewModels
         public bool DtrIsReset => Machine != null && Machine.DtrIsReset;
 
         public string CNCLibVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+        public string UserName => _userContext.UserName;
 
         #endregion
 
@@ -334,6 +340,25 @@ namespace CNCLib.WpfClient.ViewModels
             ShowEeprom?.Invoke();
         }
 
+        public async Task<bool> LoginUser(CancellationToken tx)
+        {
+            var newUser = Login?.Invoke();
+            if (!string.IsNullOrEmpty(newUser))
+            {
+                var userContextRW = _userContext as CNCLibUserContext;
+                await userContextRW.InitUserContext(newUser);
+                await LoadMachines(-1);
+                RaisePropertyChanged(nameof(UserName));
+            }
+
+            return true;
+        }
+
+        public bool CanLoginUser()
+        {
+            return !Connected;
+        }
+
         #endregion
 
         #region Commands
@@ -342,6 +367,7 @@ namespace CNCLib.WpfClient.ViewModels
         public ICommand ConnectCommand           => new DelegateCommandAsync<bool>(Connect,    CanConnect);
         public ICommand DisConnectCommand        => new DelegateCommandAsync<bool>(DisConnect, CanDisConnect);
         public ICommand EepromCommand            => new DelegateCommand(SetEeprom,         CanDisConnect);
+        public ICommand LoginCommand             => new DelegateCommandAsync<bool>(LoginUser,         CanLoginUser);
         public ICommand SetDefaultMachineCommand => new DelegateCommand(SetDefaultMachine, CanSetupMachine);
         public ICommand ConnectJoystickCommand   => new DelegateCommandAsync<bool>(ConnectJoystick, CanConnectJoystick);
 

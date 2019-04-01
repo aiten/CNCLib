@@ -15,6 +15,7 @@
 */
 
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 using CNCLib.WpfClient.ViewModels;
@@ -76,8 +77,24 @@ namespace CNCLib.WpfClient.Views
                 vm.EditJoystick = () =>
                 {
                     var dlg       = new JoystickView();
-                    var viewModel = dlg.DataContext as JoystickView;
+                    var viewModel = dlg.DataContext as JoystickViewModel;
                     dlg.ShowDialog();
+                };
+            }
+
+            if (vm.Login == null)
+            {
+                vm.Login = () =>
+                {
+                    var dlg       = new LoginView();
+                    var viewModel = dlg.DataContext as LoginViewModel;
+                    viewModel.UserName = vm.UserName;
+                    if (dlg.ShowDialog()??false)
+                    {
+                        return viewModel.UserName;
+                    }
+
+                    return null;
                 };
             }
         }

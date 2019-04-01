@@ -28,9 +28,12 @@ namespace CNCLib.WpfClient.Helpers
 {
     class JoystickArduinoSerialCommunication : SerialCom
     {
-        public JoystickArduinoSerialCommunication(IFactory<ISerialPort> serialPortFactory, ILogger<SerialCom> logger) : base(serialPortFactory, logger)
+        private Global _global;
+
+        public JoystickArduinoSerialCommunication(IFactory<ISerialPort> serialPortFactory, ILogger<SerialCom> logger, Global global) : base(serialPortFactory, logger)
         {
             OkTag = ""; // every new line is "end of command"
+            _global = global;
         }
 
         public void RunCommandInNewTask(Action todo)
@@ -44,7 +47,7 @@ namespace CNCLib.WpfClient.Helpers
 
             if (info.Info.StartsWith(";CNCJoystick"))
             {
-                string initCommands = Global.Instance.Joystick?.InitCommands;
+                string initCommands = _global.Joystick?.InitCommands;
                 if (initCommands != null)
                 {
                     RunCommandInNewTask(
@@ -61,8 +64,8 @@ namespace CNCLib.WpfClient.Helpers
                 RunCommandInNewTask(
                     async () =>
                     {
-                        string msg = Global.Instance.Machine.JoystickReplyReceived(info.Info.Trim());
-                        await Global.Instance.Com.Current.QueueCommandsAsync(new string[] { msg }).ConfigureAwait(false);
+                        string msg = _global.Machine.JoystickReplyReceived(info.Info.Trim());
+                        await _global.Com.Current.QueueCommandsAsync(new string[] { msg }).ConfigureAwait(false);
                     });
             }
         }

@@ -15,16 +15,41 @@
 */
 
 using System;
-using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 
-using Framework.Logic.Abstraction;
+using CNCLib.WpfClient.Models;
 
-namespace CNCLib.Logic.Abstraction
+using Framework.Dependency;
+using Framework.Wpf.Views;
+
+using Xceed.Wpf.Toolkit.PropertyGrid;
+
+namespace CNCLib.WpfClient.Views
 {
-    public interface IUserManager : ICRUDManager<DTO.User, int>
+    public partial class LoginView : Window
     {
-        Task<DTO.User> GetByName(string username);
+        public LoginView()
+        {
+            var vm = Dependency.Resolve<ViewModels.LoginViewModel>();
+            DataContext = vm;
 
-        Task<bool> IsValidUser(string username, string password);
+            InitializeComponent();
+
+            this.DefaultInitForBaseViewModel();
+        }
+
+        private string _password;
+
+        public void PasswordChanged(object sender, RoutedEventArgs routedEventArgs)
+        {
+            var passwordBox = (PasswordBox)sender;
+            _password = passwordBox.Password;
+        }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
