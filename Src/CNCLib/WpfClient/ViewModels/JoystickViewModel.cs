@@ -26,7 +26,7 @@ using Framework.Wpf.ViewModels;
 
 namespace CNCLib.WpfClient.ViewModels
 {
-    public class JoystickViewModel : BaseViewModel, IDisposable
+    public class JoystickViewModel : BaseViewModel
     {
         private readonly IFactory<IJoystickService> _joystickService;
 
@@ -41,14 +41,6 @@ namespace CNCLib.WpfClient.ViewModels
         {
             await base.Loaded();
             await LoadJoystick();
-        }
-
-        #endregion
-
-        #region dispose
-
-        public void Dispose()
-        {
         }
 
         #endregion

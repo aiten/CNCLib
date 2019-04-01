@@ -26,7 +26,7 @@ using Framework.Wpf.ViewModels;
 
 namespace CNCLib.WpfClient.ViewModels
 {
-    public class EepromViewModel : BaseViewModel, IDisposable
+    public class EepromViewModel : BaseViewModel
     {
         private readonly Global _global;
 
@@ -37,14 +37,6 @@ namespace CNCLib.WpfClient.ViewModels
         public EepromViewModel(Global global)
         {
             _global = global ?? throw new ArgumentNullException();
-        }
-
-        #endregion
-
-        #region dispose
-
-        public void Dispose()
-        {
         }
 
         #endregion

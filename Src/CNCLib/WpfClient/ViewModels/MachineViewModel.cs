@@ -35,7 +35,7 @@ using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;
 
 namespace CNCLib.WpfClient.ViewModels
 {
-    public class MachineViewModel : BaseViewModel, IDisposable
+    public class MachineViewModel : BaseViewModel
     {
         #region crt
 
@@ -51,14 +51,6 @@ namespace CNCLib.WpfClient.ViewModels
         readonly         IFactory<IMachineService> _machineService;
         private readonly IMapper                   _mapper;
         private readonly Global                    _global;
-
-        #endregion
-
-        #region dispose
-
-        public void Dispose()
-        {
-        }
 
         #endregion
 
