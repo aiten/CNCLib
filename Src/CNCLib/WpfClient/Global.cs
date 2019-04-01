@@ -141,10 +141,6 @@ namespace CNCLib.WpfClient
 
         #endregion
 
-        #region UserContext
-
-        #endregion
-
         #region INPC
 
         public event PropertyChangedEventHandler PropertyChanged;

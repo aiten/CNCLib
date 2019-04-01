@@ -26,6 +26,7 @@ using System.Windows.Input;
 using AutoMapper;
 
 using CNCLib.Service.Abstraction;
+using CNCLib.Shared;
 using CNCLib.WpfClient.Models;
 using CNCLib.WpfClient.Services;
 
@@ -40,19 +41,22 @@ namespace CNCLib.WpfClient.ViewModels
     {
         #region crt
 
-        public SetupWindowViewModel(IFactory<IMachineService> machineService, IFactory<IJoystickService> joystickService, IMapper mapper, Global global)
+        public SetupWindowViewModel(IFactory<IMachineService> machineService, IFactory<IJoystickService> joystickService, IMapper mapper, Global global, ICNCLibUserContext userContext)
         {
             _machineService  = machineService ?? throw new ArgumentNullException();
             _joystickService = joystickService ?? throw new ArgumentNullException();
             _mapper          = mapper ?? throw new ArgumentNullException();
             _global          = global ?? throw new ArgumentNullException();
+            _userContext     = userContext ?? throw new ArgumentNullException();
+
             ResetOnConnect   = false;
         }
 
-        readonly         IFactory<IMachineService>  _machineService;
+        private readonly IFactory<IMachineService>  _machineService;
         private readonly IFactory<IJoystickService> _joystickService;
         private readonly IMapper                    _mapper;
         private readonly Global                     _global;
+        private readonly ICNCLibUserContext         _userContext;
 
         public override async Task Loaded()
         {
@@ -176,6 +180,8 @@ namespace CNCLib.WpfClient.ViewModels
         public bool DtrIsReset => Machine != null && Machine.DtrIsReset;
 
         public string CNCLibVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+        public string UserName => _userContext.UserName;
 
         #endregion
 
