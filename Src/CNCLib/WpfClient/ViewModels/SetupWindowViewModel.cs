@@ -49,7 +49,7 @@ namespace CNCLib.WpfClient.ViewModels
             _global          = global ?? throw new ArgumentNullException();
             _userContext     = userContext ?? throw new ArgumentNullException();
 
-            ResetOnConnect   = false;
+            ResetOnConnect = false;
         }
 
         private readonly IFactory<IMachineService>  _machineService;
@@ -115,9 +115,10 @@ namespace CNCLib.WpfClient.ViewModels
 
         #region GUI-forward
 
-        public Action<int> EditMachine  { get; set; }
-        public Action      EditJoystick { get; set; }
-        public Action      ShowEeprom   { get; set; }
+        public Action<int>  EditMachine  { get; set; }
+        public Action       EditJoystick { get; set; }
+        public Action       ShowEeprom   { get; set; }
+        public Func<string> Login        { get; set; }
 
         #endregion
 
@@ -339,6 +340,25 @@ namespace CNCLib.WpfClient.ViewModels
             ShowEeprom?.Invoke();
         }
 
+        public async Task<bool> LoginUser(CancellationToken tx)
+        {
+            var newUser = Login?.Invoke();
+            if (!string.IsNullOrEmpty(newUser))
+            {
+                var userContextRW = _userContext as CNCLibUserContext;
+                await userContextRW.InitUserContext(newUser);
+                await LoadMachines(-1);
+                RaisePropertyChanged(nameof(UserName));
+            }
+
+            return true;
+        }
+
+        public bool CanLoginUser()
+        {
+            return !Connected;
+        }
+
         #endregion
 
         #region Commands
@@ -347,6 +367,7 @@ namespace CNCLib.WpfClient.ViewModels
         public ICommand ConnectCommand           => new DelegateCommandAsync<bool>(Connect,    CanConnect);
         public ICommand DisConnectCommand        => new DelegateCommandAsync<bool>(DisConnect, CanDisConnect);
         public ICommand EepromCommand            => new DelegateCommand(SetEeprom,         CanDisConnect);
+        public ICommand LoginCommand             => new DelegateCommandAsync<bool>(LoginUser,         CanLoginUser);
         public ICommand SetDefaultMachineCommand => new DelegateCommand(SetDefaultMachine, CanSetupMachine);
         public ICommand ConnectJoystickCommand   => new DelegateCommandAsync<bool>(ConnectJoystick, CanConnectJoystick);
 

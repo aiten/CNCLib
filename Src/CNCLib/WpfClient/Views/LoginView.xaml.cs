@@ -14,31 +14,42 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using CNCLib.Service.Abstraction;
-using CNCLib.WpfClient.Services;
+using System;
+using System.Windows;
+using System.Windows.Controls;
+
+using CNCLib.WpfClient.Models;
 
 using Framework.Dependency;
-using Framework.Dependency.Abstraction;
-using Framework.Pattern;
+using Framework.Wpf.Views;
 
-namespace CNCLib.WpfClient
+using Xceed.Wpf.Toolkit.PropertyGrid;
+
+namespace CNCLib.WpfClient.Views
 {
-    public static class LiveDependencyRegisterExtensions
+    public partial class LoginView : Window
     {
-        public static IDependencyContainer RegisterCNCLibWpf(this IDependencyContainer container)
+        public LoginView()
         {
-            Dependency.Container.RegisterInstance(new Global());
+            var vm = Dependency.Resolve<ViewModels.LoginViewModel>();
+            DataContext = vm;
 
-            Dependency.Container.RegisterType<IJoystickService, JoystickService>();
+            InitializeComponent();
 
-            Dependency.Container.RegisterType<IFactory<IMachineService>, FactoryResolve<IMachineService>>();
-            Dependency.Container.RegisterType<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>();
-            Dependency.Container.RegisterType<IFactory<IJoystickService>, FactoryResolve<IJoystickService>>();
-            Dependency.Container.RegisterType<IFactory<IUserService>, FactoryResolve<IUserService>>();
+            this.DefaultInitForBaseViewModel();
+        }
 
-            Dependency.Container.RegisterTypesByName(n => n.EndsWith("ViewModel"), typeof(ViewModels.MachineViewModel).Assembly, typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
+        private string _password;
 
-            return container;
+        public void PasswordChanged(object sender, RoutedEventArgs routedEventArgs)
+        {
+            var passwordBox = (PasswordBox)sender;
+            _password = passwordBox.Password;
+        }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

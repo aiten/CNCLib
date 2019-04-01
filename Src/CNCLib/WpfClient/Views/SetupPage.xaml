@@ -36,6 +36,7 @@
         <StackPanel Orientation="Horizontal">
             <Label Content="User:" Width="100" Margin="0,0,5,0" />
             <Label Content="{Binding UserName}" />
+            <Button Command="{Binding LoginCommand}" Content="Login ..." Margin="5,0,0,0" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label Content="Version:" Width="100" Margin="0,0,5,0" />
