@@ -27,7 +27,7 @@ namespace CNCLib.WpfClient
     {
         public static IDependencyContainer RegisterCNCLibWpf(this IDependencyContainer container)
         {
-            Dependency.Container.RegisterInstance(Global.Instance);
+            Dependency.Container.RegisterInstance(new Global());
 
             Dependency.Container.RegisterType<IJoystickService, JoystickService>();
 

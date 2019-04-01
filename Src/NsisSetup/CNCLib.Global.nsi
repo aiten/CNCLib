@@ -9,7 +9,7 @@ Unicode true
 
 # These three must be integers
 !define VERSIONMAJOR 1
-!define VERSIONMINOR 1
+!define VERSIONMINOR 2
 !define VERSIONBUILD 0 
 
 !define HELPURL "https://github.com/aiten/CNCLib" # "Support Information" link

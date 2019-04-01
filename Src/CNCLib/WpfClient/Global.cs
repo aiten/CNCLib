@@ -30,8 +30,15 @@ using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;
 
 namespace CNCLib.WpfClient
 {
-    public class Global : Singleton<Global>, INotifyPropertyChanged
+    public class Global : INotifyPropertyChanged
     {
+        public Global()
+        {
+            _joystickSerialCommunication = new JoystickArduinoSerialCommunication(new FactoryCreate<ISerialPort>(() => new SerialPort()), new Logger<Framework.Arduino.SerialCommunication.Serial>(), this);
+        }
+
+        #region Status
+
         private MachineDto _machine = new MachineDto();
 
         public MachineDto Machine
@@ -110,9 +117,13 @@ namespace CNCLib.WpfClient
             }
         }
 
+        #endregion
+
+        #region Serial
+
         public SerialProxy Com { get; set; } = new SerialProxy();
 
-        private JoystickArduinoSerialCommunication _joystickSerialCommunication = new JoystickArduinoSerialCommunication(new FactoryCreate<ISerialPort>(() => new SerialPort()), new Logger<Framework.Arduino.SerialCommunication.Serial>());
+        private JoystickArduinoSerialCommunication _joystickSerialCommunication;
 
         public ISerial ComJoystick => _joystickSerialCommunication;
 
@@ -128,11 +139,21 @@ namespace CNCLib.WpfClient
             }
         }
 
+        #endregion
+
+        #region UserContext
+
+        #endregion
+
+        #region INPC
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
     }
 }

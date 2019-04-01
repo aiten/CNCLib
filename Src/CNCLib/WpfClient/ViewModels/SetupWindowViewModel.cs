@@ -46,8 +46,7 @@ namespace CNCLib.WpfClient.ViewModels
             _joystickService = joystickService ?? throw new ArgumentNullException();
             _mapper          = mapper ?? throw new ArgumentNullException();
             _global          = global ?? throw new ArgumentNullException();
-            ;
-            ResetOnConnect = false;
+            ResetOnConnect   = false;
         }
 
         readonly         IFactory<IMachineService>  _machineService;
