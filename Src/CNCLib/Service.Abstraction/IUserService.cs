@@ -26,5 +26,7 @@ namespace CNCLib.Service.Abstraction
     public interface IUserService : IDisposable, ICRUDService<User, int>
     {
         Task<User> GetByName(string username);
+
+        Task<bool> IsValidUser(string username, string password);
     }
 }

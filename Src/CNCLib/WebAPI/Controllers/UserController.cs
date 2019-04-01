@@ -57,6 +57,18 @@ namespace CNCLib.WebAPI.Controllers
             return await this.GetAll(_manager);
         }
 
+        [HttpGet("isValidUser")]
+        public async Task<ActionResult<string>> IsValidUser(string userName, string password)
+        {
+            bool isValidUser = false;
+
+            if (!string.IsNullOrEmpty(userName))
+            {
+                 isValidUser = await _manager.IsValidUser(userName, password);
+            }
+            return Ok(isValidUser ? "true" : "false");
+        }
+
         #region default REST
 
         [HttpGet("{id:int}")]

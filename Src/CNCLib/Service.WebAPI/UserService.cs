@@ -43,6 +43,18 @@ namespace CNCLib.Service.WebAPI
                     .AddQuery(new UriQueryBuilder().Add("username", username)))).FirstOrDefault();
         }
 
+        public async Task<bool> IsValidUser(string username, string password)
+        {
+            var isValidUserString = await CreateHttpClientAndReadString(
+                CreatePathBuilder()
+                    .AddPath("isValidUser")
+                    .AddQuery(new UriQueryBuilder()
+                        .Add("username", username)
+                        .Add("password", password)));
+            return isValidUserString.Trim('"') == @"true";
+        }
+
+
         #region IDisposable Support
 
         #endregion

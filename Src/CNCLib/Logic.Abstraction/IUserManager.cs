@@ -24,5 +24,7 @@ namespace CNCLib.Logic.Abstraction
     public interface IUserManager : ICRUDManager<DTO.User, int>
     {
         Task<DTO.User> GetByName(string username);
+
+        Task<bool> IsValidUser(string username, string password);
     }
 }
