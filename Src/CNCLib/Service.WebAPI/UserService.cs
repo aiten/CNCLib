@@ -15,12 +15,14 @@
 */
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 using CNCLib.Logic.Abstraction.DTO;
 using CNCLib.Service.Abstraction;
 
 using Framework.Service.WebAPI;
+using Framework.Service.WebAPI.Uri;
 
 namespace CNCLib.Service.WebAPI
 {
@@ -34,22 +36,11 @@ namespace CNCLib.Service.WebAPI
 
         protected override int GetKey(User u) => u.UserId;
 
-        public Task<User> GetByName(string username)
+        public async Task<User> GetByName(string username)
         {
-            throw new NotImplementedException();
-            /*
-            using (HttpClient client = CreateHttpClient())
-            {
-                HttpResponseMessage response = await client.GetAsync(Api + "/" + username);
-                if (response.IsSuccessStatusCode)
-                {
-                    User value = await response.Content.ReadAsAsync<User>();
-                    return value;
-                }
-            }
-
-            return null;
-            */
+            return (await CreateHttpClientAndReadList<User>(
+                CreatePathBuilder()
+                    .AddQuery(new UriQueryBuilder().Add("username", username)))).FirstOrDefault();
         }
 
         #region IDisposable Support
