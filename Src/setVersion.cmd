@@ -1,3 +1,3 @@
-notepad Framework\SolutionItems\FrameworkSolutionInfoVersion.cs
-notepad CNCLib\SolutionItems\CNCLibSolutionInfoVersion.cs
+notepad Framework\Directory.Build.props
+notepad Directory.Build.props
 notepad NsisSetup\CNCLib.Global.nsi

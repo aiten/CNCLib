@@ -17,7 +17,7 @@
   ;--------------------------------
 
   !ifndef CopyFromFolder
-    !define CopyFromFolder "..\CNCLib\CNCLib.Serial.Server\bin\Debug\netcoreapp2.1"
+    !define CopyFromFolder "..\CNCLib.Serial.Server\bin\Debug\netcoreapp2.1"
   !endif 
   
 ;--------------------------------
