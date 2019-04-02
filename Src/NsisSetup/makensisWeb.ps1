@@ -1,6 +1,6 @@
 Param(
 	[Parameter(Mandatory=$False)]
-    [string]$SourceBinFolder = "..\CNCLib\WpfClient.WebAPI.Start\bin\Debug"
+    [string]$SourceBinFolder = "..\WpfClient.WebAPI.Start\bin\Debug"
 )
 
 $OutputDir = "./Output"
