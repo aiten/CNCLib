@@ -24,6 +24,8 @@ using Microsoft.AspNetCore.Mvc;
 
 using CNCLib.Shared;
 
+using Framework.WebAPI.Controller;
+
 namespace CNCLib.WebAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -62,12 +64,7 @@ namespace CNCLib.WebAPI.Controllers
             };
 
             var m = await _eepromConfigurationManager.CalculateConfig(input);
-            if (m == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(m);
+            return await this.NotFoundOrOk(m);
         }
     }
 }

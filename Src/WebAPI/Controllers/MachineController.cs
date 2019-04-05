@@ -107,12 +107,7 @@ namespace CNCLib.WebAPI.Controllers
         public async Task<ActionResult<Machine>> DefaultMachine()
         {
             var m = await _manager.DefaultMachine();
-            if (m == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(m);
+            return await this.NotFoundOrOk(m);
         }
 
         [Route("defaultmachine")]
