@@ -66,7 +66,7 @@ namespace CNCLib.WpfClient.Sql.Start
                 LogManager.ThrowExceptions = false;
 #endif
             }
-            catch (SqlException exception)
+            catch (SqlException)
             {
                 // ignore Sql Exception
             }
