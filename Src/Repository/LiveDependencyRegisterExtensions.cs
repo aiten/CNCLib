@@ -34,11 +34,11 @@ namespace CNCLib.Repository
             var options = new DbContextOptionsBuilder<CNCLibContext>();
             optionsAction(options);
 
-            Dependency.Container.RegisterInstance<DbContextOptions<CNCLibContext>>(options.Options);
-            Dependency.Container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
-            Dependency.Container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
+            container.RegisterInstance<DbContextOptions<CNCLibContext>>(options.Options);
+            container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
+            container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
-            Dependency.Container.RegisterTypesIncludingInternals(typeof(Repository.MachineRepository).Assembly);
+            container.RegisterTypesIncludingInternals(DependencyLivetime.Transient, typeof(Repository.MachineRepository).Assembly);
             return container;
         }
     }

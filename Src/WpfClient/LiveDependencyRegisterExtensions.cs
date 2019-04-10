@@ -27,16 +27,17 @@ namespace CNCLib.WpfClient
     {
         public static IDependencyContainer RegisterCNCLibWpf(this IDependencyContainer container)
         {
-            Dependency.Container.RegisterInstance(new Global());
-
-            Dependency.Container.RegisterType<IJoystickService, JoystickService>();
-
-            Dependency.Container.RegisterType<IFactory<IMachineService>, FactoryResolve<IMachineService>>();
-            Dependency.Container.RegisterType<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>();
-            Dependency.Container.RegisterType<IFactory<IJoystickService>, FactoryResolve<IJoystickService>>();
-            Dependency.Container.RegisterType<IFactory<IUserService>, FactoryResolve<IUserService>>();
-
-            Dependency.Container.RegisterTypesByName(n => n.EndsWith("ViewModel"), typeof(ViewModels.MachineViewModel).Assembly, typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
+            container.RegisterInstance(new Global())
+            .RegisterType<IJoystickService, JoystickService>()
+            .RegisterType<IFactory<IMachineService>, FactoryResolve<IMachineService>>()
+            .RegisterType<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>()
+            .RegisterType<IFactory<IJoystickService>, FactoryResolve<IJoystickService>>()
+            .RegisterType<IFactory<IUserService>, FactoryResolve<IUserService>>()
+            .RegisterTypesByName(
+                n => n.EndsWith("ViewModel"),
+                DependencyLivetime.Transient,
+                typeof(ViewModels.MachineViewModel).Assembly,
+                typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
 
             return container;
         }
