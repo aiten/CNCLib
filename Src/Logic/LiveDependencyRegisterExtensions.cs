@@ -23,7 +23,7 @@ namespace CNCLib.Logic
     {
         public static IDependencyContainer RegisterLogic(this IDependencyContainer container)
         {
-            Dependency.Container.RegisterTypesIncludingInternals(typeof(Manager.MachineManager).Assembly);
+            container.RegisterTypesIncludingInternals(DependencyLivetime.Transient, typeof(Manager.MachineManager).Assembly);
             return container;
         }
     }

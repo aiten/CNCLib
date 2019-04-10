@@ -68,27 +68,26 @@ namespace CNCLib.WpfClient.Start
 
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
-            Dependency.Initialize(new LiveDependencyProvider());
-
-            Dependency.Container.RegisterFrameWorkTools();
-            Dependency.Container.RegisterFrameWorkLogging();
-            Dependency.Container.RegisterRepository(SqliteDatabaseTools.OptionBuilder);
-            Dependency.Container.RegisterLogic();
-            Dependency.Container.RegisterLogicClient();
-            Dependency.Container.RegisterSerialCommunication();
-            Dependency.Container.RegisterServiceAsLogic();
-            Dependency.Container.RegisterCNCLibWpf();
-            Dependency.Container.RegisterMapper(
-                new MapperConfiguration(
-                    cfg =>
-                    {
-                        cfg.AddProfile<LogicAutoMapperProfile>();
-                        cfg.AddProfile<WpfAutoMapperProfile>();
-                        cfg.AddProfile<GCodeGUIAutoMapperProfile>();
-                    }));
-
             var userContext = new CNCLibUserContext();
-            Dependency.Container.RegisterInstance((ICNCLibUserContext)userContext);
+
+            Dependency.Initialize(new LiveDependencyProvider())
+                .RegisterFrameWorkTools()
+                .RegisterFrameWorkLogging()
+                .RegisterRepository(SqliteDatabaseTools.OptionBuilder)
+                .RegisterLogic()
+                .RegisterLogicClient()
+                .RegisterSerialCommunication()
+                .RegisterServiceAsLogic()
+                .RegisterCNCLibWpf()
+                .RegisterMapper(
+                    new MapperConfiguration(
+                        cfg =>
+                        {
+                            cfg.AddProfile<LogicAutoMapperProfile>();
+                            cfg.AddProfile<WpfAutoMapperProfile>();
+                            cfg.AddProfile<GCodeGUIAutoMapperProfile>();
+                        }))
+                .RegisterInstance((ICNCLibUserContext)userContext);
 
             // Open Database here
 

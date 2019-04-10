@@ -36,6 +36,7 @@ using Framework.Arduino.SerialCommunication;
 using Framework.Dependency;
 using Framework.Mapper;
 using Framework.Tools;
+using Framework.Logging;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -59,7 +60,7 @@ namespace CNCLib.WpfClient.Sql.Start
 #if DEBUG
                 LogManager.ThrowExceptions = true;
 #endif
-                Logger logger = LogManager.GetLogger("foo");
+                NLog.Logger logger = LogManager.GetLogger("foo");
 
                 _logger.Info(@"Starting ...");
 #if DEBUG
@@ -73,27 +74,26 @@ namespace CNCLib.WpfClient.Sql.Start
 
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
-            Dependency.Initialize(new LiveDependencyProvider());
-
-            Dependency.Container.RegisterFrameWorkTools();
-            Framework.Logging.LiveDependencyRegisterExtensions.RegisterFrameWorkLogging(Dependency.Container);
-            Dependency.Container.RegisterRepository(SqlServerDatabaseTools.OptionBuilder);
-            Dependency.Container.RegisterLogic();
-            Dependency.Container.RegisterLogicClient();
-            Dependency.Container.RegisterSerialCommunication();
-            Dependency.Container.RegisterServiceAsLogic();
-            Dependency.Container.RegisterCNCLibWpf();
-            Dependency.Container.RegisterMapper(
-                new MapperConfiguration(
-                    cfg =>
-                    {
-                        cfg.AddProfile<LogicAutoMapperProfile>();
-                        cfg.AddProfile<WpfAutoMapperProfile>();
-                        cfg.AddProfile<GCodeGUIAutoMapperProfile>();
-                    }));
-
             var userContext = new CNCLibUserContext();
-            Dependency.Container.RegisterInstance((ICNCLibUserContext)userContext);
+
+            Dependency.Initialize(new LiveDependencyProvider())
+                .RegisterFrameWorkTools()
+                .RegisterFrameWorkLogging()
+                .RegisterRepository(SqlServerDatabaseTools.OptionBuilder)
+                .RegisterLogic()
+                .RegisterLogicClient()
+                .RegisterSerialCommunication()
+                .RegisterServiceAsLogic()
+                .RegisterCNCLibWpf()
+                .RegisterMapper(
+                    new MapperConfiguration(
+                        cfg =>
+                        {
+                            cfg.AddProfile<LogicAutoMapperProfile>();
+                            cfg.AddProfile<WpfAutoMapperProfile>();
+                            cfg.AddProfile<GCodeGUIAutoMapperProfile>();
+                        }))
+                .RegisterInstance((ICNCLibUserContext)userContext);
 
             // Open Database here
 

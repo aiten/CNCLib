@@ -23,7 +23,7 @@ namespace CNCLib.Service.WebAPI
     {
         public static IDependencyContainer RegisterServiceAsWebAPI(this IDependencyContainer container)
         {
-            Dependency.Container.RegisterTypesIncludingInternals(typeof(MachineService).Assembly);
+            container.RegisterTypesIncludingInternals(DependencyLivetime.Transient, typeof(MachineService).Assembly);
             return container;
         }
     }

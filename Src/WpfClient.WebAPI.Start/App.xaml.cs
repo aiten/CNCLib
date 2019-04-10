@@ -49,25 +49,26 @@ namespace CNCLib.WpfClient.WebAPI.Start
             _logger.Info(@"Starting ...");
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
-            Dependency.Initialize(new LiveDependencyProvider());
-
-            Dependency.Container.RegisterFrameWorkTools();
-            Dependency.Container.RegisterFrameWorkLogging();
-            Dependency.Container.RegisterLogicClient();
-            Dependency.Container.RegisterSerialCommunication();
-            Dependency.Container.RegisterServiceAsWebAPI();
-            Dependency.Container.RegisterCNCLibWpf();
-
-            Dependency.Container.RegisterMapper(
-                new MapperConfiguration(
-                    cfg =>
-                    {
-                        cfg.AddProfile<WpfAutoMapperProfile>();
-                        cfg.AddProfile<GCodeGUIAutoMapperProfile>();
-                    }));
-
             ICNCLibUserContext userContext = new CNCLibUserContext();
-            Dependency.Container.RegisterInstance(userContext);
+
+            Dependency.Initialize(new LiveDependencyProvider())
+
+                .RegisterFrameWorkTools()
+                .RegisterFrameWorkLogging()
+                .RegisterLogicClient()
+                .RegisterSerialCommunication()
+                .RegisterServiceAsWebAPI()
+                .RegisterCNCLibWpf()
+
+                .RegisterMapper(
+                    new MapperConfiguration(
+                        cfg =>
+                        {
+                            cfg.AddProfile<WpfAutoMapperProfile>();
+                            cfg.AddProfile<GCodeGUIAutoMapperProfile>();
+                        }))
+
+                .RegisterInstance(userContext);
 
             // Open WebAPI Connection
             //
