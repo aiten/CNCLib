@@ -23,6 +23,7 @@ using CNCLib.Serial.WebAPI.Hubs;
 using CNCLib.Serial.WebAPI.SerialPort;
 
 using Framework.Arduino.Linux.SerialCommunication;
+using Framework.Arduino.SerialCommunication;
 using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Dependency;
 using Framework.Dependency.Abstraction;
@@ -81,6 +82,7 @@ namespace CNCLib.Serial.Server
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "CNCLib API", Version = "v1" }); });
 
             var container = Dependency.Initialize(new MsDependencyProvider(services))
+                .RegisterSerialCommunication()
                 .RegisterFrameWorkTools()
                 .RegisterFrameWorkLogging()
                 .RegisterTypesIncludingInternals(DependencyLivetime.Scoped, typeof(Framework.Arduino.SerialCommunication.Serial).Assembly);
