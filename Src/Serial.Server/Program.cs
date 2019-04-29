@@ -27,6 +27,8 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.ServiceProcess;
 
+using Framework.WebAPI.Host;
+
 using NLog;
 
 using ILogger = NLog.ILogger;
@@ -48,7 +50,7 @@ namespace CNCLib.Serial.Server
             else
             {
                 localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                if (!Directory.Exists(localAppData) || RunsAsService())
+                if (!Directory.Exists(localAppData) || ProgramUtilities.RunsAsService())
                 {
                     // service user
                     localAppData = Environment.GetEnvironmentVariable("ProgramData");
@@ -71,7 +73,7 @@ namespace CNCLib.Serial.Server
 
         private static void StartWebService(string[] args)
         {
-            if (RunsAsService())
+            if (ProgramUtilities.RunsAsService())
             {
                 Environment.CurrentDirectory = BaseDirectory;
 
@@ -82,24 +84,6 @@ namespace CNCLib.Serial.Server
                 BuildWebHost(args).Run();
                 LogManager.Shutdown();
             }
-        }
-
-        [DllImport("kernel32.dll")]
-        static extern IntPtr GetConsoleWindow();
-
-        private static bool CheckForConsoleWindow()
-        {
-            return GetConsoleWindow() == IntPtr.Zero;
-        }
-
-        private static bool RunsAsService()
-        {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Microsoft.Azure.Web.DataProtection.Util.IsAzureEnvironment() == false)
-            {
-                return CheckForConsoleWindow();
-            }
-
-            return false; // never can be a windows service
         }
 
         private sealed class CNCLibServerService : ServiceBase

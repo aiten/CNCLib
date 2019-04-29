@@ -17,8 +17,9 @@
 using System;
 using System.IO;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.ServiceProcess;
+
+using Framework.WebAPI.Host;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -56,7 +57,7 @@ namespace CNCLib.Server
 
         private static void StartWebService(string[] args)
         {
-            if (RunsAsService())
+            if (ProgramUtilities.RunsAsService())
             {
                 Environment.CurrentDirectory = BaseDirectory;
 
@@ -67,24 +68,6 @@ namespace CNCLib.Server
                 BuildWebHost(args).Run();
                 LogManager.Shutdown();
             }
-        }
-
-        [DllImport("kernel32.dll")]
-        static extern IntPtr GetConsoleWindow();
-
-        private static bool CheckForConsoleWindow()
-        {
-            return GetConsoleWindow() == IntPtr.Zero;
-        }
-
-        private static bool RunsAsService()
-        {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Microsoft.Azure.Web.DataProtection.Util.IsAzureEnvironment() == false)
-            {
-                return CheckForConsoleWindow();
-            }
-
-            return false; // never can be a windows service
         }
 
         private sealed class CNCLibServerService : ServiceBase
