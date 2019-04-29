@@ -46,6 +46,7 @@
     <ProjectReference Include="..\Framework\Tools\Tools.csproj" />
     <ProjectReference Include="..\Framework\Arduino.Linux\Arduino.Linux.csproj" />
     <ProjectReference Include="..\Framework\Arduino\Arduino.csproj" />
+    <ProjectReference Include="..\Framework\WebAPI.Host\WebAPI.Host.csproj" />
     <ProjectReference Include="..\Framework\WebAPI\WebAPI.csproj" />
     <ProjectReference Include="..\Serial.Shared\Serial.Shared.csproj" />
     <ProjectReference Include="..\Serial.WebAPI\Serial.WebAPI.csproj" />

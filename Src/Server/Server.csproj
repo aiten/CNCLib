@@ -45,6 +45,7 @@
     <ProjectReference Include="..\Framework\Logging\Logging.csproj" />
     <ProjectReference Include="..\Framework\Mapper\Mapper.csproj" />
     <ProjectReference Include="..\Framework\Repository\Repository.csproj" />
+    <ProjectReference Include="..\Framework\WebAPI.Host\WebAPI.Host.csproj" />
     <ProjectReference Include="..\Framework\WebAPI\WebAPI.csproj" />
     <ProjectReference Include="..\GCode\GCode.csproj" />
     <ProjectReference Include="..\Logic.Client\Logic.Client.csproj" />
