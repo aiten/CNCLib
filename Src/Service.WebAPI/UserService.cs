@@ -38,14 +38,14 @@ namespace CNCLib.Service.WebAPI
 
         public async Task<User> GetByName(string username)
         {
-            return (await CreateHttpClientAndReadList<User>(
+            return (await ReadList<User>(
                 CreatePathBuilder()
                     .AddQuery(new UriQueryBuilder().Add("username", username)))).FirstOrDefault();
         }
 
         public async Task<bool> IsValidUser(string username, string password)
         {
-            var isValidUserString = await CreateHttpClientAndReadString(
+            var isValidUserString = await ReadString(
                 CreatePathBuilder()
                     .AddPath("isValidUser")
                     .AddQuery(new UriQueryBuilder()

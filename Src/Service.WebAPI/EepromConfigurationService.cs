@@ -35,23 +35,22 @@ namespace CNCLib.Service.WebAPI
 
         public async Task<EepromConfiguration> CalculateConfig(EepromConfigurationInput param)
         {
-            using (HttpClient client = CreateHttpClient())
-            {
-                var paramUri = new UriQueryBuilder();
-                paramUri.Add("teeth", param.Teeth)
-                    .Add("toothSizeInMm",          param.ToothSizeInMm)
-                    .Add("microSteps",             param.MicroSteps)
-                    .Add("stepsPerRotation",       param.StepsPerRotation)
-                    .Add("estimatedRotationSpeed", param.EstimatedRotationSpeed)
-                    .Add("timeToAcc",              param.TimeToAcc)
-                    .Add("timeToDec",              param.TimeToDec);
+            var client = GetHttpClient();
 
-                HttpResponseMessage response = await client.GetAsync(CreatePathBuilder().AddQuery(paramUri).Build());
-                if (response.IsSuccessStatusCode)
-                {
-                    EepromConfiguration value = await response.Content.ReadAsAsync<EepromConfiguration>();
-                    return value;
-                }
+            var paramUri = new UriQueryBuilder();
+            paramUri.Add("teeth", param.Teeth)
+                .Add("toothSizeInMm",          param.ToothSizeInMm)
+                .Add("microSteps",             param.MicroSteps)
+                .Add("stepsPerRotation",       param.StepsPerRotation)
+                .Add("estimatedRotationSpeed", param.EstimatedRotationSpeed)
+                .Add("timeToAcc",              param.TimeToAcc)
+                .Add("timeToDec",              param.TimeToDec);
+
+            HttpResponseMessage response = await client.GetAsync(CreatePathBuilder().AddQuery(paramUri).Build());
+            if (response.IsSuccessStatusCode)
+            {
+                EepromConfiguration value = await response.Content.ReadAsAsync<EepromConfiguration>();
+                return value;
             }
 
             return null;

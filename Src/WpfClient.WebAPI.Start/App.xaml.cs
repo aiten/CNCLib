@@ -16,6 +16,7 @@
 
 using System;
 using System.Globalization;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
@@ -69,6 +70,16 @@ namespace CNCLib.WpfClient.WebAPI.Start
                         }))
 
                 .RegisterInstance(userContext);
+
+            Framework.Service.WebAPI.HttpClientFactory.Instance.RegisterCreateHttpClient(
+                @"http://cnclibwebapi.azurewebsites.net",
+                s =>
+                {
+                    var client = new HttpClient() { BaseAddress = new System.Uri(s) };
+                    Framework.Service.WebAPI.HttpClientFactory.DefaultConfigureHttpClient(client);
+                    return client;
+
+                });
 
             // Open WebAPI Connection
             //

@@ -43,20 +43,19 @@ namespace CNCLib.Service.WebAPI
 
         public async Task<IEnumerable<Item>> GetByClassName(string classname)
         {
-            using (HttpClient client = CreateHttpClient())
+            var client = GetHttpClient();
+
+            var paramUri = new UriQueryBuilder();
+            paramUri.Add("classname", classname);
+
+            HttpResponseMessage response = await client.GetAsync(CreatePathBuilder().AddQuery(paramUri).Build());
+            if (response.IsSuccessStatusCode)
             {
-                var paramUri = new UriQueryBuilder();
-                paramUri.Add("classname", classname);
-
-                HttpResponseMessage response = await client.GetAsync(CreatePathBuilder().AddQuery(paramUri).Build());
-                if (response.IsSuccessStatusCode)
-                {
-                    IEnumerable<Item> items = await response.Content.ReadAsAsync<IEnumerable<Item>>();
-                    return items;
-                }
-
-                return null;
+                IEnumerable<Item> items = await response.Content.ReadAsAsync<IEnumerable<Item>>();
+                return items;
             }
+
+            return null;
         }
     }
 }

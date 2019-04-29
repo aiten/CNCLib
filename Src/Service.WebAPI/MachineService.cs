@@ -37,15 +37,14 @@ namespace CNCLib.Service.WebAPI
 
         public async Task<Machine> DefaultMachine()
         {
-            using (HttpClient client = CreateHttpClient())
-            {
-                HttpResponseMessage response = await client.GetAsync(CreatePathBuilder().AddPath("default").Build());
-                if (response.IsSuccessStatusCode)
-                {
-                    var value = await response.Content.ReadAsAsync<Machine>();
+            var client = GetHttpClient();
 
-                    return value;
-                }
+            HttpResponseMessage response = await client.GetAsync(CreatePathBuilder().AddPath("default").Build());
+            if (response.IsSuccessStatusCode)
+            {
+                var value = await response.Content.ReadAsAsync<Machine>();
+
+                return value;
             }
 
             return null;
@@ -53,15 +52,14 @@ namespace CNCLib.Service.WebAPI
 
         public async Task<int> GetDefaultMachine()
         {
-            using (HttpClient client = CreateHttpClient())
-            {
-                HttpResponseMessage response = await client.GetAsync(CreatePathBuilder().AddPath("defaultmachine").Build());
-                if (response.IsSuccessStatusCode)
-                {
-                    int value = await response.Content.ReadAsAsync<int>();
+            var client = GetHttpClient();
 
-                    return value;
-                }
+            HttpResponseMessage response = await client.GetAsync(CreatePathBuilder().AddPath("defaultmachine").Build());
+            if (response.IsSuccessStatusCode)
+            {
+                int value = await response.Content.ReadAsAsync<int>();
+
+                return value;
             }
 
             return -1;
@@ -69,16 +67,15 @@ namespace CNCLib.Service.WebAPI
 
         public async Task SetDefaultMachine(int id)
         {
-            using (HttpClient client = CreateHttpClient())
-            {
-                var paramUri = new UriQueryBuilder();
-                paramUri.Add("id", id);
-                HttpResponseMessage response = await client.PutAsJsonAsync(CreatePathBuilder().AddPath("defaultmachine").AddQuery(paramUri).Build(), "dummy");
+            var client = GetHttpClient();
 
-                if (response.IsSuccessStatusCode)
-                {
-                    return;
-                }
+            var paramUri = new UriQueryBuilder();
+            paramUri.Add("id", id);
+            HttpResponseMessage response = await client.PutAsJsonAsync(CreatePathBuilder().AddPath("defaultmachine").AddQuery(paramUri).Build(), "dummy");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return;
             }
         }
 
