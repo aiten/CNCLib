@@ -1,11 +1,13 @@
-﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.68">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
   <PropertyGroup>
     <TargetFramework>$(TargetFrameworkForFull)</TargetFramework>
-    <ApplicationIcon>Properties\CNCLib.ico</ApplicationIcon>
     <OutputType>WinExe</OutputType>
+    <UseWPF>true</UseWPF>
     <StartupObject>CNCLib.WpfClient.WebAPI.Start.App</StartupObject>
-    <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
+    <ApplicationIcon>Properties\CNCLib.ico</ApplicationIcon>
   </PropertyGroup>
+
   <ItemGroup>
     <None Remove="NLog.config" />
   </ItemGroup>
@@ -13,22 +15,6 @@
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="netstandard" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

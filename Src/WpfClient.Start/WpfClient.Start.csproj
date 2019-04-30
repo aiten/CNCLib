@@ -1,10 +1,11 @@
-﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.68">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
   <PropertyGroup>
     <TargetFramework>$(TargetFrameworkForFull)</TargetFramework>
-    <ApplicationIcon>Properties\CNCLib.ico</ApplicationIcon>
     <OutputType>WinExe</OutputType>
+    <UseWPF>true</UseWPF>
     <StartupObject>CNCLib.WpfClient.Start.App</StartupObject>
-    <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
+    <ApplicationIcon>Properties\CNCLib.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="NLog.config" />
@@ -17,22 +18,6 @@
     <Compile Update="App.xaml.cs" DependentUpon="App.xaml" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="netstandard" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Framework\Arduino\Arduino.csproj" />
     <ProjectReference Include="..\Framework\Dependency\Dependency.csproj" />
@@ -64,6 +49,7 @@
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.110</Version>
     </PackageReference>
+    <PackageReference Include="System.Management" Version="4.6.0-preview4.19212.13" />
   </ItemGroup>
 
 </Project>
