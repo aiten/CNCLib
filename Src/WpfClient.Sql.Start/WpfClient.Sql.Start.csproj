@@ -49,6 +49,7 @@
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.110</Version>
     </PackageReference>
+    <PackageReference Include="System.Management" Version="4.6.0-preview4.19212.13" />
   </ItemGroup>
 
 </Project>
