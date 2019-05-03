@@ -38,6 +38,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Serialization;
 
@@ -73,13 +74,13 @@ namespace CNCLib.Serial.Server
                         options.Filters.AddService<UnhandledExceptionFilter>();
                     })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
+                .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
                 .AddApplicationPart(controllerAssembly);
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
 
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "CNCLib API", Version = "v1" }); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "CNCLib API", Version = "v1" }); });
 
             var container = Dependency.Initialize(new MsDependencyProvider(services))
                 .RegisterSerialCommunication()
