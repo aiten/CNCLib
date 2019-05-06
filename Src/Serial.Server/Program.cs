@@ -81,7 +81,7 @@ namespace CNCLib.Serial.Server
             }
             else
             {
-                BuildWebHost(args).Run();
+                BuildWebHost(args).Build().Run();
                 LogManager.Shutdown();
             }
         }
@@ -96,7 +96,7 @@ namespace CNCLib.Serial.Server
                 try
                 {
 //                  string[] imagePathArgs = Environment.GetCommandLineArgs();
-                    _webHost = BuildWebHost(args);
+                    _webHost = BuildWebHost(args).Build();
                     _webHost.Start();
                 }
                 catch (Exception e)
@@ -115,13 +115,18 @@ namespace CNCLib.Serial.Server
 
         private static string BaseDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-        private static IWebHost BuildWebHost(string[] args)
+        private static IWebHostBuilder BuildWebHost(string[] args)
         {
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("hosting.json", optional: true)
                 .AddCommandLine(args).Build();
-            return WebHost.CreateDefaultBuilder(args).UseKestrel().UseConfiguration(config).UseStartup<Startup>().ConfigureLogging(logging => { logging.ClearProviders(); }).UseNLog().Build();
+            return WebHost.CreateDefaultBuilder(args)
+                .UseKestrel()
+                .UseConfiguration(config)
+                .UseStartup<Startup>()
+                .ConfigureLogging(logging => { logging.ClearProviders(); })
+                .UseNLog();
         }
     }
 }

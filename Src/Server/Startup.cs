@@ -87,7 +87,7 @@ namespace CNCLib.Server
                         options.Filters.AddService<MethodCallLogFilter>();
                     })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-                .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
+//                .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
                 .AddApplicationPart(controllerAssembly);
 
             // Register the Swagger generator, defining one or more Swagger documents
