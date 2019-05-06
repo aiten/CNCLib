@@ -80,7 +80,7 @@ namespace CNCLib.Serial.Server
                         options.Filters.AddService<MethodCallLogFilter>();
                     })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-                .AddNewtonsoftJson()
+                //.AddNewtonsoftJson()
                 .AddApplicationPart(controllerAssembly);
 
             // In production, the Angular files will be served from this directory
