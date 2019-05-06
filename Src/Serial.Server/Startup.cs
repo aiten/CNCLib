@@ -36,9 +36,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Hosting;
 
 using Newtonsoft.Json.Serialization;
 
@@ -61,6 +63,9 @@ namespace CNCLib.Serial.Server
         {
             var controllerAssembly = typeof(HomeController).Assembly;
 
+            services.AddControllers();
+            services.AddRazorPages();
+
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowCredentials().AllowAnyMethod().AllowAnyHeader()));
 
             services.AddSignalR(hu => hu.EnableDetailedErrors = true);
@@ -73,7 +78,7 @@ namespace CNCLib.Serial.Server
                         options.Filters.AddService<ValidateRequestDataFilter>();
                         options.Filters.AddService<UnhandledExceptionFilter>();
                     })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
                 .AddApplicationPart(controllerAssembly);
 
@@ -94,13 +99,11 @@ namespace CNCLib.Serial.Server
             }
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             Services = app.ApplicationServices;
 
             SerialPortWrapper.OnCreateHub = () => Hub;
-
-            //Services = serviceProvider;
 
             if (env.IsDevelopment())
             {
@@ -112,6 +115,8 @@ namespace CNCLib.Serial.Server
                 app.UseHsts();
             }
 
+            app.UseStaticFiles();
+            app.UseRouting();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
@@ -131,7 +136,12 @@ namespace CNCLib.Serial.Server
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "CNCLib API V1"); });
 
-            app.UseMvc(routes => { routes.MapRoute(name: "default", template: "{instance}/{action=Index}/{id?}"); });
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller}/{action=Index}/{id?}");
+            });
 
             app.UseSpa(
                 spa =>
