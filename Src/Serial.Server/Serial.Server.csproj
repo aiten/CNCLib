@@ -23,7 +23,7 @@
     <PackageReference Include="Ben.Demystifier" Version="0.1.4" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="2.0.1" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.8.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc2" />
   </ItemGroup>
 
   <ItemGroup>

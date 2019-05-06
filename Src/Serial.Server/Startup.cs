@@ -36,12 +36,15 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 using Newtonsoft.Json.Serialization;
 
 using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.OpenApi.Models;
 
 namespace CNCLib.Serial.Server
 {
@@ -60,26 +63,30 @@ namespace CNCLib.Serial.Server
         {
             var controllerAssembly = typeof(HomeController).Assembly;
 
-            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowCredentials().AllowAnyMethod().AllowAnyHeader()));
+            services.AddControllers();
+
+            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
             services.AddSignalR(hu => hu.EnableDetailedErrors = true);
 
             services.AddTransient<UnhandledExceptionFilter>();
             services.AddTransient<ValidateRequestDataFilter>();
+            services.AddTransient<MethodCallLogFilter>();
             services.AddMvc(
                     options =>
                     {
                         options.Filters.AddService<ValidateRequestDataFilter>();
                         options.Filters.AddService<UnhandledExceptionFilter>();
+                        options.Filters.AddService<MethodCallLogFilter>();
                     })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
- //               .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
+                .AddNewtonsoftJson()
                 .AddApplicationPart(controllerAssembly);
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
 
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "CNCLib API", Version = "v1" }); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "CNCLib API", Version = "v1" }); });
 
             var container = Dependency.Initialize(new MsDependencyProvider(services))
                 .RegisterSerialCommunication()
@@ -93,13 +100,11 @@ namespace CNCLib.Serial.Server
             }
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             Services = app.ApplicationServices;
 
             SerialPortWrapper.OnCreateHub = () => Hub;
-
-            //Services = serviceProvider;
 
             if (env.IsDevelopment())
             {
@@ -111,6 +116,8 @@ namespace CNCLib.Serial.Server
                 app.UseHsts();
             }
 
+            app.UseStaticFiles();
+            app.UseRouting();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
@@ -130,12 +137,11 @@ namespace CNCLib.Serial.Server
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "CNCLib API V1"); });
 
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
+
 
             app.UseSpa(spa =>
             {
