@@ -80,7 +80,8 @@ namespace CNCLib.Serial.Server
                         options.Filters.AddService<MethodCallLogFilter>();
                     })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-                //.AddNewtonsoftJson()
+                .AddNewtonsoftJson(options =>
+                       options.SerializerSettings.ContractResolver = new DefaultContractResolver())
                 .AddApplicationPart(controllerAssembly);
 
             // In production, the Angular files will be served from this directory
@@ -113,18 +114,16 @@ namespace CNCLib.Serial.Server
             else
             {
                 app.UseExceptionHandler("/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
             app.UseStaticFiles();
             app.UseRouting();
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
             app.UseCors("AllowAll");
-
-            app.UseSignalR(router => { router.MapHub<CNCLibHub>("/serialSignalR"); });
 
             void callback(object x)
             {
@@ -140,6 +139,7 @@ namespace CNCLib.Serial.Server
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapHub<CNCLibHub>("/serialSignalR"); 
             });
 
 
