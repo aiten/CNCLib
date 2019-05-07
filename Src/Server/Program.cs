@@ -29,8 +29,6 @@ using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Web;
 
-using ILogger = NLog.ILogger;
-
 namespace CNCLib.Server
 {
     public class Program
@@ -46,7 +44,7 @@ namespace CNCLib.Server
 #endif
             try
             {
-                StartWebService(args);
+                ProgramUtilities.StartWebService(args, BuildWebHost);
             }
             catch (Exception e)
             {
@@ -55,49 +53,6 @@ namespace CNCLib.Server
             }
         }
 
-        private static void StartWebService(string[] args)
-        {
-            if (ProgramUtilities.RunsAsService())
-            {
-                Environment.CurrentDirectory = BaseDirectory;
-
-                ServiceBase.Run(new ServiceBase[] { new CNCLibServerService() });
-            }
-            else
-            {
-                BuildWebHost(args).Build().Run();
-                LogManager.Shutdown();
-            }
-        }
-
-        private sealed class CNCLibServerService : ServiceBase
-        {
-            private          IWebHost _webHost;
-            private readonly ILogger  _logger = LogManager.GetCurrentClassLogger();
-
-            protected override void OnStart(string[] args)
-            {
-                try
-                {
-                    _webHost = BuildWebHost(args).Build();
-                    _webHost.Start();
-                }
-                catch (Exception e)
-                {
-                    _logger.Fatal(e);
-                    throw;
-                }
-            }
-
-            protected override void OnStop()
-            {
-                LogManager.Shutdown();
-                _webHost.Dispose();
-            }
-        }
-
-        private static string BaseDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
         private static IWebHostBuilder BuildWebHost(string[] args)
         {
             var config = new ConfigurationBuilder()
@@ -105,7 +60,6 @@ namespace CNCLib.Server
                 .AddJsonFile("hosting.json", optional: true)
                 .AddCommandLine(args).Build();
             return WebHost.CreateDefaultBuilder(args)
-                .UseKestrel()
                 .UseConfiguration(config)
                 .UseStartup<Startup>()
                 .ConfigureLogging(logging => { logging.ClearProviders(); })

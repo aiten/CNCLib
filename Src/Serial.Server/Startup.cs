@@ -75,6 +75,7 @@ namespace CNCLib.Serial.Server
             services.AddMvc(
                     options =>
                     {
+                        options.EnableEndpointRouting = false;
                         options.Filters.AddService<ValidateRequestDataFilter>();
                         options.Filters.AddService<UnhandledExceptionFilter>();
                         options.Filters.AddService<MethodCallLogFilter>();
@@ -119,9 +120,10 @@ namespace CNCLib.Serial.Server
             }
 
             app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+
             app.UseRouting();
             app.UseHttpsRedirection();
-            app.UseSpaStaticFiles();
 
             app.UseCors("AllowAll");
 
@@ -138,8 +140,9 @@ namespace CNCLib.Serial.Server
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapHub<CNCLibHub>("/serialSignalR"); 
+                endpoints.MapHub<CNCLibHub>("/serialSignalR");
+                endpoints.MapDefaultControllerRoute();
+                //endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
 
 

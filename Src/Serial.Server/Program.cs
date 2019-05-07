@@ -31,8 +31,6 @@ using Framework.WebAPI.Host;
 
 using NLog;
 
-using ILogger = NLog.ILogger;
-
 namespace CNCLib.Serial.Server
 {
     public class Program
@@ -62,7 +60,7 @@ namespace CNCLib.Serial.Server
             try
             {
                 logger.Info("Starting (Main)");
-                StartWebService(args);
+                ProgramUtilities.StartWebService(args, BuildWebHost);
             }
             catch (Exception e)
             {
@@ -71,50 +69,6 @@ namespace CNCLib.Serial.Server
             }
         }
 
-        private static void StartWebService(string[] args)
-        {
-            if (ProgramUtilities.RunsAsService())
-            {
-                Environment.CurrentDirectory = BaseDirectory;
-
-                ServiceBase.Run(new ServiceBase[] { new CNCLibServerService() });
-            }
-            else
-            {
-                BuildWebHost(args).Build().Run();
-                LogManager.Shutdown();
-            }
-        }
-
-        private sealed class CNCLibServerService : ServiceBase
-        {
-            private IWebHost _webHost;
-            private ILogger  _logger = LogManager.GetCurrentClassLogger();
-
-            protected override void OnStart(string[] args)
-            {
-                try
-                {
-//                  string[] imagePathArgs = Environment.GetCommandLineArgs();
-                    _webHost = BuildWebHost(args).Build();
-                    _webHost.Start();
-                }
-                catch (Exception e)
-                {
-                    _logger.Fatal(e);
-                    throw;
-                }
-            }
-
-            protected override void OnStop()
-            {
-                LogManager.Shutdown();
-                _webHost.Dispose();
-            }
-        }
-
-        private static string BaseDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
         private static IWebHostBuilder BuildWebHost(string[] args)
         {
             var config = new ConfigurationBuilder()
@@ -122,7 +76,6 @@ namespace CNCLib.Serial.Server
                 .AddJsonFile("hosting.json", optional: true)
                 .AddCommandLine(args).Build();
             return WebHost.CreateDefaultBuilder(args)
-                .UseKestrel()
                 .UseConfiguration(config)
                 .UseStartup<Startup>()
                 .ConfigureLogging(logging => { logging.ClearProviders(); })
