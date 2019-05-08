@@ -37,6 +37,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -61,9 +62,9 @@ namespace CNCLib.Serial.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var controllerAssembly = typeof(HomeController).Assembly;
+            var controllerAssembly = typeof(InfoController).Assembly;
 
-            services.AddControllers();
+            //services.AddControllers();
 
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
@@ -81,8 +82,9 @@ namespace CNCLib.Serial.Server
                         options.Filters.AddService<MethodCallLogFilter>();
                     })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-                .AddNewtonsoftJson(options =>
-                       options.SerializerSettings.ContractResolver = new DefaultContractResolver())
+                .AddNewtonsoftJson(
+                    options =>
+                        options.SerializerSettings.ContractResolver = new DefaultContractResolver())
                 .AddApplicationPart(controllerAssembly);
 
             // In production, the Angular files will be served from this directory
