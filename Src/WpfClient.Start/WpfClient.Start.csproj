@@ -44,12 +44,12 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite">
-      <Version>2.2.4</Version>
+      <Version>3.0.0-preview5.19227.1</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.110</Version>
     </PackageReference>
-    <PackageReference Include="System.Management" Version="4.6.0-preview4.19212.13" />
+    <PackageReference Include="System.Management" Version="4.6.0-preview5.19224.8" />
   </ItemGroup>
 
 </Project>

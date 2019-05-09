@@ -3,7 +3,7 @@
     <TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.6.0-preview5.19224.8" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Framework\Pattern\Pattern.csproj" />
