@@ -26,7 +26,6 @@ using Framework.Arduino.Linux.SerialCommunication;
 using Framework.Arduino.SerialCommunication;
 using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Dependency;
-using Framework.Dependency.Abstraction;
 using Framework.Tools;
 using Framework.Logging;
 using Framework.WebAPI.Filter;
@@ -40,6 +39,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyModel;
 using Microsoft.Extensions.Hosting;
 
 using Newtonsoft.Json.Serialization;
@@ -92,15 +92,16 @@ namespace CNCLib.Serial.Server
 
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "CNCLib API", Version = "v1" }); });
 
-            var container = Dependency.Initialize(new MsDependencyProvider(services))
+            GlobalServiceCollection.Instance = services;
+            services
                 .RegisterSerialCommunication()
                 .RegisterFrameWorkTools()
                 .RegisterFrameWorkLogging()
-                .RegisterTypesIncludingInternals(DependencyLivetime.Scoped, typeof(Framework.Arduino.SerialCommunication.Serial).Assembly);
+                .RegisterTypesIncludingInternals(ServiceLifetime.Scoped, typeof(Framework.Arduino.SerialCommunication.Serial).Assembly);
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                container.RegisterTypeScoped<ISerialPort, SerialPortLib>();
+                services.AddScoped<ISerialPort, SerialPortLib>();
             }
         }
 

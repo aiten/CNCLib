@@ -23,6 +23,8 @@ using CNCLib.WpfClient.Models;
 using Framework.Dependency;
 using Framework.Wpf.Views;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using Xceed.Wpf.Toolkit.PropertyGrid;
 
 namespace CNCLib.WpfClient.Views
@@ -31,7 +33,7 @@ namespace CNCLib.WpfClient.Views
     {
         public LoginView()
         {
-            var vm = Dependency.Resolve<ViewModels.LoginViewModel>();
+            var vm = GlobalServiceCollection.Instance.BuildServiceProvider().GetService<ViewModels.LoginViewModel>();
             DataContext = vm;
 
             InitializeComponent();

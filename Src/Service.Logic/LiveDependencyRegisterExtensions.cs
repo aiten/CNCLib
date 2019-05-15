@@ -15,15 +15,16 @@
 */
 
 using Framework.Dependency;
-using Framework.Dependency.Abstraction;
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CNCLib.Service.Logic
 {
     public static class LiveDependencyRegisterExtensions
     {
-        public static IDependencyContainer RegisterServiceAsLogic(this IDependencyContainer container)
+        public static IServiceCollection RegisterServiceAsLogic(this IServiceCollection container)
         {
-            container.RegisterTypesIncludingInternals(DependencyLivetime.Transient, typeof(MachineService).Assembly);
+            container.RegisterTypesIncludingInternals(ServiceLifetime.Transient, typeof(MachineService).Assembly);
             return container;
         }
     }

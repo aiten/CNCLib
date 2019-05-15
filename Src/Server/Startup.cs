@@ -96,14 +96,15 @@ namespace CNCLib.Server
             // Register the Swagger generator, defining one or more Swagger documents
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "CNCLib API", Version = "v1" }); });
 
-            Dependency.Initialize(new MsDependencyProvider(services))
+            GlobalServiceCollection.Instance = services;
+            services
                 .RegisterFrameWorkTools()
                 .RegisterFrameWorkLogging()
                 .RegisterRepository(SqlServerDatabaseTools.OptionBuilder)
                 .RegisterLogic()
                 .RegisterLogicClient()
                 .RegisterServiceAsLogic() // used for Logic.Client
-                .RegisterTypeScoped<ICNCLibUserContext, CNCLibUserContext>()
+                .AddScoped<ICNCLibUserContext, CNCLibUserContext>()
                 .RegisterMapper(new MapperConfiguration(cfg => { cfg.AddProfile<LogicAutoMapperProfile>(); }));
         }
 

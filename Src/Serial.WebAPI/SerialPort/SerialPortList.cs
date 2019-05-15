@@ -21,6 +21,8 @@ using System.Linq;
 using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Dependency;
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace CNCLib.Serial.WebAPI.SerialPort
 {
     public class SerialPortList
@@ -53,7 +55,7 @@ namespace CNCLib.Serial.WebAPI.SerialPort
         {
             if (SerialPort == null)
             {
-                SerialPort = Dependency.Container.Resolve<ISerialPort>();
+                SerialPort = GlobalServiceCollection.Instance.BuildServiceProvider().GetService<ISerialPort>();
             }
 
             var portNames = SerialPort.GetPortNames();

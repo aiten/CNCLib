@@ -21,6 +21,8 @@ using CNCLib.WpfClient.ViewModels;
 using Framework.Dependency;
 using Framework.Wpf.Views;
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace CNCLib.WpfClient.Views
 {
     /// <summary>
@@ -30,7 +32,7 @@ namespace CNCLib.WpfClient.Views
     {
         public ManualControlPage()
         {
-            var vm = Dependency.Resolve<ManualControlViewModel>();
+            var vm = GlobalServiceCollection.Instance.BuildServiceProvider().GetService<ManualControlViewModel>();
             DataContext = vm;
 
             InitializeComponent();

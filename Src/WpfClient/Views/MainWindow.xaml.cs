@@ -19,6 +19,8 @@ using Framework.Wpf.ViewModels;
 
 using MahApps.Metro.Controls;
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace CNCLib.WpfClient.Views
 {
     /// <summary>
@@ -28,7 +30,7 @@ namespace CNCLib.WpfClient.Views
     {
         public MainWindow()
         {
-            var vm = Dependency.Resolve<ViewModels.MainWindowViewModel>();
+            var vm = GlobalServiceCollection.Instance.BuildServiceProvider().GetService<ViewModels.MainWindowViewModel>();
             DataContext = vm;
 
             InitializeComponent();
@@ -45,7 +47,7 @@ namespace CNCLib.WpfClient.Views
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            var global = Dependency.Resolve<Global>();
+            var global = GlobalServiceCollection.Instance.BuildServiceProvider().GetService<Global>();
 
             if (global.Com.LocalCom.IsConnected)
             {

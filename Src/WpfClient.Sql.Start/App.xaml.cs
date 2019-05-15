@@ -39,6 +39,7 @@ using Framework.Tools;
 using Framework.Logging;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 using NLog;
 
@@ -76,7 +77,8 @@ namespace CNCLib.WpfClient.Sql.Start
 
             var userContext = new CNCLibUserContext();
 
-            Dependency.Initialize(new LiveDependencyProvider())
+            GlobalServiceCollection.Instance = new ServiceCollection();
+            GlobalServiceCollection.Instance
                 .RegisterFrameWorkTools()
                 .RegisterFrameWorkLogging()
                 .RegisterRepository(SqlServerDatabaseTools.OptionBuilder)
@@ -93,7 +95,7 @@ namespace CNCLib.WpfClient.Sql.Start
                             cfg.AddProfile<WpfAutoMapperProfile>();
                             cfg.AddProfile<GCodeGUIAutoMapperProfile>();
                         }))
-                .RegisterInstance((ICNCLibUserContext)userContext);
+                .AddSingleton((ICNCLibUserContext)userContext);
 
             // Open Database here
 

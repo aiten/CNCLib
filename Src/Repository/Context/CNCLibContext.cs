@@ -26,6 +26,7 @@ using Framework.Repository.Mappings;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CNCLib.Repository.Context
 {
@@ -106,7 +107,7 @@ namespace CNCLib.Repository.Context
 
         public static void InitializeDatabase2(bool dropDatabase, bool isTest)
         {
-            using (var ctx = Dependency.Container.Resolve<CNCLibContext>())
+            using (var ctx = GlobalServiceCollection.Instance.BuildServiceProvider().GetService<CNCLibContext>())
             {
                 ctx.InitializeDatabase(dropDatabase, isTest);
             }

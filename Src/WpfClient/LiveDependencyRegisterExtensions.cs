@@ -18,24 +18,25 @@ using CNCLib.Service.Abstraction;
 using CNCLib.WpfClient.Services;
 
 using Framework.Dependency;
-using Framework.Dependency.Abstraction;
 using Framework.Pattern;
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CNCLib.WpfClient
 {
     public static class LiveDependencyRegisterExtensions
     {
-        public static IDependencyContainer RegisterCNCLibWpf(this IDependencyContainer container)
+        public static IServiceCollection RegisterCNCLibWpf(this IServiceCollection container)
         {
-            container.RegisterInstance(new Global())
-            .RegisterType<IJoystickService, JoystickService>()
-            .RegisterType<IFactory<IMachineService>, FactoryResolve<IMachineService>>()
-            .RegisterType<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>()
-            .RegisterType<IFactory<IJoystickService>, FactoryResolve<IJoystickService>>()
-            .RegisterType<IFactory<IUserService>, FactoryResolve<IUserService>>()
+            container.AddSingleton(new Global())
+            .AddTransient<IJoystickService, JoystickService>()
+            .AddTransient<IFactory<IMachineService>, FactoryResolve<IMachineService>>()
+            .AddTransient<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>()
+            .AddTransient<IFactory<IJoystickService>, FactoryResolve<IJoystickService>>()
+            .AddTransient<IFactory<IUserService>, FactoryResolve<IUserService>>()
             .RegisterTypesByName(
                 n => n.EndsWith("ViewModel"),
-                DependencyLivetime.Transient,
+                ServiceLifetime.Transient,
                 typeof(ViewModels.MachineViewModel).Assembly,
                 typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
 

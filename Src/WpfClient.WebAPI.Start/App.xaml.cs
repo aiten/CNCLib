@@ -35,6 +35,8 @@ using Framework.Logging;
 using Framework.Mapper;
 using Framework.Tools;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using NLog;
 
 namespace CNCLib.WpfClient.WebAPI.Start
@@ -52,7 +54,8 @@ namespace CNCLib.WpfClient.WebAPI.Start
 
             ICNCLibUserContext userContext = new CNCLibUserContext();
 
-            Dependency.Initialize(new LiveDependencyProvider())
+            GlobalServiceCollection.Instance = new ServiceCollection();
+            GlobalServiceCollection.Instance
 
                 .RegisterFrameWorkTools()
                 .RegisterFrameWorkLogging()
@@ -69,7 +72,7 @@ namespace CNCLib.WpfClient.WebAPI.Start
                             cfg.AddProfile<GCodeGUIAutoMapperProfile>();
                         }))
 
-                .RegisterInstance(userContext);
+                .AddSingleton(userContext);
 
             Framework.Service.WebAPI.HttpClientFactory.Instance.RegisterCreateHttpClient(
                 @"http://cnclibwebapi.azurewebsites.net",
@@ -88,7 +91,7 @@ namespace CNCLib.WpfClient.WebAPI.Start
                 {
                     try
                     {
-                        using (var controller = Dependency.Resolve<IMachineService>())
+                        using (var controller = GlobalServiceCollection.Instance.BuildServiceProvider().GetService<IMachineService>())
                         {
                             var m = await controller.Get(1000000);
 /*

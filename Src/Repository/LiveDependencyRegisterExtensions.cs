@@ -19,26 +19,26 @@ using System;
 using CNCLib.Repository.Context;
 
 using Framework.Dependency;
-using Framework.Dependency.Abstraction;
 using Framework.Repository;
 using Framework.Repository.Abstraction;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CNCLib.Repository
 {
     public static class LiveDependencyRegisterExtensions
     {
-        public static IDependencyContainer RegisterRepository(this IDependencyContainer container, Action<DbContextOptionsBuilder> optionsAction)
+        public static IServiceCollection RegisterRepository(this IServiceCollection container, Action<DbContextOptionsBuilder> optionsAction)
         {
             var options = new DbContextOptionsBuilder<CNCLibContext>();
             optionsAction(options);
 
-            container.RegisterInstance<DbContextOptions<CNCLibContext>>(options.Options);
-            container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
-            container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
+            container.AddSingleton<DbContextOptions<CNCLibContext>>(options.Options);
+            container.AddScoped<CNCLibContext, CNCLibContext>();
+            container.AddScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
-            container.RegisterTypesIncludingInternals(DependencyLivetime.Transient, typeof(Repository.MachineRepository).Assembly);
+            container.RegisterTypesIncludingInternals(ServiceLifetime.Transient, typeof(Repository.MachineRepository).Assembly);
             return container;
         }
     }

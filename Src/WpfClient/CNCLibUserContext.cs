@@ -23,6 +23,8 @@ using CNCLib.Shared;
 
 using Framework.Dependency;
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace CNCLib.WpfClient
 {
     public class CNCLibUserContext : ICNCLibUserContextRW
@@ -47,7 +49,7 @@ namespace CNCLib.WpfClient
             try
             {
                 UserName = userName;
-                using (var userService = Dependency.Resolve<IUserService>())
+                using (var userService = GlobalServiceCollection.Instance.BuildServiceProvider().GetService<IUserService>())
                 {
                     var user = await userService.GetByName(UserName);
                     if (user == null)

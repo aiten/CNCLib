@@ -15,15 +15,16 @@
 */
 
 using Framework.Dependency;
-using Framework.Dependency.Abstraction;
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CNCLib.Service.WebAPI
 {
     public static class LiveDependencyRegisterExtensions
     {
-        public static IDependencyContainer RegisterServiceAsWebAPI(this IDependencyContainer container)
+        public static IServiceCollection RegisterServiceAsWebAPI(this IServiceCollection container)
         {
-            container.RegisterTypesIncludingInternals(DependencyLivetime.Transient, typeof(MachineService).Assembly);
+            container.RegisterTypesIncludingInternals(ServiceLifetime.Transient, typeof(MachineService).Assembly);
             return container;
         }
     }

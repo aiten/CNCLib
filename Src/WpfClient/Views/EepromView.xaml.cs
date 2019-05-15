@@ -21,6 +21,8 @@ using CNCLib.WpfClient.Models;
 using Framework.Dependency;
 using Framework.Wpf.Views;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using Xceed.Wpf.Toolkit.PropertyGrid;
 
 namespace CNCLib.WpfClient.Views
@@ -32,7 +34,7 @@ namespace CNCLib.WpfClient.Views
     {
         public EepromView()
         {
-            var vm = Dependency.Resolve<ViewModels.EepromViewModel>();
+            var vm = GlobalServiceCollection.Instance.BuildServiceProvider().GetService<ViewModels.EepromViewModel>();
             DataContext = vm;
 
             InitializeComponent();
