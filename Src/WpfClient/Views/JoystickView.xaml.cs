@@ -19,8 +19,6 @@ using System.Windows;
 using Framework.Dependency;
 using Framework.Wpf.ViewModels;
 
-using Microsoft.Extensions.DependencyInjection;
-
 namespace CNCLib.WpfClient.Views
 {
     /// <summary>
@@ -30,7 +28,7 @@ namespace CNCLib.WpfClient.Views
     {
         public JoystickView()
         {
-            var vm = GlobalServiceCollection.Instance.BuildServiceProvider().GetService<ViewModels.JoystickViewModel>();
+            var vm = GlobalServiceCollection.Instance.Resolve<ViewModels.JoystickViewModel>();
             DataContext = vm;
 
             InitializeComponent();

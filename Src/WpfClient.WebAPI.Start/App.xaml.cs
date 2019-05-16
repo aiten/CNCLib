@@ -91,7 +91,7 @@ namespace CNCLib.WpfClient.WebAPI.Start
                 {
                     try
                     {
-                        using (var controller = GlobalServiceCollection.Instance.BuildServiceProvider().GetService<IMachineService>())
+                        using (var controller = GlobalServiceCollection.Instance.Resolve<IMachineService>())
                         {
                             var m = await controller.Get(1000000);
 /*

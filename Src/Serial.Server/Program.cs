@@ -23,9 +23,7 @@ using NLog.Web;
 
 using System;
 using System.IO;
-using System.Reflection;
 using System.Runtime.InteropServices;
-using System.ServiceProcess;
 
 using Framework.WebAPI.Host;
 

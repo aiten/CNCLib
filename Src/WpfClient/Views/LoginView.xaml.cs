@@ -14,18 +14,11 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
 using System.Windows;
 using System.Windows.Controls;
 
-using CNCLib.WpfClient.Models;
-
 using Framework.Dependency;
 using Framework.Wpf.Views;
-
-using Microsoft.Extensions.DependencyInjection;
-
-using Xceed.Wpf.Toolkit.PropertyGrid;
 
 namespace CNCLib.WpfClient.Views
 {
@@ -33,7 +26,7 @@ namespace CNCLib.WpfClient.Views
     {
         public LoginView()
         {
-            var vm = GlobalServiceCollection.Instance.BuildServiceProvider().GetService<ViewModels.LoginViewModel>();
+            var vm = GlobalServiceCollection.Instance.Resolve<ViewModels.LoginViewModel>();
             DataContext = vm;
 
             InitializeComponent();

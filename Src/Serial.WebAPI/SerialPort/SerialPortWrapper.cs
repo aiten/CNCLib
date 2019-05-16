@@ -23,7 +23,6 @@ using Framework.Dependency;
 using Framework.Tools;
 
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace CNCLib.Serial.WebAPI.SerialPort
 {
@@ -37,7 +36,7 @@ namespace CNCLib.Serial.WebAPI.SerialPort
         {
             if (Serial == null)
             {
-                Serial = GlobalServiceCollection.Instance.BuildServiceProvider().GetService<ISerial>();
+                Serial = GlobalServiceCollection.Instance.Resolve<ISerial>();
 
                 Serial.CommandQueueEmpty += async (sender, e) => { await OnCreateHub().Clients.All.SendAsync("queueEmpty", Id); };
                 Serial.CommandQueueChanged += (sender, e) =>

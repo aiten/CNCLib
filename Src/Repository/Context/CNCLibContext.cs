@@ -14,7 +14,6 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
 using System.Linq;
 
 using CNCLib.Repository.Abstraction.Entities;
@@ -26,7 +25,6 @@ using Framework.Repository.Mappings;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace CNCLib.Repository.Context
 {
@@ -107,7 +105,7 @@ namespace CNCLib.Repository.Context
 
         public static void InitializeDatabase2(bool dropDatabase, bool isTest)
         {
-            using (var ctx = GlobalServiceCollection.Instance.BuildServiceProvider().GetService<CNCLibContext>())
+            using (var ctx = GlobalServiceCollection.Instance.Resolve<CNCLibContext>())
             {
                 ctx.InitializeDatabase(dropDatabase, isTest);
             }

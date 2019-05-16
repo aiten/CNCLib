@@ -15,15 +15,12 @@
 */
 
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
 
 using CNCLib.WpfClient.ViewModels;
 
 using Framework.Dependency;
 using Framework.Wpf.Views;
-
-using Microsoft.Extensions.DependencyInjection;
 
 namespace CNCLib.WpfClient.Views
 {
@@ -34,7 +31,7 @@ namespace CNCLib.WpfClient.Views
     {
         public SetupPage()
         {
-            var vm = GlobalServiceCollection.Instance.BuildServiceProvider().GetService<SetupWindowViewModel>();
+            var vm = GlobalServiceCollection.Instance.Resolve<SetupWindowViewModel>();
             DataContext = vm;
 
             InitializeComponent();

@@ -37,7 +37,6 @@ using Framework.Logging;
 using Framework.Mapper;
 using Framework.Tools;
 
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 using NLog;
