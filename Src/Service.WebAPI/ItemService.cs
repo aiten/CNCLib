@@ -30,9 +30,8 @@ namespace CNCLib.Service.WebAPI
     {
         protected override int GetKey(Item i) => i.ItemId;
 
-        public ItemService()
+        public ItemService() : base(Framework.Service.WebAPI.HttpClientFactory.Instance.GetHttpClient(@"http://cnclibwebapi.azurewebsites.net"))
         {
-            BaseUri = @"http://cnclibwebapi.azurewebsites.net";
             BaseApi = @"api/Item";
         }
 

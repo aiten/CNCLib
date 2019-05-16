@@ -27,9 +27,8 @@ namespace CNCLib.Service.WebAPI
 {
     public class MachineService : CRUDServiceBase<Machine, int>, IMachineService
     {
-        public MachineService()
+        public MachineService() : base(Framework.Service.WebAPI.HttpClientFactory.Instance.GetHttpClient(@"http://cnclibwebapi.azurewebsites.net"))
         {
-            BaseUri = @"http://cnclibwebapi.azurewebsites.net";
             BaseApi = @"api/Machine";
         }
 

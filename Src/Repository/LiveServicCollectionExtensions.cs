@@ -29,17 +29,17 @@ namespace CNCLib.Repository
 {
     public static class LiveServicCollectionExtensions
     {
-        public static IServiceCollection AddRepository(this IServiceCollection container, Action<DbContextOptionsBuilder> optionsAction)
+        public static IServiceCollection AddRepository(this IServiceCollection services, Action<DbContextOptionsBuilder> optionsAction)
         {
             var options = new DbContextOptionsBuilder<CNCLibContext>();
             optionsAction(options);
 
-            container.AddSingleton<DbContextOptions<CNCLibContext>>(options.Options);
-            container.AddScoped<CNCLibContext, CNCLibContext>();
-            container.AddScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
+            services.AddSingleton<DbContextOptions<CNCLibContext>>(options.Options);
+            services.AddScoped<CNCLibContext, CNCLibContext>();
+            services.AddScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
-            container.AddAssembylIncludingInternals(ServiceLifetime.Transient, typeof(Repository.MachineRepository).Assembly);
-            return container;
+            services.AddAssembylIncludingInternals(ServiceLifetime.Transient, typeof(Repository.MachineRepository).Assembly);
+            return services;
         }
     }
 }

@@ -23,9 +23,8 @@ namespace CNCLib.Service.WebAPI
 {
     public class LoadOptionsService : CRUDServiceBase<LoadOptions, int>, ILoadOptionsService
     {
-        public LoadOptionsService()
+        public LoadOptionsService() : base(Framework.Service.WebAPI.HttpClientFactory.Instance.GetHttpClient(@"http://cnclibwebapi.azurewebsites.net"))
         {
-            BaseUri = @"http://cnclibwebapi.azurewebsites.net";
             BaseApi = @"api/LoadOptions";
         }
 

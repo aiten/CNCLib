@@ -27,9 +27,8 @@ namespace CNCLib.Service.WebAPI
 {
     public class EepromConfigurationService : ServiceBase, IEepromConfigurationService
     {
-        public EepromConfigurationService()
+        public EepromConfigurationService() : base(Framework.Service.WebAPI.HttpClientFactory.Instance.GetHttpClient(@"http://cnclibwebapi.azurewebsites.net"))
         {
-            BaseUri = @"http://cnclibwebapi.azurewebsites.net";
             BaseApi = @"api/EepromConfiguration";
         }
 

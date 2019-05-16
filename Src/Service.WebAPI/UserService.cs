@@ -27,9 +27,8 @@ namespace CNCLib.Service.WebAPI
 {
     public class UserService : CRUDServiceBase<User, int>, IUserService
     {
-        public UserService()
+        public UserService() : base(Framework.Service.WebAPI.HttpClientFactory.Instance.GetHttpClient(@"http://cnclibwebapi.azurewebsites.net"))
         {
-            BaseUri = @"http://cnclibwebapi.azurewebsites.net";
             BaseApi = @"api/user";
         }
 
@@ -52,7 +51,6 @@ namespace CNCLib.Service.WebAPI
                         .Add("password", password)));
             return isValidUserString.Trim('"') == @"true";
         }
-
 
         #region IDisposable Support
 

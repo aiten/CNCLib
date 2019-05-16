@@ -14,18 +14,33 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using Framework.Dependency;
+using System.Net.Http;
 
+using Framework.Dependency;
+using Framework.Service.WebAPI;
+
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CNCLib.Service.WebAPI
 {
     public static class LiveServicCollectionExtensions
     {
-        public static IServiceCollection AddServiceAsWebAPI(this IServiceCollection container)
+        public static IServiceCollection AddServiceAsWebAPI(this IServiceCollection services)
         {
-            container.AddAssembylIncludingInternals(ServiceLifetime.Transient, typeof(MachineService).Assembly);
-            return container;
+            services.AddAssembylIncludingInternals(ServiceLifetime.Transient, typeof(MachineService).Assembly);
+
+//            services.AddHttpClient<ItemService, ItemService>(httpClient => HttpClientHelper.PrepareHttpClient(httpClient, @"http://cnclibwebapi.azurewebsites.net") )
+//                .ConfigurePrimaryHttpMessageHandler(HttpClientHelper.CreateHttpClientHandlerIgnoreSSLCertificatesError);
+
+            /*
+                        services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+                        services.AddHttpClient<IAISDAClient, AISDAClient>(httpClient => aisDAClientConfiguration.PrepareHttpClient(httpClient))
+                            .ConfigurePrimaryHttpMessageHandler(HttpClientHelper.CreateHttpClientHandlerIgnoreSSLCertificatesError);
+            */
+            return services;
         }
     }
 }

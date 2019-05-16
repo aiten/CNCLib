@@ -26,9 +26,9 @@ namespace CNCLib.WpfClient
 {
     public static class LiveServicCollectionExtensions
     {
-        public static IServiceCollection AddCNCLibWpf(this IServiceCollection container)
+        public static IServiceCollection AddCNCLibWpf(this IServiceCollection services)
         {
-            container.AddSingleton(new Global())
+            services.AddSingleton(new Global())
             .AddTransient<IJoystickService, JoystickService>()
             .AddTransient<IFactory<IMachineService>, FactoryResolve<IMachineService>>()
             .AddTransient<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>()
@@ -40,7 +40,7 @@ namespace CNCLib.WpfClient
                 typeof(ViewModels.MachineViewModel).Assembly,
                 typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
 
-            return container;
+            return services;
         }
     }
 }

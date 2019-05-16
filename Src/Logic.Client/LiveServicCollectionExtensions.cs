@@ -22,10 +22,10 @@ namespace CNCLib.Logic.Client
 {
     public static class LiveServicCollectionExtensions
     {
-        public static IServiceCollection AddLogicClient(this IServiceCollection container)
+        public static IServiceCollection AddLogicClient(this IServiceCollection services)
         {
-            container.AddAssembylIncludingInternals(ServiceLifetime.Transient, typeof(Logic.Client.DynItemController).Assembly);
-            return container;
+            services.AddAssembylIncludingInternals(ServiceLifetime.Transient, typeof(Logic.Client.DynItemController).Assembly);
+            return services;
         }
     }
 }
