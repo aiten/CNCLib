@@ -14,31 +14,17 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-
-using CNCLib.Repository.Context;
-
 using Framework.Dependency;
-using Framework.Repository;
-using Framework.Repository.Abstraction;
 
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CNCLib.Repository
+namespace CNCLib.Logic
 {
-    public static class LiveDependencyRegisterExtensions
+    public static class LiveServicCollectionExtensions
     {
-        public static IServiceCollection RegisterRepository(this IServiceCollection container, Action<DbContextOptionsBuilder> optionsAction)
+        public static IServiceCollection AddLogic(this IServiceCollection container)
         {
-            var options = new DbContextOptionsBuilder<CNCLibContext>();
-            optionsAction(options);
-
-            container.AddSingleton<DbContextOptions<CNCLibContext>>(options.Options);
-            container.AddScoped<CNCLibContext, CNCLibContext>();
-            container.AddScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
-
-            container.RegisterTypesIncludingInternals(ServiceLifetime.Transient, typeof(Repository.MachineRepository).Assembly);
+            container.AddAssembylIncludingInternals(ServiceLifetime.Transient, typeof(Manager.MachineManager).Assembly);
             return container;
         }
     }

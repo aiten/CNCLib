@@ -72,15 +72,15 @@ namespace CNCLib.WpfClient.Start
 
             GlobalServiceCollection.Instance = new ServiceCollection();
             GlobalServiceCollection.Instance
-                .RegisterFrameWorkTools()
-                .RegisterFrameWorkLogging()
-                .RegisterRepository(SqliteDatabaseTools.OptionBuilder)
-                .RegisterLogic()
-                .RegisterLogicClient()
-                .RegisterSerialCommunication()
-                .RegisterServiceAsLogic()
-                .RegisterCNCLibWpf()
-                .RegisterMapper(
+                .AddFrameWorkTools()
+                .AddFrameworkLogging()
+                .AddRepository(SqliteDatabaseTools.OptionBuilder)
+                .AddLogic()
+                .AddLogicClient()
+                .AddSerialCommunication()
+                .AddServiceAsLogic()
+                .AddCNCLibWpf()
+                .AddMapper(
                     new MapperConfiguration(
                         cfg =>
                         {

@@ -18,13 +18,13 @@ using Framework.Dependency;
 
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CNCLib.Logic
+namespace CNCLib.Service.Logic
 {
-    public static class LiveDependencyRegisterExtensions
+    public static class LiveServicCollectionExtensions
     {
-        public static IServiceCollection RegisterLogic(this IServiceCollection container)
+        public static IServiceCollection AddServiceAsLogic(this IServiceCollection container)
         {
-            container.RegisterTypesIncludingInternals(ServiceLifetime.Transient, typeof(Manager.MachineManager).Assembly);
+            container.AddAssembylIncludingInternals(ServiceLifetime.Transient, typeof(MachineService).Assembly);
             return container;
         }
     }

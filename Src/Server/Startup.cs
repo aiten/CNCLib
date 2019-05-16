@@ -94,14 +94,14 @@ namespace CNCLib.Server
 
             GlobalServiceCollection.Instance = services;
             services
-                .RegisterFrameWorkTools()
-                .RegisterFrameWorkLogging()
-                .RegisterRepository(SqlServerDatabaseTools.OptionBuilder)
-                .RegisterLogic()
-                .RegisterLogicClient()
-                .RegisterServiceAsLogic() // used for Logic.Client
+                .AddFrameWorkTools()
+                .AddFrameworkLogging()
+                .AddRepository(SqlServerDatabaseTools.OptionBuilder)
+                .AddLogic()
+                .AddLogicClient()
+                .AddServiceAsLogic() // used for Logic.Client
                 .AddScoped<ICNCLibUserContext, CNCLibUserContext>()
-                .RegisterMapper(new MapperConfiguration(cfg => { cfg.AddProfile<LogicAutoMapperProfile>(); }));
+                .AddMapper(new MapperConfiguration(cfg => { cfg.AddProfile<LogicAutoMapperProfile>(); }));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

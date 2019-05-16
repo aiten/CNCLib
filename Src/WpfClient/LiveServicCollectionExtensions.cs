@@ -24,9 +24,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CNCLib.WpfClient
 {
-    public static class LiveDependencyRegisterExtensions
+    public static class LiveServicCollectionExtensions
     {
-        public static IServiceCollection RegisterCNCLibWpf(this IServiceCollection container)
+        public static IServiceCollection AddCNCLibWpf(this IServiceCollection container)
         {
             container.AddSingleton(new Global())
             .AddTransient<IJoystickService, JoystickService>()
@@ -34,7 +34,7 @@ namespace CNCLib.WpfClient
             .AddTransient<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>()
             .AddTransient<IFactory<IJoystickService>, FactoryResolve<IJoystickService>>()
             .AddTransient<IFactory<IUserService>, FactoryResolve<IUserService>>()
-            .RegisterTypesByName(
+            .AddAssemblyByName(
                 n => n.EndsWith("ViewModel"),
                 ServiceLifetime.Transient,
                 typeof(ViewModels.MachineViewModel).Assembly,

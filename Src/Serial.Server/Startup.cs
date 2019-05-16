@@ -90,10 +90,10 @@ namespace CNCLib.Serial.Server
 
             GlobalServiceCollection.Instance = services;
             services
-                .RegisterSerialCommunication()
-                .RegisterFrameWorkTools()
-                .RegisterFrameWorkLogging()
-                .RegisterTypesIncludingInternals(ServiceLifetime.Scoped, typeof(Framework.Arduino.SerialCommunication.Serial).Assembly);
+                .AddSerialCommunication()
+                .AddFrameWorkTools()
+                .AddFrameworkLogging()
+                .AddAssembylIncludingInternals(ServiceLifetime.Scoped, typeof(Framework.Arduino.SerialCommunication.Serial).Assembly);
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {

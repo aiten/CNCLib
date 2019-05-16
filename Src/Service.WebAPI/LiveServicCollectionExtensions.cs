@@ -18,13 +18,13 @@ using Framework.Dependency;
 
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CNCLib.Service.Logic
+namespace CNCLib.Service.WebAPI
 {
-    public static class LiveDependencyRegisterExtensions
+    public static class LiveServicCollectionExtensions
     {
-        public static IServiceCollection RegisterServiceAsLogic(this IServiceCollection container)
+        public static IServiceCollection AddServiceAsWebAPI(this IServiceCollection container)
         {
-            container.RegisterTypesIncludingInternals(ServiceLifetime.Transient, typeof(MachineService).Assembly);
+            container.AddAssembylIncludingInternals(ServiceLifetime.Transient, typeof(MachineService).Assembly);
             return container;
         }
     }

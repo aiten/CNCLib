@@ -57,14 +57,14 @@ namespace CNCLib.WpfClient.WebAPI.Start
             GlobalServiceCollection.Instance = new ServiceCollection();
             GlobalServiceCollection.Instance
 
-                .RegisterFrameWorkTools()
-                .RegisterFrameWorkLogging()
-                .RegisterLogicClient()
-                .RegisterSerialCommunication()
-                .RegisterServiceAsWebAPI()
-                .RegisterCNCLibWpf()
+                .AddFrameWorkTools()
+                .AddFrameworkLogging()
+                .AddLogicClient()
+                .AddSerialCommunication()
+                .AddServiceAsWebAPI()
+                .AddCNCLibWpf()
 
-                .RegisterMapper(
+                .AddMapper(
                     new MapperConfiguration(
                         cfg =>
                         {
