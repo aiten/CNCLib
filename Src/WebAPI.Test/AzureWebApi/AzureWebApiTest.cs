@@ -14,11 +14,30 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
+using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
+
 namespace CNCLib.WebAPI.Test.AzureWebApi
 {
     public class AzureWebApiTest : UnitTestBase
     {
         //public static readonly string AzureUri = @"http://localhost:55586/";
-        public static readonly string AzureUri = @"https://cnclibwebapi.azurewebsites.net/";
+        public static readonly string _AzureUri = @"https://cnclibwebapi.azurewebsites.net/";
+
+        public HttpClient _httpClient;
+
+        protected HttpClient GetHttpClient()
+        {
+            if (_httpClient == null)
+            {
+                _httpClient = new HttpClient();
+                _httpClient.BaseAddress = new Uri(_AzureUri);
+                _httpClient.DefaultRequestHeaders.Accept.Clear();
+                _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            }
+
+            return _httpClient;
+        }
     }
 }

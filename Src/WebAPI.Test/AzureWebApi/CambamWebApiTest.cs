@@ -36,27 +36,22 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
         [Fact]
         public async Task PutHpgl()
         {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(AzureUri);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var client = GetHttpClient();
 
-                var info = new LoadOptions { LoadType = LoadOptions.ELoadType.HPGL };
+            var info = new LoadOptions { LoadType = LoadOptions.ELoadType.HPGL };
 
-                Assembly ass     = Assembly.GetExecutingAssembly();
-                string   assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
+            Assembly ass     = Assembly.GetExecutingAssembly();
+            string   assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
 
-                info.FileName    = assPath + @"\TestData\heikes-mietzi.hpgl";
-                info.FileContent = File.ReadAllBytes(info.FileName);
+            info.FileName    = assPath + @"\TestData\heikes-mietzi.hpgl";
+            info.FileContent = File.ReadAllBytes(info.FileName);
 
-                HttpResponseMessage response = await client.PostAsJsonAsync(api, info);
-                response.EnsureSuccessStatusCode();
+            HttpResponseMessage response = await client.PostAsJsonAsync(api, info);
+            response.EnsureSuccessStatusCode();
 
-                string cambam = await response.Content.ReadAsAsync<string>();
+            string cambam = await response.Content.ReadAsAsync<string>();
 
-                cambam.Should().NotBeNull();
-            }
+            cambam.Should().NotBeNull();
         }
     }
 }

@@ -36,63 +36,53 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
         [Fact]
         public async Task PutHpgl()
         {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(AzureUri);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var client = GetHttpClient();
 
-                var info = new LoadOptions { LoadType = LoadOptions.ELoadType.HPGL };
+            var info = new LoadOptions { LoadType = LoadOptions.ELoadType.HPGL };
 
-                Assembly ass     = Assembly.GetExecutingAssembly();
-                string   assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
+            Assembly ass     = Assembly.GetExecutingAssembly();
+            string   assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
 
-                info.FileName    = assPath + @"\TestData\heikes-mietzi.hpgl";
-                info.FileContent = File.ReadAllBytes(info.FileName);
+            info.FileName    = assPath + @"\TestData\heikes-mietzi.hpgl";
+            info.FileContent = File.ReadAllBytes(info.FileName);
 
-                HttpResponseMessage response = await client.PostAsJsonAsync(api, info);
-                response.EnsureSuccessStatusCode();
+            HttpResponseMessage response = await client.PostAsJsonAsync(api, info);
+            response.EnsureSuccessStatusCode();
 
-                string[] gcode = await response.Content.ReadAsAsync<string[]>();
+            string[] gcode = await response.Content.ReadAsAsync<string[]>();
 
-                gcode.Should().NotBeNull();
-            }
+            gcode.Should().NotBeNull();
         }
 
         [Fact]
         public async Task PutImage()
         {
-            using (var client = new HttpClient())
+            var client = GetHttpClient();
+
+            var info = new LoadOptions
             {
-                client.BaseAddress = new Uri(AzureUri);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                LoadType       = LoadOptions.ELoadType.Image,
+                AutoScale      = true,
+                AutoScaleSizeX = 100,
+                AutoScaleSizeY = 100,
+                MoveSpeed      = 450,
+                PenMoveType    = LoadOptions.PenType.CommandString,
+                ImageDPIX      = 66.7m,
+                ImageDPIY      = 66.7m
+            };
 
-                var info = new LoadOptions
-                {
-                    LoadType       = LoadOptions.ELoadType.Image,
-                    AutoScale      = true,
-                    AutoScaleSizeX = 100,
-                    AutoScaleSizeY = 100,
-                    MoveSpeed      = 450,
-                    PenMoveType    = LoadOptions.PenType.CommandString,
-                    ImageDPIX      = 66.7m,
-                    ImageDPIY      = 66.7m
-                };
+            Assembly ass     = Assembly.GetExecutingAssembly();
+            string   assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
 
-                Assembly ass     = Assembly.GetExecutingAssembly();
-                string   assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
+            info.FileName    = assPath + @"\TestData\Wendelin_Ait110.png";
+            info.FileContent = File.ReadAllBytes(info.FileName);
 
-                info.FileName    = assPath + @"\TestData\Wendelin_Ait110.png";
-                info.FileContent = File.ReadAllBytes(info.FileName);
+            HttpResponseMessage response = await client.PostAsJsonAsync(api, info);
+            response.EnsureSuccessStatusCode();
 
-                HttpResponseMessage response = await client.PostAsJsonAsync(api, info);
-                response.EnsureSuccessStatusCode();
+            string[] gcode = await response.Content.ReadAsAsync<string[]>();
 
-                string[] gcode = await response.Content.ReadAsAsync<string[]>();
-
-                gcode.Should().NotBeNull();
-            }
+            gcode.Should().NotBeNull();
         }
 
         public class CreateGCode
@@ -106,30 +96,25 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
         [Fact]
         public async Task PutImageWithStoredOptions()
         {
-            using (var client = new HttpClient())
+            var client = GetHttpClient();
+
+            Assembly ass     = Assembly.GetExecutingAssembly();
+            string   assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
+
+            var input = new CreateGCode
             {
-                client.BaseAddress = new Uri(AzureUri);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                LoadOptionsId = 3,
+                FileName      = assPath + @"\TestData\Wendelin_Ait110.png"
+            };
 
-                Assembly ass     = Assembly.GetExecutingAssembly();
-                string   assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
+            input.FileContent = File.ReadAllBytes(input.FileName);
 
-                var input = new CreateGCode
-                {
-                    LoadOptionsId = 3,
-                    FileName      = assPath + @"\TestData\Wendelin_Ait110.png"
-                };
+            HttpResponseMessage response = await client.PutAsJsonAsync(api, input);
+            response.EnsureSuccessStatusCode();
 
-                input.FileContent = File.ReadAllBytes(input.FileName);
+            string[] gcode = await response.Content.ReadAsAsync<string[]>();
 
-                HttpResponseMessage response = await client.PutAsJsonAsync(api, input);
-                response.EnsureSuccessStatusCode();
-
-                string[] gcode = await response.Content.ReadAsAsync<string[]>();
-
-                gcode.Should().NotBeNull();
-            }
+            gcode.Should().NotBeNull();
         }
     }
 }
