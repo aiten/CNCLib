@@ -14,33 +14,41 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
+using System;
 using System.Net.Http;
+
+using CNCLib.Service.Abstraction;
 
 using Framework.Dependency;
 using Framework.Service.WebAPI;
 
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CNCLib.Service.WebAPI
 {
     public static class LiveServicCollectionExtensions
     {
-        public static IServiceCollection AddServiceAsWebAPI(this IServiceCollection services)
+        public static IServiceCollection AddServiceAsWebAPI(this IServiceCollection services, Action<HttpClient> configureHttpClient)
         {
-            services.AddAssembylIncludingInternals(ServiceLifetime.Transient, typeof(MachineService).Assembly);
+//            services.AddAssembylIncludingInternals(ServiceLifetime.Transient, typeof(MachineService).Assembly);
 
-//            services.AddHttpClient<ItemService, ItemService>(httpClient => HttpClientHelper.PrepareHttpClient(httpClient, @"http://cnclibwebapi.azurewebsites.net") )
-//                .ConfigurePrimaryHttpMessageHandler(HttpClientHelper.CreateHttpClientHandlerIgnoreSSLCertificatesError);
+            services.AddHttpClient<IMachineService, MachineService>(configureHttpClient).AddConfigureClientBuilder();
+            services.AddHttpClient<IEepromConfigurationService, EepromConfigurationService>(configureHttpClient).AddConfigureClientBuilder();
+            services.AddHttpClient<IItemService, ItemService>(configureHttpClient).AddConfigureClientBuilder();
+            services.AddHttpClient<ILoadOptionsService, LoadOptionsService>(configureHttpClient).AddConfigureClientBuilder();
+            services.AddHttpClient<IUserService, UserService>(configureHttpClient).AddConfigureClientBuilder();
 
-            /*
-                        services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-                        services.AddHttpClient<IAISDAClient, AISDAClient>(httpClient => aisDAClientConfiguration.PrepareHttpClient(httpClient))
-                            .ConfigurePrimaryHttpMessageHandler(HttpClientHelper.CreateHttpClientHandlerIgnoreSSLCertificatesError);
-            */
             return services;
+        }
+
+        private static void ConfigureClient(HttpClient httpClient)
+        {
+            HttpClientHelper.PrepareHttpClient(httpClient, @"http://cnclibwebapi.azurewebsites.net");
+        }
+
+        private static IHttpClientBuilder AddConfigureClientBuilder(this IHttpClientBuilder builder)
+        {
+            return builder.ConfigurePrimaryHttpMessageHandler(HttpClientHelper.CreateHttpClientHandlerIgnoreSSLCertificatesError);
         }
     }
 }

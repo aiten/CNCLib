@@ -14,6 +14,8 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
+using System.Net.Http;
+
 using CNCLib.Logic.Abstraction.DTO;
 using CNCLib.Service.Abstraction;
 
@@ -23,7 +25,7 @@ namespace CNCLib.Service.WebAPI
 {
     public class LoadOptionsService : CRUDServiceBase<LoadOptions, int>, ILoadOptionsService
     {
-        public LoadOptionsService() : base(Framework.Service.WebAPI.HttpClientFactory.Instance.GetHttpClient(@"http://cnclibwebapi.azurewebsites.net"))
+        public LoadOptionsService(HttpClient httpClient) : base(httpClient)
         {
             BaseApi = @"api/LoadOptions";
         }

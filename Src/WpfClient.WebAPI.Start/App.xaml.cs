@@ -33,6 +33,7 @@ using Framework.Arduino.SerialCommunication;
 using Framework.Dependency;
 using Framework.Logging;
 using Framework.Mapper;
+using Framework.Service.WebAPI;
 using Framework.Tools;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -61,7 +62,7 @@ namespace CNCLib.WpfClient.WebAPI.Start
                 .AddFrameworkLogging()
                 .AddLogicClient()
                 .AddSerialCommunication()
-                .AddServiceAsWebAPI()
+                .AddServiceAsWebAPI(httpClient => HttpClientHelper.PrepareHttpClient(httpClient, @"http://cnclibwebapi.azurewebsites.net"))
                 .AddCNCLibWpf()
 
                 .AddMapper(
@@ -73,16 +74,6 @@ namespace CNCLib.WpfClient.WebAPI.Start
                         }))
 
                 .AddSingleton(userContext);
-
-            Framework.Service.WebAPI.HttpClientFactory.Instance.RegisterCreateHttpClient(
-                @"http://cnclibwebapi.azurewebsites.net",
-                s =>
-                {
-                    var client = new HttpClient() { BaseAddress = new System.Uri(s) };
-                    Framework.Service.WebAPI.HttpClientFactory.DefaultConfigureHttpClient(client);
-                    return client;
-
-                });
 
             // Open WebAPI Connection
             //

@@ -15,6 +15,7 @@
 */
 
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 using CNCLib.Logic.Abstraction.DTO;
@@ -27,7 +28,7 @@ namespace CNCLib.Service.WebAPI
 {
     public class UserService : CRUDServiceBase<User, int>, IUserService
     {
-        public UserService() : base(Framework.Service.WebAPI.HttpClientFactory.Instance.GetHttpClient(@"http://cnclibwebapi.azurewebsites.net"))
+        public UserService(HttpClient httpClient) : base(httpClient)
         {
             BaseApi = @"api/user";
         }
