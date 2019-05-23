@@ -1,0 +1,55 @@
+<p>Command history: {{forserialportid}}</p>
+
+<p *ngIf="!serialcommands">
+  <em>Loading...</em>
+</p>
+
+<p>
+  <button (click)='refresh()'>Refresh</button><button (click)='clear()'>Clear</button>
+</p>
+
+<table class='table' *ngIf="serialcommands">
+  <thead>
+  <tr>
+    <th>SeqId</th>
+    <th>SentTime</th>
+    <th>CommandText</th>
+    <th>ReplyType</th>
+    <th>ResultText</th>
+    <th>ReplyReceivedTime</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let serialcommand of serialcommands">
+    <td>{{ serialcommand.SeqId}}</td>
+    <td>{{ serialcommand.SentTime | date:'HH:mm:ss'}}</td>
+    <td>{{ serialcommand.CommandText}}</td>
+    <td>{{ serialcommand.ReplyType}}</td>
+    <td>{{ serialcommand.ResultText}}</td>
+    <td>{{ serialcommand.ReplyReceivedTime | date:'HH:mm:ss'}}</td>
+  </tr>
+  </tbody>
+</table>
+<!-->
+<div class="row" *ngIf="messages.length > 0">
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>Messages</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let message of messages; let i = index">
+        <td>{{i + 1}}</td>
+        <td>{{message}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="row" *ngIf="messages.length <= 0">
+  <span>No messages</span>
+</div>
+</!-->

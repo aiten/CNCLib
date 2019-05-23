@@ -1,0 +1,25 @@
+<style type="text/css">
+
+  span { width: 200px; }
+</style>
+<body>
+<p>Port: {{entry.PortName}},{{entry.Id}} </p>
+
+<form novalidate [formGroup]="setupForm" (ngSubmit)="save(setupForm.value)">
+  <div class="form-group input-group">
+    <span class="input-group-addon">BaudRate</span>
+    <input class="form-control" formControlName="baudRate"/>
+  </div>
+  <div class="form-group input-group">
+    <span class="input-group-addon">DtrIsReset</span>
+    <input type="checkbox" class="form-control" formControlName="dtrIsReset" style="margin-left: 10px"/>
+  </div>
+  <div class="form-group input-group">
+    <span class="input-group-addon">ResetOnConnect</span>
+    <input type="checkbox" class="form-control" formControlName="resetOnConnect" style="margin-left: 10px"/>
+  </div>
+  <button type="submit" class="btn btn-default" [disabled]="!setupForm.valid">
+    Connect
+  </button>
+</form>
+</body>

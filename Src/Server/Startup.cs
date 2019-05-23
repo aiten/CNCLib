@@ -16,6 +16,7 @@
 
 using System;
 using System.Reflection;
+using System.Threading;
 
 using AutoMapper;
 
@@ -28,6 +29,7 @@ using CNCLib.Service.Logic;
 using CNCLib.Shared;
 using CNCLib.WebAPI;
 using CNCLib.WebAPI.Controllers;
+using CNCLib.WebAPI.Hubs;
 
 using Framework.Dependency;
 using Framework.Logging;
@@ -38,6 +40,8 @@ using Framework.WebAPI.Filter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -65,7 +69,9 @@ namespace CNCLib.Server
             GlobalDiagnosticsContext.Set("username",         Environment.UserName);
         }
 
-        public IConfiguration Configuration { get; }
+        public        IConfiguration         Configuration { get; }
+        public static IServiceProvider       Services      { get; private set; }
+        public static IHubContext<CNCLibHub> Hub           => Services.GetService<IHubContext<CNCLibHub>>();
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -75,12 +81,15 @@ namespace CNCLib.Server
 
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
+            services.AddSignalR(hu => hu.EnableDetailedErrors = true);
+
             services.AddTransient<UnhandledExceptionFilter>();
             services.AddTransient<ValidateRequestDataFilter>();
             services.AddTransient<MethodCallLogFilter>();
             services.AddMvc(
                     options =>
                     {
+                        options.EnableEndpointRouting = false;
                         options.Filters.AddService<ValidateRequestDataFilter>();
                         options.Filters.AddService<UnhandledExceptionFilter>();
                         options.Filters.AddService<MethodCallLogFilter>();
@@ -89,7 +98,9 @@ namespace CNCLib.Server
                 //.AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
                 .AddApplicationPart(controllerAssembly);
 
-            // Register the Swagger generator, defining one or more Swagger documents
+            // In production, the Angular files will be served from this directory
+            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
+
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "CNCLib API", Version = "v1" }); });
 
             GlobalServiceCollection.Instance = services;
@@ -104,9 +115,9 @@ namespace CNCLib.Server
                 .AddMapper(new MapperConfiguration(cfg => { cfg.AddProfile<LogicAutoMapperProfile>(); }));
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
-            // Open Database here
+            Services = app.ApplicationServices;
 
             CNCLibContext.InitializeDatabase2(false, false);
 
@@ -114,21 +125,48 @@ namespace CNCLib.Server
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
 
             app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+
             app.UseRouting();
-
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger();
-
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "CNCLib API V1"); });
+            app.UseHttpsRedirection();
 
             app.UseCors("AllowAll");
 
+            void callback(object x)
+            {
+                Hub.Clients.All.SendAsync("heartbeat");
+            }
+
+            var timer = new Timer(callback);
+            timer.Change(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(30));
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "CNCLib API V1"); });
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapHub<CNCLibHub>("/serialSignalR");
+                endpoints.MapDefaultControllerRoute();
+            });
+            app.UseSpa(spa =>
+            {
+                // To learn more about options for serving an Angular SPA from ASP.NET Core,
+                // see https://go.microsoft.com/fwlink/?linkid=864501
+
+                spa.Options.SourcePath = "ClientApp";
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseAngularCliServer(npmScript: "start");
+                }
             });
         }
 
