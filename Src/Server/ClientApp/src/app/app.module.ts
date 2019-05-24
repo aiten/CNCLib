@@ -28,16 +28,25 @@ import { SerialPortsComponent } from './serialports/serialports.component';
 import { SerialPortHistoryComponent } from './serialporthistory/serialporthistory.component';
 import { machineControlRoutes, machineControlRoutingComponents } from './machinecontrol/machinecontrol.routing';
 
+import { EepromConfigComponent } from "./eeprom-config/eeprom-config.component";
+
+
 import { SerialServerService } from './services/serialserver.service';
 import { LocalSerialServerService } from './services/local.serialserver.service';
+
+import { EepromConfigService } from './services/eeprom-config.service';
+import { AzureEepromConfigService } from './services/azure-services/azure-eeprom-config.service';
+
+import { eepromConfigRoutes, eepromConfigRoutingComponents } from './eeprom-config/eeprom-config-routing'
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
 import { faSync } from '@fortawesome/free-solid-svg-icons';
 import { faPlug } from '@fortawesome/free-solid-svg-icons';
+import { faCalculator } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faHome, faSync, faPlug);
+library.add(faHome, faSync, faPlug, faCalculator);
 
 @NgModule({
   declarations: [
@@ -47,6 +56,7 @@ library.add(faHome, faSync, faPlug);
     SerialPortsComponent,
     SerialPortHistoryComponent,
     ...machineControlRoutingComponents,
+    ...eepromConfigRoutingComponents
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -58,11 +68,13 @@ library.add(faHome, faSync, faPlug);
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       { path: 'serialports', component: SerialPortsComponent },
+      ...eepromConfigRoutes,
       ...machineControlRoutes,
     ])
   ],
   providers: [
     { provide: SerialServerService, useClass: LocalSerialServerService },
+    { provide: EepromConfigService, useClass: AzureEepromConfigService },
   ],
   bootstrap: [AppComponent]
 })
