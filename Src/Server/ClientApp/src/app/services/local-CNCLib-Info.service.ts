@@ -17,14 +17,11 @@
 import { Injectable, Inject } from '@angular/core';
 import { Response } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
-import { SerialServerService } from './serialserver.service';
-import { SerialCommand } from "../models/serial.command";
-import { SerialPortDefinition } from '../models/serial.port.definition';
 import { CNCLibServerInfo } from '../models/CNCLib.Server.Info';
-import { QueueSendCommand } from '../models/queue.send.command';
+import { CNCLibInfoService } from './CNCLib-Info.service';
 
 @Injectable()
-export class LocalSerialServerService implements SerialServerService {
+export class LocalCNCLibInfoService implements CNCLibInfoService {
   constructor(
     private http: HttpClient,
     @Inject('BASE_URL') public baseUrl: string,
@@ -36,6 +33,7 @@ export class LocalSerialServerService implements SerialServerService {
       .catch(this.handleErrorPromise);
   }
 
+/*
   getPorts(): Promise<SerialPortDefinition[]> {
     return this.http.get<SerialPortDefinition[]>(this.baseUrl + 'api/SerialPort').toPromise()
       .catch(this.handleErrorPromise);
@@ -108,7 +106,7 @@ export class LocalSerialServerService implements SerialServerService {
       .toPromise()
       .catch(this.handleErrorPromise);
   }
-
+*/
   private handleErrorPromise(error: Response | any) {
     console.error(error.message || error);
     return Promise.reject(error.message || error);

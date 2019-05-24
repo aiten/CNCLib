@@ -24,18 +24,13 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 
-import { SerialPortsComponent } from './serialports/serialports.component';
-import { SerialPortHistoryComponent } from './serialporthistory/serialporthistory.component';
-import { machineControlRoutes, machineControlRoutingComponents } from './machinecontrol/machinecontrol.routing';
-
 import { EepromConfigComponent } from "./eeprom-config/eeprom-config.component";
 
+import { CNCLibInfoService as CNCLibService } from './services/CNCLib-Info.service';
+import { LocalCNCLibInfoService } from './services/local-CNCLib-Info.service';
 
-import { SerialServerService } from './services/serialserver.service';
-import { LocalSerialServerService } from './services/local.serialserver.service';
-
-import { EepromConfigService } from './services/eeprom-config.service';
-import { AzureEepromConfigService } from './services/azure-services/azure-eeprom-config.service';
+import { CNCLibEepromConfigService } from './services/CNCLib-eeprom-config.service';
+import { LocalCNCLibEepromConfigService } from './services/local-CNCLib-eeprom-config.service';
 
 import { eepromConfigRoutes, eepromConfigRoutingComponents } from './eeprom-config/eeprom-config-routing'
 
@@ -48,14 +43,12 @@ import { faCalculator } from '@fortawesome/free-solid-svg-icons';
 
 library.add(faHome, faSync, faPlug, faCalculator);
 
-@NgModule({
+@
+NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    SerialPortsComponent,
-    SerialPortHistoryComponent,
-    ...machineControlRoutingComponents,
     ...eepromConfigRoutingComponents
   ],
   imports: [
@@ -67,14 +60,15 @@ library.add(faHome, faSync, faPlug, faCalculator);
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
-      { path: 'serialports', component: SerialPortsComponent },
       ...eepromConfigRoutes,
-      ...machineControlRoutes,
-    ])
+    ]), 
   ],
   providers: [
-    { provide: SerialServerService, useClass: LocalSerialServerService },
-    { provide: EepromConfigService, useClass: AzureEepromConfigService },
+    { provide: CNCLibService, useClass: LocalCNCLibInfoService },
+    {
+      provide: CNCLibEepromConfigService,
+      useClass: LocalCNCLibEepromConfigService
+    },
   ],
   bootstrap: [AppComponent]
 })

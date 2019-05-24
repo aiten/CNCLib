@@ -16,7 +16,7 @@
 
 import { Component, Inject, OnInit } from '@angular/core';
 import { CNCLibServerInfo } from '../models/CNCLib.Server.Info'
-import { SerialServerService } from '../services/serialserver.service';
+import { CNCLibInfoService } from '../services/CNCLib-Info.service';
 
 @Component({
   selector: 'home',
@@ -29,12 +29,12 @@ export class HomeComponent implements OnInit {
   appVersionInfo: CNCLibServerInfo = new CNCLibServerInfo();
 
   constructor(
-    private serialServerService: SerialServerService,
+    private cncLibInfoService: CNCLibInfoService,
   ) {
   }
 
   async ngOnInit(): Promise<void> {
-    this.appVersionInfo = await this.serialServerService.getInfo();
+    this.appVersionInfo = await this.cncLibInfoService.getInfo();
     this.appVersion = this.appVersionInfo.Version;
     this.appName = this.appVersionInfo.Name;
     this.appCopyright = this.appVersionInfo.Copyright;
