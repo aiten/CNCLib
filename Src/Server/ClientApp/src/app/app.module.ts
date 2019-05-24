@@ -32,7 +32,12 @@ import { LocalCNCLibInfoService } from './services/local-CNCLib-Info.service';
 import { CNCLibEepromConfigService } from './services/CNCLib-eeprom-config.service';
 import { LocalCNCLibEepromConfigService } from './services/local-CNCLib-eeprom-config.service';
 
-import { eepromConfigRoutes, eepromConfigRoutingComponents } from './eeprom-config/eeprom-config-routing'
+import { CNCLibMachineService } from './services/CNCLib-machine.service';
+import { LocalCNCLibMachineService } from './services/local-CNCLib-machine.service';
+
+import { eepromConfigRoutes, eepromConfigRoutingComponents } from './eeprom-config/eeprom-config-routing';
+
+import { machineRoutes, machineRoutingComponents } from './machine/machine-routing';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -49,6 +54,7 @@ NgModule({
     AppComponent,
     NavMenuComponent,
     HomeComponent,
+    ...machineRoutingComponents,
     ...eepromConfigRoutingComponents
   ],
   imports: [
@@ -61,6 +67,7 @@ NgModule({
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       ...eepromConfigRoutes,
+      ...machineRoutes,
     ]), 
   ],
   providers: [
@@ -69,6 +76,7 @@ NgModule({
       provide: CNCLibEepromConfigService,
       useClass: LocalCNCLibEepromConfigService
     },
+    { provide: CNCLibMachineService, useClass: LocalCNCLibMachineService },
   ],
   bootstrap: [AppComponent]
 })

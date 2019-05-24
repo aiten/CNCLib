@@ -1,0 +1,72 @@
+<h1>CNCLib machines</h1>
+
+<div>
+
+  <head>
+    <style>
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <table>
+    <tr>
+      <th>Description</th>
+      <th>comPort</th>
+      <th>BaudRate</th>
+      <th>Axis</th>
+      <th>Size-X</th>
+      <th>Size-Y</th>
+      <th>Size-Z</th>
+      <th>Edit</th>
+    </tr>
+    <tr *ngFor="let entry of entries">
+      <td>{{ entry.description }}</td>
+      <td>{{ entry.comPort }} </td>
+      <td>{{ entry.baudRate }} </td>
+      <td>{{ entry.axis }} </td>
+      <td>{{ entry.sizeX }} </td>
+      <td>{{ entry.sizeY }} </td>
+      <td>{{ entry.sizeZ }} </td>
+      <td><button (click)='detailMachine(entry.id)'>Details</button></td>
+    </tr>
+  </table>
+</div>
+
+<button (click)='newMachine()'>new</button>
+
+<!--
+<h1>CNC machine (ID=1)</h1>
+
+<ha-machine-entry [entry]="xentry"></ha-machine-entry>
+
+<table>
+  <tr>
+    <th>Description</th>
+    <th>comPort</th>
+    <th>BaudRate</th>
+    <th>Axis</th>
+    <th>Size-X</th>
+    <th>Size-Y</th>
+    <th>Size-Z</th>
+    <th>Edit</th>
+  </tr>
+  <tr>
+
+    <td>{{ xentry.description }}</td>
+    <td>{{ xentry.comPort }} </td>
+    <td>{{ xentry.baudRate }} </td>
+    <td>{{ xentry.axis }} </td>
+    <td>{{ xentry.sizeX }} </td>
+    <td>{{ xentry.sizeY }} </td>
+    <td>{{ xentry.sizeZ }} </td>
+    <td><button (click)='editMachine()'>Edit</button></td>
+  </tr>
+</table>
+
+<h1>my CNC machines</h1>
+
+<ha-machine-entry *ngFor="let entry of entries" [entry]="entry"></ha-machine-entry>
+-->
