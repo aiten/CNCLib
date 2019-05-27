@@ -26,11 +26,15 @@ export class MachineOverviewComponent implements OnInit
   detailMachine(id: number)
   {
     console.log('Detail machine');
-    this.router.navigate([machineURL + '/detail', id])
+    this.router.navigate([machineURL, 'detail', String(id) ]);
   }
 
-  async newMachine()
-  {
+  async newMachine() {
+
+    var newmachineDefault = await this.machineService.getDefault();
+    var newmachine = await this.machineService.addMachine(newmachineDefault);
+    this.router.navigate([machineURL, 'detail', String(newmachine.id)]);
+
 /*
     this.machineService
       .getDefault()

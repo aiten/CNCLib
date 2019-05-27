@@ -24,65 +24,57 @@ import { MachineInitCommand } from '../models/machine-init-command';
 import { CNCLibMachineService } from './CNCLib-machine.service';
 
 @Injectable()
-export class LocalCNCLibMachineService implements CNCLibMachineService
-{
+export class LocalCNCLibMachineService implements CNCLibMachineService {
   constructor(
     private http: HttpClient,
     @Inject('BASE_URL') public baseUrl: string,
   ) {
   }
 
-  getAll(): Promise<Machine[]>
-  {
+  getAll(): Promise<Machine[]> {
     console.log('LocalCNCLibMachineService.getAll');
     const machine$ = this.http
       .get<any[]>(`${this.baseUrl}api/machine`)
       .toPromise()
       .then((response) => response.map(toMachine))
-      .catch (this.handleErrorPromise);
+      .catch(this.handleErrorPromise);
 
     return machine$;
   }
 
-  async getById(id: number): Promise<Machine>
-  {
-/*
+  getById(id: number): Promise<Machine> {
     console.log('LocalCNCLibMachineService.getById');
     const m$ = this.http
-      .get(`${this.baseUrl}/machine/${id}`, this.getHeaders())
-      .map((response: Response) => toMachine(response.json()));
+      .get(`${this.baseUrl}api/machine/${id}`)
+      .toPromise()
+      .then((response) => toMachine(response))
+      .catch (this.handleErrorPromise);
     return m$;
-*/
-    return new Machine;
   }
 
-  async getDefault(): Promise<Machine>
-  {
-/*
+  async getDefault(): Promise<Machine> {
+
     console.log('LocalCNCLibMachineService.getDefault');
     const m$ = this.http
-      .get(`${this.baseUrl}/machine/default`, this.getHeaders())
-      .map((response: Response) => toMachine(response.json()));
+      .get(`${this.baseUrl}api/machine/default`)
+      .toPromise()
+      .then((response) => toMachine(response))
+      .catch (this.handleErrorPromise);
     return m$;
-*/
-    return new Machine();
   }
 
-  async addMachine(machine: Machine): Promise<Machine>
-  {
-    /*
+  async addMachine(machine: Machine): Promise<Machine> {
+
     console.log('LocalCNCLibMachineService.addMachine');
     const m$ = this.http
-      .post(`${this.baseUrl}/machine`, fromMachine(machine), this.getHeaders())
-      .map((response: Response) => toMachine(response.json()))
-      .catch(this.handleError);
+      .post(`${this.baseUrl}api/machine`, fromMachine(machine))
+      .toPromise()
+      .then((response) => toMachine(response))
+      .catch(this.handleErrorPromise);
     return m$;
-*/
-    return new Machine();
   }
 
-  async updateMachine(machine: Machine): Promise<Machine>
-  {
+  async updateMachine(machine: Machine): Promise<Machine> {
 /*
     console.log('LocalCNCLibMachineService.updateMachine');
     const m$ = this.http
@@ -94,9 +86,14 @@ export class LocalCNCLibMachineService implements CNCLibMachineService
     return new Machine();
   }
 
-  async deleteMachineById(id: number): Promise<Machine>
-  {
-/*
+  async deleteMachineById(id: number): Promise<void> {
+    console.log('LocalCNCLibMachineService.addMachine');
+    const m$ = this.http
+      .delete(`${this.baseUrl}api/machine/${id}`)
+      .toPromise()
+      .catch(this.handleErrorPromise);
+
+    /*
     console.log('LocalCNCLibMachineService.deleteMachine');
     const m$ = this.http
       .delete(`${this.baseUrl}/machine/${id}`, this.getHeaders())
@@ -104,7 +101,6 @@ export class LocalCNCLibMachineService implements CNCLibMachineService
       .catch(this.handleError);
     return m$;
 */
-    return new Machine();
   }
 
   private handleErrorPromise(error: Response | any) {
@@ -113,11 +109,10 @@ export class LocalCNCLibMachineService implements CNCLibMachineService
   }
 }
 
-function toMachine(r: any): Machine
-{
+function toMachine(r: any): Machine {
   const machine = <Machine>(
     {
-      id: r.MachineID,
+      id: r.MachineId,
       description: r.Name,
       comPort: r.ComPort,
       sizeX: r.SizeX,
@@ -146,11 +141,10 @@ function toMachine(r: any): Machine
 
   machine.commands = [];
 
-  r.MachineCommands.forEach(element =>
-  {
+  r.MachineCommands.forEach(element => {
     machine.commands.push(<MachineCommand>(
       {
-        id: element.MachineCommandID,
+        id: element.MachineCommandId,
         commandString: element.CommandString,
         commandName: element.CommandName,
         posX: element.PosX,
@@ -161,11 +155,10 @@ function toMachine(r: any): Machine
 
   machine.initCommands = [];
 
-  r.MachineInitCommands.forEach(element =>
-  {
+  r.MachineInitCommands.forEach(element => {
     machine.initCommands.push(<MachineInitCommand>(
       {
-        id: element.MachineCommandID,
+        id: element.MachineInitCommandId,
         commandString: element.CommandString,
         seqNo: element.SeqNo
       }));
@@ -175,11 +168,10 @@ function toMachine(r: any): Machine
   return machine;
 }
 
-function fromMachine(r: Machine): any
-{
+function fromMachine(r: Machine): any {
   const machine = <any>(
     {
-      MachineID: r.id,
+      MachineId: r.id,
       Name: r.description,
       ComPort: r.comPort,
       SizeX: r.sizeX,
@@ -208,14 +200,12 @@ function fromMachine(r: Machine): any
 
   machine.MachineCommands = [];
 
-  if (r.commands != null)
-  {
-    r.commands.forEach(element =>
-    {
+  if (r.commands != null) {
+    r.commands.forEach(element => {
       machine.MachineCommands.push(<any>(
         {
-          MachineID: r.id,
-          MachineCommandID: element.id,
+          MachineId: r.id,
+          MachineCommandId: element.id,
           CommandString: element.commandString,
           CommandName: element.commandName,
           PosX: element.posX,
@@ -227,14 +217,12 @@ function fromMachine(r: Machine): any
 
   machine.MachineInitCommands = [];
 
-  if (r.initCommands != null)
-  {
-    r.initCommands.forEach(element =>
-    {
+  if (r.initCommands != null) {
+    r.initCommands.forEach(element => {
       machine.MachineInitCommands.push(<any>(
         {
-          MachineID: r.id,
-          MachineCommandID: element.id,
+          MachineId: r.id,
+          MachineInitCommandId: element.id,
           CommandString: element.commandString,
           SeqNo: element.seqNo
         }));

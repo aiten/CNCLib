@@ -1,19 +1,19 @@
+
 import { Component, OnInit } from '@angular/core';
 import { Machine } from '../../models/machine';
 import { MachineCommand } from '../../models/machine-command';
 import { MachineInitCommand } from '../../models/machine-init-command';
 import { CNCLibMachineService } from '../../services/CNCLib-machine.service';
-import { ActivatedRoute, Params } from '@angular/router';
+import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
 import { machineURL } from '../machine-routing';
-import { Router } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'ha-machine-entry-load',
   templateUrl: './machine-entry-load.component.html',
   styleUrls: ['./machine-entry-load.component.css']
 })
-export class MachineEntryLoadComponent  implements OnInit
-{
+export class MachineEntryLoadComponent implements OnInit {
   entry: Machine;
   errorMessage: string = '';
   isLoading: boolean = true;
@@ -25,22 +25,19 @@ export class MachineEntryLoadComponent  implements OnInit
   ) {
     this.entry = new Machine();
   }
-
-/*
-  deleteMachine(id: number)
-  {
+  
+  async deleteMachine(id: number) {
     console.log('Detail machine');
-    this.machineService
-      .deleteMachineById(id)
-      .subscribe(() => this.router.navigate([machineURL]));
+    await this.machineService.deleteMachineById(id);
+    this.router.navigate([machineURL]);
   }
 
-  updateMachine(id: number)
-  {
+  updateMachine(id: number) {
     console.log('Update machine');
-    this.router.navigate([machineURL + '/detail',this.entry.id,'edit'])
+    //  this.router.navigate([machineURL + '/detail',this.entry.id,'edit'])
+    this.router.navigate([machineURL, 'detail', String(this.entry.id), 'edit']);
   }
-
+/*
   testUpdateMachine(id: number)
   {
     console.log('Update machine');
@@ -74,16 +71,16 @@ export class MachineEntryLoadComponent  implements OnInit
       });
   }
 */
+
   async ngOnInit() {
-//    this.route.params
-//      .switchMap((params: Params) => this.machineService.getById(+params['id']))
-//      .subscribe(
-//        /* happy path */
-//        p => this.entry = p,
-//        /* error path */
-//        e => this.errorMessage = e,
-//        /* onComplete */
-//        () => this.isLoading = false);
+
+    let id = this.route.snapshot.paramMap.get('id');
+    this.entry = await this.machineService.getById(+id);
+/*
+    this.entry = this.route.paramMap.pipe(
+      switchMap(async (params: ParamMap) =>
+        await this.machineService.getById(+(params.get('id'))))
+    );
+*/
   }
 }
-

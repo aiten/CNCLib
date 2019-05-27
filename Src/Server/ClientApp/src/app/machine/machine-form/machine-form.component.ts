@@ -104,14 +104,11 @@ export class MachineFormComponent implements OnInit
     });
   }
 
-  ngOnInit()
+  async ngOnInit()
   {
-//    this.route.params
-//      .switchMap((params: Params) => this.machineService.getById(+params['id']))
-//      .subscribe(
-//         /* happy path */ p => { this.loadMachine(p); },
-//         /* error path */ e => this.errorMessage = e,
-//         /* onComplete */() => this.isLoading = false);
+    let id = this.route.snapshot.paramMap.get('id');
+    this.machine = await this.machineService.getById(+id);
+    this.loadMachine(this.machine);
   }
 
   addCommand()

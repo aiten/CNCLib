@@ -13,6 +13,7 @@
   </head>
   <table>
     <tr>
+      <th>Id</th>
       <th>Description</th>
       <th>comPort</th>
       <th>BaudRate</th>
@@ -23,6 +24,7 @@
       <th>Edit</th>
     </tr>
     <tr *ngFor="let entry of entries">
+      <td>{{ entry.id }}</td>
       <td>{{ entry.description }}</td>
       <td>{{ entry.comPort }} </td>
       <td>{{ entry.baudRate }} </td>
