@@ -15,16 +15,18 @@ import { Routes, RouterModule } from '@angular/router';
 export const eepromConfigURL = '/eepromconfiguration';
 
 export const eepromConfigRoutes =
-  [
-    {   path: 'eepromconfig', component: EepromConfigComponent,
-      children:
-      [
-        { path: '', component: EepromConfigOverviewComponent }, 
-      ]
-    }    
+[
+  {
+    path: 'eepromconfig',
+    component: EepromConfigComponent,
+    children:
+    [
+      { path: '', component: EepromConfigOverviewComponent },
+    ]
+  }
 ];
 
-export const eepromConfigRoutingComponents = 
+export const eepromConfigRoutingComponents =
 [
   EepromConfigComponent,
   EepromConfigFormComponent,

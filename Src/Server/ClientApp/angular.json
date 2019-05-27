@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "CNCLib.Serial.Server": {
+    "CNCLib.Server": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -49,18 +49,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "CNCLib.Serial.Server:build"
+            "browserTarget": "CNCLib.Server:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "CNCLib.Serial.Server:build:production"
+              "browserTarget": "CNCLib.Server:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "CNCLib.Serial.Server:build"
+            "browserTarget": "CNCLib.Server:build"
           }
         },
         "test": {
@@ -94,7 +94,7 @@
         }
       }
     },
-    "CNCLib.Serial.Server-e2e": {
+    "CNCLib.Server-e2e": {
       "root": "",
       "sourceRoot": "e2e",
       "projectType": "application",
@@ -103,7 +103,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "CNCLib.Serial.Server:serve"
+            "devServerTarget": "CNCLib.Server:serve"
           }
         },
         "lint": {
@@ -120,7 +120,7 @@
       }
     }
   },
-  "defaultProject": "CNCLib.Serial.Server",
+  "defaultProject": "CNCLib.Server",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
