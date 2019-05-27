@@ -48,7 +48,7 @@ export class LocalCNCLibMachineService implements CNCLibMachineService {
       .get(`${this.baseUrl}api/machine/${id}`)
       .toPromise()
       .then((response) => toMachine(response))
-      .catch (this.handleErrorPromise);
+      .catch(this.handleErrorPromise);
     return m$;
   }
 
@@ -59,7 +59,7 @@ export class LocalCNCLibMachineService implements CNCLibMachineService {
       .get(`${this.baseUrl}api/machine/default`)
       .toPromise()
       .then((response) => toMachine(response))
-      .catch (this.handleErrorPromise);
+      .catch(this.handleErrorPromise);
     return m$;
   }
 

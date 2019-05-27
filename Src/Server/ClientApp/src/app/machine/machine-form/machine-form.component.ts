@@ -1,3 +1,19 @@
+/*
+  This file is part of CNCLib - A library for stepper motors.
+
+  Copyright (c) Herbert Aitenbichler
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+  and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Machine } from '../../models/machine';
@@ -14,8 +30,7 @@ import { Router } from '@angular/router';
   templateUrl: './machine-form.component.html',
   styleUrls: ['./machine-form.component.css']
 })
-export class MachineFormComponent implements OnInit 
-{
+export class MachineFormComponent implements OnInit {
   machine: Machine;
   errorMessage: string = '';
   isLoading: boolean = true;
@@ -30,8 +45,7 @@ export class MachineFormComponent implements OnInit
     private router: Router,
     private machineService: CNCLibMachineService,
     private fb: FormBuilder
-  )
-  {
+  ) {
     this.machine = new Machine();
 
     this.machineForm = fb.group(
@@ -74,8 +88,7 @@ export class MachineFormComponent implements OnInit
 
       });
 
-    this.machineForm.valueChanges.subscribe((value) =>
-    {
+    this.machineForm.valueChanges.subscribe((value) => {
       if (this.isLoaded)
         Object.assign(this.machine, value);
     });
@@ -84,8 +97,7 @@ export class MachineFormComponent implements OnInit
     this.initCommandsArray = <FormArray>this.machineForm.controls['initCommands'];
   }
 
-  createCommandsControl(): FormGroup
-  {
+  createCommandsControl(): FormGroup {
     return this.fb.group({
       commandName: new FormControl('', [Validators.required, Validators.maxLength(64)]),
       commandString: new FormControl('', [Validators.required, Validators.maxLength(64)]),
@@ -96,73 +108,60 @@ export class MachineFormComponent implements OnInit
     });
   }
 
-  createInitCommandsControl(): FormGroup
-  {
+  createInitCommandsControl(): FormGroup {
     return this.fb.group({
       commandString: new FormControl('', [Validators.required, Validators.maxLength(64)]),
       seqNo: new FormControl(0, [Validators.required])
     });
   }
 
-  async ngOnInit()
-  {
+  async ngOnInit() {
     let id = this.route.snapshot.paramMap.get('id');
     this.machine = await this.machineService.getById(+id);
     this.loadMachine(this.machine);
   }
 
-  addCommand()
-  {
+  addCommand() {
     this.commandsArray.push(this.createCommandsControl());
     return false;
   }
 
-  removeCommand(i: number)
-  {
+  removeCommand(i: number) {
     this.commandsArray.removeAt(i);
     return false;
   }
 
-  private adjustCommandsArray(cmds: any[])
-  {
+  private adjustCommandsArray(cmds: any[]) {
     const cmdCount = cmds ? cmds.length : 0;
-    while (cmdCount > this.commandsArray.controls.length)
-    {
+    while (cmdCount > this.commandsArray.controls.length) {
       this.addCommand();
     }
-    while (cmdCount < this.commandsArray.controls.length)
-    {
+    while (cmdCount < this.commandsArray.controls.length) {
       this.removeCommand(0);
     }
   }
 
-  addInitCommand()
-  {
+  addInitCommand() {
     this.initCommandsArray.push(this.createInitCommandsControl());
     return false;
   }
 
-  removeInitCommand(i: number)
-  {
+  removeInitCommand(i: number) {
     this.initCommandsArray.removeAt(i);
     return false;
   }
 
-  private adjustInitCommandsArray(cmds: any[])
-  {
+  private adjustInitCommandsArray(cmds: any[]) {
     const cmdCount = cmds ? cmds.length : 0;
-    while (cmdCount > this.initCommandsArray.controls.length)
-    {
+    while (cmdCount > this.initCommandsArray.controls.length) {
       this.addInitCommand();
     }
-    while (cmdCount < this.initCommandsArray.controls.length)
-    {
+    while (cmdCount < this.initCommandsArray.controls.length) {
       this.removeInitCommand(0);
     }
   }
 
-  loadMachine(m: Machine)
-  {
+  loadMachine(m: Machine) {
     this.machine = m;
     this.adjustCommandsArray(this.machine.commands);
     this.adjustInitCommandsArray(this.machine.initCommands);
@@ -171,8 +170,7 @@ export class MachineFormComponent implements OnInit
     this.isLoaded = true;
   }
 
-  saveMachine(value: any) 
-  {
+  saveMachine(value: any) {
 /*
     console.log(value);
     Object.assign(this.machine, value);
@@ -186,8 +184,7 @@ export class MachineFormComponent implements OnInit
 */
   }
 
-  userExistsValidator = (control) =>
-  {
+  userExistsValidator = (control) => {
     /*
         return this.userService.checkUserExists(control.value)
           .map(checkResult =>
@@ -197,8 +194,7 @@ export class MachineFormComponent implements OnInit
     */
   }
 
-  userExistsValidatorReused = (control) =>
-  {
+  userExistsValidatorReused = (control) => {
     /*    
         const validator = new UserExistsValidatorDirective(this.userService);
         return validator.validate(control);

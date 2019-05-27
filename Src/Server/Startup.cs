@@ -58,10 +58,10 @@ namespace CNCLib.Server
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            string sqlConnectString = 
+            string sqlConnectString =
                 Microsoft.Azure.Web.DataProtection.Util.IsAzureEnvironment()
-                ? $"Data Source = cnclibdb.database.windows.net; Initial Catalog = CNCLibDb; Persist Security Info = True; User ID = {Xxx}; Password = {Yyy};"
-                : SqlServerDatabaseTools.ConnectString;
+                    ? $"Data Source = cnclibdb.database.windows.net; Initial Catalog = CNCLibDb; Persist Security Info = True; User ID = {Xxx}; Password = {Yyy};"
+                    : SqlServerDatabaseTools.ConnectString;
 
             SqlServerDatabaseTools.ConnectString = sqlConnectString;
 
@@ -132,6 +132,7 @@ namespace CNCLib.Server
             else
             {
                 app.UseExceptionHandler("/Error");
+
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -155,23 +156,25 @@ namespace CNCLib.Server
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "CNCLib API V1"); });
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapHub<CNCLibHub>("/serialSignalR");
-                endpoints.MapDefaultControllerRoute();
-            });
-            app.UseSpa(spa =>
-            {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
-
-                spa.Options.SourcePath = "ClientApp";
-
-                if (env.IsDevelopment())
+            app.UseEndpoints(
+                endpoints =>
                 {
-                    spa.UseAngularCliServer(npmScript: "start");
-                }
-            });
+                    endpoints.MapHub<CNCLibHub>("/serialSignalR");
+                    endpoints.MapDefaultControllerRoute();
+                });
+            app.UseSpa(
+                spa =>
+                {
+                    // To learn more about options for serving an Angular SPA from ASP.NET Core,
+                    // see https://go.microsoft.com/fwlink/?linkid=864501
+
+                    spa.Options.SourcePath = "ClientApp";
+
+                    if (env.IsDevelopment())
+                    {
+                        spa.UseAngularCliServer(npmScript: "start");
+                    }
+                });
         }
 
         public string Xxx => @"Herbert";

@@ -1,7 +1,5 @@
 <style type="text/css">
-  span {
-    width: 300px;
-  }
+  span { width: 300px; }
 </style>
 
 <head>
@@ -9,44 +7,44 @@
 
 <body>
 
-  <form novalidate [formGroup]="eepromConfigForm" (ngSubmit)="calcEepromConfig(eepromConfigForm.value)">
+<form novalidate [formGroup]="eepromConfigForm" (ngSubmit)="calcEepromConfig(eepromConfigForm.value)">
 
-    <div class="form-group input-group">
-      <span class="input-group-addon">Teeth (thread bar: 1)</span>
-      <input class="form-control" formControlName="teeth" />
-    </div>
+  <div class="form-group input-group">
+    <span class="input-group-addon">Teeth (thread bar: 1)</span>
+    <input class="form-control" formControlName="teeth"/>
+  </div>
 
-    <div class="form-group input-group">
-      <span class="input-group-addon">Tooth-size or lead (mm)</span>
-      <input class="form-control" formControlName="toothsizeinMm" />
-    </div>
+  <div class="form-group input-group">
+    <span class="input-group-addon">Tooth-size or lead (mm)</span>
+    <input class="form-control" formControlName="toothsizeinMm"/>
+  </div>
 
-    <div class="form-group input-group">
-      <span class="input-group-addon">Microsteps (1..256)</span>
-      <input class="form-control" formControlName="microsteps" />
-    </div>
-    <div class="form-group input-group">
-      <span class="input-group-addon">Steps per rotation (usual 200)</span>
-      <input class="form-control" formControlName="stepsPerRotation" />
-    </div>
-    <div class="form-group input-group">
-      <span class="input-group-addon">Estimated rotation speed (rotations/sec)</span>
-      <input class="form-control" formControlName="estimatedRotationSpeed" />
-    </div>
-    <div class="form-group input-group">
-      <span class="input-group-addon">Time to acc to maxspeed (sec)</span>
-      <input class="form-control" formControlName="timeToAcc" />
-    </div>
-    <div class="form-group input-group">
-      <span class="input-group-addon">Time to break from maxspeed (sec)</span>
-      <input class="form-control" formControlName="timeToDec" />
-    </div>
-<!--
-    <button type="submit" class="btn btn-default" [disabled]="!eepromConfigForm.valid">
+  <div class="form-group input-group">
+    <span class="input-group-addon">Microsteps (1..256)</span>
+    <input class="form-control" formControlName="microsteps"/>
+  </div>
+  <div class="form-group input-group">
+    <span class="input-group-addon">Steps per rotation (usual 200)</span>
+    <input class="form-control" formControlName="stepsPerRotation"/>
+  </div>
+  <div class="form-group input-group">
+    <span class="input-group-addon">Estimated rotation speed (rotations/sec)</span>
+    <input class="form-control" formControlName="estimatedRotationSpeed"/>
+  </div>
+  <div class="form-group input-group">
+    <span class="input-group-addon">Time to acc to maxspeed (sec)</span>
+    <input class="form-control" formControlName="timeToAcc"/>
+  </div>
+  <div class="form-group input-group">
+    <span class="input-group-addon">Time to break from maxspeed (sec)</span>
+    <input class="form-control" formControlName="timeToDec"/>
+  </div>
+  <!--
+  <button type="submit" class="btn btn-default" [disabled]="!eepromConfigForm.valid">
     Calculate eeprom values
   </button>
   -->
 
-  </form>
+</form>
 
 </body>

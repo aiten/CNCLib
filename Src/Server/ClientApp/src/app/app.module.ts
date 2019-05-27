@@ -68,7 +68,7 @@ NgModule({
       { path: 'home', component: HomeComponent },
       ...eepromConfigRoutes,
       ...machineRoutes,
-    ]), 
+    ]),
   ],
   providers: [
     { provide: CNCLibService, useClass: LocalCNCLibInfoService },

@@ -6,9 +6,7 @@
     <style>
       table,
       th,
-      td {
-        border: 1px solid black;
-      }
+      td { border: 1px solid black; }
     </style>
   </head>
   <table>
@@ -32,7 +30,9 @@
       <td>{{ entry.sizeX }} </td>
       <td>{{ entry.sizeY }} </td>
       <td>{{ entry.sizeZ }} </td>
-      <td><button (click)='detailMachine(entry.id)'>Details</button></td>
+      <td>
+        <button (click)='detailMachine(entry.id)'>Details</button>
+      </td>
     </tr>
   </table>
 </div>
