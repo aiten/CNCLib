@@ -170,18 +170,12 @@ export class MachineFormComponent implements OnInit {
     this.isLoaded = true;
   }
 
-  saveMachine(value: any) {
-/*
+  async saveMachine(value: any) {
+
     console.log(value);
     Object.assign(this.machine, value);
-    this.machineService
-      .updateMachine(this.machine)
-      .subscribe(
-      newp => 
-      {
-        this.router.navigate([machineURL + '/detail',this.machine.id])
-      })
-*/
+    await this.machineService.updateMachine(this.machine);
+    this.router.navigate([machineURL, 'detail', this.machine.id]);
   }
 
   userExistsValidator = (control) => {

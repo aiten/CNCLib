@@ -74,16 +74,12 @@ export class LocalCNCLibMachineService implements CNCLibMachineService {
     return m$;
   }
 
-  async updateMachine(machine: Machine): Promise<Machine> {
-/*
+  async updateMachine(machine: Machine): Promise<void> {
     console.log('LocalCNCLibMachineService.updateMachine');
     const m$ = this.http
-      .put(`${this.baseUrl}/machine/${machine.id}`, fromMachine(machine), this.getHeaders())
-      .map((response: Response) => response.json())
-      .catch(this.handleError);
-    return m$;
-*/
-    return new Machine();
+      .put(`${this.baseUrl}api/machine/${machine.id}`, fromMachine(machine))
+      .toPromise()
+      .catch(this.handleErrorPromise);
   }
 
   async deleteMachineById(id: number): Promise<void> {
