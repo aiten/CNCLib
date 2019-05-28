@@ -20,6 +20,8 @@ import { MachineInitCommand } from './machine-init-command';
 export class Machine {
   id: number;
   description: string;
+  serialServer: string;
+  serialServerPort: number;
   comPort: string;
   sizeX: number;
   sizeY: number;

@@ -111,6 +111,8 @@ function toMachine(r: any): Machine {
     {
       id: r.MachineId,
       description: r.Name,
+      serialServer: r.SerialServer,
+      serialServerPort: r.SerialServerPort,
       comPort: r.ComPort,
       sizeX: r.SizeX,
       sizeY: r.SizeY,
@@ -171,6 +173,8 @@ function fromMachine(r: Machine): any {
       MachineId: r.id,
       Name: r.description,
       ComPort: r.comPort,
+      SerialServer: r.serialServer,
+      SerialServerPort: r.serialServerPort,
       SizeX: r.sizeX,
       SizeY: r.sizeY,
       SizeZ: r.sizeZ,
