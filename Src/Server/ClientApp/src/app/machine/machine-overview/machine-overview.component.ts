@@ -17,7 +17,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Machine } from '../../models/machine';
 import { CNCLibMachineService } from '../../services/CNCLib-machine.service';
-import { machineURL } from '../machine-routing';
+import { machineURL } from '../../app.global';
 import { Router } from '@angular/router';
 
 @Component(

@@ -20,8 +20,8 @@ import { MachineCommand } from '../../models/machine-command';
 import { MachineInitCommand } from '../../models/machine-init-command';
 import { CNCLibMachineService } from '../../services/CNCLib-machine.service';
 import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
-import { machineURL } from '../machine-routing';
 import { switchMap } from 'rxjs/operators';
+import { machineURL } from '../../app.global';
 
 @Component({
   selector: 'ha-machine-entry-load',
