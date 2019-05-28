@@ -52,7 +52,7 @@ export class LocalCNCLibMachineService implements CNCLibMachineService {
     return m$;
   }
 
-  async getDefault(): Promise<Machine> {
+  getDefault(): Promise<Machine> {
 
     console.log('LocalCNCLibMachineService.getDefault');
     const m$ = this.http
@@ -63,7 +63,7 @@ export class LocalCNCLibMachineService implements CNCLibMachineService {
     return m$;
   }
 
-  async addMachine(machine: Machine): Promise<Machine> {
+  addMachine(machine: Machine): Promise<Machine> {
 
     console.log('LocalCNCLibMachineService.addMachine');
     const m$ = this.http
@@ -74,21 +74,22 @@ export class LocalCNCLibMachineService implements CNCLibMachineService {
     return m$;
   }
 
-  async updateMachine(machine: Machine): Promise<void> {
+  updateMachine(machine: Machine): Promise<void> {
     console.log('LocalCNCLibMachineService.updateMachine');
     const m$ = this.http
-      .put(`${this.baseUrl}api/machine/${machine.id}`, fromMachine(machine))
+      .put<void>(`${this.baseUrl}api/machine/${machine.id}`, fromMachine(machine))
       .toPromise()
       .catch(this.handleErrorPromise);
+    return m$;
   }
 
-  async deleteMachineById(id: number): Promise<void> {
+  deleteMachineById(id: number): Promise<void> {
     console.log('LocalCNCLibMachineService.addMachine');
     const m$ = this.http
-      .delete(`${this.baseUrl}api/machine/${id}`)
+      .delete<void>(`${this.baseUrl}api/machine/${id}`)
       .toPromise()
       .catch(this.handleErrorPromise);
-
+    return m$;
     /*
     console.log('LocalCNCLibMachineService.deleteMachine');
     const m$ = this.http
