@@ -45,8 +45,9 @@ import { faHome } from '@fortawesome/free-solid-svg-icons';
 import { faSync } from '@fortawesome/free-solid-svg-icons';
 import { faPlug } from '@fortawesome/free-solid-svg-icons';
 import { faCalculator } from '@fortawesome/free-solid-svg-icons';
+import { faToolbox } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faHome, faSync, faPlug, faCalculator);
+library.add(faHome, faSync, faPlug, faCalculator, faToolbox);
 
 @
 NgModule({

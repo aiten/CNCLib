@@ -52,9 +52,5 @@ namespace CNCLib.Service.WebAPI
                         .Add("password", password)));
             return isValidUserString.Trim('"') == @"true";
         }
-
-        #region IDisposable Support
-
-        #endregion
     }
 }

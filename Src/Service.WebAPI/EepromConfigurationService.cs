@@ -54,9 +54,5 @@ namespace CNCLib.Service.WebAPI
 
             return null;
         }
-
-        #region IDisposable Support
-
-        #endregion
     }
 }

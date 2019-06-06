@@ -41,11 +41,6 @@ namespace CNCLib.Service.WebAPI
             return services;
         }
 
-        private static void ConfigureClient(HttpClient httpClient)
-        {
-            HttpClientHelper.PrepareHttpClient(httpClient, @"http://cnclibwebapi.azurewebsites.net");
-        }
-
         private static IHttpClientBuilder AddConfigureClientBuilder(this IHttpClientBuilder builder)
         {
             return builder.ConfigurePrimaryHttpMessageHandler(HttpClientHelper.CreateHttpClientHandlerIgnoreSSLCertificatesError);

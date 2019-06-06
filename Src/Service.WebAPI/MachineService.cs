@@ -27,7 +27,6 @@ namespace CNCLib.Service.WebAPI
 {
     public class MachineService : CRUDServiceBase<Machine, int>, IMachineService
     {
-//        public MachineService() : base(Framework.Service.WebAPI.HttpClientFactory.Instance.GetHttpClient(@"http://cnclibwebapi.azurewebsites.net"))
         public MachineService(HttpClient httpClient) : base(httpClient)
         {
             BaseApi = @"api/Machine";
@@ -78,9 +77,5 @@ namespace CNCLib.Service.WebAPI
                 return;
             }
         }
-
-        #region IDisposable Support
-
-        #endregion
     }
 }
