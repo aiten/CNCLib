@@ -42,12 +42,7 @@
     <ProjectReference Include="..\WpfClient\WpfClient.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite">
-      <Version>3.0.0-preview6.19304.10</Version>
-    </PackageReference>
-    <PackageReference Include="System.Data.SQLite.Core">
-      <Version>1.0.111</Version>
-    </PackageReference>
+    <PackageReference Include="NLog.WindowsIdentity" Version="4.6.5" />
     <PackageReference Include="System.Management" Version="4.6.0-preview6.19303.8" />
   </ItemGroup>
 
