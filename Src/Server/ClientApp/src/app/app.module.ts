@@ -39,6 +39,8 @@ import { eepromConfigRoutes, eepromConfigRoutingComponents } from './eeprom-conf
 
 import { machineRoutes, machineRoutingComponents } from './machine/machine-routing';
 
+import { gcodeRoutes, gcodeRoutingComponents } from './gcode/gcode-routing';
+
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
@@ -46,8 +48,9 @@ import { faSync } from '@fortawesome/free-solid-svg-icons';
 import { faPlug } from '@fortawesome/free-solid-svg-icons';
 import { faCalculator } from '@fortawesome/free-solid-svg-icons';
 import { faToolbox } from '@fortawesome/free-solid-svg-icons';
+import { faCogs } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faHome, faSync, faPlug, faCalculator, faToolbox);
+library.add(faHome, faSync, faPlug, faCalculator, faToolbox, faCogs);
 
 @
 NgModule({
@@ -56,7 +59,8 @@ NgModule({
     NavMenuComponent,
     HomeComponent,
     ...machineRoutingComponents,
-    ...eepromConfigRoutingComponents
+    ...eepromConfigRoutingComponents,
+    ...gcodeRoutingComponents
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -69,6 +73,7 @@ NgModule({
       { path: 'home', component: HomeComponent },
       ...eepromConfigRoutes,
       ...machineRoutes,
+      ...gcodeRoutes,
     ]),
   ],
   providers: [

@@ -1,0 +1,42 @@
+<h1>G-Code generation templates</h1>
+
+<div>
+
+  <head>
+    <style>
+      table,
+      th,
+      td { border: 1px solid black; }
+    </style>
+  </head>
+  <table>
+    <tr>
+      <th>Id</th>
+      <th>Description</th>
+      <th>comPort</th>
+      <th>BaudRate</th>
+      <th>Axis</th>
+      <th>Size-X</th>
+      <th>Size-Y</th>
+      <th>Size-Z</th>
+      <th>Edit</th>
+    </tr>
+    <tr *ngFor="let entry of entries">
+      <td>{{ entry.id }}</td>
+      <td>{{ entry.description }}</td>
+      <td>{{ entry.comPort }} </td>
+      <td>{{ entry.baudRate }} </td>
+      <td>{{ entry.axis }} </td>
+      <td>{{ entry.sizeX }} </td>
+      <td>{{ entry.sizeY }} </td>
+      <td>{{ entry.sizeZ }} </td>
+      <td>
+        <button (click)='detailMachine(entry.id)'>Details</button>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<button (click)='newMachine()'>new</button>
+
+
