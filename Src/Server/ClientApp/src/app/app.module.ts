@@ -35,6 +35,9 @@ import { LocalCNCLibEepromConfigService } from './services/local-CNCLib-eeprom-c
 import { CNCLibMachineService } from './services/CNCLib-machine.service';
 import { LocalCNCLibMachineService } from './services/local-CNCLib-machine.service';
 
+import { CNCLibLoadOptionService } from './services/CNCLib-load-option.service';
+import { LocalCNCLibLoadOptionService } from './services/local-CNCLib-load-option.service';
+
 import { eepromConfigRoutes, eepromConfigRoutingComponents } from './eeprom-config/eeprom-config-routing';
 
 import { machineRoutes, machineRoutingComponents } from './machine/machine-routing';
@@ -83,6 +86,7 @@ NgModule({
       useClass: LocalCNCLibEepromConfigService
     },
     { provide: CNCLibMachineService, useClass: LocalCNCLibMachineService },
+    { provide: CNCLibLoadOptionService, useClass: LocalCNCLibLoadOptionService },
   ],
   bootstrap: [AppComponent]
 })

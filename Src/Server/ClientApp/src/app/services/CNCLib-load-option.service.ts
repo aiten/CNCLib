@@ -19,7 +19,7 @@ import { LoadOptions } from '../models/load-options';
 export abstract class CNCLibLoadOptionService {
   public abstract getById(id: number): Promise<LoadOptions>;
 
-  public abstract getAll(): Promise<Machine[]>;
+  public abstract getAll(): Promise<LoadOptions[]>;
 
   public abstract addLoadOption(machine: LoadOptions): Promise<LoadOptions>;
 

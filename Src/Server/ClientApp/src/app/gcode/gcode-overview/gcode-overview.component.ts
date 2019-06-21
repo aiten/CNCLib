@@ -15,9 +15,9 @@
 */
 
 import { Component, OnInit } from '@angular/core';
-import { Machine } from '../../models/machine';
-import { CNCLibMachineService } from '../../services/CNCLib-machine.service';
-import { machineURL } from '../../app.global';
+import { LoadOptions } from "../../models/load-options";
+import { CNCLibLoadOptionService } from '../../services/CNCLib-load-option.service';
+//import { machineURL } from '../../app.global';
 import { Router } from '@angular/router';
 
 @Component(
@@ -27,17 +27,17 @@ import { Router } from '@angular/router';
     styleUrls: ['./gcode-overview.component.css']
   })
 export class GcodeOverviewComponent implements OnInit {
-  entries: Machine[] = [];
+  entries: LoadOptions[] = [];
   errorMessage: string = '';
   isLoading: boolean = true;
 
   constructor(
     private router: Router,
-    private machineService: CNCLibMachineService
+    private loadOptionService: CNCLibLoadOptionService
   ) {
   }
 
   async ngOnInit() {
-    this.entries = await this.machineService.getAll();
+    this.entries = await this.loadOptionService.getAll();
   }
 }
