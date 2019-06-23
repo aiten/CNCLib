@@ -37,6 +37,16 @@ export class GcodeOverviewComponent implements OnInit {
   ) {
   }
 
+  newLoadOption() {
+
+  }
+
+  detailLoadOption(id: number) {
+
+  }
+
+  
+
   async ngOnInit() {
     this.entries = await this.loadOptionService.getAll();
   }
