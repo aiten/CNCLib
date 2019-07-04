@@ -14,8 +14,8 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 using CNCLib.Logic.Abstraction.DTO;
@@ -28,9 +28,8 @@ namespace CNCLib.Service.WebAPI
 {
     public class UserService : CRUDServiceBase<User, int>, IUserService
     {
-        public UserService()
+        public UserService(HttpClient httpClient) : base(httpClient)
         {
-            BaseUri = @"http://cnclibwebapi.azurewebsites.net";
             BaseApi = @"api/user";
         }
 
@@ -38,14 +37,14 @@ namespace CNCLib.Service.WebAPI
 
         public async Task<User> GetByName(string username)
         {
-            return (await CreateHttpClientAndReadList<User>(
+            return (await ReadList<User>(
                 CreatePathBuilder()
                     .AddQuery(new UriQueryBuilder().Add("username", username)))).FirstOrDefault();
         }
 
         public async Task<bool> IsValidUser(string username, string password)
         {
-            var isValidUserString = await CreateHttpClientAndReadString(
+            var isValidUserString = await ReadString(
                 CreatePathBuilder()
                     .AddPath("isValidUser")
                     .AddQuery(new UriQueryBuilder()
@@ -53,10 +52,5 @@ namespace CNCLib.Service.WebAPI
                         .Add("password", password)));
             return isValidUserString.Trim('"') == @"true";
         }
-
-
-        #region IDisposable Support
-
-        #endregion
     }
 }

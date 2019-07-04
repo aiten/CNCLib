@@ -1,4 +1,4 @@
-﻿/*
+/*
   This file is part of CNCLib - A library for stepper motors.
 
   Copyright (c) Herbert Aitenbichler
@@ -14,17 +14,34 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using Framework.Dependency;
-using Framework.Dependency.Abstraction;
+import { CNCLibServerInfo } from '../models/CNCLib.Server.Info'
 
-namespace CNCLib.Logic.Client
-{
-    public static class LiveDependencyRegisterExtensions
-    {
-        public static IDependencyContainer RegisterLogicClient(this IDependencyContainer container)
-        {
-            container.RegisterTypesIncludingInternals(DependencyLivetime.Transient, typeof(Logic.Client.DynItemController).Assembly);
-            return container;
-        }
-    }
+export abstract class CNCLibInfoService {
+  public abstract getInfo(): Promise<CNCLibServerInfo>;
+
+/*
+  public abstract getPorts(): Promise<SerialPortDefinition[]>;
+
+  public abstract getPort(id: number): Promise<SerialPortDefinition>;
+
+  public abstract refresh(): Promise<SerialPortDefinition[]>;
+
+  public abstract connect(serialportid: number, baudrate: number, dtrIsReset: boolean, resetonConnect: boolean):
+    Promise<void>;
+
+  public abstract disconnect(serialportid: number): Promise<void>;
+
+  public abstract abort(serialportid: number): Promise<void>;
+
+  public abstract resume(serialportid: number): Promise<void>;
+
+  public abstract getHistory(serialportid: number): Promise<SerialCommand[]>;
+
+  public abstract clearHistory(serialportid: number): Promise<void>;
+
+  public abstract queueCommands(serialportid: number, command: string[], timeout: number): Promise<SerialCommand[]>;
+
+  public abstract sendWhileOkCommands(serialportid: number, command: string[], timeout: number):
+    Promise<SerialCommand[]>;
+*/
 }

@@ -53,7 +53,7 @@ namespace CNCLib.Serial.WebAPI.SerialPort
         {
             if (SerialPort == null)
             {
-                SerialPort = Dependency.Container.Resolve<ISerialPort>();
+                SerialPort = GlobalServiceCollection.Instance.Resolve<ISerialPort>();
             }
 
             var portNames = SerialPort.GetPortNames();

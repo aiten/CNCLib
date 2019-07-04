@@ -1,0 +1,1 @@
+dotnet.exe publish C:\dev\CNCLib\Src\WpfClient.Start\WpfClient.Start.csproj -r win-x64 --configuration release --output C:\dev\tmp\CNCLib\WpfClient.Start\X86 /p:PublishSingleFile=true

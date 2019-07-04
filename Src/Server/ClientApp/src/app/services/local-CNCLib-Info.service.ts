@@ -1,4 +1,4 @@
-﻿/*
+/*
   This file is part of CNCLib - A library for stepper motors.
 
   Copyright (c) Herbert Aitenbichler
@@ -14,17 +14,27 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using Framework.Dependency;
-using Framework.Dependency.Abstraction;
+import { Injectable, Inject } from '@angular/core';
+import { Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
+import { CNCLibServerInfo } from '../models/CNCLib.Server.Info';
+import { CNCLibInfoService } from './CNCLib-Info.service';
 
-namespace CNCLib.Logic
-{
-    public static class LiveDependencyRegisterExtensions
-    {
-        public static IDependencyContainer RegisterLogic(this IDependencyContainer container)
-        {
-            container.RegisterTypesIncludingInternals(DependencyLivetime.Transient, typeof(Manager.MachineManager).Assembly);
-            return container;
-        }
-    }
+@Injectable()
+export class LocalCNCLibInfoService implements CNCLibInfoService {
+  constructor(
+    private http: HttpClient,
+    @Inject('BASE_URL') public baseUrl: string,
+  ) {
+  }
+
+  getInfo(): Promise<CNCLibServerInfo> {
+    return this.http.get<CNCLibServerInfo>(this.baseUrl + 'api/Info').toPromise()
+      .catch(this.handleErrorPromise);
+  }
+
+  private handleErrorPromise(error: Response | any) {
+    console.error(error.message || error);
+    return Promise.reject(error.message || error);
+  }
 }

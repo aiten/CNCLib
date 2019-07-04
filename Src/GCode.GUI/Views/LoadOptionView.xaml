@@ -23,7 +23,7 @@
             <Button Command="{Binding DialogCancelCommand}" Content="Cancel" Width="100" />
         </StackPanel>
 
-        <TabControl Custom:TabControlHelper.IsUnderlined="True">
+        <TabControl Custom:TabControlHelper.Underlined="TabItems">
             <TabItem Header="GCode" Custom:ControlsHelper.HeaderFontSize="15">
                 <StackPanel Orientation="Vertical" Margin="10,10,10,10">
                     <GroupBox Header="Settings">

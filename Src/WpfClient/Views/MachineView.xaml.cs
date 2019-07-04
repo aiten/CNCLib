@@ -28,7 +28,7 @@ namespace CNCLib.WpfClient.Views
     {
         public MachineView()
         {
-            var vm = Dependency.Resolve<ViewModels.MachineViewModel>();
+            var vm = GlobalServiceCollection.Instance.Resolve<ViewModels.MachineViewModel>();
             DataContext = vm;
 
             InitializeComponent();

@@ -1,4 +1,4 @@
-﻿/*
+/*
   This file is part of CNCLib - A library for stepper motors.
 
   Copyright (c) Herbert Aitenbichler
@@ -14,32 +14,11 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
+import { Component, Inject } from '@angular/core';
 
-using CNCLib.Repository.Context;
-
-using Framework.Dependency;
-using Framework.Dependency.Abstraction;
-using Framework.Repository;
-using Framework.Repository.Abstraction;
-
-using Microsoft.EntityFrameworkCore;
-
-namespace CNCLib.Repository
-{
-    public static class LiveDependencyRegisterExtensions
-    {
-        public static IDependencyContainer RegisterRepository(this IDependencyContainer container, Action<DbContextOptionsBuilder> optionsAction)
-        {
-            var options = new DbContextOptionsBuilder<CNCLibContext>();
-            optionsAction(options);
-
-            container.RegisterInstance<DbContextOptions<CNCLibContext>>(options.Options);
-            container.RegisterTypeScoped<CNCLibContext, CNCLibContext>();
-            container.RegisterTypeScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
-
-            container.RegisterTypesIncludingInternals(DependencyLivetime.Transient, typeof(Repository.MachineRepository).Assembly);
-            return container;
-        }
-    }
+export class CNCLibServerInfo {
+  Version!: string;
+  Name!: string;
+  FullName!: string;
+  Copyright!: string;
 }

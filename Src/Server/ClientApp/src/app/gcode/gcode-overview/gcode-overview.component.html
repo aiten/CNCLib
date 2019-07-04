@@ -1,0 +1,29 @@
+<h1>G-Code generation templates</h1>
+
+<div>
+
+  <head>
+    <style>
+      table,
+      th,
+      td { border: 1px solid black; }
+    </style>
+  </head>
+  <table>
+    <tr>
+      <th>Id</th>
+      <th>SettingName</th>
+    </tr>
+    <tr *ngFor="let entry of entries">
+      <td>{{ entry.Id }}</td>
+      <td>{{ entry.SettingName }}</td>
+      <td>
+        <button (click)='detailLoadOption(entry.Id)'>Details</button>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<button (click)='newLoadOption()'>new</button>
+
+

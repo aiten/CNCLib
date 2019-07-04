@@ -28,7 +28,7 @@ namespace CNCLib.WpfClient.Views
     {
         public MainWindow()
         {
-            var vm = Dependency.Resolve<ViewModels.MainWindowViewModel>();
+            var vm = GlobalServiceCollection.Instance.Resolve<ViewModels.MainWindowViewModel>();
             DataContext = vm;
 
             InitializeComponent();
@@ -45,7 +45,7 @@ namespace CNCLib.WpfClient.Views
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            var global = Dependency.Resolve<Global>();
+            var global = GlobalServiceCollection.Instance.Resolve<Global>();
 
             if (global.Com.LocalCom.IsConnected)
             {

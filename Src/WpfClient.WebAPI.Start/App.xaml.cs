@@ -16,6 +16,7 @@
 
 using System;
 using System.Globalization;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
@@ -32,7 +33,10 @@ using Framework.Arduino.SerialCommunication;
 using Framework.Dependency;
 using Framework.Logging;
 using Framework.Mapper;
+using Framework.Service.WebAPI;
 using Framework.Tools;
+
+using Microsoft.Extensions.DependencyInjection;
 
 using NLog;
 
@@ -51,16 +55,17 @@ namespace CNCLib.WpfClient.WebAPI.Start
 
             ICNCLibUserContext userContext = new CNCLibUserContext();
 
-            Dependency.Initialize(new LiveDependencyProvider())
+            GlobalServiceCollection.Instance = new ServiceCollection();
+            GlobalServiceCollection.Instance
 
-                .RegisterFrameWorkTools()
-                .RegisterFrameWorkLogging()
-                .RegisterLogicClient()
-                .RegisterSerialCommunication()
-                .RegisterServiceAsWebAPI()
-                .RegisterCNCLibWpf()
+                .AddFrameWorkTools()
+                .AddFrameworkLogging()
+                .AddLogicClient()
+                .AddSerialCommunication()
+                .AddServiceAsWebAPI(httpClient => HttpClientHelper.PrepareHttpClient(httpClient, @"http://cnclibwebapi.azurewebsites.net"))
+                .AddCNCLibWpf()
 
-                .RegisterMapper(
+                .AddMapper(
                     new MapperConfiguration(
                         cfg =>
                         {
@@ -68,7 +73,7 @@ namespace CNCLib.WpfClient.WebAPI.Start
                             cfg.AddProfile<GCodeGUIAutoMapperProfile>();
                         }))
 
-                .RegisterInstance(userContext);
+                .AddSingleton(userContext);
 
             // Open WebAPI Connection
             //
@@ -77,7 +82,7 @@ namespace CNCLib.WpfClient.WebAPI.Start
                 {
                     try
                     {
-                        using (var controller = Dependency.Resolve<IMachineService>())
+                        using (var controller = GlobalServiceCollection.Instance.Resolve<IMachineService>())
                         {
                             var m = await controller.Get(1000000);
 /*

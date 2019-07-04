@@ -1,0 +1,87 @@
+﻿<style type="text/css">
+  span { width: 300px; }
+</style>
+
+<head>
+</head>
+
+<body>
+
+<h3>Eeprom values</h3>
+
+<div class="form-group input-group">
+  <span class="input-group-addon">MaxStepRate</span>
+  <label class="form-control">{{ entry.maxStepRate }}</label>
+</div>
+<div class="form-group input-group">
+  <span class="input-group-addon">Acc</span>
+  <label class="form-control">{{ entry.acc }}</label>
+</div>
+<div class="form-group input-group">
+  <span class="input-group-addon">Dec</span>
+  <label class="form-control">{{ entry.dec }}</label>
+</div>
+<div class="form-group input-group">
+  <span class="input-group-addon">JerkSpeed</span>
+  <label class="form-control">{{ entry.jerkSpeed }}</label>
+</div>
+<div class="form-group input-group">
+  <span class="input-group-addon">StepsPerMm1000</span>
+  <label class="form-control">{{ entry.stepsPerMm1000 }}</label>
+</div>
+
+<h3>Calculated values</h3>
+
+<div class="form-group input-group">
+  <span class="input-group-addon">StepsPerRotation</span>
+  <label class="form-control">{{ entry.stepsPerRotation }}</label>
+</div>
+
+<div class="form-group input-group">
+  <span class="input-group-addon">DistancePerRotationInMm</span>
+  <label class="form-control">{{ entry.distancePerRotationInMm }}</label>
+</div>
+
+<div class="form-group input-group">
+  <span class="input-group-addon">StepsPerMm</span>
+  <label class="form-control">{{ entry.stepsPerMm }}</label>
+</div>
+
+<h3>Estimated values</h3>
+
+<div class="form-group input-group">
+  <span class="input-group-addon">EstimatedMaxStepRate</span>
+  <label class="form-control">{{ entry.estimatedMaxStepRate }}</label>
+</div>
+
+<div class="form-group input-group">
+  <span class="input-group-addon">EstimatedMaxSpeedInMmSec</span>
+  <label class="form-control">{{ entry.estimatedMaxSpeedInMmSec }}</label>
+</div>
+
+<div class="form-group input-group">
+  <span class="input-group-addon">EstimatedAccelerationInMmSec2</span>
+  <label class="form-control">{{ entry.estimatedAccelerationInMmSec2 }}</label>
+</div>
+
+<div class="form-group input-group">
+  <span class="input-group-addon">EstimatedDecelerationInMmSec2</span>
+  <label class="form-control">{{ entry.estimatedDecelerationInMmSec2 }}</label>
+</div>
+
+<div class="form-group input-group">
+  <span class="input-group-addon">EstimatedAcc</span>
+  <label class="form-control">{{ entry.estimatedAcc }}</label>
+</div>
+
+<div class="form-group input-group">
+  <span class="input-group-addon">EstimatedDec</span>
+  <label class="form-control">{{ entry.estimatedDec }}</label>
+</div>
+
+<div class="form-group input-group">
+  <span class="input-group-addon">EstimatedJerkSpeed</span>
+  <label class="form-control">{{ entry.estimatedJerkSpeed }}</label>
+</div>
+
+</body>

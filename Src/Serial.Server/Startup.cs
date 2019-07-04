@@ -26,7 +26,6 @@ using Framework.Arduino.Linux.SerialCommunication;
 using Framework.Arduino.SerialCommunication;
 using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Dependency;
-using Framework.Dependency.Abstraction;
 using Framework.Tools;
 using Framework.Logging;
 using Framework.WebAPI.Filter;
@@ -38,10 +37,11 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 using Newtonsoft.Json.Serialization;
 
-using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.OpenApi.Models;
 
 namespace CNCLib.Serial.Server
 {
@@ -58,48 +58,54 @@ namespace CNCLib.Serial.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var controllerAssembly = typeof(HomeController).Assembly;
+            var controllerAssembly = typeof(InfoController).Assembly;
 
-            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowCredentials().AllowAnyMethod().AllowAnyHeader()));
+            //services.AddControllers();
+
+            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
             services.AddSignalR(hu => hu.EnableDetailedErrors = true);
 
             services.AddTransient<UnhandledExceptionFilter>();
             services.AddTransient<ValidateRequestDataFilter>();
+            services.AddTransient<MethodCallLogFilter>();
             services.AddMvc(
                     options =>
                     {
+                        options.EnableEndpointRouting = false;
                         options.Filters.AddService<ValidateRequestDataFilter>();
                         options.Filters.AddService<UnhandledExceptionFilter>();
+                        options.Filters.AddService<MethodCallLogFilter>();
                     })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .AddNewtonsoftJson(
+                    options =>
+                        options.SerializerSettings.ContractResolver = new DefaultContractResolver())
                 .AddApplicationPart(controllerAssembly);
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
 
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "CNCLib API", Version = "v1" }); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "CNCLib API", Version = "v1" }); });
 
-            var container = Dependency.Initialize(new MsDependencyProvider(services))
-                .RegisterSerialCommunication()
-                .RegisterFrameWorkTools()
-                .RegisterFrameWorkLogging()
-                .RegisterTypesIncludingInternals(DependencyLivetime.Scoped, typeof(Framework.Arduino.SerialCommunication.Serial).Assembly);
+            GlobalServiceCollection.Instance = services;
+            services
+                .AddSerialCommunication()
+                .AddFrameWorkTools()
+                .AddFrameworkLogging()
+                .AddAssembylIncludingInternals(ServiceLifetime.Scoped, typeof(Framework.Arduino.SerialCommunication.Serial).Assembly);
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                container.RegisterTypeScoped<ISerialPort, SerialPortLib>();
+                services.AddScoped<ISerialPort, SerialPortLib>();
             }
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             Services = app.ApplicationServices;
 
             SerialPortWrapper.OnCreateHub = () => Hub;
-
-            //Services = serviceProvider;
 
             if (env.IsDevelopment())
             {
@@ -108,16 +114,17 @@ namespace CNCLib.Serial.Server
             else
             {
                 app.UseExceptionHandler("/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
-            app.UseCors("AllowAll");
+            app.UseRouting();
+            app.UseHttpsRedirection();
 
-            app.UseSignalR(router => { router.MapHub<CNCLibHub>("/serialSignalR"); });
+            app.UseCors("AllowAll");
 
             void callback(object x)
             {
@@ -130,21 +137,26 @@ namespace CNCLib.Serial.Server
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "CNCLib API V1"); });
 
-            app.UseMvc(routes => { routes.MapRoute(name: "default", template: "{instance}/{action=Index}/{id?}"); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<CNCLibHub>("/serialSignalR");
+                endpoints.MapDefaultControllerRoute();
+                //endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+            });
 
-            app.UseSpa(
-                spa =>
+
+            app.UseSpa(spa =>
+            {
+                // To learn more about options for serving an Angular SPA from ASP.NET Core,
+                // see https://go.microsoft.com/fwlink/?linkid=864501
+
+                spa.Options.SourcePath = "ClientApp";
+
+                if (env.IsDevelopment())
                 {
-                    // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                    // see https://go.microsoft.com/fwlink/?linkid=864501
-
-                    spa.Options.SourcePath = "ClientApp";
-
-                    if (env.IsDevelopment())
-                    {
-                        spa.UseAngularCliServer(npmScript: "start");
-                    }
-                });
+                    spa.UseAngularCliServer(npmScript: "start");
+                }
+            });
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿/*
+/*
   This file is part of CNCLib - A library for stepper motors.
 
   Copyright (c) Herbert Aitenbichler
@@ -14,17 +14,29 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using Framework.Dependency;
-using Framework.Dependency.Abstraction;
+import { Component, Inject, OnInit } from '@angular/core';
+import { CNCLibServerInfo } from '../models/CNCLib.Server.Info'
+import { CNCLibInfoService } from '../services/CNCLib-Info.service';
 
-namespace CNCLib.Service.WebAPI
-{
-    public static class LiveDependencyRegisterExtensions
-    {
-        public static IDependencyContainer RegisterServiceAsWebAPI(this IDependencyContainer container)
-        {
-            container.RegisterTypesIncludingInternals(DependencyLivetime.Transient, typeof(MachineService).Assembly);
-            return container;
-        }
-    }
+@Component({
+  selector: 'home',
+  templateUrl: './home.component.html'
+})
+export class HomeComponent implements OnInit {
+  appName: string = '';
+  appVersion: string = '';
+  appCopyright: string = '';
+  appVersionInfo: CNCLibServerInfo = new CNCLibServerInfo();
+
+  constructor(
+    private cncLibInfoService: CNCLibInfoService,
+  ) {
+  }
+
+  async ngOnInit(): Promise<void> {
+    this.appVersionInfo = await this.cncLibInfoService.getInfo();
+    this.appVersion = this.appVersionInfo.Version;
+    this.appName = this.appVersionInfo.Name;
+    this.appCopyright = this.appVersionInfo.Copyright;
+  }
 }

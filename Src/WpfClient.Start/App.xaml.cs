@@ -37,7 +37,7 @@ using Framework.Logging;
 using Framework.Mapper;
 using Framework.Tools;
 
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 using NLog;
 
@@ -70,16 +70,17 @@ namespace CNCLib.WpfClient.Start
 
             var userContext = new CNCLibUserContext();
 
-            Dependency.Initialize(new LiveDependencyProvider())
-                .RegisterFrameWorkTools()
-                .RegisterFrameWorkLogging()
-                .RegisterRepository(SqliteDatabaseTools.OptionBuilder)
-                .RegisterLogic()
-                .RegisterLogicClient()
-                .RegisterSerialCommunication()
-                .RegisterServiceAsLogic()
-                .RegisterCNCLibWpf()
-                .RegisterMapper(
+            GlobalServiceCollection.Instance = new ServiceCollection();
+            GlobalServiceCollection.Instance
+                .AddFrameWorkTools()
+                .AddFrameworkLogging()
+                .AddRepository(SqliteDatabaseTools.OptionBuilder)
+                .AddLogic()
+                .AddLogicClient()
+                .AddSerialCommunication()
+                .AddServiceAsLogic()
+                .AddCNCLibWpf()
+                .AddMapper(
                     new MapperConfiguration(
                         cfg =>
                         {
@@ -87,7 +88,7 @@ namespace CNCLib.WpfClient.Start
                             cfg.AddProfile<WpfAutoMapperProfile>();
                             cfg.AddProfile<GCodeGUIAutoMapperProfile>();
                         }))
-                .RegisterInstance((ICNCLibUserContext)userContext);
+                .AddSingleton((ICNCLibUserContext)userContext);
 
             // Open Database here
 

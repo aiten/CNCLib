@@ -16,6 +16,7 @@
 
 using System;
 using System.Reflection;
+using System.Threading;
 
 using AutoMapper;
 
@@ -28,6 +29,7 @@ using CNCLib.Service.Logic;
 using CNCLib.Shared;
 using CNCLib.WebAPI;
 using CNCLib.WebAPI.Controllers;
+using CNCLib.WebAPI.Hubs;
 
 using Framework.Dependency;
 using Framework.Logging;
@@ -38,15 +40,16 @@ using Framework.WebAPI.Filter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Serialization;
 
 using NLog;
-
-using Swashbuckle.AspNetCore.Swagger;
 
 namespace CNCLib.Server
 {
@@ -55,10 +58,10 @@ namespace CNCLib.Server
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            string sqlConnectString = 
+            string sqlConnectString =
                 Microsoft.Azure.Web.DataProtection.Util.IsAzureEnvironment()
-                ? $"Data Source = cnclibdb.database.windows.net; Initial Catalog = CNCLibDb; Persist Security Info = True; User ID = {Xxx}; Password = {Yyy};"
-                : SqlServerDatabaseTools.ConnectString;
+                    ? $"Data Source = cnclibdb.database.windows.net; Initial Catalog = CNCLibDb; Persist Security Info = True; User ID = {Xxx}; Password = {Yyy};"
+                    : SqlServerDatabaseTools.ConnectString;
 
             SqlServerDatabaseTools.ConnectString = sqlConnectString;
 
@@ -68,13 +71,19 @@ namespace CNCLib.Server
             GlobalDiagnosticsContext.Set("username",         Environment.UserName);
         }
 
-        public IConfiguration Configuration { get; }
+        public        IConfiguration         Configuration { get; }
+        public static IServiceProvider       Services      { get; private set; }
+        public static IHubContext<CNCLibHub> Hub           => Services.GetService<IHubContext<CNCLibHub>>();
 
         public void ConfigureServices(IServiceCollection services)
         {
             var controllerAssembly = typeof(CambamController).Assembly;
 
+            services.AddControllers();
+
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+
+            services.AddSignalR(hu => hu.EnableDetailedErrors = true);
 
             services.AddTransient<UnhandledExceptionFilter>();
             services.AddTransient<ValidateRequestDataFilter>();
@@ -82,31 +91,37 @@ namespace CNCLib.Server
             services.AddMvc(
                     options =>
                     {
+                        options.EnableEndpointRouting = false;
                         options.Filters.AddService<ValidateRequestDataFilter>();
                         options.Filters.AddService<UnhandledExceptionFilter>();
                         options.Filters.AddService<MethodCallLogFilter>();
                     })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .AddNewtonsoftJson(
+                    options =>
+                        options.SerializerSettings.ContractResolver = new DefaultContractResolver())
                 .AddApplicationPart(controllerAssembly);
 
-            // Register the Swagger generator, defining one or more Swagger documents
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "CNCLib API", Version = "v1" }); });
+            // In production, the Angular files will be served from this directory
+            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
 
-            Dependency.Initialize(new MsDependencyProvider(services))
-                .RegisterFrameWorkTools()
-                .RegisterFrameWorkLogging()
-                .RegisterRepository(SqlServerDatabaseTools.OptionBuilder)
-                .RegisterLogic()
-                .RegisterLogicClient()
-                .RegisterServiceAsLogic() // used for Logic.Client
-                .RegisterTypeScoped<ICNCLibUserContext, CNCLibUserContext>()
-                .RegisterMapper(new MapperConfiguration(cfg => { cfg.AddProfile<LogicAutoMapperProfile>(); }));
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "CNCLib API", Version = "v1" }); });
+
+            GlobalServiceCollection.Instance = services;
+            services
+                .AddFrameWorkTools()
+                .AddFrameworkLogging()
+                .AddRepository(SqlServerDatabaseTools.OptionBuilder)
+                .AddLogic()
+                .AddLogicClient()
+                .AddServiceAsLogic() // used for Logic.Client
+                .AddScoped<ICNCLibUserContext, CNCLibUserContext>()
+                .AddMapper(new MapperConfiguration(cfg => { cfg.AddProfile<LogicAutoMapperProfile>(); }));
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
-            // Open Database here
+            Services = app.ApplicationServices;
 
             CNCLibContext.InitializeDatabase2(false, false);
 
@@ -114,15 +129,52 @@ namespace CNCLib.Server
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Error");
 
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger();
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
 
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "CNCLib API V1"); });
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+
+            app.UseRouting();
+            app.UseHttpsRedirection();
 
             app.UseCors("AllowAll");
-            app.UseMvc();
+
+            void callback(object x)
+            {
+                Hub.Clients.All.SendAsync("heartbeat");
+            }
+
+            var timer = new Timer(callback);
+            timer.Change(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(30));
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "CNCLib API V1"); });
+
+            app.UseEndpoints(
+                endpoints =>
+                {
+                    endpoints.MapHub<CNCLibHub>("/serialSignalR");
+                    endpoints.MapDefaultControllerRoute();
+                });
+            app.UseSpa(
+                spa =>
+                {
+                    // To learn more about options for serving an Angular SPA from ASP.NET Core,
+                    // see https://go.microsoft.com/fwlink/?linkid=864501
+
+                    spa.Options.SourcePath = "ClientApp";
+
+                    if (env.IsDevelopment())
+                    {
+                        spa.UseAngularCliServer(npmScript: "start");
+                    }
+                });
         }
 
         public string Xxx => @"Herbert";

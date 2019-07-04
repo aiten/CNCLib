@@ -1,0 +1,25 @@
+<h3>Calculation of Eeprom parameters for CNC machines</h3>
+
+<div>
+
+  <head>
+    <style>
+      table,
+      th,
+      td { border: 1px solid black; }
+    </style>
+  </head>
+
+  <ha-eeprom-config-form #eeinput [eepromConfigInput]="eepromConfigInput">
+    Loading ...
+  </ha-eeprom-config-form>
+
+  <button class="btn btn-default" [disabled]="!eeinput.isValid()" (click)="eeinput.getFormValues(); calculateEepromConfig()">Calculate eeprom values</button>
+
+  <p *ngIf="isCalculating">Calculating ...</p>
+
+  <ha-eeprom-config-result [entry]="eepromConfig" *ngIf="isCalculated">
+    Loading ...
+  </ha-eeprom-config-result>
+
+</div>

@@ -1,4 +1,4 @@
-/*
+﻿/*
   This file is part of CNCLib - A library for stepper motors.
 
   Copyright (c) Herbert Aitenbichler
@@ -14,23 +14,48 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Diagnostics;
+using System;
+using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
-namespace CNCLib.Serial.WebAPI.Controllers
+namespace CNCLib.WebAPI.Hubs
 {
-    public class HomeController : Controller
+    public class CNCLibHub : Hub
     {
-        public IActionResult Index()
+        public override Task OnDisconnectedAsync(Exception exception)
         {
-            return View();
+            return base.OnDisconnectedAsync(exception);
         }
 
-        public IActionResult Error()
+        public async Task HeartBeat()
         {
-            ViewData["RequestId"] = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
-            return View();
+            await Clients.All.SendAsync("heartbeat");
+        }
+
+        public async Task QueueEmpty(int id)
+        {
+            await Clients.All.SendAsync("queueEmpty", id);
+        }
+
+        public async Task QueueChanged(int id, int queueLength)
+        {
+            await Clients.All.SendAsync("queueChanged", id, queueLength);
+        }
+
+        public async Task SendingCommand(int id, int seqId)
+        {
+            await Clients.All.SendAsync("sendingCommand", id, seqId);
+        }
+
+        public async Task Connected(int id)
+        {
+            await Clients.All.SendAsync("connected", id);
+        }
+
+        public async Task Disconnected(int id)
+        {
+            await Clients.All.SendAsync("disconnected", id);
         }
     }
 }

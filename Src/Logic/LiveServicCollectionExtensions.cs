@@ -14,32 +14,18 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using CNCLib.Service.Abstraction;
-using CNCLib.WpfClient.Services;
-
 using Framework.Dependency;
-using Framework.Dependency.Abstraction;
-using Framework.Pattern;
 
-namespace CNCLib.WpfClient
+using Microsoft.Extensions.DependencyInjection;
+
+namespace CNCLib.Logic
 {
-    public static class LiveDependencyRegisterExtensions
+    public static class LiveServicCollectionExtensions
     {
-        public static IDependencyContainer RegisterCNCLibWpf(this IDependencyContainer container)
+        public static IServiceCollection AddLogic(this IServiceCollection services)
         {
-            container.RegisterInstance(new Global())
-            .RegisterType<IJoystickService, JoystickService>()
-            .RegisterType<IFactory<IMachineService>, FactoryResolve<IMachineService>>()
-            .RegisterType<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>()
-            .RegisterType<IFactory<IJoystickService>, FactoryResolve<IJoystickService>>()
-            .RegisterType<IFactory<IUserService>, FactoryResolve<IUserService>>()
-            .RegisterTypesByName(
-                n => n.EndsWith("ViewModel"),
-                DependencyLivetime.Transient,
-                typeof(ViewModels.MachineViewModel).Assembly,
-                typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
-
-            return container;
+            services.AddAssembylIncludingInternals(ServiceLifetime.Transient, typeof(Manager.MachineManager).Assembly);
+            return services;
         }
     }
 }

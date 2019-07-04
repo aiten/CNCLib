@@ -16,9 +16,8 @@
 
 using System;
 using System.IO;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.ServiceProcess;
+
+using Framework.WebAPI.Host;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -27,8 +26,6 @@ using Microsoft.Extensions.Logging;
 
 using NLog;
 using NLog.Web;
-
-using ILogger = NLog.ILogger;
 
 namespace CNCLib.Server
 {
@@ -45,7 +42,7 @@ namespace CNCLib.Server
 #endif
             try
             {
-                StartWebService(args);
+                ProgramUtilities.StartWebService(args, BuildWebHost);
             }
             catch (Exception e)
             {
@@ -54,80 +51,17 @@ namespace CNCLib.Server
             }
         }
 
-        private static void StartWebService(string[] args)
-        {
-            if (RunsAsService())
-            {
-                Environment.CurrentDirectory = BaseDirectory;
-
-                ServiceBase.Run(new ServiceBase[] { new CNCLibServerService() });
-            }
-            else
-            {
-                BuildWebHost(args).Run();
-                LogManager.Shutdown();
-            }
-        }
-
-        [DllImport("kernel32.dll")]
-        static extern IntPtr GetConsoleWindow();
-
-        private static bool CheckForConsoleWindow()
-        {
-            return GetConsoleWindow() == IntPtr.Zero;
-        }
-
-        private static bool RunsAsService()
-        {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Microsoft.Azure.Web.DataProtection.Util.IsAzureEnvironment() == false)
-            {
-                return CheckForConsoleWindow();
-            }
-
-            return false; // never can be a windows service
-        }
-
-        private sealed class CNCLibServerService : ServiceBase
-        {
-            private          IWebHost _webHost;
-            private readonly ILogger  _logger = LogManager.GetCurrentClassLogger();
-
-            protected override void OnStart(string[] args)
-            {
-                try
-                {
-                    _webHost = BuildWebHost(args);
-                    _webHost.Start();
-                }
-                catch (Exception e)
-                {
-                    _logger.Fatal(e);
-                    throw;
-                }
-            }
-
-            protected override void OnStop()
-            {
-                LogManager.Shutdown();
-                _webHost.Dispose();
-            }
-        }
-
-        private static string BaseDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-        private static IWebHost BuildWebHost(string[] args)
+        private static IWebHostBuilder BuildWebHost(string[] args)
         {
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("hosting.json", optional: true)
                 .AddCommandLine(args).Build();
             return WebHost.CreateDefaultBuilder(args)
-                .UseKestrel()
                 .UseConfiguration(config)
                 .UseStartup<Startup>()
                 .ConfigureLogging(logging => { logging.ClearProviders(); })
-                .UseNLog()
-                .Build();
+                .UseNLog();
         }
     }
 }

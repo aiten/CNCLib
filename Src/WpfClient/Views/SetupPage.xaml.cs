@@ -15,7 +15,6 @@
 */
 
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
 
 using CNCLib.WpfClient.ViewModels;
@@ -32,7 +31,7 @@ namespace CNCLib.WpfClient.Views
     {
         public SetupPage()
         {
-            var vm = Dependency.Resolve<SetupWindowViewModel>();
+            var vm = GlobalServiceCollection.Instance.Resolve<SetupWindowViewModel>();
             DataContext = vm;
 
             InitializeComponent();

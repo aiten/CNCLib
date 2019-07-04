@@ -36,7 +36,7 @@ namespace CNCLib.Serial.WebAPI.SerialPort
         {
             if (Serial == null)
             {
-                Serial = Dependency.Container.Resolve<ISerial>();
+                Serial = GlobalServiceCollection.Instance.Resolve<ISerial>();
 
                 Serial.CommandQueueEmpty += async (sender, e) => { await OnCreateHub().Clients.All.SendAsync("queueEmpty", Id); };
                 Serial.CommandQueueChanged += (sender, e) =>

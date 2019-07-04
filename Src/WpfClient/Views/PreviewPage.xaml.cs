@@ -35,7 +35,7 @@ namespace CNCLib.WpfClient.Views
     {
         public PreviewPage()
         {
-            var vm = Dependency.Resolve<PreviewViewModel>();
+            var vm = GlobalServiceCollection.Instance.Resolve<PreviewViewModel>();
             DataContext = vm;
 
             InitializeComponent();

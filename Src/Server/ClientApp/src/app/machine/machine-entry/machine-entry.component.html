@@ -1,0 +1,163 @@
+<head>
+  <style>
+    table,
+    th,
+    td { border: 1px solid black; }
+  </style>
+</head>
+
+<body>
+
+<div class="machine-entry">
+  <h1>machine '{{entry.description}}'</h1>
+  <table>
+    <tr>
+      <td>Description</td>
+      <td>{{ entry.description }}</td>
+    </tr>
+    <tr>
+      <td>ComPort</td>
+      <td>{{ entry.comPort }} </td>
+    </tr>
+    <tr>
+      <td>Serial Server</td>
+      <td>{{ entry.serialServer }} </td>
+    </tr>
+    <tr>
+      <td>Serial Server Port</td>
+      <td>{{ entry.serialServerPort }} </td>
+    </tr>
+    <tr>
+    <tr>
+      <td>BaudRate</td>
+      <td>{{ entry.baudRate }} </td>
+    </tr>
+    <tr>
+      <td>Axis</td>
+      <td>{{ entry.axis }} </td>
+    </tr>
+    <tr>
+      <td>Size-X</td>
+      <td>{{ entry.sizeX }} </td>
+    </tr>
+    <tr>
+      <td>Size-Y</td>
+      <td>{{ entry.sizeY }} </td>
+    </tr>
+    <tr>
+      <td>Size-Z</td>
+      <td>{{ entry.sizeZ }} </td>
+    </tr>
+
+    <tr *ngIf="_isMore">
+      <td>Size-A</td>
+      <td>{{ entry.sizeA }} </td>
+    </tr>
+
+    <tr *ngIf="_isMore">
+      <td>Size-B</td>
+      <td>{{ entry.sizeB }} </td>
+    </tr>
+
+    <tr *ngIf="_isMore">
+      <td>Size-C</td>
+      <td>{{ entry.sizeC }} </td>
+    </tr>
+
+    <tr *ngIf="_isMore">
+      <td>BufferSize</td>
+      <td>{{ entry.bufferSize }} </td>
+    </tr>
+
+
+    <tr *ngIf="_isMore">
+      <td>commandToUpper</td>
+      <td>{{ entry.commandToUpper }} </td>
+    </tr>
+    <tr *ngIf="_isMore">
+      <td>SDSupport</td>
+      <td>{{ entry.SDSupport }} </td>
+    </tr>
+    <tr *ngIf="_isMore">
+      <td>CommandSyntax</td>
+      <td>{{ entry.commandSyntax }} </td>
+    </tr>
+    <tr *ngIf="_isMore">
+      <td>spindle</td>
+      <td>{{ entry.spindle }} </td>
+    </tr>
+    <tr *ngIf="_isMore">
+      <td>coolant</td>
+      <td>{{ entry.coolant }} </td>
+    </tr>
+    <tr *ngIf="_isMore">
+      <td>laser</td>
+      <td>{{ entry.laser }} </td>
+    </tr>
+    <tr *ngIf="_isMore">
+      <td>rotate</td>
+      <td>{{ entry.rotate }} </td>
+    </tr>
+
+    <tr *ngIf="_isMore">
+      <td>probeSizeX</td>
+      <td>{{ entry.probeSizeX }} </td>
+    </tr>
+    <tr *ngIf="_isMore">
+      <td>probeSizeY</td>
+      <td>{{ entry.probeSizeY }} </td>
+    </tr>
+    <tr *ngIf="_isMore">
+      <td>probeSizeZ</td>
+      <td>{{ entry.probeSizeZ }} </td>
+    </tr>
+    <tr *ngIf="_isMore">
+      <td>probeDistUp</td>
+      <td>{{ entry.probeDistUp }} </td>
+    </tr>
+    <tr *ngIf="_isMore">
+      <td>probeDist</td>
+      <td>{{ entry.probeDist }} </td>
+    </tr>
+    <tr *ngIf="_isMore">
+      <td>probeFeed</td>
+      <td>{{ entry.probeFeed }} </td>
+    </tr>
+  </table>
+</div>
+
+<div *ngIf="_isMore">
+
+  <h2>Commands</h2>
+
+  <table>
+    <tr>
+      <th>Description</th>
+      <th>Command</th>
+      <th>Position</th>
+    </tr>
+    <tr *ngFor="let centry of entry.commands">
+      <td>{{centry.commandName}}</td>
+      <td>{{centry.commandString}}</td>
+      <td>{{centry.posX}}:{{centry.posY}}</td>
+    </tr>
+    <tr>
+  </table>
+
+  <h2>Init Commands</h2>
+
+  <table>
+    <tr>
+      <th>SeqNo</th>
+      <th>Command</th>
+    </tr>
+    <tr *ngFor="let icentry of entry.initCommands">
+      <td>{{icentry.seqNo}}</td>
+      <td>{{icentry.commandString}}</td>
+    </tr>
+  </table>
+</div>
+
+<button (click)="_isMore = !_isMore">{{_isMore ? 'less' : 'more'}}</button>
+
+</body>

@@ -32,7 +32,7 @@ namespace CNCLib.WpfClient.Views
     {
         public EepromView()
         {
-            var vm = Dependency.Resolve<ViewModels.EepromViewModel>();
+            var vm = GlobalServiceCollection.Instance.Resolve<ViewModels.EepromViewModel>();
             DataContext = vm;
 
             InitializeComponent();

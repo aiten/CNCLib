@@ -28,7 +28,7 @@ namespace CNCLib.WpfClient.Views
     {
         public JoystickView()
         {
-            var vm = Dependency.Resolve<ViewModels.JoystickViewModel>();
+            var vm = GlobalServiceCollection.Instance.Resolve<ViewModels.JoystickViewModel>();
             DataContext = vm;
 
             InitializeComponent();
