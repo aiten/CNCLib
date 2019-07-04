@@ -17,8 +17,10 @@
 import { Component, OnInit } from '@angular/core';
 import { LoadOptions } from "../../models/load-options";
 import { CNCLibLoadOptionService } from '../../services/CNCLib-load-option.service';
-//import { machineURL } from '../../app.global';
 import { Router } from '@angular/router';
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { CourseDialogComponent } from "../../dialog/course-dialog/course-dialog.component";
+import { Course } from "../../dialog/model/course";
 
 @Component(
   {
@@ -33,7 +35,8 @@ export class GcodeOverviewComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private loadOptionService: CNCLibLoadOptionService
+    private loadOptionService: CNCLibLoadOptionService,
+    private dialog: MatDialog
   ) {
   }
 
@@ -43,9 +46,27 @@ export class GcodeOverviewComponent implements OnInit {
 
   detailLoadOption(id: number) {
 
+    const dialogConfig = new MatDialogConfig();
+    var course = new Course();
+    course.description = "Hallo";
+
+    console.log("Dialog call");
+
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true; 
+
+    dialogConfig.data = course;
+
+    const dialogRef = this.dialog.open(CourseDialogComponent,
+      dialogConfig);
+
+
+    dialogRef.afterClosed().subscribe(
+      val => console.log("Dialog output:", val)
+    );
+
   }
 
-  
 
   async ngOnInit() {
     this.entries = await this.loadOptionService.getAll();
