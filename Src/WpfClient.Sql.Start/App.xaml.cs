@@ -38,6 +38,7 @@ using Framework.Mapper;
 using Framework.Tools;
 using Framework.Logging;
 
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;
 
 using NLog;
