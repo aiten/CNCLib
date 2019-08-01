@@ -16,8 +16,10 @@
 
 using Framework.Arduino.SerialCommunication;
 using Framework.Arduino.SerialCommunication.Abstraction;
-using Framework.Logging;
+using Framework.Dependency;
 using Framework.Pattern;
+
+using Microsoft.Extensions.Logging;
 
 namespace CNCLib.WpfClient.Helpers
 {
@@ -30,7 +32,10 @@ namespace CNCLib.WpfClient.Helpers
 
         public ISerial RemoteCom => Singleton<Serial.Client.SerialService>.Instance;
 
-        private static Framework.Arduino.SerialCommunication.Serial _localSerial = new Framework.Arduino.SerialCommunication.Serial(new FactoryCreate<ISerialPort>(() => new SerialPort()), new Logger<Framework.Arduino.SerialCommunication.Serial>());
+        private static Framework.Arduino.SerialCommunication.Serial _localSerial = 
+            new Framework.Arduino.SerialCommunication.Serial(
+                new FactoryCreate<ISerialPort>(() => new SerialPort()), 
+                GlobalServiceCollection.Instance.Resolve<Logger<Framework.Arduino.SerialCommunication.Serial>>());
 
         public ISerial LocalCom => _localSerial;
 

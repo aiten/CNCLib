@@ -23,8 +23,10 @@ using CNCLib.WpfClient.Models;
 
 using Framework.Arduino.SerialCommunication;
 using Framework.Arduino.SerialCommunication.Abstraction;
-using Framework.Logging;
+using Framework.Dependency;
 using Framework.Pattern;
+
+using Microsoft.Extensions.Logging;
 
 using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;
 
@@ -34,7 +36,11 @@ namespace CNCLib.WpfClient
     {
         public Global()
         {
-            _joystickSerialCommunication = new JoystickArduinoSerialCommunication(new FactoryCreate<ISerialPort>(() => new SerialPort()), new Logger<Framework.Arduino.SerialCommunication.Serial>(), this);
+            _joystickSerialCommunication = 
+                new JoystickArduinoSerialCommunication(
+                    new FactoryCreate<ISerialPort>(() => new SerialPort()), 
+                    GlobalServiceCollection.Instance.Resolve<ILogger<Framework.Arduino.SerialCommunication.Serial>>(), 
+                    this);
         }
 
         #region Status

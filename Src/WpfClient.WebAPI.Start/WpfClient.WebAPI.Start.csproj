@@ -22,7 +22,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Framework\Arduino\Arduino.csproj" />
     <ProjectReference Include="..\Framework\Dependency\Dependency.csproj" />
-    <ProjectReference Include="..\Framework\Logging\Logging.csproj" />
     <ProjectReference Include="..\Framework\Service.Abstraction\Service.Abstraction.csproj" />
     <ProjectReference Include="..\Framework\Tools\Tools.csproj" />
     <ProjectReference Include="..\Framework\Wpf\Wpf.csproj" />

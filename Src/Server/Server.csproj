@@ -35,7 +35,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Framework\Logging\Logging.csproj" />
     <ProjectReference Include="..\Framework\Repository\Repository.csproj" />
     <ProjectReference Include="..\Framework\WebAPI.Host\WebAPI.Host.csproj" />
     <ProjectReference Include="..\Framework\WebAPI\WebAPI.csproj" />

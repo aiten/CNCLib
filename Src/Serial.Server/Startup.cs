@@ -27,7 +27,6 @@ using Framework.Arduino.SerialCommunication;
 using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Dependency;
 using Framework.Tools;
-using Framework.Logging;
 using Framework.WebAPI.Filter;
 
 using Microsoft.AspNetCore.Builder;
@@ -92,7 +91,6 @@ namespace CNCLib.Serial.Server
             services
                 .AddSerialCommunication()
                 .AddFrameWorkTools()
-                .AddFrameworkLogging()
                 .AddAssembylIncludingInternals(ServiceLifetime.Scoped, typeof(Framework.Arduino.SerialCommunication.Serial).Assembly);
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
