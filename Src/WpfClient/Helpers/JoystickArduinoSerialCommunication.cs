@@ -19,8 +19,9 @@ using System.Threading.Tasks;
 
 using Framework.Arduino.SerialCommunication;
 using Framework.Arduino.SerialCommunication.Abstraction;
-using Framework.Logging.Abstraction;
 using Framework.Pattern;
+
+using Microsoft.Extensions.Logging;
 
 using SerialCom = Framework.Arduino.SerialCommunication.Serial;
 
