@@ -36,7 +36,6 @@ using Framework.Arduino.SerialCommunication;
 using Framework.Dependency;
 using Framework.Mapper;
 using Framework.Tools;
-using Framework.Logging;
 
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;
@@ -80,7 +79,7 @@ namespace CNCLib.WpfClient.Sql.Start
             GlobalServiceCollection.Instance = new ServiceCollection();
             GlobalServiceCollection.Instance
                 .AddFrameWorkTools()
-                .AddFrameworkLogging()
+//                .AddFrameworkLogging()
                 .AddRepository(SqlServerDatabaseTools.OptionBuilder)
                 .AddLogic()
                 .AddLogicClient()

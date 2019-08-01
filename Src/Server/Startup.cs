@@ -32,7 +32,6 @@ using CNCLib.WebAPI.Controllers;
 using CNCLib.WebAPI.Hubs;
 
 using Framework.Dependency;
-using Framework.Logging;
 using Framework.Mapper;
 using Framework.Tools;
 using Framework.WebAPI.Filter;
@@ -110,7 +109,6 @@ namespace CNCLib.Server
             GlobalServiceCollection.Instance = services;
             services
                 .AddFrameWorkTools()
-                .AddFrameworkLogging()
                 .AddRepository(SqlServerDatabaseTools.OptionBuilder)
                 .AddLogic()
                 .AddLogicClient()

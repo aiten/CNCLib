@@ -33,7 +33,6 @@ using CNCLib.Shared;
 
 using Framework.Arduino.SerialCommunication;
 using Framework.Dependency;
-using Framework.Logging;
 using Framework.Mapper;
 using Framework.Tools;
 
@@ -73,7 +72,7 @@ namespace CNCLib.WpfClient.Start
             GlobalServiceCollection.Instance = new ServiceCollection();
             GlobalServiceCollection.Instance
                 .AddFrameWorkTools()
-                .AddFrameworkLogging()
+//                .AddFrameworkLogging()
                 .AddRepository(SqliteDatabaseTools.OptionBuilder)
                 .AddLogic()
                 .AddLogicClient()
