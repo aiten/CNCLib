@@ -16,6 +16,10 @@
 
 using AutoMapper;
 
+using Framework.Dependency;
+
+using Microsoft.Extensions.DependencyInjection;
+
 namespace CNCLib.WpfClient.Test
 {
     public class WpfUnitTestBase
@@ -30,6 +34,11 @@ namespace CNCLib.WpfClient.Test
                 config.AssertConfigurationIsValid();
 
                 Mapper = config.CreateMapper();
+            }
+
+            if (GlobalServiceCollection.Instance == null)
+            {
+                GlobalServiceCollection.Instance = new ServiceCollection();
             }
         }
     }
