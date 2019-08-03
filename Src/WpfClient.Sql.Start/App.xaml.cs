@@ -34,7 +34,7 @@ using CNCLib.Shared;
 
 using Framework.Arduino.SerialCommunication;
 using Framework.Dependency;
-using Framework.Mapper;
+using Framework.Logic;
 using Framework.Tools;
 
 using Microsoft.Data.SqlClient;

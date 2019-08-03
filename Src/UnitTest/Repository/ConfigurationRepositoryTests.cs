@@ -97,7 +97,9 @@ namespace CNCLib.UnitTest.Repository
         [Fact]
         public async Task AddUpdateDeleteTest()
         {
-            await CreateTestContext().AddUpdateDelete(() => CreateConfiguration("TestGroup", "TestName"), (entity) => entity.Value = "testValueModified");
+            await CreateTestContext().AddUpdateDelete(
+                () => CreateConfiguration("TestGroup", "TestName"),
+                (entity) => entity.Value = "testValueModified");
         }
 
         [Fact]
@@ -106,7 +108,9 @@ namespace CNCLib.UnitTest.Repository
             await CreateTestContext().AddUpdateDeleteBulk(
                 () => new[]
                 {
-                    CreateConfiguration(@"AddUpdateDeleteBulk", "Test1"), CreateConfiguration(@"AddUpdateDeleteBulk", "Test2"), CreateConfiguration(@"AddUpdateDeleteBulk", "Test3")
+                    CreateConfiguration(@"AddUpdateDeleteBulk", "Test1"),
+                    CreateConfiguration(@"AddUpdateDeleteBulk", "Test2"),
+                    CreateConfiguration(@"AddUpdateDeleteBulk", "Test3")
                 },
                 (entities) =>
                 {

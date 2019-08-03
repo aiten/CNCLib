@@ -16,6 +16,7 @@
 
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using CNCLib.Repository.Abstraction;
@@ -24,6 +25,7 @@ using CNCLib.Repository.Context;
 using CNCLib.Shared;
 
 using Framework.Repository;
+using Framework.Repository.Linq;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -46,12 +48,14 @@ namespace CNCLib.Repository
                 PrimaryWhere = (query, key) => query.Where(c => c.Group == key.Group && c.Name == key.Name),
                 PrimaryWhereIn = (query, keys) =>
                 {
-                    var predicate = PredicateBuilder.False<Configuration>();
+                    var predicate = PredicateBuilder.New<Configuration>();
 
                     foreach (var key in keys)
                     {
                         predicate = predicate.Or(c => c.Group == key.Group && c.Name == key.Name);
                     }
+
+                    string test = predicate.ToString();
 
                     return query.Where(predicate);
                 }
