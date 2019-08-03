@@ -32,7 +32,7 @@ using CNCLib.WebAPI.Controllers;
 using CNCLib.WebAPI.Hubs;
 
 using Framework.Dependency;
-using Framework.Mapper;
+using Framework.Logic;
 using Framework.Tools;
 using Framework.WebAPI.Filter;
 

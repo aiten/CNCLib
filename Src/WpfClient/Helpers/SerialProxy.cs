@@ -35,7 +35,7 @@ namespace CNCLib.WpfClient.Helpers
         private static Framework.Arduino.SerialCommunication.Serial _localSerial = 
             new Framework.Arduino.SerialCommunication.Serial(
                 new FactoryCreate<ISerialPort>(() => new SerialPort()), 
-                GlobalServiceCollection.Instance.Resolve<Logger<Framework.Arduino.SerialCommunication.Serial>>());
+                GlobalServiceCollection.Instance.Resolve<ILogger<Framework.Arduino.SerialCommunication.Serial>>());
 
         public ISerial LocalCom => _localSerial;
 
