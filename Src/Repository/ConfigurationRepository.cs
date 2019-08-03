@@ -55,8 +55,6 @@ namespace CNCLib.Repository
                         predicate = predicate.Or(c => c.Group == key.Group && c.Name == key.Name);
                     }
 
-                    string test = predicate.ToString();
-
                     return query.Where(predicate);
                 }
             };
