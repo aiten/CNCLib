@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:55149/CNCLib",
+      "applicationUrl": "http://localhost:55149",
       "sslPort": 0
     }
   },
