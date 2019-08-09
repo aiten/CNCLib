@@ -33,7 +33,7 @@
     "@nguniversal/module-map-ngfactory-loader": "^8.1.1",
     "aspnet-prerendering": "^3.0.1",
     "bootstrap": "^4.3.1",
-    "core-js": "^2.5.7",
+    "core-js": "^2.6.9",
     "jquery": "^3.4.1",
     "popper.js": "^1.15.0",
     "hammerjs": "^2.0.8",
