@@ -21,7 +21,11 @@ import { Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
 import { ModalComponent } from "../../modal/modal.component";
-import { DialogData } from "../../DialogData";
+import { DialogData } from "../../modal/DialogData";
+
+import { MessageBoxComponent } from "../../modal/message-box/message-box.component";
+import { MessageBoxData } from "../../modal/message-box-data";
+
 
 @Component(
   {
@@ -46,10 +50,31 @@ export class GcodeOverviewComponent implements OnInit {
 
   newLoadOption() {
 
+    const dialogRef = this.dialog.open(MessageBoxComponent,
+      {
+        width: '250px',
+        data: { title: "Error", message: "Not implemented yet" }
+      });
+
+    dialogRef.afterClosed().subscribe(result => {
+      //      this.animal = result;
+    });
+
   }
 
   detailLoadOption(id: number) {
 
+    const dialogRef = this.dialog.open(MessageBoxComponent,
+      {
+        width: '250px',
+        data: { title: "Info", message: "Hallo" }
+      });
+
+    dialogRef.afterClosed().subscribe(result => {
+//      this.animal = result;
+    });
+
+/*
     const dialogRef = this.dialog.open(ModalComponent,
       {
         width: '250px',
@@ -59,6 +84,7 @@ export class GcodeOverviewComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.animal = result;
     });
+*/
   }
 
 
