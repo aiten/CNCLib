@@ -19,8 +19,9 @@ import { LoadOptions } from "../../models/load-options";
 import { CNCLibLoadOptionService } from '../../services/CNCLib-load-option.service';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { CourseDialogComponent } from "../../dialog/course-dialog/course-dialog.component";
-import { Course } from "../../dialog/model/course";
+
+import { ModalComponent } from "../../modal/modal.component";
+import { DialogData } from "../../DialogData";
 
 @Component(
   {
@@ -32,6 +33,9 @@ export class GcodeOverviewComponent implements OnInit {
   entries: LoadOptions[] = [];
   errorMessage: string = '';
   isLoading: boolean = true;
+
+  animal: string;
+  name: string;
 
   constructor(
     private router: Router,
@@ -46,25 +50,15 @@ export class GcodeOverviewComponent implements OnInit {
 
   detailLoadOption(id: number) {
 
-    const dialogConfig = new MatDialogConfig();
-    var course = new Course();
-    course.description = "Hallo";
+    const dialogRef = this.dialog.open(ModalComponent,
+      {
+        width: '250px',
+        data: { name: this.name, animal: this.animal }
+      });
 
-    console.log("Dialog call");
-
-    dialogConfig.disableClose = false;
-    dialogConfig.autoFocus = true; 
-
-    dialogConfig.data = course;
-
-    const dialogRef = this.dialog.open(CourseDialogComponent,
-      dialogConfig);
-
-
-    dialogRef.afterClosed().subscribe(
-      val => console.log("Dialog output:", val)
-    );
-
+    dialogRef.afterClosed().subscribe(result => {
+      this.animal = result;
+    });
   }
 
 
