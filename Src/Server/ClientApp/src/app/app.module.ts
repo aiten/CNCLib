@@ -19,14 +19,13 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-
-import { MaterialModule } from './material.module';
-
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import 'hammerjs';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
+import { MaterialModule } from './material.module';
 
 import { EepromConfigComponent } from "./eeprom-config/eeprom-config.component";
 
@@ -43,14 +42,12 @@ import { CNCLibLoadOptionService } from './services/CNCLib-load-option.service';
 import { LocalCNCLibLoadOptionService } from './services/local-CNCLib-load-option.service';
 
 import { eepromConfigRoutes, eepromConfigRoutingComponents } from './eeprom-config/eeprom-config-routing';
-
 import { machineRoutes, machineRoutingComponents } from './machine/machine-routing';
 
 import { ModalComponent } from './modal/modal.component';
+import { MessageBoxComponent } from './modal/message-Box/message-Box.component';
 
 import { gcodeRoutes, gcodeRoutingComponents } from './gcode/gcode-routing';
-
-import 'hammerjs';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -70,6 +67,7 @@ NgModule({
     NavMenuComponent,
     HomeComponent,
     ModalComponent,
+    MessageBoxComponent,
     ...machineRoutingComponents,
     ...eepromConfigRoutingComponents,
     ...gcodeRoutingComponents
@@ -97,7 +95,7 @@ NgModule({
     { provide: CNCLibLoadOptionService, useClass: LocalCNCLibLoadOptionService },
   ],
   bootstrap: [AppComponent],
-  entryComponents: [ModalComponent]
+  entryComponents: [ModalComponent, MessageBoxComponent]
 })
 export class AppModule {
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import { DialogData } from '../DialogData';
+import { DialogData } from './DialogData';
 
 @Component({
   selector: 'app-modal',
