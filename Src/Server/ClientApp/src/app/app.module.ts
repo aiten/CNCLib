@@ -45,7 +45,7 @@ import { eepromConfigRoutes, eepromConfigRoutingComponents } from './eeprom-conf
 import { machineRoutes, machineRoutingComponents } from './machine/machine-routing';
 
 import { ModalComponent } from './modal/modal.component';
-import { MessageBoxComponent } from './modal/message-Box/message-Box.component';
+import { MessageBoxComponent } from './modal/message-box/message-box.component';
 
 import { gcodeRoutes, gcodeRoutingComponents } from './gcode/gcode-routing';
 

@@ -16,7 +16,7 @@
 
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { MessageBoxData } from '../message-BoxData';
+import { MessageBoxData } from '../message-box-data';
 
 @Component({
   selector: 'app-modal',

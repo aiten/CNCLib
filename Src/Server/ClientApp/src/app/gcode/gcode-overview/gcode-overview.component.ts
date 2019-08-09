@@ -23,8 +23,8 @@ import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { ModalComponent } from "../../modal/modal.component";
 import { DialogData } from "../../modal/DialogData";
 
-import { MessageBoxComponent } from "../../modal/message-Box/message-Box.component";
-import { MessageBoxData } from "../../modal/message-BoxData";
+import { MessageBoxComponent } from "../../modal/message-box/message-box.component";
+import { MessageBoxData } from "../../modal/message-box-data";
 
 
 @Component(
