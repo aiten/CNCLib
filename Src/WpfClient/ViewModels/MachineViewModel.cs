@@ -44,7 +44,7 @@ namespace CNCLib.WpfClient.ViewModels
             _machineService = machineService ?? throw new ArgumentNullException();
             _mapper         = mapper ?? throw new ArgumentNullException();
             _global         = global ?? throw new ArgumentNullException();
-            ;
+
             AddNewMachine = false;
         }
 

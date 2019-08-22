@@ -151,8 +151,6 @@ namespace CNCLib.UnitTest.Repository
 
                 //assert
 
-                ;
-
                 await Assert.ThrowsAsync<Microsoft.EntityFrameworkCore.DbUpdateException>(act);
             }
         }

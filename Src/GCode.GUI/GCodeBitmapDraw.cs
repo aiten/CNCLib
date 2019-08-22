@@ -601,7 +601,7 @@ namespace CNCLib.GCode.GUI
             e.Graphics.DrawEllipse(GetPen(drawType, LineDrawType.Ellipse), from.X - radiusX / 2, from.Y - radiusY / 2, radiusX, radiusY);
         }
 
-        public void DrawArc(Command cmd, object param, DrawType drawType, Point3D ptFrom, Point3D ptTo, Point3D ptIIJ, bool clockwise, Pane pane)
+        public void DrawArc(Command cmd, object param, DrawType drawType, Point3D ptFrom, Point3D ptTo, Point3D ptIJK, bool clockwise, Pane pane)
         {
             if (drawType == DrawType.NoDraw)
             {
@@ -612,10 +612,10 @@ namespace CNCLib.GCode.GUI
             {
                 default:
                 case Pane.XYPane:
-                    Arc(cmd, param, drawType, ptFrom, ptTo, ptIIJ.X0, ptIIJ.Y0, 0, 1, 2, clockwise);
+                    Arc(cmd, param, drawType, ptFrom, ptTo, ptIJK.X0, ptIJK.Y0, 0, 1, 2, clockwise);
                     break;
                 case Pane.XZPane:
-                    Arc(cmd, param, drawType, ptFrom, ptTo, ptIIJ.X0, ptIIJ.Z0, 0, 2, 1, clockwise);
+                    Arc(cmd, param, drawType, ptFrom, ptTo, ptIJK.X0, ptIJK.Z0, 0, 2, 1, clockwise);
                     break;
             }
         }
