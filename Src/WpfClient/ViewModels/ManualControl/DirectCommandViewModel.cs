@@ -30,7 +30,6 @@ namespace CNCLib.WpfClient.ViewModels.ManualControl
         public DirectCommandViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
         {
             _global = global ?? throw new ArgumentNullException();
-            ;
         }
 
         #region Properties

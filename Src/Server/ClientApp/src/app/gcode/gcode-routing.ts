@@ -18,6 +18,7 @@ import { NgModule } from '@angular/core';
 import { GcodeComponent } from './gcode.component';
 import { Routes, RouterModule } from '@angular/router';
 import { GcodeOverviewComponent } from './gcode-overview/gcode-overview.component';
+import { GcodeDetailComponent } from './gcode-detail/gcode-detail.component';
 
 export const gcodeRoutes =
 [
@@ -28,7 +29,7 @@ export const gcodeRoutes =
     [
       { path: '', component: GcodeOverviewComponent },
 //      { path: 'detail/:id/edit', component: MachineFormComponent },
-      //{ path: 'detail/:id', component: MachineEntryLoadComponent }
+        { path: 'detail/:id', component: GcodeDetailComponent }
     ]
   }
 ];
@@ -37,4 +38,5 @@ export const gcodeRoutingComponents =
 [
   GcodeComponent,
   GcodeOverviewComponent,
+  GcodeDetailComponent,
 ];
