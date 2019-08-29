@@ -32,9 +32,9 @@ namespace CNCLib.WpfClient.Helpers
 
         public ISerial RemoteCom => Singleton<Serial.Client.SerialService>.Instance;
 
-        private static Framework.Arduino.SerialCommunication.Serial _localSerial = 
+        private static Framework.Arduino.SerialCommunication.Serial _localSerial =
             new Framework.Arduino.SerialCommunication.Serial(
-                new FactoryCreate<ISerialPort>(() => new SerialPort()), 
+                new FactoryCreate<ISerialPort>(() => new SerialPort()),
                 GlobalServiceCollection.Instance.Resolve<ILogger<Framework.Arduino.SerialCommunication.Serial>>());
 
         public ISerial LocalCom => _localSerial;

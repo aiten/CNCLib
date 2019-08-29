@@ -29,7 +29,7 @@ export const gcodeRoutes =
     [
       { path: '', component: GcodeOverviewComponent },
 //      { path: 'detail/:id/edit', component: MachineFormComponent },
-        { path: 'detail/:id', component: GcodeDetailComponent }
+      { path: 'detail/:id', component: GcodeDetailComponent }
     ]
   }
 ];

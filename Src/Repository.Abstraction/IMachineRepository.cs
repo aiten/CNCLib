@@ -25,7 +25,7 @@ namespace CNCLib.Repository.Abstraction
 {
     public interface IMachineRepository : ICRUDRepository<Machine, int>
     {
-        Task<IList<MachineCommand>> GetMachineCommands(int         machineId);
+        Task<IList<MachineCommand>>     GetMachineCommands(int     machineId);
         Task<IList<MachineInitCommand>> GetMachineInitCommands(int machineId);
     }
 }

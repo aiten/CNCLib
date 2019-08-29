@@ -88,7 +88,7 @@ namespace CNCLib.WpfClient.Views
                     var dlg       = new LoginView();
                     var viewModel = dlg.DataContext as LoginViewModel;
                     viewModel.UserName = vm.UserName;
-                    if (dlg.ShowDialog()??false)
+                    if (dlg.ShowDialog() ?? false)
                     {
                         return viewModel.UserName;
                     }

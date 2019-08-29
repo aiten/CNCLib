@@ -20,8 +20,9 @@ namespace CNCLib.Repository.SqLite
 {
     public class SqliteDatabaseTools
     {
-        public static string DatabaseFile { get; set; } = $"{System.IO.Path.GetTempPath()}\\CNCLib.db";
-        public static string ConnectString =>  $"Data Source={DatabaseFile}";
+        public static string DatabaseFile  { get; set; } = $"{System.IO.Path.GetTempPath()}\\CNCLib.db";
+        public static string ConnectString => $"Data Source={DatabaseFile}";
+
         public static void OptionBuilder(DbContextOptionsBuilder option)
         {
             option.UseSqlite(ConnectString, x => x.MigrationsAssembly(typeof(SqliteDatabaseTools).Assembly.GetName().Name));

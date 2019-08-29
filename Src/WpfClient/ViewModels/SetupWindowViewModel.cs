@@ -366,8 +366,8 @@ namespace CNCLib.WpfClient.ViewModels
         public ICommand SetupMachineCommand      => new DelegateCommand(SetupMachine, CanSetupMachine);
         public ICommand ConnectCommand           => new DelegateCommandAsync<bool>(Connect,    CanConnect);
         public ICommand DisConnectCommand        => new DelegateCommandAsync<bool>(DisConnect, CanDisConnect);
-        public ICommand EepromCommand            => new DelegateCommand(SetEeprom,         CanDisConnect);
-        public ICommand LoginCommand             => new DelegateCommandAsync<bool>(LoginUser,         CanLoginUser);
+        public ICommand EepromCommand            => new DelegateCommand(SetEeprom, CanDisConnect);
+        public ICommand LoginCommand             => new DelegateCommandAsync<bool>(LoginUser, CanLoginUser);
         public ICommand SetDefaultMachineCommand => new DelegateCommand(SetDefaultMachine, CanSetupMachine);
         public ICommand ConnectJoystickCommand   => new DelegateCommandAsync<bool>(ConnectJoystick, CanConnectJoystick);
 

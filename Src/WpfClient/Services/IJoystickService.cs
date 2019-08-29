@@ -24,6 +24,6 @@ namespace CNCLib.WpfClient.Services
     public interface IJoystickService
     {
         Task<Tuple<Joystick, int>> Load();
-        Task<int> Save(Joystick joystick, int id);
+        Task<int>                  Save(Joystick joystick, int id);
     }
 }

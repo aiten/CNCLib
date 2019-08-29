@@ -58,7 +58,7 @@ namespace CNCLib.Logic.Manager
             var userEntity = await _repository.GetByName(userName);
 
             return userEntity != null &&
-                  (password == userEntity.UserPassword || 
+                   (password == userEntity.UserPassword ||
                     (string.IsNullOrEmpty(password) && string.IsNullOrEmpty(userEntity.UserPassword)));
         }
     }
