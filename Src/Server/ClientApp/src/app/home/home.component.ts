@@ -18,6 +18,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { CNCLibServerInfo } from '../models/CNCLib.Server.Info'
 import { CNCLibInfoService } from '../services/CNCLib-Info.service';
 
+import { HubConnection } from '@aspnet/signalr';
+import { HubConnectionBuilder } from '@aspnet/signalr';
+
 @Component({
   selector: 'home',
   templateUrl: './home.component.html'
@@ -28,9 +31,18 @@ export class HomeComponent implements OnInit {
   appCopyright: string = '';
   appVersionInfo: CNCLibServerInfo = new CNCLibServerInfo();
 
+  private _hubConnection!: HubConnection;
+
   constructor(
     private cncLibInfoService: CNCLibInfoService,
+    @Inject('BASE_URL') public baseUrl: string
   ) {
+  }
+
+  public currentCount = 0;
+
+  public incrementCounter() {
+    this.currentCount++;
   }
 
   async ngOnInit(): Promise<void> {
@@ -38,5 +50,23 @@ export class HomeComponent implements OnInit {
     this.appVersion = this.appVersionInfo.Version;
     this.appName = this.appVersionInfo.Name;
     this.appCopyright = this.appVersionInfo.Copyright;
+
+    console.log('SignalR to ' + this.baseUrl + 'cncLibSignalR');
+
+    this._hubConnection = new HubConnectionBuilder().withUrl(this.baseUrl + 'cncLibSignalR').build();
+
+    this._hubConnection.on('heartbeat',
+      () => {
+        this.incrementCounter();
+        console.log('SignalR received: heartbeat');
+      });
+
+    this._hubConnection.start()
+      .then(() => {
+        console.log('Hub connection started');
+      })
+      .catch(err => {
+        console.log('Error while establishing connection');
+      });
   }
 }
