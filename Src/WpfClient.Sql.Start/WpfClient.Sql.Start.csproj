@@ -41,7 +41,7 @@
     <ProjectReference Include="..\WpfClient\WpfClient.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NLog.WindowsIdentity" Version="4.6.6" />
+    <PackageReference Include="NLog.WindowsIdentity" Version="4.6.7" />
     <PackageReference Include="System.Management" Version="4.6.0-preview8.19405.3" />
   </ItemGroup>
 

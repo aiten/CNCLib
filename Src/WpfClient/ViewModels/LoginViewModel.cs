@@ -77,7 +77,6 @@ namespace CNCLib.WpfClient.ViewModels
 
                 MessageBox?.Invoke(@"Illegal user/password", @"Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
-
             }
         }
 

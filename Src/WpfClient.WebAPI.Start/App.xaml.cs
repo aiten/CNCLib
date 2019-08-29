@@ -56,14 +56,12 @@ namespace CNCLib.WpfClient.WebAPI.Start
 
             GlobalServiceCollection.Instance = new ServiceCollection();
             GlobalServiceCollection.Instance
-
                 .AddFrameWorkTools()
 //                .AddFrameworkLogging()
                 .AddLogicClient()
                 .AddSerialCommunication()
                 .AddServiceAsWebAPI(httpClient => HttpClientHelper.PrepareHttpClient(httpClient, @"http://cnclibwebapi.azurewebsites.net"))
                 .AddCNCLibWpf()
-
                 .AddMapper(
                     new MapperConfiguration(
                         cfg =>
@@ -71,7 +69,6 @@ namespace CNCLib.WpfClient.WebAPI.Start
                             cfg.AddProfile<WpfAutoMapperProfile>();
                             cfg.AddProfile<GCodeGUIAutoMapperProfile>();
                         }))
-
                 .AddSingleton(userContext);
 
             // Open WebAPI Connection

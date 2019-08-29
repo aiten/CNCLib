@@ -4,7 +4,7 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="5.8.0" />
+    <PackageReference Include="FluentAssertions" Version="5.9.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.3.0-preview-20190808-03" />
     <PackageReference Include="NSubstitute" Version="4.2.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">

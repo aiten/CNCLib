@@ -27,4 +27,3 @@ export abstract class CNCLibLoadOptionService {
 
   public abstract deleteLoadOptionById(id: number): Promise<void>;
 }
-

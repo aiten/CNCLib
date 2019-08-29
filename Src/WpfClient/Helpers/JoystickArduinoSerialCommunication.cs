@@ -33,7 +33,7 @@ namespace CNCLib.WpfClient.Helpers
 
         public JoystickArduinoSerialCommunication(IFactory<ISerialPort> serialPortFactory, ILogger<SerialCom> logger, Global global) : base(serialPortFactory, logger)
         {
-            OkTag = ""; // every new line is "end of command"
+            OkTag   = ""; // every new line is "end of command"
             _global = global;
         }
 

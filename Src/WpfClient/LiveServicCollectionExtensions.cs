@@ -29,16 +29,16 @@ namespace CNCLib.WpfClient
         public static IServiceCollection AddCNCLibWpf(this IServiceCollection services)
         {
             services.AddSingleton(new Global())
-            .AddTransient<IJoystickService, JoystickService>()
-            .AddTransient<IFactory<IMachineService>, FactoryResolve<IMachineService>>()
-            .AddTransient<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>()
-            .AddTransient<IFactory<IJoystickService>, FactoryResolve<IJoystickService>>()
-            .AddTransient<IFactory<IUserService>, FactoryResolve<IUserService>>()
-            .AddAssemblyByName(
-                n => n.EndsWith("ViewModel"),
-                ServiceLifetime.Transient,
-                typeof(ViewModels.MachineViewModel).Assembly,
-                typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
+                .AddTransient<IJoystickService, JoystickService>()
+                .AddTransient<IFactory<IMachineService>, FactoryResolve<IMachineService>>()
+                .AddTransient<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>()
+                .AddTransient<IFactory<IJoystickService>, FactoryResolve<IJoystickService>>()
+                .AddTransient<IFactory<IUserService>, FactoryResolve<IUserService>>()
+                .AddAssemblyByName(
+                    n => n.EndsWith("ViewModel"),
+                    ServiceLifetime.Transient,
+                    typeof(ViewModels.MachineViewModel).Assembly,
+                    typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
 
             return services;
         }

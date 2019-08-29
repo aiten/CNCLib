@@ -77,11 +77,19 @@ namespace CNCLib.GCode.GUI.ViewModels
 
         private LoadOptions _loadOptions = new LoadOptions();
 
-        public LoadOptions LoadOptionsValue { get => _loadOptions; set { SetProperty(() => _loadOptions == value, () => _loadOptions = value); } }
+        public LoadOptions LoadOptionsValue
+        {
+            get => _loadOptions;
+            set { SetProperty(() => _loadOptions == value, () => _loadOptions = value); }
+        }
 
         private ObservableCollection<LoadOptions> _allLoadOptions = new ObservableCollection<LoadOptions>();
 
-        public ObservableCollection<LoadOptions> AllLoadOptions { get => _allLoadOptions; set => SetProperty(ref _allLoadOptions, value); }
+        public ObservableCollection<LoadOptions> AllLoadOptions
+        {
+            get => _allLoadOptions;
+            set => SetProperty(ref _allLoadOptions, value);
+        }
 
         private LoadOptions _selectedLoadOptions = null;
 
@@ -100,11 +108,19 @@ namespace CNCLib.GCode.GUI.ViewModels
 
         private bool _useAzure = false;
 
-        public bool UseAzure { get => _useAzure; set { SetProperty(() => _useAzure == value, () => _useAzure = value); } }
+        public bool UseAzure
+        {
+            get => _useAzure;
+            set { SetProperty(() => _useAzure == value, () => _useAzure = value); }
+        }
 
         private bool _busy = false;
 
-        public bool Busy { get => _busy; set { SetProperty(() => _busy == value, () => _busy = value); } }
+        public bool Busy
+        {
+            get => _busy;
+            set { SetProperty(() => _busy == value, () => _busy = value); }
+        }
 
         #endregion
 

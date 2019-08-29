@@ -54,6 +54,7 @@ namespace CNCLib.WebAPI.Controllers
 
                 return Ok(new List<User>() { m });
             }
+
             return await this.GetAll(_manager);
         }
 
@@ -64,8 +65,9 @@ namespace CNCLib.WebAPI.Controllers
 
             if (!string.IsNullOrEmpty(userName))
             {
-                 isValidUser = await _manager.IsValidUser(userName, password);
+                isValidUser = await _manager.IsValidUser(userName, password);
             }
+
             return Ok(isValidUser ? "true" : "false");
         }
 

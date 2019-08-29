@@ -109,7 +109,7 @@ namespace CNCLib.Repository.Context
             {
                 ctx.InitializeDatabase(dropDatabase, isTest);
             }
-        } 
+        }
 
         public void InitializeDatabase(bool dropDatabase, bool isTest)
         {

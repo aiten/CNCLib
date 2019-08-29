@@ -52,9 +52,9 @@ namespace CNCLib.WpfClient
                     var user = await userService.GetByName(UserName);
                     if (user == null)
                     {
-                        user = new User();
+                        user          = new User();
                         user.UserName = UserName;
-                        user.UserId = await userService.Add(user);
+                        user.UserId   = await userService.Add(user);
                     }
 
                     UserId = user.UserId;

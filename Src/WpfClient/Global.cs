@@ -36,10 +36,10 @@ namespace CNCLib.WpfClient
     {
         public Global()
         {
-            _joystickSerialCommunication = 
+            _joystickSerialCommunication =
                 new JoystickArduinoSerialCommunication(
-                    new FactoryCreate<ISerialPort>(() => new SerialPort()), 
-                    GlobalServiceCollection.Instance.Resolve<ILogger<Framework.Arduino.SerialCommunication.Serial>>(), 
+                    new FactoryCreate<ISerialPort>(() => new SerialPort()),
+                    GlobalServiceCollection.Instance.Resolve<ILogger<Framework.Arduino.SerialCommunication.Serial>>(),
                     this);
         }
 

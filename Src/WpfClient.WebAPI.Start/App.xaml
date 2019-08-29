@@ -10,7 +10,8 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <!-- Accent and AppTheme setting -->
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Red.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Red.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 

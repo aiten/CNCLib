@@ -55,10 +55,7 @@ namespace CNCLib.Server
         {
             return WebHost.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration(
-                    (hostingContext, config) =>
-                    {
-                        config.AddJsonFile("hosting.json", optional: true);
-                    })
+                    (hostingContext, config) => { config.AddJsonFile("hosting.json", optional: true); })
                 .UseStartup<Startup>()
                 .ConfigureLogging(logging => { logging.ClearProviders(); })
                 .UseNLog();
