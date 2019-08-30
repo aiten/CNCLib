@@ -84,7 +84,7 @@ namespace CNCLib.Repository.Context
             }
             else
             {
-                new CNCLibDefaultData().CNCSeed(this, isTest);
+                new CNCLibDefaultData(this).CNCSeed(isTest);
                 SaveChanges();
             }
         }

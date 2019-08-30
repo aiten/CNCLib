@@ -14,111 +14,73 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 
 using CNCLib.Repository.Abstraction.Entities;
 
-using Framework.Tools.Tools;
+using Framework.Repository.Tools;
 
 namespace CNCLib.Repository.Context
 {
-    public class CNCLibDefaultData
+    public class CNCLibDefaultData : DbImporter
     {
-        private string DefaultDataDir => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        private Dictionary<int, User>                            _userMap;
+        private Dictionary<int, Machine>                         _machineMap;
+        private Dictionary<int, MachineCommand>                  _machineCommandMap;
+        private Dictionary<int, MachineInitCommand>              _machineInitMap;
+        private Dictionary<int, Item>                            _itemMap;
+        private Dictionary<Tuple<int, string>, ItemProperty>     _itemPropertyMap;
+        private Dictionary<Tuple<string, string>, Configuration> _configurationMap;
 
-        public void CNCSeed(CNCLibContext context, bool isTest)
+        public CNCLibDefaultData(CNCLibContext context) : base(context)
         {
-            var users = UserSeed(context);
-            MachineSeed(context, users);
-            ItemSeed(context);
-            ConfigurationSeed(context, isTest);
-
-            context.Set<User>().AddRange(users);
+            CsvDir = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\DefaultData";
         }
 
-        private User[] UserSeed(CNCLibContext context)
+        public void CNCSeed(bool isTest)
         {
-            var userImport = new CsvImport<User>();
-            var users      = userImport.Read(DefaultDataDir + @"\DefaultData\User.csv").ToArray();
-            return users;
-        }
+            _userMap = SeedCsvData<int, User>("User.csv", u => u.UserId, (u, key) => u.UserId = key);
 
-        private void MachineSeed(CNCLibContext context, User[] users)
-        {
-            var machineImport = new CsvImport<Machine>();
-            var machines      = machineImport.Read(DefaultDataDir + @"\DefaultData\Machine.csv").ToArray();
-
-            var machineCommandImport = new CsvImport<MachineCommand>();
-            var machineCommands      = machineCommandImport.Read(DefaultDataDir + @"\DefaultData\MachineCommand.csv").ToArray();
-
-            var machineInitCommandImport = new CsvImport<MachineInitCommand>();
-            var machineInitCommands      = machineInitCommandImport.Read(DefaultDataDir + @"\DefaultData\MachineInitCommand.csv").ToArray();
-
-            foreach (var machineInitCommand in machineInitCommands)
+            _machineMap = SeedCsvData<int, Machine>("Machine.csv", m => m.MachineId, (m, key) =>
             {
-                machineInitCommand.Machine              = machines.First(m => m.MachineId == machineInitCommand.MachineId);
-                machineInitCommand.MachineId            = 0;
-                machineInitCommand.MachineInitCommandId = 0;
-            }
-
-            foreach (var machineCommand in machineCommands)
+                m.MachineId = key;
+                m.User      = m.UserId.HasValue ? _userMap[m.UserId.Value] : null;
+                m.UserId    = null;
+            });
+            _machineCommandMap = SeedCsvData<int, MachineCommand>("MachineCommand.csv", mc => mc.MachineCommandId, (mc, key) =>
             {
-                machineCommand.Machine          = machines.First(m => m.MachineId == machineCommand.MachineId);
-                machineCommand.MachineId        = 0;
-                machineCommand.MachineCommandId = 0;
-            }
-
-            foreach (var machine in machines)
+                mc.MachineCommandId = key;
+                mc.Machine          = _machineMap[mc.MachineId];
+                mc.MachineId        = 0;
+            });
+            _machineInitMap = SeedCsvData<int, MachineInitCommand>("MachineInitCommand.csv", mic => mic.MachineInitCommandId, (mic, key) =>
             {
-                machine.User      = users.FirstOrDefault(u => u.UserId == machine.UserId);
-                machine.UserId    = null;
-                machine.MachineId = 0;
-            }
+                mic.MachineInitCommandId = key;
+                mic.Machine              = _machineMap[mic.MachineId];
+                mic.MachineId            = 0;
+            });
 
-            foreach (var user in users)
+            _itemMap = SeedCsvData<int, Item>("Item.csv", i => i.ItemId, (i, key) =>
             {
-                user.UserId = 0;
-            }
-
-            context.Set<Machine>().AddRange(machines);
-            context.Set<MachineCommand>().AddRange(machineCommands);
-            context.Set<MachineInitCommand>().AddRange(machineInitCommands);
-        }
-
-        private void ItemSeed(CNCLibContext context)
-        {
-            var itemImport = new CsvImport<Item>();
-            var items      = itemImport.Read(DefaultDataDir + @"\DefaultData\Item.csv").ToArray();
-
-            var itemPropertyImport = new CsvImport<ItemProperty>();
-            var itemProperties     = itemPropertyImport.Read(DefaultDataDir + @"\DefaultData\ItemProperty.csv").ToArray();
-
-            foreach (var itemProperty in itemProperties)
+                i.ItemId = key;
+                i.User   = i.UserId.HasValue ? _userMap[i.UserId.Value] : null;
+                i.UserId = null;
+            });
+            _itemPropertyMap = SeedCsvData<Tuple<int, string>, ItemProperty>("ItemProperty.csv", ip => new Tuple<int, string>(ip.ItemId, ip.Name), (ip, key) =>
             {
-                itemProperty.Item   = items.First(i => i.ItemId == itemProperty.ItemId);
-                itemProperty.ItemId = 0;
-            }
+                ip.Item   = _itemMap[ip.ItemId];
+                ip.ItemId = 0;
+            });
 
-            foreach (var item in items)
+            _configurationMap = SeedCsvData< Tuple<string, string>, Configuration >(isTest ? "ConfigurationTest.csv" : "Configuration.csv", c => new Tuple<string, string>(c.Group,c.Name), (c, key) =>
             {
-                item.ItemId = 0;
-            }
-
-            context.Set<Item>().AddRange(items);
-            context.Set<ItemProperty>().AddRange(itemProperties);
-        }
-
-        private void ConfigurationSeed(CNCLibContext context, bool isTest)
-        {
-            if (isTest)
-            {
-                var configurationImport = new CsvImport<Configuration>();
-                var configurations      = configurationImport.Read(DefaultDataDir + @"\DefaultData\Configuration.csv").ToArray();
-
-                context.Set<Configuration>().AddRange(configurations);
-            }
+                c.User   = c.UserId.HasValue ? _userMap[c.UserId.Value] : null;
+                c.UserId = null;
+            });
         }
     }
 }
