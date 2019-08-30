@@ -53,7 +53,14 @@ namespace CNCLib.UnitTest.Repository
                     return new CRUDTestDbContext<CNCLibContext, Item, int, IItemRepository>(context, uow, rep);
                 },
                 GetEntityKey  = (entity) => entity.ItemId,
-                SetEntityKey  = (entity,  key) => entity.ItemId = key,
+                SetEntityKey  = (entity,  key) =>
+                {
+                    entity.ItemId = key;
+                    foreach (var itemProp in entity.ItemProperties)
+                    {
+                        itemProp.ItemId = key;
+                    }
+                },
                 CompareEntity = (entity1, entity2) => CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] { @"ItemId" })
             };
         }
@@ -106,6 +113,7 @@ namespace CNCLib.UnitTest.Repository
                 {
                     entity.ClassName = "DummyClassUpdate";
                     entity.ItemProperties.Remove(entity.ItemProperties.First());
+                    entity.ItemProperties.First().Value = "NewValue";
                     entity.ItemProperties.Add(
                         new ItemProperty()
                         {

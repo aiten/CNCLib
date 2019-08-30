@@ -66,7 +66,10 @@ namespace CNCLib.Repository
         protected override void AssignValuesGraph(Item trackingEntity, Item values)
         {
             base.AssignValuesGraph(trackingEntity, values);
-            Sync(trackingEntity.ItemProperties, values.ItemProperties, (x, y) => x.ItemId > 0 && x.ItemId == y.ItemId && x.Name == y.Name);
+            Sync(trackingEntity.ItemProperties,
+                values.ItemProperties,
+                (x, y) => x.ItemId > 0 && x.ItemId == y.ItemId && x.Name == y.Name,
+                x => x.Item = null);
         }
 
         #endregion

@@ -37,6 +37,7 @@ namespace CNCLib.Repository.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
+            optionsBuilder.EnableSensitiveDataLogging(true);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -83,7 +84,7 @@ namespace CNCLib.Repository.Context
             }
             else
             {
-                new CNCLibDefaultData().CNCSeed(this, isTest);
+                new CNCLibDefaultData(this).CNCSeed(isTest);
                 SaveChanges();
             }
         }
