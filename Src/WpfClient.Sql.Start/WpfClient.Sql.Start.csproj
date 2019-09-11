@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NLog.WindowsIdentity" Version="4.6.7" />
-    <PackageReference Include="System.Management" Version="4.6.0-preview8.19405.3" />
+    <PackageReference Include="System.Management" Version="4.6.0-preview9.19421.4" />
   </ItemGroup>
 
 </Project>
