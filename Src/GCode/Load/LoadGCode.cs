@@ -84,7 +84,7 @@ namespace CNCLib.GCode.Load
 
                 if (!_stream.IsNumber())
                 {
-                    throw new FormatException();
+                    throw new FormatException(@"A number must follow after N");
                 }
 
                 lineNumber = _stream.GetInt();
@@ -102,7 +102,7 @@ namespace CNCLib.GCode.Load
             {
                 if (_lastNoPrefixCommand == null)
                 {
-                    throw new FormatException();
+                    throw new FormatException(@"Last command did not specify the axis");
                 }
 
                 cmd = ReadGNoPrefixCommand();
