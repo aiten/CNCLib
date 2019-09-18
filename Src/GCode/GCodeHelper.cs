@@ -57,7 +57,7 @@ namespace CNCLib.GCode
                 case 5: return "C";
             }
 
-            throw new ArgumentOutOfRangeException();
+            throw new ArgumentOutOfRangeException(nameof(axis), axis, @"axis index must be < 6");
         }
     }
 }
