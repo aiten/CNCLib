@@ -3,11 +3,11 @@
     <TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.0-rc1.19456.14">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqLite" Version="3.0.0-rc1.19456.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqLite" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Repository\Repository.csproj" />
