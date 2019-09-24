@@ -1,4 +1,5 @@
 -nouseregional
+-UniCode
 
 #exporttablecsv %tmp%\Configuration.csv=select * from configuration;
 #exporttablecsv %tmp%\Item.csv=select * from Item;

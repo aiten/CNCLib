@@ -42,7 +42,13 @@ namespace CNCLib.UnitTest.Repository
             string dbFile = $@"{dbDir}\CNCLibTest.db";
             SqliteDatabaseTools.DatabaseFile = dbFile;
 
-            CreateDbContext().InitializeDatabase(true, true);
+            var dbContext = CreateDbContext();
+
+            dbContext.Database.EnsureDeleted();
+            dbContext.InitializeDatabase();
+
+            new TestDataImporter(dbContext).Import();
+            dbContext.SaveChanges();
         }
 
         public override CNCLibContext CreateDbContext()

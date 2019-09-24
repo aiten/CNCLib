@@ -100,7 +100,7 @@ namespace CNCLib.WpfClient.Sql.Start
 
             try
             {
-                CNCLibContext.InitializeDatabase2(false, false);
+                CNCLibContext.InitializeDatabase2();
             }
             catch (Exception ex)
             {

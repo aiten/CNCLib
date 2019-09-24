@@ -20,4 +20,9 @@
     <ProjectReference Include="..\Repository\Repository.csproj" />
     <ProjectReference Include="..\Service.Logic\Service.Logic.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="Repository\TestData\ConfigurationTest.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

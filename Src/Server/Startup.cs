@@ -121,7 +121,7 @@ namespace CNCLib.Server
         {
             Services = app.ApplicationServices;
 
-            CNCLibContext.InitializeDatabase2(false, false);
+            CNCLibContext.InitializeDatabase2();
 
             if (env.IsDevelopment())
             {
