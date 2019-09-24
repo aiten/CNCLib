@@ -26,59 +26,51 @@ using Framework.Repository.Tools;
 
 namespace CNCLib.Repository.Context
 {
-    public class CNCLibDefaultData : DbImporter
+    public class CNCLibDefaultData : CNCLibDbImporter
     {
-        private Dictionary<int, User>                            _userMap;
-        private Dictionary<int, Machine>                         _machineMap;
-        private Dictionary<int, MachineCommand>                  _machineCommandMap;
-        private Dictionary<int, MachineInitCommand>              _machineInitMap;
-        private Dictionary<int, Item>                            _itemMap;
-        private Dictionary<Tuple<int, string>, ItemProperty>     _itemPropertyMap;
-        private Dictionary<Tuple<string, string>, Configuration> _configurationMap;
-
         public CNCLibDefaultData(CNCLibContext context) : base(context)
         {
             CsvDir = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\DefaultData";
         }
 
-        public void CNCSeed(bool isTest)
+        public void Import()
         {
-            _userMap = SeedCsvData<int, User>("User.csv", u => u.UserId, (u, key) => u.UserId = key);
+            _userMap = ImportCsv<int, User>("User.csv", u => u.UserId, (u, key) => u.UserId = key);
 
-            _machineMap = SeedCsvData<int, Machine>("Machine.csv", m => m.MachineId, (m, key) =>
+            _machineMap = ImportCsv<int, Machine>("Machine.csv", m => m.MachineId, (m, key) =>
             {
                 m.MachineId = key;
-                m.User      = m.UserId.HasValue ? _userMap[m.UserId.Value] : null;
-                m.UserId    = null;
+                m.User = m.UserId.HasValue ? _userMap[m.UserId.Value] : null;
+                m.UserId = null;
             });
-            _machineCommandMap = SeedCsvData<int, MachineCommand>("MachineCommand.csv", mc => mc.MachineCommandId, (mc, key) =>
+            _machineCommandMap = ImportCsv<int, MachineCommand>("MachineCommand.csv", mc => mc.MachineCommandId, (mc, key) =>
             {
                 mc.MachineCommandId = key;
-                mc.Machine          = _machineMap[mc.MachineId];
-                mc.MachineId        = 0;
+                mc.Machine = _machineMap[mc.MachineId];
+                mc.MachineId = 0;
             });
-            _machineInitMap = SeedCsvData<int, MachineInitCommand>("MachineInitCommand.csv", mic => mic.MachineInitCommandId, (mic, key) =>
+            _machineInitMap = ImportCsv<int, MachineInitCommand>("MachineInitCommand.csv", mic => mic.MachineInitCommandId, (mic, key) =>
             {
                 mic.MachineInitCommandId = key;
-                mic.Machine              = _machineMap[mic.MachineId];
-                mic.MachineId            = 0;
+                mic.Machine = _machineMap[mic.MachineId];
+                mic.MachineId = 0;
             });
 
-            _itemMap = SeedCsvData<int, Item>("Item.csv", i => i.ItemId, (i, key) =>
+            _itemMap = ImportCsv<int, Item>("Item.csv", i => i.ItemId, (i, key) =>
             {
                 i.ItemId = key;
-                i.User   = i.UserId.HasValue ? _userMap[i.UserId.Value] : null;
+                i.User = i.UserId.HasValue ? _userMap[i.UserId.Value] : null;
                 i.UserId = null;
             });
-            _itemPropertyMap = SeedCsvData<Tuple<int, string>, ItemProperty>("ItemProperty.csv", ip => new Tuple<int, string>(ip.ItemId, ip.Name), (ip, key) =>
+            _itemPropertyMap = ImportCsv<Tuple<int, string>, ItemProperty>("ItemProperty.csv", ip => new Tuple<int, string>(ip.ItemId, ip.Name), (ip, key) =>
             {
-                ip.Item   = _itemMap[ip.ItemId];
+                ip.Item = _itemMap[ip.ItemId];
                 ip.ItemId = 0;
             });
 
-            _configurationMap = SeedCsvData< Tuple<string, string>, Configuration >(isTest ? "ConfigurationTest.csv" : "Configuration.csv", c => new Tuple<string, string>(c.Group,c.Name), (c, key) =>
+            _configurationMap = ImportCsv<Tuple<string, string>, Configuration>("Configuration.csv", c => new Tuple<string, string>(c.Group, c.Name), (c, key) =>
             {
-                c.User   = c.UserId.HasValue ? _userMap[c.UserId.Value] : null;
+                c.User = c.UserId.HasValue ? _userMap[c.UserId.Value] : null;
                 c.UserId = null;
             });
         }

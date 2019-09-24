@@ -74,7 +74,7 @@ namespace CNCLib.Repository.Context
             base.OnModelCreating(modelBuilder);
         }
 
-        protected void InitOrUpdateDatabase(bool isTest)
+        protected void InitOrUpdateDatabase()
         {
             if (Set<Machine>().Any())
             {
@@ -83,7 +83,7 @@ namespace CNCLib.Repository.Context
             }
             else
             {
-                new CNCLibDefaultData(this).CNCSeed(isTest);
+                new CNCLibDefaultData(this).Import();
                 SaveChanges();
             }
         }
@@ -103,24 +103,18 @@ namespace CNCLib.Repository.Context
             }
         }
 
-        public static void InitializeDatabase2(bool dropDatabase, bool isTest)
+        public static void InitializeDatabase2()
         {
             using (var ctx = GlobalServiceCollection.Instance.Resolve<CNCLibContext>())
             {
-                ctx.InitializeDatabase(dropDatabase, isTest);
+                ctx.InitializeDatabase();
             }
         }
 
-        public void InitializeDatabase(bool dropDatabase, bool isTest)
+        public void InitializeDatabase()
         {
-            if (dropDatabase)
-            {
-                Database.EnsureDeleted();
-            }
-
             Database.Migrate();
-
-            InitOrUpdateDatabase(isTest);
+            InitOrUpdateDatabase();
         }
     }
 }
