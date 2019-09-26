@@ -34,7 +34,7 @@ namespace CNCLib.WpfClient.ViewModels
 
         public JoystickViewModel(IFactory<IJoystickService> joystickService)
         {
-            _joystickService = joystickService ?? throw new ArgumentNullException();
+            _joystickService = joystickService ?? throw new ArgumentNullException(nameof(joystickService));
         }
 
         public override async Task Loaded()

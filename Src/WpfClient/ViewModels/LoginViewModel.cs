@@ -36,7 +36,7 @@ namespace CNCLib.WpfClient.ViewModels
 
         public LoginViewModel(IFactory<IUserService> userService)
         {
-            _userService = userService ?? throw new ArgumentNullException();
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
         #endregion

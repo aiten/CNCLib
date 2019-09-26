@@ -43,11 +43,11 @@ namespace CNCLib.Logic.Manager
         public MachineManager(IUnitOfWork unitOfWork, IMachineRepository repository, IConfigurationRepository repositoryConfig, ICNCLibUserContext userContext, IMapper mapper) :
             base(unitOfWork, repository, mapper)
         {
-            _unitOfWork       = unitOfWork ?? throw new ArgumentNullException();
-            _repository       = repository ?? throw new ArgumentNullException();
-            _repositoryConfig = repositoryConfig ?? throw new ArgumentNullException();
-            _userContext      = userContext ?? throw new ArgumentNullException();
-            _mapper           = mapper ?? throw new ArgumentNullException();
+            _unitOfWork       = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _repository       = repository ?? throw new ArgumentNullException(nameof(repository));
+            _repositoryConfig = repositoryConfig ?? throw new ArgumentNullException(nameof(repositoryConfig));
+            _userContext      = userContext ?? throw new ArgumentNullException(nameof(userContext));
+            _mapper           = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         protected override int GetKey(MachineEntity entity)

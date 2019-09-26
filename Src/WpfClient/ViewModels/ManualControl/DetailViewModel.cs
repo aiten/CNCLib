@@ -29,7 +29,7 @@ namespace CNCLib.WpfClient.ViewModels.ManualControl
 
         public DetailViewModel(IManualControlViewModel vm, Global global)
         {
-            _global = global ?? throw new ArgumentNullException();
+            _global = global ?? throw new ArgumentNullException(nameof(global));
             Vm      = vm;
         }
 

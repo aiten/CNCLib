@@ -41,7 +41,7 @@ namespace CNCLib.WpfClient.ViewModels
 
         public PreviewViewModel(Global global)
         {
-            _global                              =  global ?? throw new ArgumentNullException();
+            _global                              =  global ?? throw new ArgumentNullException(nameof(global));
             _global.Com.LocalCom.CommandSending  += CommandSending;
             _global.Com.RemoteCom.CommandSending += CommandSending;
         }

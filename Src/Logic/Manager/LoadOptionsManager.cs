@@ -32,7 +32,7 @@ namespace CNCLib.Logic.Manager
 
         public LoadOptionsManager(IDynItemController dynItemController)
         {
-            _dynItemController = dynItemController ?? throw new ArgumentNullException();
+            _dynItemController = dynItemController ?? throw new ArgumentNullException(nameof(dynItemController));
         }
 
         public async Task<IEnumerable<LoadOptions>> GetAll()

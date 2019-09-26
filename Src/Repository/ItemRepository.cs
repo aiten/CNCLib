@@ -38,7 +38,7 @@ namespace CNCLib.Repository
 
         public ItemRepository(CNCLibContext context, ICNCLibUserContext userContext) : base(context)
         {
-            _userContext = userContext ?? throw new ArgumentNullException();
+            _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         }
 
         protected override FilterBuilder<Item, int> FilterBuilder =>
