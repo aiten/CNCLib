@@ -39,7 +39,7 @@ namespace CNCLib.Repository
 
         public ConfigurationRepository(CNCLibContext dbContext, ICNCLibUserContext userContext) : base(dbContext)
         {
-            _userContext = userContext ?? throw new ArgumentNullException();
+            _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         }
 
         protected override FilterBuilder<Configuration, ConfigurationPrimary> FilterBuilder =>

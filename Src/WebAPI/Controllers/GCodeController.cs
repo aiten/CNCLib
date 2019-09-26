@@ -36,8 +36,8 @@ namespace CNCLib.WebAPI.Controllers
 
         public GCodeController(ILoadOptionsManager loadOptionsManager, ICNCLibUserContext userContext)
         {
-            _loadOptionsManager = loadOptionsManager ?? throw new ArgumentNullException();
-            _userContext        = userContext ?? throw new ArgumentNullException();
+            _loadOptionsManager = loadOptionsManager ?? throw new ArgumentNullException(nameof(loadOptionsManager));
+            _userContext        = userContext ?? throw new ArgumentNullException(nameof(userContext));
             ((CNCLibUserContext)_userContext).InitFromController(this);
         }
 

@@ -34,7 +34,7 @@ namespace CNCLib.WpfClient.ViewModels.ManualControl
 
         public SDViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
         {
-            _global = global ?? throw new ArgumentNullException();
+            _global = global ?? throw new ArgumentNullException(nameof(global));
         }
 
         #region Properties

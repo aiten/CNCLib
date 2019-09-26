@@ -32,7 +32,7 @@ namespace CNCLib.WpfClient.ViewModels.ManualControl
 
         public AxisViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
         {
-            _global = global ?? throw new ArgumentNullException();
+            _global = global ?? throw new ArgumentNullException(nameof(global));
             _global.PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName == "Machine")

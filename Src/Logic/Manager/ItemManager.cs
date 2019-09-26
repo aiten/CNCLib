@@ -42,10 +42,10 @@ namespace CNCLib.Logic.Manager
 
         public ItemManager(IUnitOfWork unitOfWork, IItemRepository repository, ICNCLibUserContext userContext, IMapper mapper) : base(unitOfWork, repository, mapper)
         {
-            _unitOfWork  = unitOfWork ?? throw new ArgumentNullException();
-            _repository  = repository ?? throw new ArgumentNullException();
-            _userContext = userContext ?? throw new ArgumentNullException();
-            _mapper      = mapper ?? throw new ArgumentNullException();
+            _unitOfWork  = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _repository  = repository ?? throw new ArgumentNullException(nameof(repository));
+            _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
+            _mapper      = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         protected override int GetKey(ItemEntity entity)

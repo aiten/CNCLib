@@ -36,8 +36,8 @@ namespace CNCLib.WebAPI.Controllers
 
         public ItemController(IItemManager manager, ICNCLibUserContext userContext)
         {
-            _manager     = manager ?? throw new ArgumentNullException();
-            _userContext = userContext ?? throw new ArgumentNullException();
+            _manager     = manager ?? throw new ArgumentNullException(nameof(manager));
+            _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
             ((CNCLibUserContext)_userContext).InitFromController(this);
         }
 

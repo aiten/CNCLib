@@ -34,7 +34,8 @@ namespace CNCLib.WpfClient.ViewModels.ManualControl
 
         public ToolViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
         {
-            _global                                   =  global ?? throw new ArgumentNullException();
+            _global = global ?? throw new ArgumentNullException(nameof(global));
+
             _global.Com.LocalCom.CommandQueueChanged  += OnCommandQueueChanged;
             _global.Com.RemoteCom.CommandQueueChanged += OnCommandQueueChanged;
         }

@@ -43,11 +43,11 @@ namespace CNCLib.WpfClient.ViewModels
 
         public SetupWindowViewModel(IFactory<IMachineService> machineService, IFactory<IJoystickService> joystickService, IMapper mapper, Global global, ICNCLibUserContext userContext)
         {
-            _machineService  = machineService ?? throw new ArgumentNullException();
-            _joystickService = joystickService ?? throw new ArgumentNullException();
-            _mapper          = mapper ?? throw new ArgumentNullException();
-            _global          = global ?? throw new ArgumentNullException();
-            _userContext     = userContext ?? throw new ArgumentNullException();
+            _machineService  = machineService ?? throw new ArgumentNullException(nameof(machineService));
+            _joystickService = joystickService ?? throw new ArgumentNullException(nameof(joystickService));
+            _mapper          = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _global          = global ?? throw new ArgumentNullException(nameof(global));
+            _userContext     = userContext ?? throw new ArgumentNullException(nameof(global));
 
             ResetOnConnect = false;
         }
