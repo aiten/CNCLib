@@ -40,37 +40,37 @@ namespace CNCLib.Repository.Context
             _machineMap = ImportCsv<int, Machine>("Machine.csv", m => m.MachineId, (m, key) =>
             {
                 m.MachineId = key;
-                m.User = m.UserId.HasValue ? _userMap[m.UserId.Value] : null;
-                m.UserId = null;
+                m.User      = m.UserId.HasValue ? _userMap[m.UserId.Value] : null;
+                m.UserId    = null;
             });
             _machineCommandMap = ImportCsv<int, MachineCommand>("MachineCommand.csv", mc => mc.MachineCommandId, (mc, key) =>
             {
                 mc.MachineCommandId = key;
-                mc.Machine = _machineMap[mc.MachineId];
-                mc.MachineId = 0;
+                mc.Machine          = _machineMap[mc.MachineId];
+                mc.MachineId        = 0;
             });
             _machineInitMap = ImportCsv<int, MachineInitCommand>("MachineInitCommand.csv", mic => mic.MachineInitCommandId, (mic, key) =>
             {
                 mic.MachineInitCommandId = key;
-                mic.Machine = _machineMap[mic.MachineId];
-                mic.MachineId = 0;
+                mic.Machine              = _machineMap[mic.MachineId];
+                mic.MachineId            = 0;
             });
 
             _itemMap = ImportCsv<int, Item>("Item.csv", i => i.ItemId, (i, key) =>
             {
                 i.ItemId = key;
-                i.User = i.UserId.HasValue ? _userMap[i.UserId.Value] : null;
+                i.User   = i.UserId.HasValue ? _userMap[i.UserId.Value] : null;
                 i.UserId = null;
             });
             _itemPropertyMap = ImportCsv<Tuple<int, string>, ItemProperty>("ItemProperty.csv", ip => new Tuple<int, string>(ip.ItemId, ip.Name), (ip, key) =>
             {
-                ip.Item = _itemMap[ip.ItemId];
+                ip.Item   = _itemMap[ip.ItemId];
                 ip.ItemId = 0;
             });
 
             _configurationMap = ImportCsv<Tuple<string, string>, Configuration>("Configuration.csv", c => new Tuple<string, string>(c.Group, c.Name), (c, key) =>
             {
-                c.User = c.UserId.HasValue ? _userMap[c.UserId.Value] : null;
+                c.User   = c.UserId.HasValue ? _userMap[c.UserId.Value] : null;
                 c.UserId = null;
             });
         }

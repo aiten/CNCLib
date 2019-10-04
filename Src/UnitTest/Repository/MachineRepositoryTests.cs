@@ -52,14 +52,15 @@ namespace CNCLib.UnitTest.Repository
                     var rep     = new MachineRepository(context, UserContext);
                     return new CRUDTestDbContext<CNCLibContext, Machine, int, IMachineRepository>(context, uow, rep);
                 },
-                GetEntityKey  = (entity) => entity.MachineId,
-                SetEntityKey  = (entity,  key) =>
+                GetEntityKey = (entity) => entity.MachineId,
+                SetEntityKey = (entity, key) =>
                 {
                     entity.MachineId = key;
                     foreach (var mc in entity.MachineCommands)
                     {
                         mc.MachineId = key;
                     }
+
                     foreach (var mic in entity.MachineInitCommands)
                     {
                         mic.MachineId = key;

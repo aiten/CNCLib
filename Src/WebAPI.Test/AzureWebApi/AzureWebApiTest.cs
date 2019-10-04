@@ -31,7 +31,7 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
         {
             if (_httpClient == null)
             {
-                _httpClient = new HttpClient();
+                _httpClient             = new HttpClient();
                 _httpClient.BaseAddress = new Uri(_AzureUri);
                 _httpClient.DefaultRequestHeaders.Accept.Clear();
                 _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

@@ -24,7 +24,7 @@ using Microsoft.EntityFrameworkCore;
 namespace CNCLib.UnitTest.Repository
 {
     public class RepositoryTestFixture : RepositoryTestFixtureBase<CNCLibContext>
-    { 
+    {
         public RepositoryTestFixture()
         {
             //drop and recreate the test Db every time the tests are run. 
