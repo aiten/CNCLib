@@ -73,7 +73,11 @@ namespace CNCLib.Serial.Server
                 .ConfigureAppConfiguration(
                     (hostingContext, config) => { config.AddJsonFile("hosting.json", optional: true); })
                 .UseStartup<Startup>()
-                .ConfigureLogging(logging => { logging.ClearProviders(); })
+                .ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+                })
                 .UseNLog();
         }
     }

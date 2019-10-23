@@ -15,7 +15,6 @@
 */
 
 using System;
-using System.Data.SqlClient;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows;

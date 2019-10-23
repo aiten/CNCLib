@@ -17,9 +17,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Framework\Arduino\Arduino.csproj" />
     <ProjectReference Include="..\Framework\Dependency\Dependency.csproj" />
     <ProjectReference Include="..\Framework\Service.Abstraction\Service.Abstraction.csproj" />
