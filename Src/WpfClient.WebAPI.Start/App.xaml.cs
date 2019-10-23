@@ -60,7 +60,8 @@ namespace CNCLib.WpfClient.WebAPI.Start
 //                .AddFrameworkLogging()
                 .AddLogicClient()
                 .AddSerialCommunication()
-                .AddServiceAsWebAPI(httpClient => HttpClientHelper.PrepareHttpClient(httpClient, @"http://cnclibwebapi.azurewebsites.net"))
+                .AddServiceAsWebAPI(httpClient => HttpClientHelper.PrepareHttpClient(httpClient, @"https://cnclibwebapi.azurewebsites.net"))
+              //.AddServiceAsWebAPI(httpClient => HttpClientHelper.PrepareHttpClient(httpClient, @"http://localhost:55149"))
                 .AddCNCLibWpf()
                 .AddMapper(
                     new MapperConfiguration(

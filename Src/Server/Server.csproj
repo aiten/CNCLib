@@ -35,6 +35,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\modal\DialogData.ts" />
+    <None Remove="ClientApp\src\app\modal\modal.component.css" />
+    <None Remove="ClientApp\src\app\modal\modal.component.html" />
+    <None Remove="ClientApp\src\app\modal\modal.component.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Framework\Repository\Repository.csproj" />
     <ProjectReference Include="..\Framework\WebAPI.Host\WebAPI.Host.csproj" />
     <ProjectReference Include="..\Framework\WebAPI\WebAPI.csproj" />

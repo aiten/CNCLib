@@ -44,7 +44,6 @@ import { LocalCNCLibLoadOptionService } from './services/local-CNCLib-load-optio
 import { eepromConfigRoutes, eepromConfigRoutingComponents } from './eeprom-config/eeprom-config-routing';
 import { machineRoutes, machineRoutingComponents } from './machine/machine-routing';
 
-import { ModalComponent } from './modal/modal.component';
 import { MessageBoxComponent } from './modal/message-box/message-box.component';
 
 import { gcodeRoutes, gcodeRoutingComponents } from './gcode/gcode-routing';
@@ -66,7 +65,6 @@ NgModule({
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    ModalComponent,
     MessageBoxComponent,
     ...machineRoutingComponents,
     ...eepromConfigRoutingComponents,
@@ -95,7 +93,7 @@ NgModule({
     { provide: CNCLibLoadOptionService, useClass: LocalCNCLibLoadOptionService },
   ],
   bootstrap: [AppComponent],
-  entryComponents: [ModalComponent, MessageBoxComponent]
+  entryComponents: [MessageBoxComponent]
 })
 export class AppModule {
 }

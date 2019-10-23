@@ -61,15 +61,13 @@ namespace CNCLib.WebAPI.Controllers
             return await this.Add<Machine, int>(_manager, value);
         }
 
-        [HttpPut]
-        [Route("{id:int}")]
+        [HttpPut("{id:int}")]
         public async Task<ActionResult> Update(int id, [FromBody] Machine value)
         {
             return await this.Update<Machine, int>(_manager, id, value.MachineId, value);
         }
 
-        [HttpDelete]
-        [Route("{id:int}")]
+        [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {
             return await this.Delete<Machine, int>(_manager, id);
@@ -79,22 +77,19 @@ namespace CNCLib.WebAPI.Controllers
 
         #region bulk
 
-        [HttpPost]
-        [Route("bulk")]
+        [HttpPost("bulk")]
         public async Task<ActionResult<IEnumerable<UriAndValue<Machine>>>> Add([FromBody] IEnumerable<Machine> values)
         {
             return await this.Add<Machine, int>(_manager, values);
         }
 
-        [HttpPut]
-        [Route("bulk")]
+        [HttpPut("bulk")]
         public async Task<ActionResult> Update([FromBody] IEnumerable<Machine> values)
         {
             return await this.Update<Machine, int>(_manager, values);
         }
 
-        [HttpDelete]
-        [Route("bulk")]
+        [HttpDelete("bulk")]
         public async Task<ActionResult> Delete(int[] ids)
         {
             return await this.Delete<Machine, int>(_manager, ids);
@@ -102,16 +97,14 @@ namespace CNCLib.WebAPI.Controllers
 
         #endregion
 
-        [Route("default")]
-        [HttpGet]
+        [HttpGet("default")]
         public async Task<ActionResult<Machine>> DefaultMachine()
         {
             var m = await _manager.DefaultMachine();
             return await this.NotFoundOrOk(m);
         }
 
-        [Route("defaultmachine")]
-        [HttpGet]
+        [HttpGet("defaultmachine")]
 
         //Always explicitly state the accepted HTTP method
         public async Task<ActionResult<int>> GetDefaultMachine()
@@ -120,8 +113,7 @@ namespace CNCLib.WebAPI.Controllers
             return Ok(id);
         }
 
-        [Route("defaultmachine")]
-        [HttpPut]
+        [HttpPut("defaultmachine")]
 
         //Always explicitly state the accepted HTTP method
         public async Task<ActionResult> SetDefaultMachine(int id)

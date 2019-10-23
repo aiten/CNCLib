@@ -85,15 +85,13 @@ namespace CNCLib.WebAPI.Controllers
             return await this.Add<User, int>(_manager, value);
         }
 
-        [HttpPut]
-        [Route("{id:int}")]
+        [HttpPut("{id:int}")]
         public async Task<ActionResult> Update(int id, [FromBody] User value)
         {
             return await this.Update<User, int>(_manager, id, value.UserId, value);
         }
 
-        [HttpDelete]
-        [Route("{id:int}")]
+        [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {
             return await this.Delete<User, int>(_manager, id);

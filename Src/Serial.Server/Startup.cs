@@ -32,6 +32,7 @@ using Framework.WebAPI.Filter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
@@ -66,13 +67,11 @@ namespace CNCLib.Serial.Server
             services.AddSignalR(hu => hu.EnableDetailedErrors = true);
 
             services.AddTransient<UnhandledExceptionFilter>();
-            services.AddTransient<ValidateRequestDataFilter>();
             services.AddTransient<MethodCallLogFilter>();
             services.AddMvc(
                     options =>
                     {
                         options.EnableEndpointRouting = false;
-                        options.Filters.AddService<ValidateRequestDataFilter>();
                         options.Filters.AddService<UnhandledExceptionFilter>();
                         options.Filters.AddService<MethodCallLogFilter>();
                     })

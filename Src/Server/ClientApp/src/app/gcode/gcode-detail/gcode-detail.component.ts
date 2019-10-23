@@ -20,9 +20,6 @@ import { CNCLibLoadOptionService } from '../../services/CNCLib-load-option.servi
 import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
-import { ModalComponent } from "../../modal/modal.component";
-import { DialogData } from "../../modal/DialogData";
-
 import { MessageBoxComponent } from "../../modal/message-box/message-box.component";
 import { MessageBoxData } from "../../modal/message-box-data";
 
