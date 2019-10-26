@@ -4,14 +4,14 @@
     xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:controls="clr-namespace:CNCLib.WpfClient.Controls"
     x:Class="CNCLib.WpfClient.Views.ManualControlPage"
-    Title="ManualControlPage" Width="830" MinHeight="550">
+    Title="ManualControlPage" MinWidth="830" MinHeight="550">
     <!--
 <Page.DataContext>
         <vm:ManualControlViewModel />
     </Page.DataContext>
 -->
     <DockPanel ScrollViewer.VerticalScrollBarVisibility="Auto">
-        <StackPanel DockPanel.Dock="Top" Margin="5,5,5,0" HorizontalAlignment="Stretch">
+        <StackPanel Width="850" DockPanel.Dock="Top" Margin="5,5,5,0" HorizontalAlignment="Stretch">
             <StackPanel Orientation="Horizontal">
                 <TabControl Custom:TabControlHelper.Underlined="TabItems">
                     <TabItem Header="XYZ" Custom:ControlsHelper.HeaderFontSize="15">

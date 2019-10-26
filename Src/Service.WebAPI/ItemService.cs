@@ -48,13 +48,8 @@ namespace CNCLib.Service.WebAPI
             paramUri.Add("classname", classname);
 
             HttpResponseMessage response = await client.GetAsync(CreatePathBuilder().AddQuery(paramUri).Build());
-            if (response.IsSuccessStatusCode)
-            {
-                IEnumerable<Item> items = await response.Content.ReadAsAsync<IEnumerable<Item>>();
-                return items;
-            }
-
-            return null;
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsAsync<IEnumerable<Item>>();
         }
     }
 }
