@@ -15,14 +15,14 @@
 */
 
 import { Component, OnInit } from '@angular/core';
-import { LoadOptions } from "../../models/load-options";
+import { LoadOptions, EHoleType, ELoadType, PenType, SmoothTypeEnum, ConvertTypeEnum, DitherFilter } from
+  "../../models/load-options";
 import { CNCLibLoadOptionService } from '../../services/CNCLib-load-option.service';
 import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
 import { MessageBoxComponent } from "../../modal/message-box/message-box.component";
 import { MessageBoxData } from "../../modal/message-box-data";
-
 
 @Component(
   {
@@ -35,9 +35,6 @@ export class GcodeDetailComponent implements OnInit {
   errorMessage: string = '';
   isLoading: boolean = true;
 
-  animal: string;
-  name: string;
-
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -45,6 +42,24 @@ export class GcodeDetailComponent implements OnInit {
     private dialog: MatDialog
   ) {
   }
+
+  ELoadType: typeof
+    ELoadType = ELoadType;
+
+  PenType: typeof
+    PenType = PenType;
+
+  SmoothTypeEnum: typeof
+    SmoothTypeEnum = SmoothTypeEnum;
+
+  ConvertTypeEnum: typeof
+    ConvertTypeEnum = ConvertTypeEnum;
+
+  DitherFilter: typeof
+    DitherFilter = DitherFilter;
+
+  EHoleType: typeof
+    EHoleType = EHoleType;
 
   newLoadOption() {
 
@@ -72,19 +87,7 @@ export class GcodeDetailComponent implements OnInit {
 //      this.animal = result;
     });
 
-/*
-    const dialogRef = this.dialog.open(ModalComponent,
-      {
-        width: '250px',
-        data: { name: this.name, animal: this.animal }
-      });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.animal = result;
-    });
-*/
   }
-
 
   async ngOnInit() {
 

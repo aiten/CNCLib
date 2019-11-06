@@ -19,6 +19,7 @@ import { LoadOptions } from "../../models/load-options";
 import { CNCLibLoadOptionService } from '../../services/CNCLib-load-option.service';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { gcodeURL } from '../../app.global';
 
 import { MessageBoxComponent } from "../../modal/message-box/message-box.component";
 import { MessageBoxData } from "../../modal/message-box-data";
@@ -34,9 +35,6 @@ export class GcodeOverviewComponent implements OnInit {
   entries: LoadOptions[] = [];
   errorMessage: string = '';
   isLoading: boolean = true;
-
-  animal: string;
-  name: string;
 
   constructor(
     private router: Router,
@@ -60,28 +58,8 @@ export class GcodeOverviewComponent implements OnInit {
   }
 
   detailLoadOption(id: number) {
-
-    const dialogRef = this.dialog.open(MessageBoxComponent,
-      {
-        width: '250px',
-        data: { title: "Info", message: "Hallo" }
-      });
-
-    dialogRef.afterClosed().subscribe(result => {
-//      this.animal = result;
-    });
-
-/*
-    const dialogRef = this.dialog.open(ModalComponent,
-      {
-        width: '250px',
-        data: { name: this.name, animal: this.animal }
-      });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.animal = result;
-    });
-*/
+    console.log('Detail machine');
+    this.router.navigate([gcodeURL, 'detail', String(id)]);
   }
 
 
