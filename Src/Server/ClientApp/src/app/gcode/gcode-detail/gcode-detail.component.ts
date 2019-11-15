@@ -23,6 +23,10 @@ import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
 import { MessageBoxComponent } from "../../modal/message-box/message-box.component";
 import { MessageBoxData } from "../../modal/message-box-data";
+import HPGL = ELoadType.HPGL;
+import ZMove = PenType.ZMove;
+import ImageHole = ELoadType.ImageHole;
+import ImageHole1 = ELoadType.ImageHole;
 
 @Component(
   {
@@ -87,6 +91,46 @@ export class GcodeDetailComponent implements OnInit {
 //      this.animal = result;
     });
 
+  }
+
+  isHPGL() {
+    return this.entry.LoadType == ELoadType.HPGL;
+  }
+
+  isHPGLorImageOrImageHole() {
+    return this.isHPGL() || this.isImageOrImageHole();
+  }
+
+  isImage() {
+    return this.entry.LoadType == ELoadType.Image;
+  }
+
+  isImageHole() {
+    return this.entry.LoadType == ELoadType.ImageHole;
+  }
+
+  isImageOrImageHole() {
+    return this.entry.LoadType == ELoadType.Image || this.entry.LoadType == ELoadType.ImageHole;
+  }
+
+  isAutoScale() {
+    return this.isHPGLorImageOrImageHole() && this.entry.AutoScale;
+  }
+
+  isScale() {
+    return this.isHPGLorImageOrImageHole() && this.entry.AutoScale == false;
+  }
+
+  isSmooth() {
+    return this.isHPGL() && this.entry.SmoothType != SmoothTypeEnum.NoSmooth;
+  }
+
+  isLaser() {
+    return (this.isHPGL() && this.entry.PenMoveType == PenType.CommandString) || this.isImageOrImageHole();
+  }
+
+  isEngrave() {
+    return this.isHPGL() && this.entry.PenMoveType == ZMove;
   }
 
   async ngOnInit() {
