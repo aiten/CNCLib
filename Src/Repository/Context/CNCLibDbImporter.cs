@@ -29,6 +29,7 @@ namespace CNCLib.Repository.Context
     public class CNCLibDbImporter : DbImporter
     {
         protected Dictionary<int, User>                            _userMap;
+        protected Dictionary<Tuple<int, string>, UserFile>         _userFileMap;
         protected Dictionary<int, Machine>                         _machineMap;
         protected Dictionary<int, MachineCommand>                  _machineCommandMap;
         protected Dictionary<int, MachineInitCommand>              _machineInitMap;
