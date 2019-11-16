@@ -14,6 +14,7 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
+using CNCLib.Repository.Context;
 using CNCLib.Repository.SqlServer;
 
 using Framework.Dependency;
@@ -21,6 +22,7 @@ using Framework.Tools;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -40,11 +42,7 @@ namespace CNCLib.Repository.Migrations.Startup
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
-            GlobalServiceCollection.Instance = services;
-            services
-                .AddFrameWorkTools()
-                .AddRepository(SqlServerDatabaseTools.OptionBuilder);
+            services.AddDbContext<CNCLibContext>(options => SqlServerDatabaseTools.OptionBuilder(options));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
