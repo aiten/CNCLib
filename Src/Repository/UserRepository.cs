@@ -77,7 +77,7 @@ namespace CNCLib.Repository
 
         public async Task<User> GetByName(string username)
         {
-            return await AddInclude(Query).Where(u => u.UserName == username).FirstOrDefaultAsync();
+            return await AddInclude(Query).Where(u => u.Name == username).FirstOrDefaultAsync();
         }
 
         #endregion

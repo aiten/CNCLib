@@ -14,57 +14,54 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
+using System.Linq;
 using System.Threading.Tasks;
 
-using CNCLib.Logic.Abstraction.DTO;
-using CNCLib.Service.Abstraction;
-using CNCLib.Shared;
+using CNCLib.Repository.Abstraction;
+using CNCLib.Repository.Abstraction.Entities;
+using CNCLib.Repository.Context;
 
-using Framework.Dependency;
+using Framework.Repository;
+using Framework.Repository.Linq;
 
-namespace CNCLib.WpfClient
+using Microsoft.EntityFrameworkCore;
+
+namespace CNCLib.Repository
 {
-    public class CNCLibUserContext : ICNCLibUserContextRW
+    public class UserFileRepository : CRUDRepository<CNCLibContext, UserFile, UserFileKey>, IUserFileRepository
     {
-        public CNCLibUserContext()
+        #region ctr/default/overrides
+
+        public UserFileRepository(CNCLibContext context) : base(context)
         {
-            //string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
-            UserName = Environment.UserName;
         }
 
-        public string UserName { get; private set; }
-
-        public int? UserId { get; private set; }
-
-        public async Task InitUserContext()
-        {
-            await InitUserContext(UserName);
-        }
-
-        public async Task InitUserContext(string userName)
-        {
-            try
+        protected override FilterBuilder<UserFile, UserFileKey> FilterBuilder =>
+            new FilterBuilder<UserFile, UserFileKey>()
             {
-                UserName = userName;
-                using (var userService = GlobalServiceCollection.Instance.Resolve<IUserService>())
+                PrimaryWhere = (query, key) => query.Where(item => item.UserId == key.UserId && item.FileName == key.FileName),
+                PrimaryWhereIn = (query, keys) =>
                 {
-                    var user = await userService.GetByName(UserName);
-                    if (user == null)
+                    var predicate = PredicateBuilder.New<UserFile>();
+
+                    foreach (var key in keys)
                     {
-                        user        = new User();
-                        user.Name   = UserName;
-                        user.UserId = await userService.Add(user);
+                        predicate = predicate.Or(c => c.UserId == key.UserId && c.FileName == key.FileName);
                     }
 
-                    UserId = user.UserId;
+                    return query.Where(predicate);
                 }
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-                throw;
-            }
+            };
+
+        protected override IQueryable<UserFile> AddInclude(IQueryable<UserFile> query)
+        {
+            return query;
         }
+
+        #endregion
+
+        #region extra Queries
+
+        #endregion
     }
 }

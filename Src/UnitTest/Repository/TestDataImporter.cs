@@ -29,8 +29,6 @@ namespace CNCLib.UnitTest.Repository
 {
     public class TestDataImporter : CNCLibDbImporter
     {
-        private Dictionary<Tuple<string, string>, Configuration> _configurationMap;
-
         public TestDataImporter(CNCLibContext context) : base(context)
         {
             CsvDir = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\Repository\TestData";
@@ -38,7 +36,7 @@ namespace CNCLib.UnitTest.Repository
 
         public void Import()
         {
-            // default data alread in db
+            // default data already in db
             _userMap = ReadFromDb<int, User>(u => u.UserId);
 
             _configurationMap = ImportCsv<Tuple<string, string>, Configuration>("ConfigurationTest.csv", c => new Tuple<string, string>(c.Group, c.Name), (c, key) =>

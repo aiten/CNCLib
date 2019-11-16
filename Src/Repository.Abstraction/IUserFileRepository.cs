@@ -14,14 +14,21 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository.Abstraction.Entities
+using System.Threading.Tasks;
+
+using CNCLib.Repository.Abstraction.Entities;
+
+using Framework.Repository.Abstraction;
+
+namespace CNCLib.Repository.Abstraction
 {
-    public class MachineInitCommand
+    public class UserFileKey
     {
-        public int     MachineInitCommandId { get; set; }
-        public int     SeqNo                { get; set; }
-        public string  CommandString        { get; set; }
-        public int     MachineId            { get; set; }
-        public Machine Machine              { get; set; }
+        public string FileName { get; set; }
+        public int    UserId   { get; set; }
+    }
+
+    public interface IUserFileRepository : ICRUDRepository<UserFile, UserFileKey>
+    {
     }
 }

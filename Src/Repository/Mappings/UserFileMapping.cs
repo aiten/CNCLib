@@ -14,14 +14,24 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository.Abstraction.Entities
+using CNCLib.Repository.Abstraction.Entities;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace CNCLib.Repository.Mappings
 {
-    public class MachineInitCommand
+    public static class UserFileMapping
     {
-        public int     MachineInitCommandId { get; set; }
-        public int     SeqNo                { get; set; }
-        public string  CommandString        { get; set; }
-        public int     MachineId            { get; set; }
-        public Machine Machine              { get; set; }
+        public static void Map(this EntityTypeBuilder<UserFile> entity)
+        {
+            entity.ToTable("UserFile");
+
+            entity.HasKey(e => new { e.UserId, e.FileName });
+
+            entity.Property(m => m.FileName).IsRequired().IsUnicode().HasMaxLength(1024);
+
+            entity.HasOne(mic => mic.User);
+        }
     }
 }

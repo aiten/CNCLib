@@ -18,12 +18,12 @@ namespace CNCLib.Repository.Abstraction.Entities
 {
     public class Configuration
     {
-        public         string Group  { get; set; }
-        public         string Name   { get; set; }
-        public         string Type   { get; set; }
-        public         string Value  { get; set; }
-        public         int?   UserId { get; set; }
-        public virtual User   User   { get; set; }
+        public string Group  { get; set; }
+        public string Name   { get; set; }
+        public string Type   { get; set; }
+        public string Value  { get; set; }
+        public int?   UserId { get; set; }
+        public User   User   { get; set; }
 
         public Configuration()
         {
