@@ -31,7 +31,9 @@ namespace CNCLib.Repository.Mappings
 
             entity.Property(m => m.FileName).IsRequired().IsUnicode().HasMaxLength(1024);
 
-            entity.HasOne(mic => mic.User);
+            entity.HasOne(mic => mic.User)
+                .WithMany()
+                .HasForeignKey("UserId");
         }
     }
 }

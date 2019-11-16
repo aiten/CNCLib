@@ -15,14 +15,11 @@
 */
 
 using CNCLib.Repository.Context;
+using CNCLib.Repository.SqLite;
 using CNCLib.Repository.SqlServer;
-
-using Framework.Dependency;
-using Framework.Tools;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -38,14 +35,13 @@ namespace CNCLib.Repository.Migrations.Startup
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<CNCLibContext>(options => SqlServerDatabaseTools.OptionBuilder(options));
+            // services.AddDbContext<CNCLibContext>(options => SqlServerDatabaseTools.OptionBuilder(options));
+            services.AddDbContext<CNCLibContext>(options => SqliteDatabaseTools.OptionBuilder(options));
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
