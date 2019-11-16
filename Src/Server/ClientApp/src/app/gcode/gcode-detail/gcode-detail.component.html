@@ -1,277 +1,384 @@
 <h1>G-Code details templates: {{ entry.SettingName }}</h1>
 
-<div>
-
 <head>
   <style>
     table,
     th,
-    td { border: 1px solid black; }
+    td { border: 0px solid black; }
+
   </style>
 </head>
-<table>
-  <tr>
-    <th>Property</th>
-    <th>Value</th>
-  </tr>
-  <tr>
-    <td>Id</td>
-    <td>{{ entry.Id }}</td>
-  </tr>
-  <tr>
-    <td>Setting-Name</td>
-    <td>{{ entry.SettingName }}</td>
-  </tr>
-  <tr>
-    <td>Load-Type</td>
-    <td>{{ ELoadType[entry.LoadType] }}</td>
-  </tr>
-  <tr>
-    <td>File-Name</td>
-    <td>{{ entry.FileName}}</td>
-  </tr>
-  <tr>
-    <td>StartupCommands</td>
-    <td>{{ entry.StartupCommands}}</td>
-  </tr>
-  <tr>
-    <td>ShutdownCommands</td>
-    <td>{{ entry.ShutdownCommands}}</td>
-  </tr>
-  <tr>
-    <td>SubstG82</td>
-    <td>{{ entry.SubstG82}}</td>
-  </tr>
-  <tr>
-    <td>AddLineNumbers</td>
-    <td>{{ entry.AddLineNumbers}}</td>
-  </tr>
-</table>
-<table *ngIf="isHPGL()">
-  <tr>
-    <th>HPGL</th>
-  </tr>
-  <tr>
-    <td>PenMoveType</td>
-    <td>{{ PenType[entry.PenMoveType]}}</td>
-  </tr>
-  <tr>
-    <td>SwapXY</td>
-    <td>{{ entry.SwapXY}}</td>
-  </tr>
-  <tr>
-  <td>SmoothType</td>
-  <td>{{ SmoothTypeEnum[entry.SmoothType]}}</td>
-  <tr>
-    <td>ConvertType</td>
-    <td>{{ ConvertTypeEnum[entry.ConvertType]}}</td>
-  </tr>
-  <tr>
-    <td>AutoScale</td>
-    <td>{{ entry.AutoScale}}</td>
-  </tr>
-</table>
 
-<table *ngIf="isSmooth()">
-  <tr>
-    <th>Smooth</th>
-  </tr>
-  <tr>
-    <td>SmoothMinAngle</td>
-    <td>{{ entry.SmoothMinAngle}}</td>
-  </tr>
-  <tr>
-    <td>SmoothMinLineLength</td>
-    <td>{{ entry.SmoothMinLineLength}}</td>
-  </tr>
-  <tr>
-    <td>SmoothMaxError</td>
-    <td>{{ entry.SmoothMaxError}}</td>
-  </tr>
-</table>
+<form novalidate [formGroup]="gCodeForm" (ngSubmit)="savegCode(gCodeForm.value)">
 
-<table *ngIf="isAutoScale()">
-  <tr>
-    <th>AutoScale</th>
-  </tr>
-  <tr>
-    <td>AutoScaleKeepRatio</td>
-    <td>{{ entry.AutoScaleKeepRatio}}</td>
-  </tr>
-  <tr>
-    <td>AutoScaleCenter</td>
-    <td>{{ entry.AutoScaleCenter}}</td>
-  </tr>
-  <tr>
-    <td>AutoScaleSizeX</td>
-    <td>{{ entry.AutoScaleSizeX}}</td>
-  </tr>
-  <tr>
-    <td>AutoScaleSizeY</td>
-    <td>{{ entry.AutoScaleSizeY}}</td>
-  </tr>
-  <tr>
-    <td>AutoScaleBorderDistX</td>
-    <td>{{ entry.AutoScaleBorderDistX}}</td>
-  </tr>
-  <tr>
-    <td>AutoScaleBorderDistY</td>
-    <td>{{ entry.AutoScaleBorderDistY}}</td>
-  </tr>
-</table>
-<table *ngIf="isScale()">
-  <tr>
-    <th>Scale</th>
-  </tr>
-  <tr>
-    <td>ScaleX</td>
-    <td>{{ entry.ScaleX}}</td>
-  </tr>
-  <tr>
-    <td>ScaleY</td>
-    <td>{{ entry.ScaleY}}</td>
-  </tr>
-  <tr>
-    <td>OfsX</td>
-    <td>{{ entry.OfsX}}</td>
-  </tr>
-  <tr>
-    <td>OfsY</td>
-    <td>{{ entry.OfsY}}</td>
-  </tr>
-</table>
-<table *ngIf="isEngrave()">
-  <tr>
-    <th>Engrave</th>
-  </tr>
-  <tr>
-    <td>EngravePosInParameter</td>
-    <td>{{ entry.EngravePosInParameter}}</td>
-  </tr>
-  <tr>
-    <td>EngravePosUp</td>
-    <td>{{ entry.EngravePosUp}}</td>
-  </tr>
-  <tr>
-    <td>EngravePosDown</td>
-    <td>{{ entry.EngravePosDown}}</td>
-  </tr>
-  <tr>
-    <td>MoveSpeed</td>
-    <td>{{ entry.MoveSpeed}}</td>
-  </tr>
-  <tr>
-    <td>EngraveDownSpeed</td>
-    <td>{{ entry.EngraveDownSpeed}}</td>
-  </tr>
-</table>
-<table *ngIf="isLaser()">
-  <tr>
-    <th>Laser</th>
-  </tr>
-  <tr>
-    <td>MoveSpeed</td>
-    <td>{{ entry.MoveSpeed}}</td>
-  </tr>
-  <tr>
-    <td>LaserFirstOnCommand</td>
-    <td>{{ entry.LaserFirstOnCommand}}</td>
-  </tr>
-  <tr>
-    <td>LaserOnCommand</td>
-    <td>{{ entry.LaserOnCommand}}</td>
-  </tr>
-  <tr>
-    <td>LaserOffCommand</td>
-    <td>{{ entry.LaserOffCommand}}</td>
-  </tr>
-  <tr>
-    <td>LaserLastOffCommand</td>
-    <td>{{ entry.LaserLastOffCommand}}</td>
-  </tr>
-  <tr>
-    <td>LaserSize</td>
-    <td>{{ entry.LaserSize}}</td>
-  </tr>
-  <tr>
-    <td>LaserAccDist</td>
-    <td>{{ entry.LaserAccDist}}</td>
-  </tr>
-</table>
-<table *ngIf="isImageOrImageHole()">
-  <tr>
-    <th>IMG</th>
-  </tr>
-  <tr>
-    <td>AutoScale</td>
-    <td>{{ entry.AutoScale}}</td>
-  </tr>
-  <tr>
-    <td>ImageWriteToFileName</td>
-    <td>{{ entry.ImageWriteToFileName}}</td>
-  </tr>
-  <tr>
-    <td>GrayThreshold</td>
-    <td>{{ entry.GrayThreshold}}</td>
-  </tr>
-  <tr>
-    <td>ImageDPIX</td>
-    <td>{{ entry.ImageDPIX}}</td>
-  </tr>
-  <tr>
-    <td>ImageDPIY</td>
-    <td>{{ entry.ImageDPIY}}</td>
-  </tr>
-  <tr>
-    <td>ImageInvert</td>
-    <td>{{ entry.ImageInvert}}</td>
-  </tr>
-  <tr>
-    <td>Dither</td>
-    <td>{{ DitherFilter[entry.Dither]}}</td>
-  </tr>
-  <tr>
-    <td>NewspaperDitherSize</td>
-    <td>{{ entry.NewspaperDitherSize}}</td>
-  </tr>
-</table>
-<table *ngIf="isImageHole()">
-  <tr>
-    <th>Hole</th>
-  </tr>
-  <tr>
-    <td>HoleType</td>
-    <td>{{ EHoleType[entry.HoleType] }}</td>
-  </tr>
-  <tr>
-    <td>DotDistX</td>
-    <td>{{ entry.DotDistX}}</td>
-  </tr>
-  <tr>
-    <td>DotDistY</td>
-    <td>{{ entry.DotDistY}}</td>
-  </tr>
-  <tr>
-    <td>DotSizeX</td>
-    <td>{{ entry.DotSizeX}}</td>
-  </tr>
-  <tr>
-    <td>DotSizeX</td>
-    <td>{{ entry.DotSizeX}}</td>
-  </tr>
-  <tr>
-    <td>DotSizeY</td>
-    <td>{{ entry.DotSizeY}}</td>
-  </tr>
-  <tr>
-    <td>UseYShift</td>
-    <td>{{ entry.UseYShift}}</td>
-  </tr>
-  <tr>
-    <td>RotateHeart</td>
-    <td>{{ entry.RotateHeart}}</td>
-  </tr>
-</table>
+<div class="general-container">
+
+  <h2>Common</h2>
+  <table>
+    <tr>
+      <td width="20%">Id</td>
+      <td>
+        <input matInput class="form-control" formControlName="Id"/>
+      </td>
+    </tr>
+    <tr>
+      <td>Setting-Name</td>
+      <td><input matInput class="form-control" formControlName="SettingName"/>
+    </tr>
+    <tr>
+      <td>Load-Type</td>
+      <td>
+      <mat-select formControlName="LoadType" class="form-control">
+        <mat-option *ngFor="let key of keys" [value]="key">{{ELoadType[key]}}</mat-option>
+      </mat-select>
+    </tr>
+    <tr>
+      <td>File-Name</td>
+      <td>
+        <input matInput class="form-control" formControlName="FileName"/>
+      </td>
+    </tr>
+    <tr>
+      <td>StartupCommands</td>
+      <td>
+        <input matInput class="form-control" formControlName="StartupCommands"/>
+      </td>
+    </tr>
+    <tr>
+      <td>ShutdownCommands</td>
+      <td>
+        <input matInput class="form-control" formControlName="ShutdownCommands"/>
+      </td>
+    </tr>
+    <tr>
+      <td>SubstG82</td>
+      <td>
+        <mat-checkbox class="form-control" formControlName="SubstG82"></mat-checkbox>
+      </td>
+    </tr>
+    <tr>
+      <td>AddLineNumbers</td>
+      <td>
+        <mat-checkbox class="form-control" formControlName="AddLineNumbers"></mat-checkbox>
+      </td>
+    </tr>
+  </table>
 </div>
 
-<button (click)='newLoadOption()'>new</button>
+<div *ngIf="isHPGL()" class="HPGL-container">
+
+  <h2>HPGL</h2>
+
+  <table>
+    <tr>
+      <td width="20%" >PenMoveType</td>
+      <td>{{ PenType[entry.PenMoveType]}}</td>
+    </tr>
+    <tr>
+      <td>SwapXY</td>
+      <td>
+        <mat-checkbox class="form-control" formControlName="SwapXY"></mat-checkbox>
+      </td>
+    </tr>
+    <tr>
+    <td>SmoothType</td>
+    <td>{{ SmoothTypeEnum[entry.SmoothType]}}</td>
+    <tr>
+      <td>ConvertType</td>
+      <td>{{ ConvertTypeEnum[entry.ConvertType]}}</td>
+    </tr>
+    <tr>
+      <td>AutoScale</td>
+      <td>
+        <mat-checkbox class="form-control" formControlName="AutoScale"></mat-checkbox>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div *ngIf="isSmooth()" class="smooth-container">
+
+  <h3>Smooth</h3>
+
+  <table>
+    <tr>
+      <td width="20%">SmoothMinAngle</td>
+      <td>
+        <input matInput class="form-control" formControlName="SmoothMinAngle"/>
+      </td>
+    </tr>
+    <tr>
+      <td>SmoothMinLineLength</td>
+      <td>
+        <input matInput class="form-control" formControlName="SmoothMinLineLength"/>
+      </td>
+    </tr>
+    <tr>
+      <td>SmoothMaxError</td>
+      <td>
+        <input matInput class="form-control" formControlName="SmoothMaxError"/>
+      </td>
+    </tr>
+  </table>
+
+</div>
+
+<div *ngIf="isAutoScale()" class="autoScale-container">
+
+  <h3>Auto-Scale</h3>
+
+  <table>
+    <tr>
+      <td width="20%">AutoScaleKeepRatio</td>
+      <td>
+        <mat-checkbox class="form-control" formControlName="AutoScaleKeepRatio"></mat-checkbox>
+      </td>
+    </tr>
+    <tr>
+      <td>AutoScaleCenter</td>
+      <td>
+        <mat-checkbox class="form-control" formControlName="AutoScaleCenter"></mat-checkbox>
+      </td>
+    </tr>
+    <tr>
+      <td>AutoScaleSizeX</td>
+      <td>
+        <input matInput class="form-control" formControlName="AutoScaleSizeX"/>
+      </td>
+    </tr>
+    <tr>
+      <td>AutoScaleSizeY</td>
+      <td>
+        <input matInput class="form-control" formControlName="AutoScaleSizeY"/>
+      </td>
+    </tr>
+    <tr>
+      <td>AutoScaleBorderDistX</td>
+      <td>
+        <input matInput class="form-control" formControlName="AutoScaleBorderDistX"/>
+      </td>
+    </tr>
+    <tr>
+      <td>AutoScaleBorderDistY</td>
+      <td>
+        <input matInput class="form-control" formControlName="AutoScaleBorderDistY"/>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div *ngIf="isScale()" class="scale-container">
+
+  <h3>Scale</h3>
+
+  <table>
+    <tr>
+      <td width="20%">ScaleX</td>
+      <td>
+        <input matInput class="form-control" formControlName="ScaleX"/>
+      </td>
+    </tr>
+    <tr>
+      <td>ScaleY</td>
+      <td>
+        <input matInput class="form-control" formControlName="ScaleY"/>
+      </td>
+    </tr>
+    <tr>
+      <td>OfsX</td>
+      <td>
+        <input matInput class="form-control" formControlName="OfsX"/>
+      </td>
+    </tr>
+    <tr>
+      <td>OfsY</td>
+      <td>
+        <input matInput class="form-control" formControlName="OfsY"/>
+      </td>
+    </tr>
+  </table>
+
+</div>
+
+<div *ngIf="isEngrave()" class="engrave-container">
+
+  <h3>Engrave</h3>
+
+  <table>
+    <tr>
+      <td width="20%">EngravePosInParameter</td>
+      <td>
+        <mat-checkbox class="form-control" formControlName="EngravePosInParameter"></mat-checkbox>
+      </td>
+    </tr>
+    <tr>
+      <td>EngravePosUp</td>
+      <td>
+        <input matInput class="form-control" formControlName="EngravePosUp"/>
+      </td>
+    </tr>
+    <tr>
+      <td>EngravePosDown</td>
+      <td>
+        <input matInput class="form-control" formControlName="EngravePosDown"/>
+      </td>
+    </tr>
+    <tr>
+      <td>MoveSpeed</td>
+      <td>
+        <input matInput class="form-control" formControlName="MoveSpeed"/>
+      </td>
+    </tr>
+    <tr>
+      <td>EngraveDownSpeed</td>
+      <td>
+        <input matInput class="form-control" formControlName="EngraveDownSpeed"/>
+      </td>
+    </tr>
+  </table>
+
+</div>
+
+<div *ngIf="isLaser()" class="laser-container">
+
+  <h3>Laser</h3>
+
+  <table>
+    <tr>
+      <td width="20%">MoveSpeed</td>
+      <td>
+        <input matInput class="form-control" formControlName="MoveSpeed"/>
+      </td>
+    </tr>
+    <tr>
+      <td>LaserFirstOnCommand</td>
+      <td>
+        <input matInput class="form-control" formControlName="LaserFirstOnCommand"/>
+      </td>
+    </tr>
+    <tr>
+      <td>LaserOnCommand</td>
+      <td>
+        <input matInput class="form-control" formControlName="LaserOnCommand"/>
+      </td>
+    </tr>
+    <tr>
+      <td>LaserOffCommand</td>
+      <td>
+        <input matInput class="form-control" formControlName="LaserOffCommand"/>
+      </td>
+    </tr>
+    <tr>
+      <td>LaserLastOffCommand</td>
+      <td>
+        <input matInput class="form-control" formControlName="LaserLastOffCommand"/>
+      </td>
+    </tr>
+    <tr>
+      <td>LaserSize</td>
+      <td>
+        <input matInput class="form-control" formControlName="LaserSize"/>
+      </td>
+    </tr>
+    <tr>
+      <td>LaserAccDist</td>
+      <td>
+        <input matInput class="form-control" formControlName="LaserAccDist"/>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div *ngIf="isImageOrImageHole()" class="imageOrImageHole-container">
+
+  <h3>Image</h3>
+
+  <table *ngIf="isImageOrImageHole()">
+    <tr>
+      <td width="20%">AutoScale</td>
+      <td>
+        <mat-checkbox class="form-control" formControlName="AutoScale"></mat-checkbox>
+      </td>
+    </tr>
+    <tr>
+      <td>ImageWriteToFileName</td>
+      <td>
+        <input matInput class="form-control" formControlName="ImageWriteToFileName"/>
+      </td>
+    </tr>
+    <tr>
+      <td>GrayThreshold</td>
+      <td>
+        <input matInput class="form-control" formControlName="GrayThreshold"/>
+      </td>
+    </tr>
+    <tr>
+      <td>ImageDPIX</td>
+      <td>
+        <input matInput class="form-control" formControlName="ImageDPIX"/>
+      </td>
+    </tr>
+    <tr>
+      <td>ImageDPIY</td>
+      <td>
+        <input matInput class="form-control" formControlName="ImageDPIY"/>
+      </td>
+    </tr>
+    <tr>
+      <td>ImageInvert</td>
+      <td>
+        <input matInput class="form-control" formControlName="ImageInvert"/>
+      </td>
+    </tr>
+    <tr>
+      <td>Dither</td>
+      <td><input matInput class="form-control" formControlName="Dither"/>{{ DitherFilter[entry.Dither]}}</td>
+    </tr>
+    <tr>
+      <td>NewspaperDitherSize</td>
+      <td>
+        <input matInput class="form-control" formControlName="NewspaperDitherSize"/>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div *ngIf="isImageHole()" class="imageHole-container">
+
+  <h3>Hole</h3>
+
+  <table >
+    <tr>
+      <td width="20%">HoleType</td>
+      <td><input matInput class="form-control" formControlName="HoleType" />{{ EHoleType[entry.HoleType] }}</td>
+    </tr>
+    <tr>
+      <td>DotDistX</td>
+      <td><input matInput class="form-control" formControlName="DotDistX" /></td>
+    </tr>
+    <tr>
+      <td>DotDistY</td>
+      <td><input matInput class="form-control" formControlName="DotDistY" /></td>
+    </tr>
+    <tr>
+      <td>DotSizeX</td>
+      <td><input matInput class="form-control" formControlName="DotSizeX" /></td>
+    </tr>
+    <tr>
+      <td>DotSizeY</td>
+      <td><input matInput class="form-control" formControlName="DotSizeY" /></td>
+    </tr>
+    <tr>
+      <td>UseYShift</td>
+      <td><input matInput class="form-control" formControlName="HoleType" /></td>
+    </tr>
+    <tr>
+      <td>RotateHeart</td>
+      <td><mat-checkbox class="form-control" formControlName="RotateHeart"></mat-checkbox></td>
+    </tr>
+  </table>
+</div>
+
+<button type="submit" class="btn btn-default" [disabled]="!gCodeForm.valid">Save</button>
+
+</form>

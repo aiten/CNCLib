@@ -1,1 +1,62 @@
+.general-container {
+  display: flex;
+  flex-direction: column;
+}
 
+.general-container > * { width: 100%; }
+
+.HPGL-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.HPGL-container > * { width: 100%; }
+
+.autoScale-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.autoScale-container > * { width: 100%; }
+
+.scale-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.scale-container > * { width: 100%; }
+
+.laser-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.laser-container > * { width: 100%; }
+
+.engrave-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.engrave-container > * { width: 100%; }
+
+.smooth-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.smooth-container > * { width: 100%; }
+
+.imageOrImageHole-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.imageOrImageHole-container > * { width: 100%; }
+
+.imageHole-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.imageHole-container > * { width: 100%; }

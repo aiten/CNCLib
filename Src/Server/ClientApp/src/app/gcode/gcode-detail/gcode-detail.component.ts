@@ -17,12 +17,15 @@
 import { Component, OnInit } from '@angular/core';
 import { LoadOptions, EHoleType, ELoadType, PenType, SmoothTypeEnum, ConvertTypeEnum, DitherFilter } from
   "../../models/load-options";
+import { FormGroup, FormArray, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { CNCLibLoadOptionService } from '../../services/CNCLib-load-option.service';
 import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
 import { MessageBoxComponent } from "../../modal/message-box/message-box.component";
 import { MessageBoxData } from "../../modal/message-box-data";
+import { gcodeURL } from '../../app.global';
+
 import HPGL = ELoadType.HPGL;
 import ZMove = PenType.ZMove;
 import ImageHole = ELoadType.ImageHole;
@@ -38,14 +41,9 @@ export class GcodeDetailComponent implements OnInit {
   entry: LoadOptions;
   errorMessage: string = '';
   isLoading: boolean = true;
-
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private loadOptionService: CNCLibLoadOptionService,
-    private dialog: MatDialog
-  ) {
-  }
+  isLoaded: boolean = false;
+  gCodeForm: FormGroup;
+  keys: any[];
 
   ELoadType: typeof
     ELoadType = ELoadType;
@@ -65,6 +63,87 @@ export class GcodeDetailComponent implements OnInit {
   EHoleType: typeof
     EHoleType = EHoleType;
 
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private loadOptionService: CNCLibLoadOptionService,
+    private dialog: MatDialog,
+    private fb: FormBuilder
+  ) {
+
+    this.keys = Object.keys(ELoadType).filter(f => !isNaN(Number(f)));
+
+    this.gCodeForm = fb.group(
+      {
+        Id: [0, [Validators.required]],
+        SettingName: ['', [Validators.required, Validators.maxLength(64)]],
+        FileName: ['', [Validators.required, Validators.maxLength(512)]],
+        LoadType: [0],
+        StartupCommands: ['', [Validators.maxLength(512)]],
+        ShutdownCommands: ['', [Validators.maxLength(512)]],
+        SubstG82: [false, [Validators.required]],
+        AddLineNumbers: [false, [Validators.required]],
+
+        SwapXY: [false, [Validators.required]],
+        AutoScale: [false, [Validators.required]],
+
+        AutoScaleKeepRatio: [false, [Validators.required]],
+        AutoScaleCenter: [false, [Validators.required]],
+
+        AutoScaleSizeX: [0.0, [Validators.required]],
+        AutoScaleSizeY: [0.0, [Validators.required]],
+        AutoScaleBorderDistX: [0.0, [Validators.required]],
+        AutoScaleBorderDistY: [0.0, [Validators.required]],
+
+        EngravePosInParameter: [false, [Validators.required]],
+        EngravePosUp: [0.0, [Validators.required]],
+        EngravePosDown: [0.0, [Validators.required]],
+        MoveSpeed: [0.0, [Validators.required]],
+        EngraveDownSpeed: [0.0],
+
+        ScaleX: [0.0],
+        ScaleY: [0.0],
+        OfsX: [0.0],
+        OfsY: [0.0],
+
+        LaserFirstOnCommand: ['', [Validators.maxLength(512)]],
+        LaserOnCommand: ['', [Validators.maxLength(512)]],
+        LaserOffCommand: ['', [Validators.maxLength(512)]],
+        LaserLastOffCommand: ['', [Validators.maxLength(512)]],
+        LaserSize: [0.0],
+        LaserAccDist: [0.0],
+
+        SmoothMinAngle: [0.0],
+        SmoothMinLineLength: [0.0],
+        SmoothMaxError: [0.0],
+
+        ImageWriteToFileName: ['', [Validators.maxLength(512)]],
+        GrayThreshold: [0.0],
+        ImageDPIX: [0.0],
+        ImageDPIY: [0.0],
+        ImageInvert: [false, [Validators.required]],
+        Dither: [0],
+        NewspaperDitherSize: [0.0],
+
+        HoleType: [0.0],
+        UseYShift: [false, [Validators.required]],
+        DotDistX: [0.0],
+        DotDistY: [0.0],
+        DotSizeX: [0.0],
+        DotSizeY: [0.0],
+        RotateHeart: [0],
+
+
+      });
+
+    this.gCodeForm.valueChanges.subscribe((
+      value) => {
+      if (this.isLoaded)
+        Object.assign(this.entry,
+          value);
+    });
+  }
+
   newLoadOption() {
 
     const dialogRef = this.dialog.open(MessageBoxComponent,
@@ -79,7 +158,17 @@ export class GcodeDetailComponent implements OnInit {
 
   }
 
-  detailLoadOption(id: number) {
+  async savegCode(value: any): Promise<void> {
+    console.log(value);
+    Object.assign(this.entry, value);
+    await this.loadOptionService.updateLoadOption(this.entry);
+    console.log("saved");
+    window.location.reload();
+// this.router.navigate([gcodeURL, 'detail', this.entry.Id]);
+  }
+
+  detailLoadOption(id:
+    number) {
 
     const dialogRef = this.dialog.open(MessageBoxComponent,
       {
@@ -130,13 +219,16 @@ export class GcodeDetailComponent implements OnInit {
   }
 
   isEngrave() {
-    return this.isHPGL() && this.entry.PenMoveType == ZMove;
+    return this.isHPGL() && this.entry.PenMoveType == PenType.ZMove;
   }
 
   async ngOnInit() {
 
     let id = this.route.snapshot.paramMap.get('id');
     this.entry = await this.loadOptionService.getById(+id);
+    this.gCodeForm.patchValue(this.entry);
+    this.isLoaded = true;
+
     /*
         this.entry = this.route.paramMap.pipe(
           switchMap(async (params: ParamMap) =>
