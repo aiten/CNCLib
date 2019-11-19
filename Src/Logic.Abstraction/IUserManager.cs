@@ -20,10 +20,8 @@ using Framework.Logic.Abstraction;
 
 namespace CNCLib.Logic.Abstraction
 {
-    public interface IUserManager : ICRUDManager<DTO.User, int>
+    public interface IUserManager : ICRUDManager<DTO.User, int>, IAuthenticationManager
     {
         Task<DTO.User> GetByName(string username);
-
-        Task<bool> IsValidUser(string username, string password);
     }
 }

@@ -53,13 +53,21 @@ namespace CNCLib.Logic.Manager
             return MapToDto(await _repository.GetByName(username));
         }
 
-        public async Task<bool> IsValidUser(string userName, string password)
+        public async Task<int?> Authenticate(string userName, string password)
         {
             var userEntity = await _repository.GetByName(userName);
 
-            return userEntity != null &&
-                   (password == userEntity.Password ||
-                    (string.IsNullOrEmpty(password) && string.IsNullOrEmpty(userEntity.Password)));
+            if (userEntity != null && ComparePassword(password, userEntity.Password))
+            {
+                return userEntity.UserId;
+            }
+
+            return null;
+        }
+
+        private bool ComparePassword(string pwd1, string pwd2)
+        {
+            return pwd1 == pwd2 || (string.IsNullOrEmpty(pwd1) && string.IsNullOrEmpty(pwd2));
         }
     }
 }

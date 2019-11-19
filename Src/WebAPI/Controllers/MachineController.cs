@@ -24,11 +24,14 @@ using CNCLib.Shared;
 
 using Framework.WebAPI.Controller;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CNCLib.WebAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
+
     public class MachineController : Controller
     {
         private readonly IMachineManager    _manager;

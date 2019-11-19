@@ -65,7 +65,7 @@ namespace CNCLib.WebAPI.Controllers
 
             if (!string.IsNullOrEmpty(userName))
             {
-                isValidUser = await _manager.IsValidUser(userName, password);
+                isValidUser = (await _manager.Authenticate(userName, password)).HasValue;
             }
 
             return Ok(isValidUser ? "true" : "false");
