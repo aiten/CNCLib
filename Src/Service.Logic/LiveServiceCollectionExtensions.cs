@@ -14,25 +14,18 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using AutoMapper;
+using Framework.Dependency;
 
-using CNCLib.Repository.Abstraction.Entities;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace CNCLib.Logic
+namespace CNCLib.Service.Logic
 {
-    public sealed class LogicAutoMapperProfile : Profile
+    public static class LiveServiceCollectionExtensions
     {
-        public LogicAutoMapperProfile()
+        public static IServiceCollection AddServiceAsLogic(this IServiceCollection services)
         {
-            CreateMap<Machine, Abstraction.DTO.Machine>().ReverseMap();
-            CreateMap<MachineInitCommand, Abstraction.DTO.MachineInitCommand>().ReverseMap();
-            CreateMap<MachineCommand, Abstraction.DTO.MachineCommand>().ReverseMap();
-
-            CreateMap<Item, Abstraction.DTO.Item>().ReverseMap();
-            CreateMap<ItemProperty, Abstraction.DTO.ItemProperty>().ReverseMap();
-
-            CreateMap<User, Abstraction.DTO.User>().ReverseMap();
-            CreateMap<UserFile, Abstraction.DTO.UserFile>().ReverseMap();
+            services.AddAssembylIncludingInternals(ServiceLifetime.Transient, typeof(MachineService).Assembly);
+            return services;
         }
     }
 }

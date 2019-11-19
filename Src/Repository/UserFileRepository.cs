@@ -14,6 +14,8 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,7 +30,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository
 {
-    public class UserFileRepository : CRUDRepository<CNCLibContext, UserFile, UserFileKey>, IUserFileRepository
+    public class UserFileRepository : CRUDRepository<CNCLibContext, UserFile, Tuple<int, string>>, IUserFileRepository
     {
         #region ctr/default/overrides
 
@@ -36,17 +38,17 @@ namespace CNCLib.Repository
         {
         }
 
-        protected override FilterBuilder<UserFile, UserFileKey> FilterBuilder =>
-            new FilterBuilder<UserFile, UserFileKey>()
+        protected override FilterBuilder<UserFile, Tuple<int, string>> FilterBuilder =>
+            new FilterBuilder<UserFile, Tuple<int, string>>()
             {
-                PrimaryWhere = (query, key) => query.Where(item => item.UserId == key.UserId && item.FileName == key.FileName),
+                PrimaryWhere = (query, key) => query.Where(item => item.UserId == key.Item1 && item.FileName == key.Item2),
                 PrimaryWhereIn = (query, keys) =>
                 {
                     var predicate = PredicateBuilder.New<UserFile>();
 
                     foreach (var key in keys)
                     {
-                        predicate = predicate.Or(c => c.UserId == key.UserId && c.FileName == key.FileName);
+                        predicate = predicate.Or(c => c.UserId == key.Item1 && c.FileName == key.Item2);
                     }
 
                     return query.Where(predicate);
@@ -61,6 +63,11 @@ namespace CNCLib.Repository
         #endregion
 
         #region extra Queries
+
+        public async Task<IList<string>> GetFileNames()
+        {
+            return await Query.Select(f => f.FileName).ToListAsync();
+        }
 
         #endregion
     }

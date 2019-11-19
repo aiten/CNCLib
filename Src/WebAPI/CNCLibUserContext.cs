@@ -29,6 +29,7 @@ namespace CNCLib.WebAPI
         public void InitFromController(Controller controller)
         {
             UserName = "WebAPI";
+            UserId   = 1;
         }
     }
 }

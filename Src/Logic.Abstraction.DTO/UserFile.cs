@@ -14,18 +14,14 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using Framework.Dependency;
-
-using Microsoft.Extensions.DependencyInjection;
-
-namespace CNCLib.Service.Logic
+namespace CNCLib.Logic.Abstraction.DTO
 {
-    public static class LiveServicCollectionExtensions
+    public class UserFile
     {
-        public static IServiceCollection AddServiceAsLogic(this IServiceCollection services)
-        {
-            services.AddAssembylIncludingInternals(ServiceLifetime.Transient, typeof(MachineService).Assembly);
-            return services;
-        }
+        public int UserId { get; set; }
+
+        public string FileName { get; set; }
+
+        public byte[] Content { get; set; }
     }
 }

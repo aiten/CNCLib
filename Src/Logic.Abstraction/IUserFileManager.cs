@@ -14,25 +14,16 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using AutoMapper;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-using CNCLib.Repository.Abstraction.Entities;
+using Framework.Logic.Abstraction;
 
-namespace CNCLib.Logic
+namespace CNCLib.Logic.Abstraction
 {
-    public sealed class LogicAutoMapperProfile : Profile
+    public interface IUserFileManager : ICRUDManager<DTO.UserFile, Tuple<int, string>>
     {
-        public LogicAutoMapperProfile()
-        {
-            CreateMap<Machine, Abstraction.DTO.Machine>().ReverseMap();
-            CreateMap<MachineInitCommand, Abstraction.DTO.MachineInitCommand>().ReverseMap();
-            CreateMap<MachineCommand, Abstraction.DTO.MachineCommand>().ReverseMap();
-
-            CreateMap<Item, Abstraction.DTO.Item>().ReverseMap();
-            CreateMap<ItemProperty, Abstraction.DTO.ItemProperty>().ReverseMap();
-
-            CreateMap<User, Abstraction.DTO.User>().ReverseMap();
-            CreateMap<UserFile, Abstraction.DTO.UserFile>().ReverseMap();
-        }
+        Task<IEnumerable<string>> GetFileNames();
     }
 }
