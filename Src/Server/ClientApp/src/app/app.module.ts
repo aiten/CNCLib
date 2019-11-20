@@ -17,7 +17,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import 'hammerjs';
@@ -26,6 +26,7 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { MaterialModule } from './material.module';
+import { LoginComponent } from "./login/login.component"
 
 import { EepromConfigComponent } from "./eeprom-config/eeprom-config.component";
 
@@ -48,6 +49,8 @@ import { MessageBoxComponent } from './modal/message-box/message-box.component';
 
 import { gcodeRoutes, gcodeRoutingComponents } from './gcode/gcode-routing';
 
+import { BasicAuthInterceptor, ErrorInterceptor } from './_helpers';
+
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
@@ -65,6 +68,7 @@ NgModule({
     AppComponent,
     NavMenuComponent,
     HomeComponent,
+    LoginComponent,
     MessageBoxComponent,
     ...machineRoutingComponents,
     ...eepromConfigRoutingComponents,
@@ -91,6 +95,8 @@ NgModule({
     { provide: CNCLibEepromConfigService, useClass: LocalCNCLibEepromConfigService },
     { provide: CNCLibMachineService, useClass: LocalCNCLibMachineService },
     { provide: CNCLibLoadOptionService, useClass: LocalCNCLibLoadOptionService },
+    { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
   entryComponents: [MessageBoxComponent]
