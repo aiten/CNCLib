@@ -69,7 +69,7 @@ namespace CNCLib.WpfClient.ViewModels
             {
                 var IsValidUser = await scope.Instance.IsValidUser(UserName, Password);
 
-                if (IsValidUser)
+                if (IsValidUser.HasValue)
                 {
                     DialogOKAction();
                     return true;

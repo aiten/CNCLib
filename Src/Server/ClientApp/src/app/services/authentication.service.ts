@@ -1,6 +1,6 @@
 import { Injectable, Inject, Pipe } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { User } from "../models/user";
 
 
 @Injectable({ providedIn: 'root' })
@@ -28,12 +28,21 @@ export class AuthenticationService {
   login(username: string, password: string): Promise<void> {
 
     console.log('Authentication:login');
+    const params = new HttpParams()
+      .set('userName', username)
+      .set('password', password);
+
     const authentication$ = this.http
-      .get<any>(`${this.baseUrl}api/user/isvaliduser?userName=${username}&password=${password}`)
+      .get<any>(`${this.baseUrl}api/user/isvaliduser`, { params })
       .toPromise()
       .then((response: Response) => {
         console.log('Authentication:login OK');
-        localStorage.setItem('currentUser', JSON.stringify(window.btoa(username + ':' + password)));
+        var user = new User();
+        user.id = 1;
+        user.username = username;
+        user.password = password;
+        user.authData = window.btoa(username + ':' + password);
+        localStorage.setItem('currentUser', JSON.stringify(user));
         console.log('Authentication:login OK');
       })
       .catch(this.handleErrorPromise);

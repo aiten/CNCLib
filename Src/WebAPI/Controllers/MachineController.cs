@@ -46,7 +46,6 @@ namespace CNCLib.WebAPI.Controllers
 
         #region default REST
 
-        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Machine>>> Get()
         {

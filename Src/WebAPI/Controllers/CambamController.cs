@@ -27,8 +27,11 @@ using Microsoft.AspNetCore.Mvc;
 using CNCLib.Shared;
 using CNCLib.WebAPI.Models;
 
+using Microsoft.AspNetCore.Authorization;
+
 namespace CNCLib.WebAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class CambamController : Controller
     {
