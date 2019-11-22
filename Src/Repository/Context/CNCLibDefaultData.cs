@@ -73,6 +73,12 @@ namespace CNCLib.Repository.Context
                 c.User   = c.UserId.HasValue ? _userMap[c.UserId.Value] : null;
                 c.UserId = null;
             });
+
+            _userFileMap = ImportCsv<Tuple<int, string>, UserFile>("UserFile.csv", ip => new Tuple<int, string>(ip.UserId, ip.FileName), (ip, key) =>
+            {
+                ip.User   = _userMap[ip.UserId];
+                ip.UserId = 0;
+            });
         }
     }
 }

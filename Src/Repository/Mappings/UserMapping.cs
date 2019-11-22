@@ -29,11 +29,11 @@ namespace CNCLib.Repository.Mappings
 
             entity.HasKey(m => m.UserId);
 
-            entity.HasIndex(e => e.UserName).IsUnique();
+            entity.HasIndex(e => e.Name).IsUnique();
 
-            entity.Property(m => m.UserName).IsRequired().IsUnicode().HasMaxLength(128);
+            entity.Property(m => m.Name).IsRequired().IsUnicode().HasMaxLength(128);
 
-            entity.Property(m => m.UserPassword).IsUnicode().HasMaxLength(255);
+            entity.Property(m => m.Password).IsUnicode().HasMaxLength(255);
         }
     }
 }

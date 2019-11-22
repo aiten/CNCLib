@@ -14,6 +14,8 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
+using System.Security.Claims;
+
 using CNCLib.Shared;
 
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +30,12 @@ namespace CNCLib.WebAPI
 
         public void InitFromController(Controller controller)
         {
-            UserName = "WebAPI";
+            UserName = controller.User.Identity.Name;
+            string userIdString = controller.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!string.IsNullOrEmpty(userIdString))
+            {
+                UserId = int.Parse(userIdString);
+            }
         }
     }
 }

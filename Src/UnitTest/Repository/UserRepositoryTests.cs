@@ -65,10 +65,10 @@ namespace CNCLib.UnitTest.Repository
         [Fact]
         public async Task GetAllTest()
         {
-            var entities = (await CreateTestContext().GetAll()).OrderBy(u => u.UserName);
+            var entities = (await CreateTestContext().GetAll()).OrderBy(u => u.Name);
             entities.Count().Should().BeGreaterThan(1);
-            entities.ElementAt(0).UserName.Should().Be("Edith");
-            entities.ElementAt(1).UserName.Should().Be("Herbert");
+            entities.ElementAt(0).Name.Should().Be("Edith");
+            entities.ElementAt(1).Name.Should().Be("Herbert");
         }
 
         [Fact]
@@ -94,13 +94,13 @@ namespace CNCLib.UnitTest.Repository
         [Fact]
         public async Task AddUpdateDeleteTest()
         {
-            await CreateTestContext().AddUpdateDelete(() => new User() { UserName = "Hallo", UserPassword = "1234" }, (entity) => entity.UserPassword = "3456");
+            await CreateTestContext().AddUpdateDelete(() => new User() { Name = "Hallo", Password = "1234" }, (entity) => entity.Password = "3456");
         }
 
         [Fact]
         public async Task AddRollbackTest()
         {
-            await CreateTestContext().AddRollBack(() => new User() { UserName = "Hallo", UserPassword = "1234" });
+            await CreateTestContext().AddRollBack(() => new User() { Name = "Hallo", Password = "1234" });
         }
 
         #endregion
@@ -115,7 +115,7 @@ namespace CNCLib.UnitTest.Repository
                 var users = await ctx.Repository.Get(2);
                 users.UserId.Should().Be(2);
 
-                var usersByName = await ctx.Repository.GetByName(users.UserName);
+                var usersByName = await ctx.Repository.GetByName(users.Name);
                 usersByName.UserId.Should().Be(users.UserId);
             }
         }
@@ -137,12 +137,12 @@ namespace CNCLib.UnitTest.Repository
 
             using (var ctx = CreateTestContext().CreateTestDbContext())
             {
-                existingUserName = (await ctx.Repository.Get(2)).UserName;
+                existingUserName = (await ctx.Repository.Get(2)).Name;
             }
 
             using (var ctx = CreateTestContext().CreateTestDbContext())
             {
-                var entityToAdd = new User() { UserName = existingUserName };
+                var entityToAdd = new User() { Name = existingUserName };
                 ctx.Repository.Add(entityToAdd);
 
                 //[SkippableFact(typeof(DbUpdateException))]

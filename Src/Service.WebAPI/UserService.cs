@@ -38,19 +38,20 @@ namespace CNCLib.Service.WebAPI
         public async Task<User> GetByName(string username)
         {
             return (await ReadList<User>(
-                CreatePathBuilder()
-                    .AddQuery(new UriQueryBuilder().Add("username", username)))).FirstOrDefault();
+                    CreatePathBuilder()
+                        .AddQuery(new UriQueryBuilder().Add("username", username))))
+                .FirstOrDefault();
         }
 
-        public async Task<bool> IsValidUser(string username, string password)
+        public async Task<int?> IsValidUser(string username, string password)
         {
-            var isValidUserString = await ReadString(
+            var isValidUser = await Read<int?>(
                 CreatePathBuilder()
                     .AddPath("isValidUser")
                     .AddQuery(new UriQueryBuilder()
                         .Add("username", username)
                         .Add("password", password)));
-            return isValidUserString.Trim('"') == @"true";
+            return isValidUser;
         }
     }
 }

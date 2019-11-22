@@ -27,8 +27,11 @@ using Microsoft.AspNetCore.Mvc;
 using CNCLib.Shared;
 using CNCLib.WebAPI.Models;
 
+using Microsoft.AspNetCore.Authorization;
+
 namespace CNCLib.WebAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class CambamController : Controller
     {
@@ -36,7 +39,6 @@ namespace CNCLib.WebAPI.Controllers
         {
             _loadOptionsManager = loadOptionsManager ?? throw new ArgumentNullException(nameof(loadOptionsManager));
             _userContext        = userContext ?? throw new ArgumentNullException(nameof(userContext));
-            ((CNCLibUserContext)_userContext).InitFromController(this);
         }
 
         readonly ILoadOptionsManager _loadOptionsManager;

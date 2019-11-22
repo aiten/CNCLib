@@ -22,6 +22,7 @@ using AutoMapper;
 
 using CNCLib.Logic;
 using CNCLib.Logic.Client;
+using CNCLib.Logic.Manager;
 using CNCLib.Repository;
 using CNCLib.Repository.Context;
 using CNCLib.Repository.SqlServer;
@@ -29,13 +30,16 @@ using CNCLib.Service.Logic;
 using CNCLib.Shared;
 using CNCLib.WebAPI;
 using CNCLib.WebAPI.Controllers;
+using CNCLib.WebAPI.Filter;
 using CNCLib.WebAPI.Hubs;
 
 using Framework.Dependency;
 using Framework.Logic;
+using Framework.Logic.Abstraction;
 using Framework.Tools;
 using Framework.WebAPI.Filter;
 
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -51,10 +55,14 @@ using Newtonsoft.Json.Serialization;
 
 using NLog;
 
+using Swashbuckle.AspNetCore.Filters;
+
 namespace CNCLib.Server
 {
     public class Startup
     {
+        private const string AuthenticationScheme = "BasicAuthentication";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -85,6 +93,7 @@ namespace CNCLib.Server
 
             services.AddSignalR(hu => hu.EnableDetailedErrors = true);
 
+            services.AddTransient<SetUserContextFilter>();
             services.AddTransient<UnhandledExceptionFilter>();
             services.AddTransient<MethodCallLogFilter>();
             services.AddMvc(
@@ -93,6 +102,7 @@ namespace CNCLib.Server
                         options.EnableEndpointRouting = false;
                         options.Filters.AddService<UnhandledExceptionFilter>();
                         options.Filters.AddService<MethodCallLogFilter>();
+                        options.Filters.AddService<SetUserContextFilter>();
                     })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddNewtonsoftJson(
@@ -100,10 +110,41 @@ namespace CNCLib.Server
                         options.SerializerSettings.ContractResolver = new DefaultContractResolver())
                 .AddApplicationPart(controllerAssembly);
 
+            services.AddAuthentication(AuthenticationScheme)
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>(AuthenticationScheme, null);
+
+            services.AddScoped<IAuthenticationManager, UserManager>();
+
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
 
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "CNCLib API", Version = "v1" }); });
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CNCLib API", Version = "v1" });
+                c.AddSecurityDefinition("basic", new OpenApiSecurityScheme
+                {
+                    Name        = "Authorization",
+                    Type        = SecuritySchemeType.Http,
+                    Scheme      = "basic",
+                    In          = ParameterLocation.Header,
+                    Description = "Basic Authorization header using the Bearer scheme."
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id   = "basic"
+                            }
+                        },
+                        new string[] {}
+                    }
+                });
+                c.OperationFilter<SecurityRequirementsOperationFilter>(true,"basic");
+            });
 
             GlobalServiceCollection.Instance = services;
             services
@@ -139,6 +180,9 @@ namespace CNCLib.Server
             app.UseHttpsRedirection();
 
             app.UseCors("AllowAll");
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             void callback(object x)
             {

@@ -22,11 +22,12 @@ namespace CNCLib.Repository.Abstraction.Entities
     {
         public int ItemId { get; set; }
 
-        public         int? UserId { get; set; }
-        public virtual User User   { get; set; }
+        public int? UserId { get; set; }
+        public User User   { get; set; }
 
-        public         string                    Name           { get; set; }
-        public         string                    ClassName      { get; set; }
-        public virtual ICollection<ItemProperty> ItemProperties { get; set; }
+        public string Name      { get; set; }
+        public string ClassName { get; set; }
+
+        public ICollection<ItemProperty> ItemProperties { get; set; }
     }
 }

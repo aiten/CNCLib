@@ -45,6 +45,25 @@ export class HomeComponent implements OnInit {
     this.currentCount++;
   }
 
+  public username() {
+    let user = this.getCurrentUser();
+    return user.username;
+  }
+
+  public isUserLoggedIn() {
+    return this.getCurrentUser() != null;
+  }
+
+  public logout() {
+    localStorage.removeItem('currentUser');
+  }
+
+  private getCurrentUser() {
+
+    let currentuser = JSON.parse(localStorage.getItem('currentUser'));
+    return currentuser;
+  }
+
   async ngOnInit(): Promise<void> {
     this.appVersionInfo = await this.cncLibInfoService.getInfo();
     this.appVersion = this.appVersionInfo.Version;

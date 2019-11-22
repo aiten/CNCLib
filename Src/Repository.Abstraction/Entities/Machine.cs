@@ -52,10 +52,10 @@ namespace CNCLib.Repository.Abstraction.Entities
         public bool    Rotate         { get; set; }
         public int     CommandSyntax  { get; set; }
 
-        public         int? UserId { get; set; }
-        public virtual User User   { get; set; }
+        public int? UserId { get; set; }
+        public User User   { get; set; }
 
-        public virtual ICollection<MachineCommand>     MachineCommands     { get; set; }
-        public virtual ICollection<MachineInitCommand> MachineInitCommands { get; set; }
+        public ICollection<MachineCommand>     MachineCommands     { get; set; }
+        public ICollection<MachineInitCommand> MachineInitCommands { get; set; }
     }
 }

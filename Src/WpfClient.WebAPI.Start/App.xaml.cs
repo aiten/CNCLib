@@ -17,6 +17,7 @@
 using System;
 using System.Globalization;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
@@ -52,7 +53,8 @@ namespace CNCLib.WpfClient.WebAPI.Start
             _logger.Info(@"Starting ...");
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
-            ICNCLibUserContext userContext = new CNCLibUserContext();
+            var userContextRW = new CNCLibUserContext();
+            ICNCLibUserContext userContext = userContextRW;
 
             GlobalServiceCollection.Instance = new ServiceCollection();
             GlobalServiceCollection.Instance
@@ -60,8 +62,14 @@ namespace CNCLib.WpfClient.WebAPI.Start
 //                .AddFrameworkLogging()
                 .AddLogicClient()
                 .AddSerialCommunication()
-                .AddServiceAsWebAPI(httpClient => HttpClientHelper.PrepareHttpClient(httpClient, @"https://cnclibwebapi.azurewebsites.net"))
-              //.AddServiceAsWebAPI(httpClient => HttpClientHelper.PrepareHttpClient(httpClient, @"http://localhost:55149"))
+                .AddServiceAsWebAPI(httpClient =>
+                {
+                    HttpClientHelper.PrepareHttpClient(httpClient, @"https://cnclibwebapi.azurewebsites.net");
+                    httpClient.DefaultRequestHeaders.Authorization =
+                        new AuthenticationHeaderValue(
+                            "Basic", Base64Helper.StringToBase64($"{userContextRW.UserName}:{userContextRW.Password}"));
+                })
+                //.AddServiceAsWebAPI(httpClient => HttpClientHelper.PrepareHttpClient(httpClient, @"http://localhost:55149"))
                 .AddCNCLibWpf()
                 .AddMapper(
                     new MapperConfiguration(
@@ -79,6 +87,8 @@ namespace CNCLib.WpfClient.WebAPI.Start
                 {
                     try
                     {
+                        await userContextRW.InitUserContext(userContextRW.UserName);
+
                         using (var controller = GlobalServiceCollection.Instance.Resolve<IMachineService>())
                         {
                             var m = await controller.Get(1000000);

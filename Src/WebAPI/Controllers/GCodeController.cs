@@ -26,6 +26,8 @@ using Microsoft.AspNetCore.Mvc;
 using CNCLib.Shared;
 using CNCLib.WebAPI.Models;
 
+using Microsoft.AspNetCore.Authorization;
+
 namespace CNCLib.WebAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -38,7 +40,6 @@ namespace CNCLib.WebAPI.Controllers
         {
             _loadOptionsManager = loadOptionsManager ?? throw new ArgumentNullException(nameof(loadOptionsManager));
             _userContext        = userContext ?? throw new ArgumentNullException(nameof(userContext));
-            ((CNCLibUserContext)_userContext).InitFromController(this);
         }
 
         [HttpPost]

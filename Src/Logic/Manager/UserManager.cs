@@ -15,6 +15,7 @@
 */
 
 using System;
+using System.Buffers.Text;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -25,6 +26,7 @@ using CNCLib.Repository.Abstraction;
 
 using Framework.Logic;
 using Framework.Repository.Abstraction;
+using Framework.Tools;
 
 using UserEntity = CNCLib.Repository.Abstraction.Entities.User;
 
@@ -48,18 +50,45 @@ namespace CNCLib.Logic.Manager
             return entity.UserId;
         }
 
+        public static string DecodePassword(string encodedPassword)
+        {
+            return Base64Helper.StringFromBase64(encodedPassword);
+        }
+
+        public static string EncodePassword(string password)
+        {
+            return Base64Helper.StringToBase64(password);
+        }
+
+        protected override void AddEntity(UserEntity entity)
+        {
+            base.AddEntity(entity);
+            if (string.IsNullOrEmpty(entity.Password))
+            {
+                entity.Password = EncodePassword(entity.Name);
+            }
+        }
+
         public async Task<User> GetByName(string username)
         {
             return MapToDto(await _repository.GetByName(username));
         }
 
-        public async Task<bool> IsValidUser(string userName, string password)
+        public async Task<int?> Authenticate(string userName, string password)
         {
             var userEntity = await _repository.GetByName(userName);
 
-            return userEntity != null &&
-                   (password == userEntity.UserPassword ||
-                    (string.IsNullOrEmpty(password) && string.IsNullOrEmpty(userEntity.UserPassword)));
+            if (userEntity != null && ComparePassword(password, DecodePassword(userEntity.Password)))
+            {
+                return userEntity.UserId;
+            }
+
+            return null;
+        }
+
+        private bool ComparePassword(string pwd1, string pwd2)
+        {
+            return pwd1 == pwd2 || (string.IsNullOrEmpty(pwd1) && string.IsNullOrEmpty(pwd2));
         }
     }
 }

@@ -62,6 +62,7 @@ namespace CNCLib.Repository.Context
             // User -------------------------------------
 
             modelBuilder.Entity<User>().Map();
+            modelBuilder.Entity<UserFile>().Map();
 
             // -------------------------------------
 

@@ -15,6 +15,7 @@
 */
 
 using System;
+using System.Net;
 using System.Net.Http;
 
 using CNCLib.Service.Abstraction;
@@ -30,8 +31,6 @@ namespace CNCLib.Service.WebAPI
     {
         public static IServiceCollection AddServiceAsWebAPI(this IServiceCollection services, Action<HttpClient> configureHttpClient)
         {
-//            services.AddAssembylIncludingInternals(ServiceLifetime.Transient, typeof(MachineService).Assembly);
-
             services.AddHttpClient<IMachineService, MachineService>(configureHttpClient).AddConfigureClientBuilder();
             services.AddHttpClient<IEepromConfigurationService, EepromConfigurationService>(configureHttpClient).AddConfigureClientBuilder();
             services.AddHttpClient<IItemService, ItemService>(configureHttpClient).AddConfigureClientBuilder();

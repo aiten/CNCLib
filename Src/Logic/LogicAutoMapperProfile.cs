@@ -32,6 +32,7 @@ namespace CNCLib.Logic
             CreateMap<ItemProperty, Abstraction.DTO.ItemProperty>().ReverseMap();
 
             CreateMap<User, Abstraction.DTO.User>().ReverseMap();
+            CreateMap<UserFile, Abstraction.DTO.UserFile>().ReverseMap();
         }
     }
 }

@@ -24,6 +24,7 @@ using CNCLib.Shared;
 
 using Framework.WebAPI.Controller;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CNCLib.WebAPI.Controllers
@@ -38,7 +39,6 @@ namespace CNCLib.WebAPI.Controllers
         {
             _manager     = manager ?? throw new ArgumentNullException(nameof(manager));
             _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
-            ((CNCLibUserContext)_userContext).InitFromController(this);
         }
 
         [HttpGet]
@@ -49,7 +49,7 @@ namespace CNCLib.WebAPI.Controllers
                 var m = await _manager.GetByName(userName);
                 if (m == null)
                 {
-                    return NotFound();
+                    return Ok(new List<User>());
                 }
 
                 return Ok(new List<User>() { m });
@@ -58,17 +58,24 @@ namespace CNCLib.WebAPI.Controllers
             return await this.GetAll(_manager);
         }
 
+        [AllowAnonymous]
         [HttpGet("isValidUser")]
-        public async Task<ActionResult<string>> IsValidUser(string userName, string password)
+        public async Task<ActionResult<int?>> IsValidUser(string userName, string password)
         {
-            bool isValidUser = false;
+            int? userId = null;
 
             if (!string.IsNullOrEmpty(userName))
             {
-                isValidUser = await _manager.IsValidUser(userName, password);
+                userId = (await _manager.Authenticate(userName, password));
             }
 
-            return Ok(isValidUser ? "true" : "false");
+            return Ok(userId);
+        }
+
+        [HttpGet("currentUser")]
+        public async Task<ActionResult<string>> CurrentUser()
+        {
+            return Ok(await Task.FromResult(_userContext.UserName));
         }
 
         #region default REST

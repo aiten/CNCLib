@@ -15,6 +15,7 @@
 */
 
 using System;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows;
@@ -36,7 +37,6 @@ using Framework.Dependency;
 using Framework.Logic;
 using Framework.Tools;
 
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;
 
 using NLog;
