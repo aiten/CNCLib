@@ -38,7 +38,6 @@ namespace CNCLib.WebAPI.Controllers
         {
             _eepromConfigurationManager = eepromConfigurationManager ?? throw new ArgumentNullException(nameof(eepromConfigurationManager));
             _userContext                = userContext ?? throw new ArgumentNullException(nameof(userContext));
-            ((CNCLibUserContext)_userContext).InitFromController(this);
         }
 
         [HttpGet]

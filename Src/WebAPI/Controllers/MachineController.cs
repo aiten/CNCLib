@@ -41,7 +41,6 @@ namespace CNCLib.WebAPI.Controllers
         {
             _manager     = manager ?? throw new ArgumentNullException(nameof(manager));
             _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
-            ((CNCLibUserContext)_userContext).InitFromController(this);
         }
 
         #region default REST

@@ -39,7 +39,6 @@ namespace CNCLib.WebAPI.Controllers
         {
             _manager     = manager ?? throw new ArgumentNullException(nameof(manager));
             _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
-            ((CNCLibUserContext)_userContext).InitFromController(this);
         }
 
         [HttpGet]
@@ -50,7 +49,7 @@ namespace CNCLib.WebAPI.Controllers
                 var m = await _manager.GetByName(userName);
                 if (m == null)
                 {
-                    return NotFound();
+                    return Ok(new List<User>());
                 }
 
                 return Ok(new List<User>() { m });
@@ -71,6 +70,12 @@ namespace CNCLib.WebAPI.Controllers
             }
 
             return Ok(userId);
+        }
+
+        [HttpGet("currentUser")]
+        public async Task<ActionResult<string>> CurrentUser()
+        {
+            return Ok(await Task.FromResult(_userContext.UserName));
         }
 
         #region default REST

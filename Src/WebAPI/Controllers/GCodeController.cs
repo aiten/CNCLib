@@ -40,7 +40,6 @@ namespace CNCLib.WebAPI.Controllers
         {
             _loadOptionsManager = loadOptionsManager ?? throw new ArgumentNullException(nameof(loadOptionsManager));
             _userContext        = userContext ?? throw new ArgumentNullException(nameof(userContext));
-            ((CNCLibUserContext)_userContext).InitFromController(this);
         }
 
         [HttpPost]

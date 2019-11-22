@@ -30,6 +30,7 @@ using CNCLib.Service.Logic;
 using CNCLib.Shared;
 using CNCLib.WebAPI;
 using CNCLib.WebAPI.Controllers;
+using CNCLib.WebAPI.Filter;
 using CNCLib.WebAPI.Hubs;
 
 using Framework.Dependency;
@@ -92,6 +93,7 @@ namespace CNCLib.Server
 
             services.AddSignalR(hu => hu.EnableDetailedErrors = true);
 
+            services.AddTransient<SetUserContextFilter>();
             services.AddTransient<UnhandledExceptionFilter>();
             services.AddTransient<MethodCallLogFilter>();
             services.AddMvc(
@@ -100,6 +102,7 @@ namespace CNCLib.Server
                         options.EnableEndpointRouting = false;
                         options.Filters.AddService<UnhandledExceptionFilter>();
                         options.Filters.AddService<MethodCallLogFilter>();
+                        options.Filters.AddService<SetUserContextFilter>();
                     })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddNewtonsoftJson(

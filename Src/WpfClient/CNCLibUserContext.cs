@@ -22,6 +22,7 @@ using CNCLib.Service.Abstraction;
 using CNCLib.Shared;
 
 using Framework.Dependency;
+using Framework.Tools;
 
 namespace CNCLib.WpfClient
 {
@@ -29,11 +30,16 @@ namespace CNCLib.WpfClient
     {
         public CNCLibUserContext()
         {
-            //string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
-            UserName = Environment.UserName;
+            string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+            UserName          = userName; // Environment.UserName;
+            EncriptedPassword = Base64Helper.StringToBase64(UserName);
         }
 
         public string UserName { get; private set; }
+
+        public string EncriptedPassword { get; private set; }
+
+        public string Password => Base64Helper.StringFromBase64(EncriptedPassword);
 
         public int? UserId { get; private set; }
 
@@ -57,7 +63,8 @@ namespace CNCLib.WpfClient
                         user.UserId = await userService.Add(user);
                     }
 
-                    UserId = user.UserId;
+                    UserId            = user.UserId;
+                    EncriptedPassword = Base64Helper.StringToBase64(UserName);
                 }
             }
             catch (Exception exception)
