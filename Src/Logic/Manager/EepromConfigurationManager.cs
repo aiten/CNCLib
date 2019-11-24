@@ -37,7 +37,8 @@ namespace CNCLib.Logic.Manager
             result.DistancePerRotationInMm = param.Teeth * param.ToothSizeInMm;
             if (Math.Abs(result.DistancePerRotationInMm) > double.Epsilon)
             {
-                result.StepsPerMm = result.StepsPerRotation / result.DistancePerRotationInMm;
+                result.StepsPerMm          = result.StepsPerRotation / result.DistancePerRotationInMm;
+                result.DistancePerStepInMm = result.DistancePerRotationInMm / result.StepsPerRotation;
             }
 
             result.EstimatedMaxStepRate     = result.StepsPerRotation * param.EstimatedRotationSpeed;
@@ -45,14 +46,16 @@ namespace CNCLib.Logic.Manager
             result.EstimatedMaxSpeedInMmMin = result.EstimatedMaxSpeedInMmSec * 60.0;
             if (Math.Abs(param.TimeToAcc) > double.Epsilon)
             {
-                result.EstimatedAccelerationInMmSec2 = result.EstimatedMaxSpeedInMmSec / param.TimeToAcc;
-                result.EstimatedAcc                  = Math.Sqrt(result.EstimatedMaxStepRate / param.TimeToAcc) * acc_corr;
+                result.EstimatedAccelerationInMmSec2           = result.EstimatedMaxSpeedInMmSec / param.TimeToAcc;
+                result.EstimatedAcc                            = Math.Sqrt(result.EstimatedMaxStepRate / param.TimeToAcc) * acc_corr;
+                result.EstimatedAccelerationDistToMaxSpeedInMm = result.EstimatedAccelerationInMmSec2 * param.TimeToAcc * param.TimeToAcc;
             }
 
             if (Math.Abs(param.TimeToDec) > double.Epsilon)
             {
-                result.EstimatedDecelerationInMmSec2 = result.EstimatedMaxSpeedInMmSec / param.TimeToDec;
-                result.EstimatedDec                  = Math.Sqrt(result.EstimatedMaxStepRate / param.TimeToDec) * acc_corr;
+                result.EstimatedDecelerationInMmSec2             = result.EstimatedMaxSpeedInMmSec / param.TimeToDec;
+                result.EstimatedDec                              = Math.Sqrt(result.EstimatedMaxStepRate / param.TimeToDec) * acc_corr;
+                result.EstimatedDecelerationDistFromMaxSpeedInMm = result.EstimatedDecelerationInMmSec2 * param.TimeToDec * param.TimeToDec;
             }
 
             result.EstimatedJerkSpeed = result.EstimatedMaxStepRate / jerkFactor;

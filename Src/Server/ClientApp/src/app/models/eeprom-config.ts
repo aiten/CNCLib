@@ -23,6 +23,7 @@ export class EepromConfig {
 
   stepsPerRotation: number;
   distancePerRotationInMm: number;
+  distancePerStepInMm: number;
   stepsPerMm: number;
 
   estimatedMaxStepRate: number;
@@ -30,6 +31,8 @@ export class EepromConfig {
   estimatedMaxSpeedInMmMin: number;
   estimatedAccelerationInMmSec2: number;
   estimatedDecelerationInMmSec2: number;
+  estimatedAccelerationDistToMaxSpeedInMm: number;
+  estimatedDecelerationDistFromMaxSpeedInMm: number;
   estimatedAcc: number;
   estimatedDec: number;
   estimatedJerkSpeed: number;

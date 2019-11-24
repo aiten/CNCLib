@@ -65,6 +65,7 @@ function toEeconfig(r: any): EepromConfig {
 
       stepsPerRotation: r.StepsPerRotation,
       distancePerRotationInMm: r.DistancePerRotationInMm,
+      distancePerStepInMm: r.DistancePerStepInMm,
       stepsPerMm: r.StepsPerMm,
 
       estimatedMaxStepRate: r.EstimatedMaxStepRate,
@@ -72,6 +73,8 @@ function toEeconfig(r: any): EepromConfig {
       estimatedMaxSpeedInMmMin: r.EstimatedMaxSpeedInMmMin,
       estimatedAccelerationInMmSec2: r.EstimatedAccelerationInMmSec2,
       estimatedDecelerationInMmSec2: r.EstimatedDecelerationInMmSec2,
+      estimatedAccelerationDistToMaxSpeedInMm: r.EstimatedAccelerationDistToMaxSpeedInMm,
+      estimatedDecelerationDistFromMaxSpeedInMm: r.EstimatedDecelerationDistFromMaxSpeedInMm,
       estimatedAcc: r.EstimatedAcc,
       estimatedDec: r.EstimatedDec,
       estimatedJerkSpeed: r.EstimatedJerkSpeed,
