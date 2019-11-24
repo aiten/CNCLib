@@ -27,14 +27,17 @@ namespace CNCLib.Logic.Abstraction.DTO
         public uint   StepsPerRotation        { get; set; }
         public double DistancePerRotationInMm { get; set; }
         public double StepsPerMm              { get; set; }
+        public double DistancePerStepInMm     { get; set; }
 
-        public double EstimatedMaxStepRate          { get; set; }
-        public double EstimatedMaxSpeedInMmSec      { get; set; }
-        public double EstimatedMaxSpeedInMmMin      { get; set; }
-        public double EstimatedAccelerationInMmSec2 { get; set; }
-        public double EstimatedDecelerationInMmSec2 { get; set; }
-        public double EstimatedAcc                  { get; set; }
-        public double EstimatedDec                  { get; set; }
-        public double EstimatedJerkSpeed            { get; set; }
+        public double EstimatedMaxStepRate                      { get; set; }
+        public double EstimatedMaxSpeedInMmSec                  { get; set; }
+        public double EstimatedMaxSpeedInMmMin                  { get; set; }
+        public double EstimatedAccelerationInMmSec2             { get; set; }
+        public double EstimatedAccelerationDistToMaxSpeedInMm   { get; set; }
+        public double EstimatedDecelerationInMmSec2             { get; set; }
+        public double EstimatedDecelerationDistFromMaxSpeedInMm { get; set; }
+        public double EstimatedAcc                              { get; set; }
+        public double EstimatedDec                              { get; set; }
+        public double EstimatedJerkSpeed                        { get; set; }
     }
 }
