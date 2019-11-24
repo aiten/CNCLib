@@ -69,6 +69,7 @@ function toEeconfig(r: any): EepromConfig {
 
       estimatedMaxStepRate: r.EstimatedMaxStepRate,
       estimatedMaxSpeedInMmSec: r.EstimatedMaxSpeedInMmSec,
+      estimatedMaxSpeedInMmMin: r.EstimatedMaxSpeedInMmMin,
       estimatedAccelerationInMmSec2: r.EstimatedAccelerationInMmSec2,
       estimatedDecelerationInMmSec2: r.EstimatedDecelerationInMmSec2,
       estimatedAcc: r.EstimatedAcc,
