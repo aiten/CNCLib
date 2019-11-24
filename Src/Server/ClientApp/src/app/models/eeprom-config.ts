@@ -27,6 +27,7 @@ export class EepromConfig {
 
   estimatedMaxStepRate: number;
   estimatedMaxSpeedInMmSec: number;
+  estimatedMaxSpeedInMmMin: number;
   estimatedAccelerationInMmSec2: number;
   estimatedDecelerationInMmSec2: number;
   estimatedAcc: number;

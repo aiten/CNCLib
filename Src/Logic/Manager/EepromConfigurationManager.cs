@@ -42,6 +42,7 @@ namespace CNCLib.Logic.Manager
 
             result.EstimatedMaxStepRate     = result.StepsPerRotation * param.EstimatedRotationSpeed;
             result.EstimatedMaxSpeedInMmSec = result.DistancePerRotationInMm * param.EstimatedRotationSpeed;
+            result.EstimatedMaxSpeedInMmMin = result.EstimatedMaxSpeedInMmSec * 60.0;
             if (Math.Abs(param.TimeToAcc) > double.Epsilon)
             {
                 result.EstimatedAccelerationInMmSec2 = result.EstimatedMaxSpeedInMmSec / param.TimeToAcc;

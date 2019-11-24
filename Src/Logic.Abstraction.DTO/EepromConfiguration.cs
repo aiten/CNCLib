@@ -30,6 +30,7 @@ namespace CNCLib.Logic.Abstraction.DTO
 
         public double EstimatedMaxStepRate          { get; set; }
         public double EstimatedMaxSpeedInMmSec      { get; set; }
+        public double EstimatedMaxSpeedInMmMin      { get; set; }
         public double EstimatedAccelerationInMmSec2 { get; set; }
         public double EstimatedDecelerationInMmSec2 { get; set; }
         public double EstimatedAcc                  { get; set; }
