@@ -8,6 +8,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Framework\WebAPI\WebAPI.csproj" />
+    <ProjectReference Include="..\GCode.Draw\GCode.Draw.csproj" />
     <ProjectReference Include="..\GCode\GCode.csproj" />
     <ProjectReference Include="..\Logic.Client\Logic.Client.csproj" />
     <ProjectReference Include="..\Logic.Abstraction\Logic.Abstraction.csproj" />

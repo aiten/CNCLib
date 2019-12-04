@@ -15,8 +15,7 @@
 */
 
 import { Component, OnInit } from '@angular/core';
-import { LoadOptions, EHoleType, ELoadType, PenType, SmoothTypeEnum, ConvertTypeEnum, DitherFilter } from
-  "../../models/load-options";
+import { LoadOptions, EHoleType, ELoadType, PenType, SmoothTypeEnum, ConvertTypeEnum, DitherFilter } from "../../models/load-options";
 import { FormGroup, FormArray, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { CNCLibLoadOptionService } from '../../services/CNCLib-load-option.service';
 import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
@@ -43,7 +42,12 @@ export class GcodeDetailComponent implements OnInit {
   isLoading: boolean = true;
   isLoaded: boolean = false;
   gCodeForm: FormGroup;
-  keys: any[];
+  keysELoadType: any[];
+  keysPenType: any[];
+  keysSmoothTypeEnum: any[];
+  keysConvertTypeEnum: any[];
+  keysDitherFilter: any[];
+  keysEHoleType: any[];
 
   ELoadType: typeof
     ELoadType = ELoadType;
@@ -71,14 +75,19 @@ export class GcodeDetailComponent implements OnInit {
     private fb: FormBuilder
   ) {
 
-    this.keys = Object.keys(ELoadType).filter(f => !isNaN(Number(f)));
+    this.keysELoadType = Object.keys(ELoadType).filter(f => !isNaN(Number(f)));
+    this.keysPenType = Object.keys(PenType).filter(f => !isNaN(Number(f)));
+    this.keysSmoothTypeEnum = Object.keys(SmoothTypeEnum).filter(f => !isNaN(Number(f)));
+    this.keysConvertTypeEnum = Object.keys(ConvertTypeEnum).filter(f => !isNaN(Number(f)));
+    this.keysDitherFilter = Object.keys(DitherFilter).filter(f => !isNaN(Number(f)));
+    this.keysEHoleType = Object.keys(EHoleType).filter(f => !isNaN(Number(f)));
 
     this.gCodeForm = fb.group(
       {
         Id: [0, [Validators.required]],
         SettingName: ['', [Validators.required, Validators.maxLength(64)]],
         FileName: ['', [Validators.required, Validators.maxLength(512)]],
-        LoadType: [0],
+        LoadType: [],
         StartupCommands: ['', [Validators.maxLength(512)]],
         ShutdownCommands: ['', [Validators.maxLength(512)]],
         SubstG82: [false, [Validators.required]],
@@ -95,6 +104,7 @@ export class GcodeDetailComponent implements OnInit {
         AutoScaleBorderDistX: [0.0, [Validators.required]],
         AutoScaleBorderDistY: [0.0, [Validators.required]],
 
+        PenMoveType: [],
         EngravePosInParameter: [false, [Validators.required]],
         EngravePosUp: [0.0, [Validators.required]],
         EngravePosDown: [0.0, [Validators.required]],
@@ -113,6 +123,8 @@ export class GcodeDetailComponent implements OnInit {
         LaserSize: [0.0],
         LaserAccDist: [0.0],
 
+        SmoothType: [],
+        ConvertType: [],
         SmoothMinAngle: [0.0],
         SmoothMinLineLength: [0.0],
         SmoothMaxError: [0.0],
@@ -122,10 +134,10 @@ export class GcodeDetailComponent implements OnInit {
         ImageDPIX: [0.0],
         ImageDPIY: [0.0],
         ImageInvert: [false, [Validators.required]],
-        Dither: [0],
+        Dither: [],
         NewspaperDitherSize: [0.0],
 
-        HoleType: [0.0],
+        HoleType: [],
         UseYShift: [false, [Validators.required]],
         DotDistX: [0.0],
         DotDistY: [0.0],
@@ -142,6 +154,10 @@ export class GcodeDetailComponent implements OnInit {
         Object.assign(this.entry,
           value);
     });
+  }
+
+  compareWithEnum(lt1, lt2) {
+    return lt1 == lt2;
   }
 
   newLoadOption() {
@@ -223,17 +239,9 @@ export class GcodeDetailComponent implements OnInit {
   }
 
   async ngOnInit() {
-
     let id = this.route.snapshot.paramMap.get('id');
     this.entry = await this.loadOptionService.getById(+id);
     this.gCodeForm.patchValue(this.entry);
     this.isLoaded = true;
-
-    /*
-        this.entry = this.route.paramMap.pipe(
-          switchMap(async (params: ParamMap) =>
-            await this.machineService.getById(+(params.get('id'))))
-        );
-    */
   }
 }

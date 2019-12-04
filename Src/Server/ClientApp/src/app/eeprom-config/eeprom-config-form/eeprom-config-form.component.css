@@ -1,1 +1,7 @@
+.form-group {
+  margin-bottom: 1px
+}
 
+.input-group-addon {
+  width: 300px;
+}

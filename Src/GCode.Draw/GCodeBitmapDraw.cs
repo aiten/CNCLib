@@ -17,13 +17,12 @@
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Windows.Forms;
 
 using CNCLib.GCode.Commands;
 
 using Framework.Drawing;
 
-namespace CNCLib.GCode.GUI
+namespace CNCLib.GCode.Draw
 {
     public class GCodeBitmapDraw : IOutputCommand
     {
@@ -473,7 +472,7 @@ namespace CNCLib.GCode.GUI
             g1.CompositingQuality = CompositingQuality.HighSpeed;
             g1.TextRenderingHint  = System.Drawing.Text.TextRenderingHint.SingleBitPerPixel;
 
-            var ee = new PaintEventArgs(g1, new Rectangle());
+            // var ee = new PaintEventArgs(g1, new Rectangle());
 
             var pts = new[]
             {
@@ -509,7 +508,7 @@ namespace CNCLib.GCode.GUI
                 g1.DrawLine(((i % 10) == 0) ? _helpLinePen10 : _helpLinePen, ToClientF(new Point3D(0, i * 10.0, 0)), ToClientF(new Point3D(SizeX, i * 10.0, 0)));
             }
 
-            commands?.Paint(this, ee);
+            commands?.Paint(this, g1);
 
             g1.Dispose();
             return curBitmap;
@@ -565,27 +564,27 @@ namespace CNCLib.GCode.GUI
                 return;
             }
 
-            var e = (PaintEventArgs)param;
+            var g = (Graphics)param;
 
             var from = ToClientF(ptFrom);
             var to   = ToClientF(ptTo);
 
             if (PreDrawLineOrArc(param, drawType, from, to))
             {
-                e.Graphics.DrawLine(GetPen(drawType, LineDrawType.Line), from, to);
+                g.DrawLine(GetPen(drawType, LineDrawType.Line), from, to);
             }
         }
 
         void Line(object param, Pen pen, Point3D ptFrom, Point3D ptTo)
         {
-            var e = (PaintEventArgs)param;
+            var g = (Graphics)param;
 
             var from = ToClientF(ptFrom);
             var to   = ToClientF(ptTo);
 
             if (from.Equals(to) == false)
             {
-                e.Graphics.DrawLine(pen, from, to);
+                g.DrawLine(pen, from, to);
             }
         }
 
@@ -596,9 +595,9 @@ namespace CNCLib.GCode.GUI
                 return;
             }
 
-            var e    = (PaintEventArgs)param;
+            var g = (Graphics)param;
             var from = ToClientF(ptCenter);
-            e.Graphics.DrawEllipse(GetPen(drawType, LineDrawType.Ellipse), from.X - radiusX / 2, from.Y - radiusY / 2, radiusX, radiusY);
+            g.DrawEllipse(GetPen(drawType, LineDrawType.Ellipse), from.X - radiusX / 2, from.Y - radiusY / 2, radiusX, radiusY);
         }
 
         public void DrawArc(Command cmd, object param, DrawType drawType, Point3D ptFrom, Point3D ptTo, Point3D ptIJK, bool clockwise, Pane pane)
@@ -756,17 +755,17 @@ namespace CNCLib.GCode.GUI
 
         private bool PreDrawLineOrArc(object param, DrawType drawType, PointF from, PointF to)
         {
-            var e = (PaintEventArgs)param;
+            var g = (Graphics)param;
 
             if (from.Equals(to))
             {
                 if ((drawType & DrawType.Laser) == DrawType.Laser)
                 {
-                    e.Graphics.DrawEllipse(GetPen(drawType, LineDrawType.Dot), @from.X, @from.Y, 1, 1);
+                    g.DrawEllipse(GetPen(drawType, LineDrawType.Dot), @from.X, @from.Y, 1, 1);
                 }
                 else
                 {
-                    e.Graphics.DrawEllipse(GetPen(drawType, LineDrawType.Dot), @from.X, @from.Y, 4, 4);
+                    g.DrawEllipse(GetPen(drawType, LineDrawType.Dot), @from.X, @from.Y, 4, 4);
                 }
 
                 return false;

@@ -17,6 +17,8 @@
 import { Component, OnInit } from '@angular/core';
 import { LoadOptions } from "../../models/load-options";
 import { CNCLibLoadOptionService } from '../../services/CNCLib-load-option.service';
+import { CNCLibLoggedinService } from '../../services/CNCLib-loggedin.service';
+
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { gcodeURL } from '../../app.global';
@@ -34,11 +36,14 @@ import { MessageBoxData } from "../../modal/message-box-data";
 export class GcodeOverviewComponent implements OnInit {
   entries: LoadOptions[] = [];
   errorMessage: string = '';
-  isLoading: boolean = true;
+    isLoading: boolean = true;
+
+    displayedColumns: string[] = [ /* 'Id', */ 'SettingName', 'Detail', 'Run'];
 
   constructor(
     private router: Router,
     private loadOptionService: CNCLibLoadOptionService,
+    public cncLibloggedinService: CNCLibLoggedinService,
     private dialog: MatDialog
   ) {
   }
@@ -58,10 +63,14 @@ export class GcodeOverviewComponent implements OnInit {
   }
 
   detailLoadOption(id: number) {
-    console.log('Detail machine');
+    console.log('Detail gcode');
     this.router.navigate([gcodeURL, 'detail', String(id)]);
   }
 
+  runLoadOption(id: number) {
+    console.log('Run gcode');
+    this.router.navigate([gcodeURL, 'run', String(id)]);
+  }
 
   async ngOnInit() {
     this.entries = await this.loadOptionService.getAll();

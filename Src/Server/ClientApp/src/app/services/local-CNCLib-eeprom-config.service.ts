@@ -31,14 +31,14 @@ export class LocalCNCLibEepromConfigService implements CNCLibEepromConfigService
 
   calculateConfig(config: EepromConfigInput): Promise<EepromConfig> {
     console.log('LocalCNCLibEepromConfigService.calculateConfig');
-    const m$ = this.http
+    const m = this.http
       .get(`${this.baseUrl}api/EepromConfiguration?teeth=${config.teeth}&toothsizeInMm=${config.toothsizeinMm
         }&microsteps=${config.microsteps}&stepsPerRotation=${config.stepsPerRotation}&estimatedRotationSpeed=${
         config.estimatedRotationSpeed}&timeToAcc=${config.timeToAcc}&timeToDec=${config.timeToDec}`)
       .toPromise()
       .then((response: Response) => toEeconfig(response))
       .catch(this.handleErrorPromise);
-    return m$;
+    return m;
   }
 
   private getHeaders() {

@@ -24,10 +24,13 @@ const machinecontrolURL = '/machinecontrol';
 
 @Component({
   selector: 'machinecontroloverview',
-  templateUrl: './machinecontrol-overview.component.html'
+  templateUrl: './machinecontrol-overview.component.html',
+  styleUrls: ['./machinecontrol-overview.component.css']
 })
 export class MachineControlOverviewComponent {
   serialports!: SerialPortDefinition[];
+
+  displayedColumns: string[] = ['Id', 'PortName', 'IsConnected', 'Task'];
 
   constructor(
     private serialServerService: SerialServerService,

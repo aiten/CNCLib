@@ -18,6 +18,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { CNCLibServerInfo } from '../models/CNCLib.Server.Info'
 import { CNCLibInfoService } from '../services/CNCLib-Info.service';
 
+import { CNCLibLoggedinService } from '../services/CNCLib-loggedin.service';
+
 import { HubConnection } from '@aspnet/signalr';
 import { HubConnectionBuilder } from '@aspnet/signalr';
 
@@ -35,6 +37,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private cncLibInfoService: CNCLibInfoService,
+    public cncLibloggedinService: CNCLibLoggedinService,
     @Inject('BASE_URL') public baseUrl: string
   ) {
   }
@@ -43,25 +46,6 @@ export class HomeComponent implements OnInit {
 
   public incrementCounter() {
     this.currentCount++;
-  }
-
-  public username() {
-    let user = this.getCurrentUser();
-    return user.username;
-  }
-
-  public isUserLoggedIn() {
-    return this.getCurrentUser() != null;
-  }
-
-  public logout() {
-    localStorage.removeItem('currentUser');
-  }
-
-  private getCurrentUser() {
-
-    let currentuser = JSON.parse(localStorage.getItem('currentUser'));
-    return currentuser;
   }
 
   async ngOnInit(): Promise<void> {

@@ -42,6 +42,12 @@ import { LocalCNCLibMachineService } from './services/local-CNCLib-machine.servi
 import { CNCLibLoadOptionService } from './services/CNCLib-load-option.service';
 import { LocalCNCLibLoadOptionService } from './services/local-CNCLib-load-option.service';
 
+import { CNCLibLoggedinService } from './services/CNCLib-loggedin.service';
+import { LocalCNCLibLoggedinService } from './services/local-CNCLib-loggedin.service';
+
+import { CNCLibGCodeService } from './services/CNCLib-gcode.service';
+import { LocalCNCLibGCodeService } from './services/local-CNCLib-gcode.service';
+
 import { eepromConfigRoutes, eepromConfigRoutingComponents } from './eeprom-config/eeprom-config-routing';
 import { machineRoutes, machineRoutingComponents } from './machine/machine-routing';
 
@@ -95,6 +101,8 @@ NgModule({
     { provide: CNCLibEepromConfigService, useClass: LocalCNCLibEepromConfigService },
     { provide: CNCLibMachineService, useClass: LocalCNCLibMachineService },
     { provide: CNCLibLoadOptionService, useClass: LocalCNCLibLoadOptionService },
+    { provide: CNCLibLoggedinService, useClass: LocalCNCLibLoggedinService },
+    { provide: CNCLibGCodeService, useClass: LocalCNCLibGCodeService },
     { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],

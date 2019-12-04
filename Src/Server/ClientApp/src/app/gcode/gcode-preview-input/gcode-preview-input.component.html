@@ -1,0 +1,86 @@
+<form novalidate [formGroup]="previewOptForm" (ngSubmit)="savegCode(previewOptForm.value)">
+
+  <div class="form-group input-group">
+    <span class="input-group-addon">RenderSizeX</span>
+    <input matInput class="form-control" type="number" min="10" max="2500" step="10" formControlName="RenderSizeX" />
+  </div>
+
+  <div class="form-group input-group">
+    <span class="input-group-addon">RenderSizeY</span>
+    <input matInput class="form-control" type="number" min="10" max="2500" step="10" formControlName="RenderSizeY" />
+  </div>
+
+  <div class="form-group input-group">
+    <span class="input-group-addon">SizeX</span>
+    <input matInput class="form-control" type="number" min="10" max="2500" step="10" formControlName="SizeX" />
+  </div>
+
+  <div class="form-group input-group">
+    <span class="input-group-addon">SizeY</span>
+    <input matInput class="form-control" type="number" min="10" max="2500" step="10" formControlName="SizeY" />
+  </div>
+  <div class="form-group input-group">
+    <span class="input-group-addon">SizeZ</span>
+    <input matInput class="form-control" type="number" min="10" max="2500" step="10" formControlName="SizeZ" />
+  </div>
+
+  <div class="form-group input-group">
+    <span class="input-group-addon">OffsetX</span>
+    <input matInput class="form-control" type="number" min="-2500" max="2500" step="10" formControlName="OffsetX" />
+  </div>
+
+  <div class="form-group input-group">
+    <span class="input-group-addon">OffsetY</span>
+    <input matInput class="form-control" type="number" min="-2500" max="2500" step="10" formControlName="OffsetY" />
+  </div>
+
+  <div class="form-group input-group">
+    <span class="input-group-addon">OffsetZ</span>
+    <input matInput class="form-control" type="number" min="-2500" max="2500" step="10" formControlName="OffsetZ" />
+  </div>
+
+  <div class="form-group input-group">
+    <span class="input-group-addon">Rotate Angle</span>
+    <input matInput class="form-control" type="number" min="-10" max="+10" step="0.1" formControlName="Rotate3DAngle" />
+  </div>
+
+  <div class="form-group input-group">
+    <span class="input-group-addon">Rotate Vect X</span>
+    <input matInput class="form-control" type="number" min="-10" max="+10" step="0.1" formControlName="Rotate3DVectX" />
+  </div>
+
+  <div class="form-group input-group">
+    <span class="input-group-addon">Rotate Vect Y</span>
+    <input matInput class="form-control" type="number" min="-10" max="+10" step="0.1" formControlName="Rotate3DVectY" />
+  </div>
+
+  <div class="form-group input-group">
+    <span class="input-group-addon">Rotate Vect Z</span>
+    <input matInput class="form-control" type="number" min="-10" max="+10" step="0.1" formControlName="Rotate3DVectZ" />
+  </div>
+
+  <div class="form-group input-group">
+    <span class="input-group-addon">KeepRatio</span>
+    <mat-checkbox class="form-control" formControlName="KeepRatio"></mat-checkbox>
+  </div>
+
+  <div class="form-group input-group">
+    <span class="input-group-addon">Zoom</span>
+    <input matInput class="form-control" type="number" min="0.1" step="0.1" formControlName="Zoom" />
+  </div>
+
+  <div class="form-group input-group">
+    <span class="input-group-addon">CutterSize</span>
+    <input matInput class="form-control" formControlName="CutterSize" />
+  </div>
+
+  <div class="form-group input-group">
+    <span class="input-group-addon">LaserSize</span>
+    <input matInput class="form-control" formControlName="LaserSize" />
+  </div>
+
+  <button mat-stroked-button class="btn btn-default" (click)='rotate1()'>Rotate 1</button>
+
+  <!--<button mat-stroked-button type="submit" class="btn btn-default" [disabled]="!gCodeForm.valid">Run</button>-->
+
+</form>

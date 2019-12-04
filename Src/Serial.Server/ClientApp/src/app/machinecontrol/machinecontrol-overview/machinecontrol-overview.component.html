@@ -6,25 +6,33 @@
   <em>Loading...</em>
 </p>
 
-<div *ngIf="serialports">
-  <table class='table'>
-    <thead>
-    <tr>
-      <th>Id</th>
-      <th>Port-Name</th>
-      <th>Connected</th>
-      <th>Task</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let serialport of serialports">
-      <td>{{ serialport.Id }}</td>
-      <td>{{ serialport.PortName }}</td>
-      <td>{{ serialport.IsConnected }}</td>
-      <td>
-        <button (click)='useport(serialport)'>Use</button>
+<div *ngIf="serialports" class="mat-elevation-z8">
+  <table mat-table [dataSource]="serialports" >
+
+    <ng-container matColumnDef="Id">
+      <th mat-header-cell *matHeaderCellDef> Id </th>
+      <td mat-cell *matCellDef="let element"> {{element.Id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="PortName">
+      <th mat-header-cell *matHeaderCellDef> Port-Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.PortName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="IsConnected">
+      <th mat-header-cell *matHeaderCellDef> Connected </th>
+      <td mat-cell *matCellDef="let element"><mat-checkbox [checked]="element.IsConnected" [disabled]="true" ></mat-checkbox></td>
+    </ng-container>
+
+    <ng-container matColumnDef="Task">
+      <th mat-header-cell *matHeaderCellDef> Task </th>
+      <td mat-cell *matCellDef="let element">
+        <button (click)='useport(element)'>Use</button>
       </td>
-    </tr>
-    </tbody>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
   </table>
 </div>

@@ -31,56 +31,56 @@ export class LocalCNCLibLoadOptionService implements CNCLibLoadOptionService {
 
   getAll(): Promise<LoadOptions[]> {
     console.log('LocalCNCLibLoadOptionService.getAll');
-    const loadOption$ = this.http
+    const loadOptions = this.http
       .get<LoadOptions[]>(`${this.baseUrl}api/LoadOptions`)
       .toPromise()
       .catch(this.handleErrorPromise);
 
-    return loadOption$;
+    return loadOptions;
   }
 
   getById(id: number): Promise<LoadOptions> {
     console.log('LocalCNCLibLoadOptionService.getById');
-    const m$ = this.http
+    const loadOption = this.http
       .get<LoadOptions>(`${this.baseUrl}api/LoadOptions/${id}`)
       .toPromise()
       .catch(this.handleErrorPromise);
-    return m$;
+    return loadOption;
   }
 
   addLoadOption(loadOption: LoadOptions): Promise<LoadOptions> {
 
     console.log('LocalCNCLibLoadOptionService.addLoadOptions');
-    const m$ = this.http
+    const m = this.http
       .post<LoadOptions>(`${this.baseUrl}api/LoadOptions`, loadOption)
       .toPromise()
       .catch(this.handleErrorPromise);
-    return m$;
+    return m;
   }
 
   updateLoadOption(loadOption: LoadOptions): Promise<void> {
     console.log('LocalCNCLibLoadOptionService.updateLoadOptions');
-    const m$ = this.http
+    const m = this.http
       .put<void>(`${this.baseUrl}api/LoadOptions/${loadOption.Id}`, loadOption)
       .toPromise()
       .catch(this.handleErrorPromise);
-    return m$;
+    return m;
   }
 
   deleteLoadOptionById(id: number): Promise<void> {
     console.log('LocalCNCLibLoadOptionService.addLoadOptions');
-    const m$ = this.http
+    const m = this.http
       .delete<void>(`${this.baseUrl}api/LoadOptions/${id}`)
       .toPromise()
       .catch(this.handleErrorPromise);
-    return m$;
+    return m;
     /*
     console.log('LocalCNCLibLoadOptionService.deleteLoadOptions');
-    const m$ = this.http
+    const m = this.http
       .delete(`${this.baseUrl}/loadOption/${id}`, this.getHeaders())
       .map((response: Response) => toLoadOptions(response.json()))
       .catch(this.handleError);
-    return m$;
+    return m;
 */
   }
 

@@ -1,27 +1,53 @@
 <h1>G-Code generation templates</h1>
 
-<div>
+<table mat-table [dataSource]="entries" class="mat-elevation-z8">
 
-  <head>
-    <style>
-      table,
-      th,
-      td { border: 1px solid black; }
-    </style>
-  </head>
-  <table>
-    <tr>
-      <th>Id</th>
-      <th>SettingName</th>
-    </tr>
-    <tr *ngFor="let entry of entries">
-      <td>{{ entry.Id }}</td>
-      <td>{{ entry.SettingName }}</td>
-      <td>
-        <button (click)='detailLoadOption(entry.Id)'>Details</button>
-      </td>
-    </tr>
-  </table>
-</div>
+  <!-- Position Column -->
+  <ng-container matColumnDef="Id">
+    <th mat-header-cell *matHeaderCellDef> Id </th>
+    <td mat-cell *matCellDef="let element"> {{element.Id}} </td>
+  </ng-container>
 
-<button (click)='newLoadOption()'>new</button>
+  <!-- Name Column -->
+  <ng-container matColumnDef="SettingName">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.SettingName}} </td>
+  </ng-container>
+
+  <!-- Detail Column -->
+  <ng-container matColumnDef="Detail">
+    <th mat-header-cell *matHeaderCellDef> Detail </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-stroked-button (click)='detailLoadOption(element.Id)'>Details</button>
+    </td>
+  </ng-container>
+
+  <!-- Run Column -->
+  <ng-container matColumnDef="Run">
+    <th mat-header-cell *matHeaderCellDef> Run </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-stroked-button (click)='runLoadOption(element.Id)'>Run ...</button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+</table>
+<!--
+<table>
+  <tr>
+    <th>Id</th>
+    <th>SettingName</th>
+  </tr>
+  <tr *ngFor="let entry of entries">
+    <td>{{ entry.Id }}</td>
+    <td>{{ entry.SettingName }}</td>
+    <td>
+      <button mat-stroked-button (click)='detailLoadOption(entry.Id)'>Details</button>
+    </td>
+  </tr>
+</table>
+-->
+
+<button mat-stroked-button [disabled]="!cncLibloggedinService.isUserLoggedIn()" (click)='newLoadOption()'>new</button>

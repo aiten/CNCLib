@@ -19,6 +19,11 @@ import { GcodeComponent } from './gcode.component';
 import { Routes, RouterModule } from '@angular/router';
 import { GcodeOverviewComponent } from './gcode-overview/gcode-overview.component';
 import { GcodeDetailComponent } from './gcode-detail/gcode-detail.component';
+import { GcodeRunComponent } from './gcode-run/gcode-run.component';
+import { GcodeRunResultComponent } from './gcode-run-result/gcode-run-result.component';
+import { GcodeRunInputComponent } from './gcode-run-input/gcode-run-input.component';
+import { GcodePreviewComponent } from './gcode-preview/gcode-preview.component';
+import { GcodePreviewInputComponent } from './gcode-preview-input/gcode-preview-input.component';
 
 export const gcodeRoutes =
 [
@@ -29,7 +34,8 @@ export const gcodeRoutes =
     [
       { path: '', component: GcodeOverviewComponent },
 //      { path: 'detail/:id/edit', component: MachineFormComponent },
-      { path: 'detail/:id', component: GcodeDetailComponent }
+      { path: 'detail/:id', component: GcodeDetailComponent },
+      { path: 'run/:id', component: GcodeRunComponent }
     ]
   }
 ];
@@ -39,4 +45,9 @@ export const gcodeRoutingComponents =
   GcodeComponent,
   GcodeOverviewComponent,
   GcodeDetailComponent,
+  GcodeRunComponent,
+  GcodeRunResultComponent,
+  GcodeRunInputComponent,
+  GcodePreviewComponent,
+  GcodePreviewInputComponent
 ];

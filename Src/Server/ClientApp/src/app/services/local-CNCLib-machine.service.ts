@@ -33,70 +33,70 @@ export class LocalCNCLibMachineService implements CNCLibMachineService {
 
   getAll(): Promise<Machine[]> {
     console.log('LocalCNCLibMachineService.getAll');
-    const machine$ = this.http
+    const machine = this.http
       .get<any[]>(`${this.baseUrl}api/machine`)
       .toPromise()
       .then((response) => response.map(toMachine))
       .catch(this.handleErrorPromise);
 
-    return machine$;
+    return machine;
   }
 
   getById(id: number): Promise<Machine> {
     console.log('LocalCNCLibMachineService.getById');
-    const m$ = this.http
+    const m = this.http
       .get(`${this.baseUrl}api/machine/${id}`)
       .toPromise()
       .then((response) => toMachine(response))
       .catch(this.handleErrorPromise);
-    return m$;
+    return m;
   }
 
   getDefault(): Promise<Machine> {
 
     console.log('LocalCNCLibMachineService.getDefault');
-    const m$ = this.http
+    const m = this.http
       .get(`${this.baseUrl}api/machine/default`)
       .toPromise()
       .then((response) => toMachine(response))
       .catch(this.handleErrorPromise);
-    return m$;
+    return m;
   }
 
   addMachine(machine: Machine): Promise<Machine> {
 
     console.log('LocalCNCLibMachineService.addMachine');
-    const m$ = this.http
+    const m = this.http
       .post(`${this.baseUrl}api/machine`, fromMachine(machine))
       .toPromise()
       .then((response) => toMachine(response))
       .catch(this.handleErrorPromise);
-    return m$;
+    return m;
   }
 
   updateMachine(machine: Machine): Promise<void> {
     console.log('LocalCNCLibMachineService.updateMachine');
-    const m$ = this.http
+    const m = this.http
       .put<void>(`${this.baseUrl}api/machine/${machine.id}`, fromMachine(machine))
       .toPromise()
       .catch(this.handleErrorPromise);
-    return m$;
+    return m;
   }
 
   deleteMachineById(id: number): Promise<void> {
     console.log('LocalCNCLibMachineService.addMachine');
-    const m$ = this.http
+    const m = this.http
       .delete<void>(`${this.baseUrl}api/machine/${id}`)
       .toPromise()
       .catch(this.handleErrorPromise);
-    return m$;
+    return m;
     /*
     console.log('LocalCNCLibMachineService.deleteMachine');
-    const m$ = this.http
+    const m = this.http
       .delete(`${this.baseUrl}/machine/${id}`, this.getHeaders())
       .map((response: Response) => toMachine(response.json()))
       .catch(this.handleError);
-    return m$;
+    return m;
 */
   }
 

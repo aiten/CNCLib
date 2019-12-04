@@ -25,9 +25,9 @@
 </ul>
 -->
 
-<login *ngIf="!isUserLoggedIn()"></login>
+<login *ngIf="!cncLibloggedinService.isUserLoggedIn()"></login>
 
-<div *ngIf="isUserLoggedIn()">
-  <p>Login in as : {{username()}}</p>
-  <button class="btn btn-warning" (click)="logout()">Logout</button>
+<div *ngIf="cncLibloggedinService.isUserLoggedIn()">
+  <p>Login in as : {{cncLibloggedinService.username()}}</p>
+  <button class="btn btn-warning" (click)="cncLibloggedinService.logout()">Logout</button>
 </div>

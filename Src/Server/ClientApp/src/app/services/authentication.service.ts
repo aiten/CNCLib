@@ -1,3 +1,19 @@
+/*
+  This file is part of CNCLib - A library for stepper motors.
+
+  Copyright (c) Herbert Aitenbichler
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+  and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
 import { Injectable, Inject, Pipe } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { User } from "../models/user";
@@ -9,21 +25,6 @@ export class AuthenticationService {
     @Inject('BASE_URL') public baseUrl: string,
   ) {
   }
-/*
-    login(username: string, password: string) {
-        return this.http.post<any>(`${this.baseUrl}/users/authenticate`, { username, password })
-            .pipe(map(user => {
-                // login successful if there's a user in the response
-                if (user) {
-                    // store user details and basic auth credentials in local storage 
-                    // to keep user logged in between page refreshes
-                    user.authdata = window.btoa(username + ':' + password);
-                    localStorage.setItem('currentUser', JSON.stringify(user));
-                }
-
-                return user;
-            }));
-    }*/
 
   login(username: string, password: string): Promise<void> {
 
@@ -32,7 +33,7 @@ export class AuthenticationService {
       .set('userName', username)
       .set('password', password);
 
-    const authentication$ = this.http
+    const authentication = this.http
       .get<any>(`${this.baseUrl}api/user/isvaliduser`, { params })
       .toPromise()
       .then((response: Response) => {
@@ -47,18 +48,7 @@ export class AuthenticationService {
       })
       .catch(this.handleErrorPromise);
 
-/*
-    // login successful if there's a user in the response
-    if (userOk) {
-      // store user details and basic auth credentials in local storage 
-      // to keep user logged in between page refreshes
-      //user.authdata = window.btoa(username + ':' + password);
-      console.log('Authentication:login OK');
-      localStorage.setItem('currentUser', JSON.stringify(username));
-
-    }
-*/
-    return authentication$;
+    return authentication;
   }
 
   private handleErrorPromise(error: Response | any) {
@@ -68,6 +58,7 @@ export class AuthenticationService {
 
   logout() {
     // remove user from local storage to log user out
+    console.log('Authentication:logout');
     localStorage.removeItem('currentUser');
   }
 }

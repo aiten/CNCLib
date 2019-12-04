@@ -19,12 +19,40 @@ using System.IO;
 using CNCLib.GCode.Load;
 using CNCLib.Logic.Abstraction.DTO;
 
+using Microsoft.Extensions.Logging;
+
 namespace CNCLib.WebAPI.Controllers
 {
     public class GCodeLoadHelper
     {
-        public static LoadBase CallLoad(string filename, byte[] fileContent, LoadOptions opt)
+        public static LoadBase CallLoad(LoadOptions opt)
         {
+            if (opt.FileContent == null)
+            {
+                return CallLoadWithFileName(opt);
+            }
+
+            return CallLoadWithContent(opt);
+        }
+
+        private static LoadBase CallLoadWithFileName(LoadOptions opt)
+        {
+            LoadBase load = LoadBase.Create(opt);
+
+            if (load == null)
+            {
+                return null;
+            }
+
+            load.Load();
+            return load;
+        }
+
+        private static LoadBase CallLoadWithContent(LoadOptions opt)
+        {
+            var filename = opt.FileName;
+            var fileContent = opt.FileContent;
+            
             string pathFileName = Path.GetFileName(filename);
             string tmpFile      = Path.GetTempPath() + pathFileName;
 

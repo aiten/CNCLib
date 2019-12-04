@@ -50,7 +50,7 @@ export enum EHoleType {
   Heart = 4
 }
 
-export interface LoadOptions {
+export class LoadOptions {
   Id: number;
 
   LoadType: ELoadType;
@@ -140,4 +140,44 @@ export interface LoadOptions {
   RotateHeart: boolean;
 
   HoleType: EHoleType;
+
+  isHPGL(): boolean {
+    return this.LoadType == ELoadType.HPGL;
+  }
+
+  isHPGLorImageOrImageHole() {
+    return this.isHPGL() || this.isImageOrImageHole();
+  }
+
+  isImage() {
+    return this.LoadType == ELoadType.Image;
+  }
+
+  isImageHole() {
+    return this.LoadType == ELoadType.ImageHole;
+  }
+
+  isImageOrImageHole() {
+    return this.LoadType == ELoadType.Image || this.LoadType == ELoadType.ImageHole;
+  }
+
+  isAutoScale() {
+    return this.isHPGLorImageOrImageHole() && this.AutoScale;
+  }
+
+  isScale() {
+    return this.isHPGLorImageOrImageHole() && this.AutoScale == false;
+  }
+
+  isSmooth() {
+    return this.isHPGL() && this.SmoothType != SmoothTypeEnum.NoSmooth;
+  }
+
+  isLaser() {
+    return (this.isHPGL() && this.PenMoveType == PenType.CommandString) || this.isImageOrImageHole();
+  }
+
+  isEngrave() {
+    return this.isHPGL() && this.PenMoveType == PenType.ZMove;
+  }
 }

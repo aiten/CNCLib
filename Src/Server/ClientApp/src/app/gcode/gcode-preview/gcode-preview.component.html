@@ -1,0 +1,13 @@
+<div *ngIf="gCommands != null">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-3">
+        <ha-gcode-preview-input [previewOpt]="previewOpt"> </ha-gcode-preview-input>
+        <button mat-stroked-button class="btn btn-default" (click)='refreshImage()'>Refresh</button>
+      </div>
+      <div class="col-sm">
+        <img [src]="imageBlobUrl" />
+      </div>
+    </div>
+  </div>
+</div>

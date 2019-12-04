@@ -1,0 +1,44 @@
+<form novalidate [formGroup]="gCodeForm" (ngSubmit)="savegCode(gCodeForm.value)">
+
+  <div class="form-group input-group">
+    <span class="input-group-addon">Filename</span>
+    <input matInput class="form-control" formControlName="FileName" />
+  </div>
+
+  <div *ngIf="isAutoScale()" class="input-container">
+
+    <div class="form-group input-group">
+      <span class="input-group-addon">Scale to Size X (mm)</span>
+      <input matInput class="form-control" formControlName="AutoScaleSizeX" />
+    </div>
+
+    <div class="form-group input-group">
+      <span class="input-group-addon">Scale to Size Y (mm)</span>
+      <input matInput class="form-control" formControlName="AutoScaleSizeY" />
+    </div>
+
+    <div class="form-group input-group">
+      <span class="input-group-addon">Margin X (mm)</span>
+      <input matInput class="form-control" formControlName="AutoScaleBorderDistX" />
+    </div>
+
+    <div class="form-group input-group">
+      <span class="input-group-addon">Margin Y (mm)</span>
+      <input matInput class="form-control" formControlName="AutoScaleBorderDistY" />
+    </div>
+
+    <div class="form-group input-group">
+      <span class="input-group-addon">Keep Ratio</span>
+      <mat-checkbox class="form-control" formControlName="AutoScaleKeepRatio"></mat-checkbox>
+    </div>
+
+    <div class="form-group input-group">
+      <span class="input-group-addon">Center</span>
+      <mat-checkbox class="form-control" formControlName="AutoScaleCenter"></mat-checkbox>
+    </div>
+
+  </div>
+
+  <!--<button mat-stroked-button type="submit" class="btn btn-default" [disabled]="!gCodeForm.valid">Run</button>-->
+
+</form>

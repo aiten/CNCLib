@@ -47,7 +47,7 @@ namespace CNCLib.WebAPI.Controllers
         [HttpPost]
         public string Post([FromBody] LoadOptions input)
         {
-            var load = GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, input);
+            var load = GCodeLoadHelper.CallLoad(input);
             var sw   = new StringWriter();
             new XmlSerializer(typeof(GCode.CamBam.CamBam)).Serialize(sw, load.CamBam);
             return sw.ToString();
@@ -56,9 +56,11 @@ namespace CNCLib.WebAPI.Controllers
         [HttpPut]
         public async Task<string> Put([FromBody] CreateGCode input)
         {
-            LoadOptions opt  = await _loadOptionsManager.Get(input.LoadOptionsId);
-            var         load = GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, opt);
-            var         sw   = new StringWriter();
+            LoadOptions opt = await _loadOptionsManager.Get(input.LoadOptionsId);
+            opt.FileName    = input.FileName;
+            opt.FileContent = input.FileContent;
+            var load = GCodeLoadHelper.CallLoad(opt);
+            var sw   = new StringWriter();
             new XmlSerializer(typeof(GCode.CamBam.CamBam)).Serialize(sw, load.CamBam);
             return sw.ToString();
         }

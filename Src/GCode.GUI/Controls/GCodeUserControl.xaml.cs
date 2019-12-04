@@ -22,6 +22,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 
 using CNCLib.GCode.Commands;
+using CNCLib.GCode.Draw;
 
 using Framework.Drawing;
 
@@ -552,6 +553,8 @@ namespace CNCLib.GCode.GUI.Controls
                     RotateVector[0] = -diffY;
 
                     _bitmapDraw.Rotate = _rotate = new Rotate3D(RotateAngle, RotateVector);
+
+                    Debug.WriteLine($"{RotateAngle} - {RotateVector[0]}:{RotateVector[1]}:{RotateVector[2]}");
                     break;
                 }
             }

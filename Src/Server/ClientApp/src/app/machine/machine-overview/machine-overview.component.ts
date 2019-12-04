@@ -17,6 +17,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Machine } from '../../models/machine';
 import { CNCLibMachineService } from '../../services/CNCLib-machine.service';
+import { CNCLibLoggedinService } from '../../services/CNCLib-loggedin.service';
+
 import { machineURL } from '../../app.global';
 import { Router } from '@angular/router';
 
@@ -33,6 +35,7 @@ export class MachineOverviewComponent implements OnInit {
 
   constructor(
     private router: Router,
+    public cncLibloggedinService: CNCLibLoggedinService,
     private machineService: CNCLibMachineService
   ) {
   }

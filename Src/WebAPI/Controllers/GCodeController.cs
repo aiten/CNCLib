@@ -16,8 +16,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
+using CNCLib.GCode.Commands;
+using CNCLib.GCode.Draw;
+using CNCLib.GCode.Load;
 using CNCLib.Logic.Abstraction;
 using CNCLib.Logic.Abstraction.DTO;
 
@@ -25,6 +32,9 @@ using Microsoft.AspNetCore.Mvc;
 
 using CNCLib.Shared;
 using CNCLib.WebAPI.Models;
+
+using Framework.Drawing;
+using Framework.WebAPI.Controller;
 
 using Microsoft.AspNetCore.Authorization;
 
@@ -34,25 +44,72 @@ namespace CNCLib.WebAPI.Controllers
     public class GCodeController : Controller
     {
         private readonly ILoadOptionsManager _loadOptionsManager;
+        private readonly IUserFileManager    _fileManager;
         private readonly ICNCLibUserContext  _userContext;
 
-        public GCodeController(ILoadOptionsManager loadOptionsManager, ICNCLibUserContext userContext)
+        public GCodeController(ILoadOptionsManager loadOptionsManager, IUserFileManager fileManager, ICNCLibUserContext userContext)
         {
             _loadOptionsManager = loadOptionsManager ?? throw new ArgumentNullException(nameof(loadOptionsManager));
+            _fileManager        = fileManager ?? throw new ArgumentNullException(nameof(fileManager));
             _userContext        = userContext ?? throw new ArgumentNullException(nameof(userContext));
         }
 
         [HttpPost]
-        public IEnumerable<string> Post([FromBody] LoadOptions input)
+        public async Task<IEnumerable<string>> Post([FromBody] LoadOptions input)
         {
-            return GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, input).Commands.ToStringList();
+            if (input.FileName.StartsWith(@"db:"))
+            {
+                input.FileName = input.FileName.Substring(3);
+                var fileDto = await _fileManager.Get(new Tuple<int, string>(_userContext.UserId ?? 0, input.FileName));
+                input.FileContent = fileDto.Content;
+            }
+
+            return GCodeLoadHelper.CallLoad(input).Commands.ToStringList();
         }
 
         [HttpPut]
         public async Task<IEnumerable<string>> Put([FromBody] CreateGCode input)
         {
             LoadOptions opt = await _loadOptionsManager.Get(input.LoadOptionsId);
-            return GCodeLoadHelper.CallLoad(input.FileName, input.FileContent, opt).Commands.ToStringList();
+            opt.FileName    = input.FileName;
+            opt.FileContent = input.FileContent;
+
+            return GCodeLoadHelper.CallLoad(opt).Commands.ToStringList();
+        }
+
+        [HttpPut("render")]
+        public async Task<IActionResult> Render([FromBody] PreviewGCode opt)
+        {
+            var gCodeDraw = new GCodeBitmapDraw()
+            {
+                SizeX      = opt.SizeX,
+                SizeY      = opt.SizeY,
+                SizeZ      = opt.SizeZ,
+                RenderSize = new Size(opt.RenderSizeX, opt.RenderSizeY),
+                OffsetX    = opt.OffsetX,
+                OffsetY    = opt.OffsetY,
+                OffsetZ    = opt.OffsetZ,
+
+                Zoom       = opt.Zoom,
+                CutterSize = opt.CutterSize,
+                LaserSize  = opt.LaserSize,
+                KeepRatio  = opt.KeepRatio
+            };
+
+            if (opt.Rotate3DVect != null && opt.Rotate3DVect.Count() == 3)
+            {
+                gCodeDraw.Rotate = new Rotate3D(opt.Rotate3DAngle, opt.Rotate3DVect.ToArray());
+            }
+
+            var load = new LoadGCode();
+            load.Load(opt.Commands.ToArray());
+            var commands = load.Commands;
+            var bitmap   = gCodeDraw.DrawToBitmap(commands);
+
+            var memoryStream = new MemoryStream();
+            bitmap.Save(memoryStream, ImageFormat.Png);
+            var fileName = Path.GetFileName("preview.png");
+            return await this.GetFile(fileName, memoryStream);
         }
     }
 }

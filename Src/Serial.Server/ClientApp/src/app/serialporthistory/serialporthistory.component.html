@@ -8,48 +8,45 @@
   <button (click)='refresh()'>Refresh</button><button (click)='clear()'>Clear</button>
 </p>
 
-<table class='table' *ngIf="serialcommands">
-  <thead>
-  <tr>
-    <th>SeqId</th>
-    <th>SentTime</th>
-    <th>CommandText</th>
-    <th>ReplyType</th>
-    <th>ResultText</th>
-    <th>ReplyReceivedTime</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let serialcommand of serialcommands">
-    <td>{{ serialcommand.SeqId}}</td>
-    <td>{{ serialcommand.SentTime | date:'HH:mm:ss'}}</td>
-    <td>{{ serialcommand.CommandText}}</td>
-    <td>{{ serialcommand.ReplyType}}</td>
-    <td>{{ serialcommand.ResultText}}</td>
-    <td>{{ serialcommand.ReplyReceivedTime | date:'HH:mm:ss'}}</td>
-  </tr>
-  </tbody>
-</table>
-<!-->
-<div class="row" *ngIf="messages.length > 0">
-  <div class="table-responsive">
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th>#</th>
-        <th>Messages</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let message of messages; let i = index">
-        <td>{{i + 1}}</td>
-        <td>{{message}}</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+<div *ngIf="serialcommands" class="mat-elevation-z8">
+
+  <table mat-table [dataSource]="serialcommandsDataSource">
+
+    <ng-container matColumnDef="SeqId">
+      <th mat-header-cell *matHeaderCellDef> SeqId </th>
+      <td mat-cell *matCellDef="let element"> {{element.SeqId}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="SentTime">
+      <th mat-header-cell *matHeaderCellDef> SentTime </th>
+      <td mat-cell *matCellDef="let element"> {{element.SentTime | date:'HH:mm:ss'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="CommandText">
+      <th mat-header-cell *matHeaderCellDef> CommandText </th>
+      <td mat-cell *matCellDef="let element"> {{element.CommandText}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="ReplyType">
+      <th mat-header-cell *matHeaderCellDef> ReplyType </th>
+      <td mat-cell *matCellDef="let element"> {{element.ReplyType}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="ResultText">
+      <th mat-header-cell *matHeaderCellDef> ResultText </th>
+      <td mat-cell *matCellDef="let element"> {{element.ResultText}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="ReplyReceivedTime">
+      <th mat-header-cell *matHeaderCellDef> ReplyReceivedTime </th>
+      <td mat-cell *matCellDef="let element"> {{element.ReplyReceivedTime | date:'HH:mm:ss'}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[10, 50, 100]" showFirstLastButtons></mat-paginator>
+
 </div>
-<div class="row" *ngIf="messages.length <= 0">
-  <span>No messages</span>
-</div>
-</!-->

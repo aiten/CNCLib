@@ -22,11 +22,14 @@ import { machinecontrolURL } from '../machinecontrol/machinecontrol.routing';
 
 @Component({
   selector: 'serialports',
-  templateUrl: './serialports.component.html'
+  templateUrl: './serialports.component.html',
+  styleUrls: ['./serialports.component.css']
 })
 export class SerialPortsComponent {
   public serialports!: SerialPortDefinition[];
   public historyportid: number = -1;
+
+  displayedColumns: string[] = ['Id', 'PortName', 'IsConnected', 'IsAborted', 'IsSingleStep', 'CommandsInQueue', 'Task'];
 
   constructor(
     private serivalServerService: SerialServerService,

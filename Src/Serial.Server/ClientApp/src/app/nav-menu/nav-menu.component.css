@@ -1,29 +1,2 @@
 /* Keep the nav menu independent of scrolling and on top of other items */
-.main-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1;
-}
 
-@media (min-width: 768px) {
-  /* On small screens, convert the nav menu to a vertical sidebar */
-  .main-nav {
-    height: 100%;
-    width: 200px; /* calc(12% - 20px); */
-  }
-
-  .navbar ul { float: none; }
-
-  .navbar li {
-    float: none;
-    font-size: 15px;
-    margin: 6px;
-  }
-
-  .navbar li a {
-    padding: 10px 16px;
-    border-radius: 4px;
-  }
-}
