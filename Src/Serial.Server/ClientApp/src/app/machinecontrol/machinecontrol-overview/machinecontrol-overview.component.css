@@ -1,4 +1,18 @@
 table {
-  width: 100%;
-  table-layout: fixed;
+}
+
+.mat-column-Id {
+  width: 50px;
+}
+
+.mat-column-PortName {
+  width: 200px;
+}
+
+.mat-column-IsConnected {
+  width: 90px;
+}
+
+.mat-column-Task {
+  width: 200px;
 }

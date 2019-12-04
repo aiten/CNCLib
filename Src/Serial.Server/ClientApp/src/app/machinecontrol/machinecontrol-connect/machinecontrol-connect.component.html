@@ -1,8 +1,3 @@
-<style type="text/css">
-
-  span { width: 200px; }
-</style>
-<body>
 <p>Port: {{entry.PortName}},{{entry.Id}} </p>
 
 <form novalidate [formGroup]="setupForm" (ngSubmit)="save(setupForm.value)">
@@ -18,8 +13,7 @@
     <span class="input-group-addon">ResetOnConnect</span>
     <input type="checkbox" class="form-control" formControlName="resetOnConnect" style="margin-left: 10px"/>
   </div>
-  <button type="submit" class="btn btn-default" [disabled]="!setupForm.valid">
+  <button mat-stroked-button type="submit" class="btn btn-default" [disabled]="!setupForm.valid">
     Connect
   </button>
 </form>
-</body>

@@ -1,7 +1,8 @@
 .form-group {
-  margin-bottom: 1px
+  margin-bottom: 1px;
+  min-width: 375px;
 }
 
 .input-group-addon {
-  width: 300px;
+   width: 300px;
 }

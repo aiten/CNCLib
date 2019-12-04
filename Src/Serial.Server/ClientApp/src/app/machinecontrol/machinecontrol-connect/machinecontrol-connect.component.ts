@@ -24,7 +24,8 @@ import { SerialServerService } from '../../services/serialserver.service';
 @Component(
   {
     selector: 'machinecontrolconnect',
-    templateUrl: './machinecontrol-connect.component.html'
+    templateUrl: './machinecontrol-connect.component.html',
+    styleUrls: ['./machinecontrol-connect.component.css']
   })
 export class MachineControlConnectComponent {
   @Input()
