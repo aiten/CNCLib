@@ -10,9 +10,9 @@
 
   <PropertyGroup Label="Custom Variables">
     <SolutionNamespace>CNCLib</SolutionNamespace>
-    <TargetFrameworkForProjects>netcoreapp3.0</TargetFrameworkForProjects>
-    <TargetFrameworkForAppAndTests>netcoreapp3.0</TargetFrameworkForAppAndTests>
-    <TargetFrameworkForFull>netcoreapp3.0</TargetFrameworkForFull>
+    <TargetFrameworkForProjects>netcoreapp3.1</TargetFrameworkForProjects>
+    <TargetFrameworkForAppAndTests>netcoreapp3.1</TargetFrameworkForAppAndTests>
+    <TargetFrameworkForFull>netcoreapp3.1</TargetFrameworkForFull>
   </PropertyGroup>
 
   <PropertyGroup Label="Compiler Settings">
