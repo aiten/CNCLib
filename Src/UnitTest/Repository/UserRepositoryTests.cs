@@ -33,7 +33,7 @@ using Xunit;
 
 namespace CNCLib.UnitTest.Repository
 {
-    public class UserRepositoryTests : RepositoryTests, IClassFixture<RepositoryTestFixture>
+    public class UserRepositoryTests : RepositoryTests
     {
         #region crt and overrides
 

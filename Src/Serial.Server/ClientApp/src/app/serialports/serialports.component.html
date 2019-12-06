@@ -45,10 +45,10 @@
       <ng-container matColumnDef="Task">
         <th mat-header-cell *matHeaderCellDef> Task </th>
         <td mat-cell *matCellDef="let element">
-          <button (click)='machineControl(element.Id)'>Use</button>
-          <button (click)='showHistory(element.Id)'>History</button>
-          <button *ngIf="element.IsConnected" (click)='clearQueue(element.Id)'>Clear Queue</button>
-          <button *ngIf="element.IsConnected" (click)='disconnect(element.Id)'>Disconnect</button>
+            <button class="taskbutton" (click)='machineControl(element.Id)'>Use</button>
+            <button class="taskbutton" (click)='showHistory(element.Id)'>History</button>
+            <button class="taskbutton" *ngIf="element.IsConnected" (click)='clearQueue(element.Id)'>Clear Queue</button>
+            <button class="taskbutton" *ngIf="element.IsConnected" (click)='disconnect(element.Id)'>Disconnect</button>
         </td>
       </ng-container>
 

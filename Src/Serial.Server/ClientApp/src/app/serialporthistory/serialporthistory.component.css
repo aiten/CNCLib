@@ -4,7 +4,7 @@ table {
 }
 
 .mat-column-SeqId {
-  width: 50px;
+  width: 70px;
 }
 
 .mat-column-SentTime {
@@ -16,11 +16,11 @@ table {
 }
 
 .mat-column-ReplyType {
-  width: 90px;
+  width: 50px;
 }
 
 .mat-column-ResultText {
-  flex: 0 0 25% !important;
+  flex: 0 0 35% !important;
 }
 
 .mat-column-ReplyReceivedTime {

@@ -23,6 +23,14 @@ using Xunit;
 
 namespace CNCLib.UnitTest.Repository
 {
+    [CollectionDefinition("RepositoryTests")]
+    public class DatabaseCollection : ICollectionFixture<RepositoryTestFixture>
+    {
+        // This class has no code, and is never created. Its purpose is simply
+        // to be the place to apply [CollectionDefinition] and all the
+        // ICollectionFixture<> interfaces.
+    }
+
     [Collection("RepositoryTests")]
     public abstract class RepositoryTests : RepositoryTestBase<CNCLibContext>
     {

@@ -20,6 +20,7 @@ using CNCLib.Repository.SqLite;
 using Framework.UnitTest.Repository;
 
 using Microsoft.EntityFrameworkCore;
+using Xunit;
 
 namespace CNCLib.UnitTest.Repository
 {
