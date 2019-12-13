@@ -49,7 +49,7 @@ namespace CNCLib.UnitTest.Repository
                 {
                     var context = TestFixture.CreateDbContext();
                     var uow     = new UnitOfWork<CNCLibContext>(context);
-                    var rep     = new MachineRepository(context, UserContext);
+                    var rep     = new MachineRepository(context);
                     return new CRUDTestDbContext<CNCLibContext, Machine, int, IMachineRepository>(context, uow, rep);
                 },
                 GetEntityKey = (entity) => entity.MachineId,

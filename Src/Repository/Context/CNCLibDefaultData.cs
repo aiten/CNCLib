@@ -40,8 +40,8 @@ namespace CNCLib.Repository.Context
             _machineMap = ImportCsv<int, Machine>("Machine.csv", m => m.MachineId, (m, key) =>
             {
                 m.MachineId = key;
-                m.User      = m.UserId.HasValue ? _userMap[m.UserId.Value] : null;
-                m.UserId    = null;
+                m.User      = _userMap[m.UserId];
+                m.UserId    = 0;
             });
             _machineCommandMap = ImportCsv<int, MachineCommand>("MachineCommand.csv", mc => mc.MachineCommandId, (mc, key) =>
             {
@@ -59,8 +59,8 @@ namespace CNCLib.Repository.Context
             _itemMap = ImportCsv<int, Item>("Item.csv", i => i.ItemId, (i, key) =>
             {
                 i.ItemId = key;
-                i.User   = i.UserId.HasValue ? _userMap[i.UserId.Value] : null;
-                i.UserId = null;
+                i.User   = _userMap[i.UserId];
+                i.UserId = 0;
             });
             _itemPropertyMap = ImportCsv<Tuple<int, string>, ItemProperty>("ItemProperty.csv", ip => new Tuple<int, string>(ip.ItemId, ip.Name), (ip, key) =>
             {
@@ -68,16 +68,18 @@ namespace CNCLib.Repository.Context
                 ip.ItemId = 0;
             });
 
-            _configurationMap = ImportCsv<Tuple<string, string>, Configuration>("Configuration.csv", c => new Tuple<string, string>(c.Group, c.Name), (c, key) =>
+            _configurationMap = ImportCsv<int, Configuration>("Configuration.csv", c => c.ConfigurationId, (c, key) =>
             {
-                c.User   = c.UserId.HasValue ? _userMap[c.UserId.Value] : null;
-                c.UserId = null;
+                c.ConfigurationId = key;
+                c.User            = _userMap[c.UserId];
+                c.UserId          = 0;
             });
 
-            _userFileMap = ImportCsv<Tuple<int, string>, UserFile>("UserFile.csv", ip => new Tuple<int, string>(ip.UserId, ip.FileName), (ip, key) =>
+            _userFileMap = ImportCsv<int, UserFile>("UserFile.csv", uf => uf.UserFileId, (uf, key) =>
             {
-                ip.User   = _userMap[ip.UserId];
-                ip.UserId = 0;
+                uf.UserFileId = key;
+                uf.User       = _userMap[uf.UserId];
+                uf.UserId     = 0;
             });
         }
     }

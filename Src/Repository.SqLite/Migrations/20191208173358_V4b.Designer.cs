@@ -3,14 +3,16 @@ using System;
 using CNCLib.Repository.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CNCLib.Repository.SqLite.Migrations
 {
     [DbContext(typeof(CNCLibContext))]
-    partial class CNCLibContextModelSnapshot : ModelSnapshot
+    [Migration("20191208173358_V4b")]
+    partial class V4b
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,7 +39,8 @@ namespace CNCLib.Repository.SqLite.Migrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(256);
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
+                        .IsRequired()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Value")
@@ -46,7 +49,9 @@ namespace CNCLib.Repository.SqLite.Migrations
 
                     b.HasKey("ConfigurationId");
 
-                    b.HasAlternateKey("UserId", "Group", "Name");
+                    b.HasAlternateKey("Group", "Name", "UserId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Configuration");
                 });
@@ -67,12 +72,15 @@ namespace CNCLib.Repository.SqLite.Migrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(64);
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("ItemId");
 
-                    b.HasAlternateKey("UserId", "Name");
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Item");
                 });
@@ -188,12 +196,12 @@ namespace CNCLib.Repository.SqLite.Migrations
                     b.Property<bool>("Spindle")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("MachineId");
 
-                    b.HasAlternateKey("UserId", "Name");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Machine");
                 });
@@ -298,7 +306,8 @@ namespace CNCLib.Repository.SqLite.Migrations
                         .HasMaxLength(1024)
                         .IsUnicode(true);
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
+                        .IsRequired()
                         .HasColumnType("INTEGER");
 
                     b.HasKey("UserFileId");
@@ -400,9 +409,7 @@ namespace CNCLib.Repository.SqLite.Migrations
                 {
                     b.HasOne("CNCLib.Repository.Abstraction.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.ItemProperty", b =>
@@ -418,9 +425,7 @@ namespace CNCLib.Repository.SqLite.Migrations
                 {
                     b.HasOne("CNCLib.Repository.Abstraction.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.MachineCommand", b =>

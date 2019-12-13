@@ -28,9 +28,13 @@ namespace CNCLib.WpfClient
 {
     public class CNCLibUserContext : ICNCLibUserContextRW
     {
-        public CNCLibUserContext()
+        public CNCLibUserContext(string userName=null)
         {
-            string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+            if (userName == null)
+            {
+                userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+            }
+
             UserName          = userName; // Environment.UserName;
             EncriptedPassword = Base64Helper.StringToBase64(UserName);
         }
@@ -41,7 +45,7 @@ namespace CNCLib.WpfClient
 
         public string Password => Base64Helper.StringFromBase64(EncriptedPassword);
 
-        public int? UserId { get; private set; }
+        public int UserId { get; private set; }
 
         public async Task InitUserContext()
         {

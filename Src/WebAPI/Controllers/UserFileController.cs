@@ -56,7 +56,7 @@ namespace CNCLib.WebAPI.Controllers
         [HttpGet("{filename}")]
         public async Task<IActionResult> Get(string filename)
         {
-            var dto = await _manager.Get(GetKey(filename));
+            var dto = await _manager.Get(await GetKey(filename));
 
             if (dto == null)
             {
@@ -65,7 +65,8 @@ namespace CNCLib.WebAPI.Controllers
 
             var memoryStream = new MemoryStream(dto.Content);
             var fileName = Path.GetFileName(dto.FileName);
-            return await this.GetFile(fileName, memoryStream);
+            memoryStream.Position = 0;
+            return File(memoryStream, this.GetContentType(fileName), fileName);
         }
         
         public class UserFile
@@ -82,7 +83,7 @@ namespace CNCLib.WebAPI.Controllers
 
             if (userFileDto != null)
             {
-                await this.Add<UserFileDto, Tuple<int, string>>(_manager, userFileDto);
+                await this.Add(_manager, userFileDto);
                 return Ok(value.FileName);
             }
 
@@ -90,13 +91,15 @@ namespace CNCLib.WebAPI.Controllers
         }
 
         [HttpPut("{filename}")]
-        public async Task<ActionResult> Update(string filename, [FromForm] UserFile value)
+        public async Task<ActionResult> Update(string fileName, [FromForm] UserFile value)
         {
             var userFileDto = GetUserFileDto(value);
 
             if (userFileDto != null)
             {
-                await this.Update<UserFileDto, Tuple<int, string>>(_manager, GetKey(filename), GetKey(value.FileName), userFileDto);
+                var fileIdFromUri = await _manager.GetFileId(fileName);
+                var fileIdFromValue = await _manager.GetFileId(value.FileName);
+                await this.Update(_manager, fileIdFromUri, fileIdFromValue, userFileDto);
                 return Ok(value.FileName);
             }
 
@@ -104,9 +107,10 @@ namespace CNCLib.WebAPI.Controllers
         }
 
         [HttpDelete("{filename}")]
-        public async Task<ActionResult> Delete(string filename)
+        public async Task<ActionResult> Delete(string fileName)
         {
-            return await this.Delete<UserFileDto, Tuple<int, string>>(_manager, GetKey(filename));
+            var fileIdFromUri = await _manager.GetFileId(fileName);
+            return await this.Delete(_manager, fileIdFromUri);
         }
 
         #endregion
@@ -115,14 +119,13 @@ namespace CNCLib.WebAPI.Controllers
             using (var memoryStream = new MemoryStream())
             {
                 value.Image.CopyTo(memoryStream);
-                return new UserFileDto() { UserId = _userContext.UserId ?? 0, FileName = value.FileName, Content = memoryStream.ToArray() };
+                return new UserFileDto() { UserId = _userContext.UserId, FileName = value.FileName, Content = memoryStream.ToArray() };
             }
         }
 
-
-        private Tuple<int, string> GetKey(string filename)
+        private async Task<int> GetKey(string filename)
         {
-            return new Tuple<int, string>(_userContext.UserId??0, filename);
+            return await _manager.GetFileId(filename);
         }
     }
 }

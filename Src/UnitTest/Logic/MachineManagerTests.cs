@@ -336,7 +336,7 @@ namespace CNCLib.UnitTest.Logic
 
             var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
 
-            repC.Get("Environment", "DefaultMachineId").Returns(new Configuration { Value = "14" });
+            repC.Get(1, "Environment", "DefaultMachineId").Returns(new Configuration { Value = "14" });
             int dm = await ctrl.GetDefaultMachine();
 
             dm.Should().Be(14);
@@ -351,7 +351,7 @@ namespace CNCLib.UnitTest.Logic
 
             var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
 
-            repC.Get("Environment", "DefaultMachineId").Returns((Configuration)null);
+            repC.Get(1, "Environment", "DefaultMachineId").Returns((Configuration)null);
 
             (await ctrl.GetDefaultMachine()).Should().Be(-1);
         }
@@ -367,7 +367,7 @@ namespace CNCLib.UnitTest.Logic
 
             await ctrl.SetDefaultMachine(15);
 
-            repC.Get("Environment", "DefaultMachineId").Returns(new Configuration { Value = "14" });
+            repC.Get(1, "Environment", "DefaultMachineId").Returns(new Configuration { Value = "14" });
 
             await repC.Received().Store(Arg.Is<Configuration>(x => x.Group == "Environment" && x.Name == "DefaultMachineId" && x.Value == "15"));
         }

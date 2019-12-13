@@ -41,24 +41,20 @@ namespace CNCLib.UnitTest.Repository
         {
         }
 
-        protected CRUDRepositoryTests<CNCLibContext, Configuration, ConfigurationPrimary, IConfigurationRepository> CreateTestContext()
+        protected CRUDRepositoryTests<CNCLibContext, Configuration, int, IConfigurationRepository> CreateTestContext()
         {
-            return new CRUDRepositoryTests<CNCLibContext, Configuration, ConfigurationPrimary, IConfigurationRepository>()
+            return new CRUDRepositoryTests<CNCLibContext, Configuration, int, IConfigurationRepository>()
             {
                 CreateTestDbContext = () =>
                 {
                     var context = TestFixture.CreateDbContext();
                     var uow     = new UnitOfWork<CNCLibContext>(context);
-                    var rep     = new ConfigurationRepository(context, UserContext);
-                    return new CRUDTestDbContext<CNCLibContext, Configuration, ConfigurationPrimary, IConfigurationRepository>(context, uow, rep);
+                    var rep     = new ConfigurationRepository(context);
+                    return new CRUDTestDbContext<CNCLibContext, Configuration, int, IConfigurationRepository>(context, uow, rep);
                 },
-                GetEntityKey = (entity) => new ConfigurationPrimary() { Group = entity.Group, Name = entity.Name },
-                SetEntityKey = (entity, key) =>
-                {
-                    entity.Group = key.Group;
-                    entity.Name  = key.Name;
-                },
-                CompareEntity = (entity1, entity2) => CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new string[0])
+                GetEntityKey  = (entity) => entity.ConfigurationId,
+                SetEntityKey  = (entity,  key) => entity.ConfigurationId = key,
+                CompareEntity = (entity1, entity2) => CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] { @"ConfigurationId", })
             };
         }
 
@@ -78,21 +74,21 @@ namespace CNCLib.UnitTest.Repository
         [Fact]
         public async Task GetOKTest()
         {
-            var entity = await CreateTestContext().GetOK(new ConfigurationPrimary() { Group = "TestGroup", Name = "TestBool" });
-            entity.Value.Should().Be(@"True");
+            var entity = await CreateTestContext().GetOK(1);
+            entity.ConfigurationId.Should().Be(1);
         }
 
         [Fact]
         public async Task GetTrackingOKTest()
         {
-            var entity = await CreateTestContext().GetTrackingOK(new ConfigurationPrimary() { Group = "TestGroup", Name = "TestDecimal" });
-            entity.Value.Should().Be(@"1.2345");
+            var entity = await CreateTestContext().GetTrackingOK(1);
+            entity.ConfigurationId.Should().Be(1);
         }
 
         [Fact]
         public async Task GetNotExistTest()
         {
-            await CreateTestContext().GetNotExist(new ConfigurationPrimary() { Group = "NotExist", Name = "NotExist" });
+            await CreateTestContext().GetNotExist(123456);
         }
 
         [Fact]
@@ -129,30 +125,32 @@ namespace CNCLib.UnitTest.Repository
             await CreateTestContext().AddRollBack(
                 () => new Configuration()
                 {
-                    Group = "TestGroup",
-                    Name  = "TestName",
-                    Type  = "string",
-                    Value = "TestValue"
+                    Group  = "TestGroup",
+                    Name   = "TestName",
+                    Type   = "string",
+                    Value  = "TestValue",
+                    UserId = 1
                 });
         }
-
+/*
         [Fact]
         public async Task StoreTest()
         {
             await CreateTestContext().Store(
                 () => new Configuration()
                 {
-                    Group = "TestGroup",
-                    Name  = "TestName",
-                    Type  = "string",
-                    Value = "TestValue"
+                    Group  = "TestGroup",
+                    Name   = "TestName",
+                    Type   = "string",
+                    Value  = "TestValue",
+                    UserId = 1
                 },
                 (entity) => entity.Value = "testValueModified");
         }
-
+*/
         private static Configuration CreateConfiguration(string group, string name)
         {
-            return new Configuration() { Group = group, Name = name, Type = "string", Value = "TestValue" };
+            return new Configuration() { Group = group, Name = name, Type = "string", Value = "TestValue", UserId = 1 };
         }
 
         #endregion
@@ -164,7 +162,7 @@ namespace CNCLib.UnitTest.Repository
         {
             using (var ctx = CreateTestContext().CreateTestDbContext())
             {
-                var entity = await ctx.Repository.Get("Test", "Test");
+                var entity = await ctx.Repository.Get(1, "Test", "Test");
                 entity.Should().BeNull();
             }
         }
@@ -174,7 +172,7 @@ namespace CNCLib.UnitTest.Repository
         {
             using (var ctx = CreateTestContext().CreateTestDbContext())
             {
-                await ctx.Repository.Store(new Configuration("Test", "TestNew1", "Content"));
+                await ctx.Repository.Store(new Configuration(1, "Test", "TestNew1", "Content"));
                 await ctx.UnitOfWork.SaveChangesAsync();
             }
         }

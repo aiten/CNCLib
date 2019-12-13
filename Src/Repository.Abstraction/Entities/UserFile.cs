@@ -18,9 +18,10 @@ namespace CNCLib.Repository.Abstraction.Entities
 {
     public class UserFile
     {
-        public int    UserId   { get; set; }
-        public User   User     { get; set; }
-        public string FileName { get; set; }
-        public byte[] Content  { get; set; }
+        public int    UserFileId { get; set; }
+        public int    UserId     { get; set; }
+        public User   User       { get; set; }
+        public string FileName   { get; set; }
+        public byte[] Content    { get; set; }
     }
 }

@@ -15,17 +15,24 @@ namespace CNCLib.Repository.SqlServer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.0.0")
+                .HasAnnotation("ProductVersion", "3.1.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.Configuration", b =>
                 {
+                    b.Property<int>("ConfigurationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<string>("Group")
+                        .IsRequired()
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
@@ -34,16 +41,16 @@ namespace CNCLib.Repository.SqlServer.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(4000)")
                         .HasMaxLength(4000);
 
-                    b.HasKey("Group", "Name");
+                    b.HasKey("ConfigurationId");
 
-                    b.HasIndex("UserId");
+                    b.HasAlternateKey("UserId", "Group", "Name");
 
                     b.ToTable("Configuration");
                 });
@@ -65,15 +72,12 @@ namespace CNCLib.Repository.SqlServer.Migrations
                         .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("ItemId");
 
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.HasIndex("UserId");
+                    b.HasAlternateKey("UserId", "Name");
 
                     b.ToTable("Item");
                 });
@@ -190,12 +194,12 @@ namespace CNCLib.Repository.SqlServer.Migrations
                     b.Property<bool>("Spindle")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("MachineId");
 
-                    b.HasIndex("UserId");
+                    b.HasAlternateKey("UserId", "Name");
 
                     b.ToTable("Machine");
                 });
@@ -290,18 +294,26 @@ namespace CNCLib.Repository.SqlServer.Migrations
 
             modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.UserFile", b =>
                 {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FileName")
-                        .HasColumnType("nvarchar(1024)")
-                        .HasMaxLength(1024)
-                        .IsUnicode(true);
+                    b.Property<int>("UserFileId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<byte[]>("Content")
                         .HasColumnType("varbinary(max)");
 
-                    b.HasKey("UserId", "FileName");
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(1024)")
+                        .HasMaxLength(1024)
+                        .IsUnicode(true);
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserFileId");
+
+                    b.HasAlternateKey("UserId", "FileName");
 
                     b.ToTable("UserFile");
                 });
@@ -390,14 +402,18 @@ namespace CNCLib.Repository.SqlServer.Migrations
                 {
                     b.HasOne("CNCLib.Repository.Abstraction.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.Item", b =>
                 {
                     b.HasOne("CNCLib.Repository.Abstraction.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.ItemProperty", b =>
@@ -413,7 +429,9 @@ namespace CNCLib.Repository.SqlServer.Migrations
                 {
                     b.HasOne("CNCLib.Repository.Abstraction.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.MachineCommand", b =>

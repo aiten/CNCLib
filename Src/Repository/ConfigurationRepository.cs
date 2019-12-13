@@ -31,32 +31,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository
 {
-    public class ConfigurationRepository : CRUDRepository<CNCLibContext, Configuration, ConfigurationPrimary>, IConfigurationRepository
+    public class ConfigurationRepository : CRUDRepository<CNCLibContext, Configuration, int>, IConfigurationRepository
     {
-        private readonly ICNCLibUserContext _userContext;
-
         #region ctr/default/overrides
 
-        public ConfigurationRepository(CNCLibContext dbContext, ICNCLibUserContext userContext) : base(dbContext)
+        public ConfigurationRepository(CNCLibContext dbContext) : base(dbContext)
         {
-            _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         }
 
-        protected override FilterBuilder<Configuration, ConfigurationPrimary> FilterBuilder =>
-            new FilterBuilder<Configuration, ConfigurationPrimary>()
+        protected override FilterBuilder<Configuration, int> FilterBuilder =>
+            new FilterBuilder<Configuration, int>()
             {
-                PrimaryWhere = (query, key) => query.Where(c => c.Group == key.Group && c.Name == key.Name),
-                PrimaryWhereIn = (query, keys) =>
-                {
-                    var predicate = PredicateBuilder.New<Configuration>();
-
-                    foreach (var key in keys)
-                    {
-                        predicate = predicate.Or(c => c.Group == key.Group && c.Name == key.Name);
-                    }
-
-                    return query.Where(predicate);
-                }
+                PrimaryWhere   = (query, key) => query.Where(c => c.ConfigurationId == key),
+                PrimaryWhereIn = (query, keys) => query.Where(item => keys.Contains(item.ConfigurationId))
             };
 
         protected override IQueryable<Configuration> AddInclude(IQueryable<Configuration> query)
@@ -64,28 +51,17 @@ namespace CNCLib.Repository
             return query;
         }
 
-        protected override IQueryable<Configuration> AddOptionalWhere(IQueryable<Configuration> query)
-        {
-            if (_userContext.UserId.HasValue)
-            {
-                return query.Where(x => x.UserId.HasValue == false || x.UserId.Value == _userContext.UserId.Value);
-            }
-
-            return base.AddOptionalWhere(query);
-        }
-
         public async Task Store(Configuration configuration)
         {
             // search und update machine
 
-            var cInDb = await AddOptionalWhere(TrackingQuery).Where(c => c.Group == configuration.Group && c.Name == configuration.Name).FirstOrDefaultAsync();
+            var cInDb = await AddOptionalWhere(TrackingQuery).Where(c => c.UserId == configuration.UserId && c.Group == configuration.Group && c.Name == configuration.Name).FirstOrDefaultAsync();
 
             if (cInDb == default(Configuration))
             {
                 // add new
 
-                cInDb        = configuration;
-                cInDb.UserId = _userContext.UserId;
+                cInDb = configuration;
                 AddEntity(cInDb);
             }
             else
@@ -101,9 +77,9 @@ namespace CNCLib.Repository
 
         #region extra queries
 
-        public async Task<Configuration> Get(string group, string name)
+        public async Task<Configuration> Get(int userId, string group, string name)
         {
-            return await AddOptionalWhere(Query).Where(c => c.Group == group && c.Name == name).FirstOrDefaultAsync();
+            return await AddOptionalWhere(Query).Where(c => c.UserId == userId && c.Group == group && c.Name == name).FirstOrDefaultAsync();
         }
 
         #endregion

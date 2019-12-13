@@ -1,0 +1,4 @@
+
+Add-Migration -Name V5 -StartupProject Repository\Repository.Migrations.Startup -Project Repository\Repository.SqLite -OutputDir Migrations
+
+Remove-Migration -StartupProject Repository\Repository.Migrations.Startup -Project Repository\Repository.SqLite

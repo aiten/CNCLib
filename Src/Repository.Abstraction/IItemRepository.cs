@@ -25,6 +25,8 @@ namespace CNCLib.Repository.Abstraction
 {
     public interface IItemRepository : ICRUDRepository<Item, int>
     {
-        Task<IList<Item>> Get(string typeIdString);
+        Task<IList<Item>> GetByUser(int userId);
+
+        Task<IList<Item>> Get(int userId, string typeIdString);
     }
 }

@@ -73,7 +73,7 @@ namespace CNCLib.WpfClient.Sql.Start
 
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
-            var userContext = new CNCLibUserContext();
+            var userContext = new CNCLibUserContext("global");
 
             GlobalServiceCollection.Instance = new ServiceCollection();
             GlobalServiceCollection.Instance

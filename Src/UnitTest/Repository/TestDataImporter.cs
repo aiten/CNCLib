@@ -39,10 +39,11 @@ namespace CNCLib.UnitTest.Repository
             // default data already in db
             _userMap = ReadFromDb<int, User>(u => u.UserId);
 
-            _configurationMap = ImportCsv<Tuple<string, string>, Configuration>("ConfigurationTest.csv", c => new Tuple<string, string>(c.Group, c.Name), (c, key) =>
+            _configurationMap = ImportCsv<int, Configuration>("ConfigurationTest.csv", c => c.ConfigurationId, (c, key) =>
             {
-                c.User   = c.UserId.HasValue ? _userMap[c.UserId.Value] : null;
-                c.UserId = null;
+                c.ConfigurationId = key;
+                c.User   = _userMap[c.UserId];
+                c.UserId = 0;
             });
         }
     }

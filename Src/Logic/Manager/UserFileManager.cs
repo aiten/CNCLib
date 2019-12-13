@@ -32,7 +32,7 @@ using UserFileEntity = CNCLib.Repository.Abstraction.Entities.UserFile;
 
 namespace CNCLib.Logic.Manager
 {
-    public class UserFileManager : CRUDManager<UserFile, Tuple<int,string>, UserFileEntity>, IUserFileManager
+    public class UserFileManager : CRUDManager<UserFile, int, UserFileEntity>, IUserFileManager
     {
         private readonly IUnitOfWork         _unitOfWork;
         private readonly IUserFileRepository _repository;
@@ -48,14 +48,29 @@ namespace CNCLib.Logic.Manager
             _mapper      = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<IEnumerable<string>> GetFileNames()
+        protected override Task<IList<UserFileEntity>> GetAllEntities()
         {
-            return await _repository.GetFileNames();
+            return _repository.GetByUser(_userContext.UserId);
         }
 
-        protected override Tuple<int, string> GetKey(UserFileEntity entity)
+        public async Task<IEnumerable<string>> GetFileNames()
         {
-            return new Tuple<int, string>(entity.UserId, entity.FileName);
+            return await _repository.GetFileNames(_userContext.UserId);
+        }
+
+        protected override int GetKey(UserFileEntity entity)
+        {
+            return entity.UserFileId;
+        }
+
+        public async Task<UserFile> GetByName(string filename)
+        {
+            return MapToDto(await _repository.GetByName(_userContext.UserId, filename));
+        }
+
+        public async Task<int> GetFileId(string fileName)
+        {
+            return await _repository.GetFileId(_userContext.UserId, fileName);
         }
     }
 }

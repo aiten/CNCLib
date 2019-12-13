@@ -26,7 +26,7 @@ namespace CNCLib.WebAPI
     {
         public string UserName { get; private set; }
 
-        public int? UserId { get; private set; }
+        public int UserId { get; private set; }
 
         public void InitFromController(Controller controller)
         {

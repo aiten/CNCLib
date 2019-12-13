@@ -27,7 +27,9 @@ namespace CNCLib.Repository.Mappings
         {
             entity.ToTable("UserFile");
 
-            entity.HasKey(e => new { e.UserId, e.FileName });
+            entity.HasKey(e => e.UserFileId);
+
+            entity.HasAlternateKey(e => new { e.UserId, e.FileName });
 
             entity.Property(m => m.FileName).IsRequired().IsUnicode().HasMaxLength(1024);
 

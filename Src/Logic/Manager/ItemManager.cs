@@ -53,13 +53,14 @@ namespace CNCLib.Logic.Manager
             return entity.ItemId;
         }
 
+        protected override Task<IList<ItemEntity>> GetAllEntities()
+        {
+            return _repository.GetByUser(_userContext.UserId);
+        }
+
         protected override void AddEntity(ItemEntity entityInDb)
         {
-            if (_userContext.UserId.HasValue)
-            {
-                entityInDb.UserId = _userContext.UserId;
-            }
-
+            entityInDb.UserId = _userContext.UserId;
             base.AddEntity(entityInDb);
         }
 
@@ -75,7 +76,7 @@ namespace CNCLib.Logic.Manager
 
         public async Task<IEnumerable<Item>> GetByClassName(string classname)
         {
-            return (await _repository.Get(classname)).ToDto(_mapper);
+            return (await _repository.Get(_userContext.UserId, classname)).ToDto(_mapper);
         }
     }
 }

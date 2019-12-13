@@ -22,7 +22,6 @@ using System.Threading.Tasks;
 using CNCLib.Repository.Abstraction;
 using CNCLib.Repository.Abstraction.Entities;
 using CNCLib.Repository.Context;
-using CNCLib.Shared;
 
 using Framework.Repository;
 
@@ -32,13 +31,10 @@ namespace CNCLib.Repository
 {
     public class MachineRepository : CRUDRepository<CNCLibContext, Machine, int>, IMachineRepository
     {
-        private readonly ICNCLibUserContext _userContext;
-
         #region ctr/default/overrides
 
-        public MachineRepository(CNCLibContext context, ICNCLibUserContext userContext) : base(context)
+        public MachineRepository(CNCLibContext context) : base(context)
         {
-            _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         }
 
         protected override FilterBuilder<Machine, int> FilterBuilder =>
@@ -51,16 +47,6 @@ namespace CNCLib.Repository
         protected override IQueryable<Machine> AddInclude(IQueryable<Machine> query)
         {
             return query.Include(x => x.MachineCommands).Include(x => x.MachineInitCommands).Include(x => x.User);
-        }
-
-        protected override IQueryable<Machine> AddOptionalWhere(IQueryable<Machine> query)
-        {
-            if (_userContext.UserId.HasValue)
-            {
-                return query.Where(x => x.UserId.HasValue == false || x.UserId.Value == _userContext.UserId.Value);
-            }
-
-            return base.AddOptionalWhere(query);
         }
 
         protected override void AssignValuesGraph(Machine trackingEntity, Machine values)
@@ -79,6 +65,11 @@ namespace CNCLib.Repository
         #endregion
 
         #region extra Queries
+
+        public async Task<IList<Machine>> GetByUser(int userId)
+        {
+            return await AddOptionalWhere(Query).Where(m => m.UserId == userId).ToListAsync();
+        }
 
         public async Task<IList<MachineCommand>> GetMachineCommands(int machineId)
         {

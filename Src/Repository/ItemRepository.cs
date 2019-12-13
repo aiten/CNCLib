@@ -32,13 +32,10 @@ namespace CNCLib.Repository
 {
     public class ItemRepository : CRUDRepository<CNCLibContext, Item, int>, IItemRepository
     {
-        private readonly ICNCLibUserContext _userContext;
-
         #region ctr/default/overrides
 
-        public ItemRepository(CNCLibContext context, ICNCLibUserContext userContext) : base(context)
+        public ItemRepository(CNCLibContext context) : base(context)
         {
-            _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         }
 
         protected override FilterBuilder<Item, int> FilterBuilder =>
@@ -51,16 +48,6 @@ namespace CNCLib.Repository
         protected override IQueryable<Item> AddInclude(IQueryable<Item> query)
         {
             return query.Include(x => x.ItemProperties).Include(x => x.User);
-        }
-
-        protected override IQueryable<Item> AddOptionalWhere(IQueryable<Item> query)
-        {
-            if (_userContext.UserId.HasValue)
-            {
-                return query.Where(x => x.UserId.HasValue == false || x.UserId.Value == _userContext.UserId.Value);
-            }
-
-            return base.AddOptionalWhere(query);
         }
 
         protected override void AssignValuesGraph(Item trackingEntity, Item values)
@@ -76,9 +63,17 @@ namespace CNCLib.Repository
 
         #region extra Queries
 
-        public async Task<IList<Item>> Get(string typeIdString)
+        public async Task<IList<Item>> GetByUser(int userId)
         {
-            return await QueryWithOptional.Where(m => m.ClassName == typeIdString).Include(d => d.ItemProperties).ToListAsync();
+            return await AddOptionalWhere(Query).Where(m => m.UserId == userId).ToListAsync();
+        }
+
+        public async Task<IList<Item>> Get(int userId, string typeIdString)
+        {
+            return await QueryWithOptional
+                .Where(i => i.UserId == userId && i.ClassName == typeIdString)
+                .Include(d => d.ItemProperties)
+                .ToListAsync();
         }
 
         #endregion

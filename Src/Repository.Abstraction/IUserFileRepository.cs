@@ -24,14 +24,14 @@ using Framework.Repository.Abstraction;
 
 namespace CNCLib.Repository.Abstraction
 {
-    public class UserFileKey
+    public interface IUserFileRepository : ICRUDRepository<UserFile, int>
     {
-        public string FileName { get; set; }
-        public int    UserId   { get; set; }
-    }
+        Task<IList<UserFile>> GetByUser(int userId);
 
-    public interface IUserFileRepository : ICRUDRepository<UserFile, Tuple<int, string>>
-    {
-        Task<IList<string>> GetFileNames();
+        Task<IList<string>> GetFileNames(int userId);
+
+        Task<int> GetFileId(int userId, string fileName);
+
+        Task<UserFile> GetByName(int userId, string fileName);
     }
 }

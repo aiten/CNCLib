@@ -27,7 +27,9 @@ namespace CNCLib.Repository.Mappings
         {
             entity.ToTable("Configuration");
 
-            entity.HasKey(c => new { c.Group, c.Name });
+            entity.HasKey(c => c.ConfigurationId);
+
+            entity.HasAlternateKey(c => new { c.UserId, c.Group, c.Name });
 
             entity.Property(c => c.Group).IsRequired().HasMaxLength(256);
 
@@ -40,7 +42,6 @@ namespace CNCLib.Repository.Mappings
             entity.HasOne(c => c.User);
             entity.Property(c => c.UserId);
 
-//                IsOptional();
         }
     }
 }

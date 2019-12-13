@@ -66,7 +66,7 @@ namespace CNCLib.Repository.Context
 
             // -------------------------------------
 
-            //modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            // modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
             // -------------------------------------
 

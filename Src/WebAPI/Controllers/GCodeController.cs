@@ -60,7 +60,7 @@ namespace CNCLib.WebAPI.Controllers
             if (input.FileName.StartsWith(@"db:"))
             {
                 input.FileName = input.FileName.Substring(3);
-                var fileDto = await _fileManager.Get(new Tuple<int, string>(_userContext.UserId ?? 0, input.FileName));
+                var fileDto = await _fileManager.GetByName(input.FileName);
                 input.FileContent = fileDto.Content;
             }
 
@@ -108,8 +108,9 @@ namespace CNCLib.WebAPI.Controllers
 
             var memoryStream = new MemoryStream();
             bitmap.Save(memoryStream, ImageFormat.Png);
-            var fileName = Path.GetFileName("preview.png");
-            return await this.GetFile(fileName, memoryStream);
+            memoryStream.Position = 0;
+            var fileName = "preview.png";
+            return File(memoryStream, this.GetContentType(fileName), fileName );
         }
     }
 }

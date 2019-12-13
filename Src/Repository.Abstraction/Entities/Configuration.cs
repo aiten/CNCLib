@@ -18,22 +18,24 @@ namespace CNCLib.Repository.Abstraction.Entities
 {
     public class Configuration
     {
-        public string Group  { get; set; }
-        public string Name   { get; set; }
-        public string Type   { get; set; }
-        public string Value  { get; set; }
-        public int?   UserId { get; set; }
-        public User   User   { get; set; }
+        public int    ConfigurationId { get; set; }
+        public int    UserId          { get; set; }
+        public User   User            { get; set; }
+        public string Group           { get; set; }
+        public string Name            { get; set; }
+        public string Type            { get; set; }
+        public string Value           { get; set; }
 
         public Configuration()
         {
         }
 
-        public Configuration(string group, string name, object value)
+        public Configuration(int userId, string group, string name, object value)
         {
-            Name  = name;
-            Group = group;
-            Value = value.ToString();
+            Name   = name;
+            Group  = group;
+            Value  = value.ToString();
+            UserId = userId;
 
             Type = value.GetType().ToString();
         }

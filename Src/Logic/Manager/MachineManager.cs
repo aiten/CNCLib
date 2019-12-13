@@ -15,6 +15,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -55,13 +56,14 @@ namespace CNCLib.Logic.Manager
             return entity.MachineId;
         }
 
+        protected override Task<IList<MachineEntity>> GetAllEntities()
+        {
+            return _repository.GetByUser(_userContext.UserId);
+        }
+
         protected override void AddEntity(MachineEntity entityInDb)
         {
-            if (_userContext.UserId.HasValue)
-            {
-                entityInDb.UserId = _userContext.UserId;
-            }
-
+            entityInDb.UserId = _userContext.UserId;
             base.AddEntity(entityInDb);
         }
 
@@ -112,7 +114,7 @@ namespace CNCLib.Logic.Manager
 
         public async Task<int> GetDefaultMachine()
         {
-            var config = await _repositoryConfig.Get("Environment", "DefaultMachineId");
+            var config = await _repositoryConfig.Get(_userContext.UserId, "Environment", "DefaultMachineId");
 
             if (config == default(ConfigurationEntity))
             {
@@ -127,6 +129,7 @@ namespace CNCLib.Logic.Manager
             await _repositoryConfig.Store(
                 new ConfigurationEntity
                 {
+                    UserId = _userContext.UserId,
                     Group = "Environment",
                     Name  = "DefaultMachineId",
                     Type  = "Int32",

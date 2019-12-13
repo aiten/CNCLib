@@ -30,7 +30,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository
 {
-    public class UserFileRepository : CRUDRepository<CNCLibContext, UserFile, Tuple<int, string>>, IUserFileRepository
+    public class UserFileRepository : CRUDRepository<CNCLibContext, UserFile, int>, IUserFileRepository
     {
         #region ctr/default/overrides
 
@@ -38,21 +38,11 @@ namespace CNCLib.Repository
         {
         }
 
-        protected override FilterBuilder<UserFile, Tuple<int, string>> FilterBuilder =>
-            new FilterBuilder<UserFile, Tuple<int, string>>()
+        protected override FilterBuilder<UserFile, int> FilterBuilder =>
+            new FilterBuilder<UserFile, int>()
             {
-                PrimaryWhere = (query, key) => query.Where(item => item.UserId == key.Item1 && item.FileName == key.Item2),
-                PrimaryWhereIn = (query, keys) =>
-                {
-                    var predicate = PredicateBuilder.New<UserFile>();
-
-                    foreach (var key in keys)
-                    {
-                        predicate = predicate.Or(c => c.UserId == key.Item1 && c.FileName == key.Item2);
-                    }
-
-                    return query.Where(predicate);
-                }
+                PrimaryWhere = (query, key) => query.Where(item => item.UserFileId == key),
+                PrimaryWhereIn = (query, keys) => query.Where(item => keys.Contains(item.UserFileId))
             };
 
         protected override IQueryable<UserFile> AddInclude(IQueryable<UserFile> query)
@@ -64,9 +54,24 @@ namespace CNCLib.Repository
 
         #region extra Queries
 
-        public async Task<IList<string>> GetFileNames()
+        public async Task<IList<UserFile>> GetByUser(int userId)
         {
-            return await Query.Select(f => f.FileName).ToListAsync();
+            return await AddOptionalWhere(Query).Where(m => m.UserId == userId).ToListAsync();
+        }
+
+        public async Task<IList<string>> GetFileNames(int userId)
+        {
+            return await QueryWithOptional.Where(f => f.UserId == userId).Select(f => f.FileName).ToListAsync();
+        }
+
+        public async Task<int> GetFileId(int userId, string fileName)
+        {
+            return await QueryWithOptional.Where(f => f.UserId == userId && f.FileName == fileName).Select(f => f.UserFileId).FirstOrDefaultAsync();
+        } 
+
+        public async Task<UserFile> GetByName(int userId, string fileName)
+        {
+            return await QueryWithOptional.FirstOrDefaultAsync(f => f.UserId == userId && f.FileName == fileName);
         }
 
         #endregion

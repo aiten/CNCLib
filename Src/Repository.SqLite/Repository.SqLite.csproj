@@ -3,6 +3,16 @@
     <TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Migrations\20191213101859_V5.cs" />
+    <Compile Remove="Migrations\20191213101859_V5.Designer.cs" />
+    <Compile Remove="Migrations\20191213102748_V5.cs" />
+    <Compile Remove="Migrations\20191213102748_V5.Designer.cs" />
+    <Compile Remove="Migrations\20191213103015_V5a.cs" />
+    <Compile Remove="Migrations\20191213103015_V5a.Designer.cs" />
+    <Compile Remove="Migrations\20191213105413_V5a.cs" />
+    <Compile Remove="Migrations\20191213105413_V5a.Designer.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

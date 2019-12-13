@@ -20,7 +20,11 @@ namespace CNCLib.Repository.Abstraction.Entities
 {
     public class Machine
     {
-        public int    MachineId        { get; set; }
+        public int  MachineId { get; set; }
+        public int  UserId    { get; set; }
+        public User User      { get; set; }
+
+        public string Name             { get; set; }
         public string SerialServer     { get; set; }
         public int    SerialServerPort { get; set; }
         public string ComPort          { get; set; }
@@ -30,7 +34,6 @@ namespace CNCLib.Repository.Abstraction.Entities
 
         public bool NeedDtr { get; set; } // do not delete the column because SQLite limitation of drop columns
 
-        public string  Name           { get; set; }
         public decimal SizeX          { get; set; }
         public decimal SizeY          { get; set; }
         public decimal SizeZ          { get; set; }
@@ -51,9 +54,6 @@ namespace CNCLib.Repository.Abstraction.Entities
         public bool    Laser          { get; set; }
         public bool    Rotate         { get; set; }
         public int     CommandSyntax  { get; set; }
-
-        public int? UserId { get; set; }
-        public User User   { get; set; }
 
         public ICollection<MachineCommand>     MachineCommands     { get; set; }
         public ICollection<MachineInitCommand> MachineInitCommands { get; set; }

@@ -23,10 +23,11 @@ namespace CNCLib.UnitTest
         public CNCLibUserContext()
         {
             UserName = @"Test";
+            UserId = 1;
         }
 
         public string UserName { get; private set; }
 
-        public int? UserId { get; private set; }
+        public int UserId { get; private set; }
     }
 }

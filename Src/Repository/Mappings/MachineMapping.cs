@@ -29,6 +29,8 @@ namespace CNCLib.Repository.Mappings
 
             entity.HasKey(m => m.MachineId);
 
+            entity.HasAlternateKey(c => new { c.UserId, c.Name });
+
             entity.Property(m => m.Name).IsRequired().HasMaxLength(64);
 
             entity.Property(m => m.ComPort).IsRequired().HasMaxLength(32);
@@ -43,8 +45,6 @@ namespace CNCLib.Repository.Mappings
 
             entity.HasOne(p => p.User);
             entity.Property(m => m.UserId);
-
-//                IsOptional();
         }
     }
 }

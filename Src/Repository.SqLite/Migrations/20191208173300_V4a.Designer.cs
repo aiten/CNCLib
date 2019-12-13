@@ -3,53 +3,20 @@ using System;
 using CNCLib.Repository.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CNCLib.Repository.SqLite.Migrations
 {
     [DbContext(typeof(CNCLibContext))]
-    partial class CNCLibContextModelSnapshot : ModelSnapshot
+    [Migration("20191208173300_V4a")]
+    partial class V4a
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.0");
-
-            modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.Configuration", b =>
-                {
-                    b.Property<int>("ConfigurationId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Group")
-                        .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(256);
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(4000);
-
-                    b.HasKey("ConfigurationId");
-
-                    b.HasAlternateKey("UserId", "Group", "Name");
-
-                    b.ToTable("Configuration");
-                });
 
             modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.Item", b =>
                 {
@@ -67,12 +34,15 @@ namespace CNCLib.Repository.SqLite.Migrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(64);
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("ItemId");
 
-                    b.HasAlternateKey("UserId", "Name");
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Item");
                 });
@@ -188,12 +158,12 @@ namespace CNCLib.Repository.SqLite.Migrations
                     b.Property<bool>("Spindle")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("MachineId");
 
-                    b.HasAlternateKey("UserId", "Name");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Machine");
                 });
@@ -283,31 +253,6 @@ namespace CNCLib.Repository.SqLite.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.UserFile", b =>
-                {
-                    b.Property<int>("UserFileId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<byte[]>("Content")
-                        .HasColumnType("BLOB");
-
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(1024)
-                        .IsUnicode(true);
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("UserFileId");
-
-                    b.HasAlternateKey("UserId", "FileName");
-
-                    b.ToTable("UserFile");
-                });
-
             modelBuilder.Entity("Framework.Repository.Abstraction.Entities.Log", b =>
                 {
                     b.Property<int>("Id")
@@ -387,22 +332,11 @@ namespace CNCLib.Repository.SqLite.Migrations
                     b.ToTable("Log");
                 });
 
-            modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.Configuration", b =>
-                {
-                    b.HasOne("CNCLib.Repository.Abstraction.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.Item", b =>
                 {
                     b.HasOne("CNCLib.Repository.Abstraction.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.ItemProperty", b =>
@@ -418,9 +352,7 @@ namespace CNCLib.Repository.SqLite.Migrations
                 {
                     b.HasOne("CNCLib.Repository.Abstraction.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.MachineCommand", b =>
@@ -437,15 +369,6 @@ namespace CNCLib.Repository.SqLite.Migrations
                     b.HasOne("CNCLib.Repository.Abstraction.Entities.Machine", "Machine")
                         .WithMany("MachineInitCommands")
                         .HasForeignKey("MachineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.UserFile", b =>
-                {
-                    b.HasOne("CNCLib.Repository.Abstraction.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -22,15 +22,9 @@ using Framework.Repository.Abstraction;
 
 namespace CNCLib.Repository.Abstraction
 {
-    public struct ConfigurationPrimary
+   public interface IConfigurationRepository : ICRUDRepository<Configuration, int>
     {
-        public string Group { get; set; }
-        public string Name  { get; set; }
-    }
-
-    public interface IConfigurationRepository : ICRUDRepository<Configuration, ConfigurationPrimary>
-    {
-        Task<Configuration> Get(string group, string name);
+        Task<Configuration> Get(int userId, string group, string name);
 
         Task Store(Configuration cfg);
     }
