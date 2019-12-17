@@ -29,7 +29,7 @@ namespace CNCLib.Repository.Mappings
 
             entity.HasKey(m => m.MachineId);
 
-            entity.HasAlternateKey(c => new { c.UserId, c.Name });
+            entity.HasIndex(c => new { c.UserId, c.Name }).IsUnique();
 
             entity.Property(m => m.Name).IsRequired().HasMaxLength(64);
 

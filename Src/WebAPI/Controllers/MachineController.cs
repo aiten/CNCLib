@@ -31,7 +31,6 @@ namespace CNCLib.WebAPI.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
-
     public class MachineController : Controller
     {
         private readonly IMachineManager    _manager;
@@ -39,8 +38,8 @@ namespace CNCLib.WebAPI.Controllers
 
         public MachineController(IMachineManager manager, ICNCLibUserContext userContext)
         {
-            _manager     = manager ?? throw new ArgumentNullException(nameof(manager));
-            _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
+            _manager     = manager;
+            _userContext = userContext;
         }
 
         #region default REST

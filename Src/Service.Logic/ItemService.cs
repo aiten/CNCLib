@@ -32,7 +32,7 @@ namespace CNCLib.Service.Logic
 
         public ItemService(IItemManager manager) : base(manager)
         {
-            _manager = manager ?? throw new ArgumentNullException(nameof(manager));
+            _manager = manager;
         }
 
         public async Task<IEnumerable<Item>> GetByClassName(string classname)

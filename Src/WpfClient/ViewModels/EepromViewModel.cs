@@ -36,7 +36,7 @@ namespace CNCLib.WpfClient.ViewModels
 
         public EepromViewModel(Global global)
         {
-            _global = global ?? throw new ArgumentNullException(nameof(global));
+            _global = global;
         }
 
         #endregion

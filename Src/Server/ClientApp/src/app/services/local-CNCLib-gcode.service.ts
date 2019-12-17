@@ -41,7 +41,7 @@ export class LocalCNCLibGCodeService implements CNCLibGCodeService {
     return m;
   }
 
-    getGCodeAsImage(viewInput: PreviewGCode): Promise<Blob> {
+  getGCodeAsImage(viewInput: PreviewGCode): Promise<Blob> {
     console.log('LocalCNCLibGCodeService.getGCodeAsImage');
     const m = this.http
       .put<Blob>(`${this.baseUrl}api/GCode/render`, viewInput, { responseType: 'blob' as 'json' })

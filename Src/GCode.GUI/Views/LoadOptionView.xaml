@@ -24,7 +24,7 @@
         </StackPanel>
 
         <TabControl Custom:TabControlHelper.Underlined="TabItems">
-            <TabItem Header="GCode" Custom:ControlsHelper.HeaderFontSize="15">
+            <TabItem Header="GCode" Custom:HeaderedControlHelper.HeaderFontSize="15">
                 <StackPanel Orientation="Vertical" Margin="10,10,10,10">
                     <GroupBox Header="Settings">
                         <StackPanel Margin="5,5,0,0">
@@ -96,7 +96,7 @@
                 </StackPanel>
 
             </TabItem>
-            <TabItem Header="Size" Custom:ControlsHelper.HeaderFontSize="15">
+            <TabItem Header="Size" Custom:HeaderedControlHelper.HeaderFontSize="15">
                 <StackPanel>
                     <GroupBox Header="Auto Scale">
                         <StackPanel>
@@ -171,7 +171,7 @@
                     </GroupBox>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Engrave/Laser" Custom:ControlsHelper.HeaderFontSize="15">
+            <TabItem Header="Engrave/Laser" Custom:HeaderedControlHelper.HeaderFontSize="15">
                 <StackPanel>
                     <GroupBox Header="Laser">
                         <!-- IsEnabled="{Binding IsChecked, ElementName=_HPGLLaser}"> -->
@@ -245,7 +245,7 @@
                     </GroupBox>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="HPGL" Custom:ControlsHelper.HeaderFontSize="15">
+            <TabItem Header="HPGL" Custom:HeaderedControlHelper.HeaderFontSize="15">
                 <StackPanel>
                     <RadioButton x:Name="_HPGLLaser" GroupName="PenCommandMoveTypeGroup" Content="Generate for Laser"
                                  IsChecked="{Binding LoadOptionsValue.PenMoveType, ConverterParameter=CommandString, Converter={StaticResource EnumBooleanConverter}}"
@@ -285,7 +285,7 @@
                     </GroupBox>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Image/Hole" Custom:ControlsHelper.HeaderFontSize="15">
+            <TabItem Header="Image/Hole" Custom:HeaderedControlHelper.HeaderFontSize="15">
                 <StackPanel>
                     <GroupBox Header="Image">
                         <StackPanel>

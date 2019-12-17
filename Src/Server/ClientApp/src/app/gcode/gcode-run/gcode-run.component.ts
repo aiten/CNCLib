@@ -31,8 +31,8 @@ export class GcodeRunComponent implements OnInit {
   gCommands: string[];
   errorMessage: string = '';
   isLoading: boolean = true;
-    isLoaded: boolean = false;
-    isShowImage: boolean = true;
+  isLoaded: boolean = false;
+  isShowImage: boolean = true;
 
   constructor(
     private route: ActivatedRoute,

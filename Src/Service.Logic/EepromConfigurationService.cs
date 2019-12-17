@@ -31,7 +31,7 @@ namespace CNCLib.Service.Logic
 
         public EepromConfigurationService(IEepromConfigurationManager manager)
         {
-            _manager = manager ?? throw new ArgumentNullException(nameof(manager));
+            _manager = manager;
         }
 
         public async Task<EepromConfiguration> CalculateConfig(EepromConfigurationInput param)

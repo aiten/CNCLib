@@ -14,7 +14,7 @@
         <StackPanel Width="850" DockPanel.Dock="Top" Margin="5,5,5,0" HorizontalAlignment="Stretch">
             <StackPanel Orientation="Horizontal">
                 <TabControl Custom:TabControlHelper.Underlined="TabItems">
-                    <TabItem Header="XYZ" Custom:ControlsHelper.HeaderFontSize="15">
+                    <TabItem Header="XYZ" Custom:HeaderedControlHelper.HeaderFontSize="15">
                         <controls:MoveUserControl
                             Right="{Binding Move.SendRightCommand}"
                             Left="{Binding Move.SendLeftCommand}"
@@ -24,7 +24,7 @@
                             ZDown="{Binding Move.SendZDownCommand}"
                             Height="200" />
                     </TabItem>
-                    <TabItem Header="Move XYZ" Custom:ControlsHelper.HeaderFontSize="15">
+                    <TabItem Header="Move XYZ" Custom:HeaderedControlHelper.HeaderFontSize="15">
                         <StackPanel Orientation="Horizontal">
                             <StackPanel Orientation="Vertical" MinWidth="70" Margin="0,0,5,0"
                                         Visibility="{Binding AxisX.Visibility}">
@@ -68,7 +68,7 @@
                         </StackPanel>
                     </TabItem>
                     <TabItem Header="Move ABC" Visibility="{Binding AxisA.Visibility}"
-                             Custom:ControlsHelper.HeaderFontSize="15">
+                             Custom:HeaderedControlHelper.HeaderFontSize="15">
                         <StackPanel Orientation="Horizontal">
                             <StackPanel Orientation="Vertical" MinWidth="70" Margin="0,0,5,0"
                                         Visibility="{Binding AxisA.Visibility}">
@@ -113,7 +113,7 @@
                     </TabItem>
                 </TabControl>
                 <TabControl Margin="5,0,5,0" Custom:TabControlHelper.Underlined="TabItems">
-                    <TabItem Header="Machine position" Custom:ControlsHelper.HeaderFontSize="15">
+                    <TabItem Header="Machine position" Custom:HeaderedControlHelper.HeaderFontSize="15">
                         <StackPanel Orientation="Vertical" Margin="0,0,3,0">
                             <Button Command="{Binding Tool.ReadPositionCommand}" Content="Read positions" />
                             <StackPanel Orientation="Horizontal">
@@ -166,7 +166,7 @@
                     </TabItem>
                 </TabControl>
                 <TabControl Custom:TabControlHelper.Underlined="TabItems">
-                    <TabItem Header="Send Commands" Custom:ControlsHelper.HeaderFontSize="15">
+                    <TabItem Header="Send Commands" Custom:HeaderedControlHelper.HeaderFontSize="15">
                         <StackPanel Orientation="Vertical" Width="400">
                             <DockPanel Margin="0,5,0,5">
                                 <Label Content="Command:" Width="70" />
@@ -198,7 +198,7 @@
                 </TabControl>
             </StackPanel>
             <TabControl Margin="0,10,0,10" Custom:TabControlHelper.Underlined="TabItems">
-                <TabItem Header="Custom" Custom:ControlsHelper.HeaderFontSize="15">
+                <TabItem Header="Custom" Custom:HeaderedControlHelper.HeaderFontSize="15">
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,5">
                             <Button Command="{Binding Custom.Send00Command}" Content="{Binding Custom.Desc00}"
@@ -286,7 +286,7 @@
                         </StackPanel>
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="Extras" Custom:ControlsHelper.HeaderFontSize="15">
+                <TabItem Header="Extras" Custom:HeaderedControlHelper.HeaderFontSize="15">
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
                             <Button Command="{Binding Tool.SendM03SpindleOnCommand}" Content="Spindle On" />
@@ -306,7 +306,7 @@
                         </StackPanel>
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="Zero shift" Custom:ControlsHelper.HeaderFontSize="15">
+                <TabItem Header="Zero shift" Custom:HeaderedControlHelper.HeaderFontSize="15">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                             <StackPanel Orientation="Vertical" MinWidth="100" Margin="0,0,5,0"
@@ -357,7 +357,7 @@
                         </StackPanel>
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="Work offset" Custom:ControlsHelper.HeaderFontSize="15">
+                <TabItem Header="Work offset" Custom:HeaderedControlHelper.HeaderFontSize="15">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label Content="Select work offset:" />
@@ -517,7 +517,7 @@
                         </StackPanel>
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="Rotate" Custom:ControlsHelper.HeaderFontSize="15">
+                <TabItem Header="Rotate" Custom:HeaderedControlHelper.HeaderFontSize="15">
                     <StackPanel>
                         <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                             <Button Command="{Binding Rotate.SendG69Command}" Content="G69 - Clear" MinWidth="100"
@@ -539,7 +539,7 @@
                         </StackPanel>
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="SD" Custom:ControlsHelper.HeaderFontSize="15">
+                <TabItem Header="SD" Custom:HeaderedControlHelper.HeaderFontSize="15">
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
                             <Button Command="{Binding SD.SendM24FileCommand}" Content="M24 - Start" />
@@ -561,7 +561,7 @@
                         </StackPanel>
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="Ref" Custom:ControlsHelper.HeaderFontSize="15">
+                <TabItem Header="Ref" Custom:HeaderedControlHelper.HeaderFontSize="15">
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Horizontal">
                             <Button Command="{Binding AxisX.SendRefMoveCommand}" Content="X ref"

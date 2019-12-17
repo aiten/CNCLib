@@ -11,6 +11,8 @@
     <Compile Remove="Migrations\20191213103015_V5a.Designer.cs" />
     <Compile Remove="Migrations\20191213105413_V5a.cs" />
     <Compile Remove="Migrations\20191213105413_V5a.Designer.cs" />
+    <Compile Remove="Migrations\20191213115140_V5b.cs" />
+    <Compile Remove="Migrations\20191213115140_V5b.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.0">

@@ -36,9 +36,9 @@ import { MessageBoxData } from "../../modal/message-box-data";
 export class GcodeOverviewComponent implements OnInit {
   entries: LoadOptions[] = [];
   errorMessage: string = '';
-    isLoading: boolean = true;
+  isLoading: boolean = true;
 
-    displayedColumns: string[] = [ /* 'Id', */ 'SettingName', 'Detail', 'Run'];
+  displayedColumns: string[] = [/* 'Id', */ 'SettingName', 'Detail', 'Run'];
 
   constructor(
     private router: Router,

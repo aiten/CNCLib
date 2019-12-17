@@ -46,7 +46,8 @@ namespace CNCLib.Repository.SqLite.Migrations
 
                     b.HasKey("ConfigurationId");
 
-                    b.HasAlternateKey("UserId", "Group", "Name");
+                    b.HasIndex("UserId", "Group", "Name")
+                        .IsUnique();
 
                     b.ToTable("Configuration");
                 });
@@ -72,7 +73,8 @@ namespace CNCLib.Repository.SqLite.Migrations
 
                     b.HasKey("ItemId");
 
-                    b.HasAlternateKey("UserId", "Name");
+                    b.HasIndex("UserId", "Name")
+                        .IsUnique();
 
                     b.ToTable("Item");
                 });
@@ -193,7 +195,8 @@ namespace CNCLib.Repository.SqLite.Migrations
 
                     b.HasKey("MachineId");
 
-                    b.HasAlternateKey("UserId", "Name");
+                    b.HasIndex("UserId", "Name")
+                        .IsUnique();
 
                     b.ToTable("Machine");
                 });
@@ -303,7 +306,8 @@ namespace CNCLib.Repository.SqLite.Migrations
 
                     b.HasKey("UserFileId");
 
-                    b.HasAlternateKey("UserId", "FileName");
+                    b.HasIndex("UserId", "FileName")
+                        .IsUnique();
 
                     b.ToTable("UserFile");
                 });

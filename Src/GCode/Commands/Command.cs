@@ -449,7 +449,7 @@ namespace CNCLib.GCode.Commands
                 return null;
             }
 
-            throw new ArgumentOutOfRangeException(nameof(param), param, @"Illegal Variable name");
+            throw new ArgumentOutOfRangeException(nameof(param), param, @"Illegal Variable name.");
         }
 
         public virtual void ReadFrom(CommandStream stream)

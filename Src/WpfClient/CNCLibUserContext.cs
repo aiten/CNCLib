@@ -28,7 +28,7 @@ namespace CNCLib.WpfClient
 {
     public class CNCLibUserContext : ICNCLibUserContextRW
     {
-        public CNCLibUserContext(string userName=null)
+        public CNCLibUserContext(string userName = null)
         {
             if (userName == null)
             {

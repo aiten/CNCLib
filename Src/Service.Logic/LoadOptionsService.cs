@@ -30,7 +30,7 @@ namespace CNCLib.Service.Logic
 
         public LoadOptionsService(ILoadOptionsManager manager) : base(manager)
         {
-            _manager = manager ?? throw new ArgumentNullException(nameof(manager));
+            _manager = manager;
         }
     }
 }

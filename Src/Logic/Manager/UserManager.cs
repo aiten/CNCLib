@@ -40,9 +40,9 @@ namespace CNCLib.Logic.Manager
 
         public UserManager(IUnitOfWork unitOfWork, IUserRepository repository, IMapper mapper) : base(unitOfWork, repository, mapper)
         {
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-            _mapper     = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _unitOfWork = unitOfWork;
+            _repository = repository;
+            _mapper     = mapper;
         }
 
         protected override int GetKey(UserEntity entity)

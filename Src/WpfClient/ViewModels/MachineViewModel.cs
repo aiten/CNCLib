@@ -41,9 +41,9 @@ namespace CNCLib.WpfClient.ViewModels
 
         public MachineViewModel(IFactory<IMachineService> machineService, IMapper mapper, Global global)
         {
-            _machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
-            _mapper         = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _global         = global ?? throw new ArgumentNullException(nameof(global));
+            _machineService = machineService;
+            _mapper         = mapper;
+            _global         = global;
 
             AddNewMachine = false;
         }

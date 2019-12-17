@@ -41,7 +41,7 @@ namespace CNCLib.Repository
         protected override FilterBuilder<UserFile, int> FilterBuilder =>
             new FilterBuilder<UserFile, int>()
             {
-                PrimaryWhere = (query, key) => query.Where(item => item.UserFileId == key),
+                PrimaryWhere   = (query, key) => query.Where(item => item.UserFileId == key),
                 PrimaryWhereIn = (query, keys) => query.Where(item => keys.Contains(item.UserFileId))
             };
 
@@ -67,7 +67,7 @@ namespace CNCLib.Repository
         public async Task<int> GetFileId(int userId, string fileName)
         {
             return await QueryWithOptional.Where(f => f.UserId == userId && f.FileName == fileName).Select(f => f.UserFileId).FirstOrDefaultAsync();
-        } 
+        }
 
         public async Task<UserFile> GetByName(int userId, string fileName)
         {

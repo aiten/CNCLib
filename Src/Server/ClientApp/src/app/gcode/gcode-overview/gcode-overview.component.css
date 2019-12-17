@@ -1,20 +1,11 @@
-
 .mat-table {
   margin-bottom: 16pt;
   max-width: 800px;
   width: 100% !important;
 }
 
-.mat-column-SettingName {
-  flex: 0 0 25% !important;
-}
+.mat-column-SettingName { flex: 0 0 25% !important; }
 
-.mat-column-Detail {
-  width: 90px;
-}
+.mat-column-Detail { width: 90px; }
 
-.mat-column-Run {
-  width: 90px;
-}
-
-
+.mat-column-Run { width: 90px; }

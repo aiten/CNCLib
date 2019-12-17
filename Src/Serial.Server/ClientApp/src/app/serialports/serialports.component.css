@@ -1,35 +1,17 @@
-table {
-}
+table { }
 
-.mat-column-Id {
-  width: 50px;
-}
+.mat-column-Id { width: 50px; }
 
-.mat-column-PortName {
-  width: 200px;
-}
+.mat-column-PortName { width: 200px; }
 
-.mat-column-IsConnected {
-  width: 90px;
-}
+.mat-column-IsConnected { width: 90px; }
 
-.mat-column-IsAborted {
-  width: 90px;
-}
+.mat-column-IsAborted { width: 90px; }
 
-.mat-column-IsSingleStep {
-  width: 90px;
-}
+.mat-column-IsSingleStep { width: 90px; }
 
-.mat-column-CommandsInQueue {
-  width: 90px;
-}
+.mat-column-CommandsInQueue { width: 90px; }
 
-.mat-column-Task {
-  width: 350px;
-}
+.mat-column-Task { width: 350px; }
 
-.taskbutton {
-  margin-right: 5px;
-}
-
+.taskbutton { margin-right: 5px; }

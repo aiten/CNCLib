@@ -34,7 +34,7 @@ namespace CNCLib.GCode.Commands
         {
             if (name.Contains(" "))
             {
-                throw new ArgumentException("Register name must not contain a blank");
+                throw new ArgumentException("Register name must not contain a blank.");
             }
 
             _commandTypes.Add(name, shape);
@@ -44,7 +44,7 @@ namespace CNCLib.GCode.Commands
         {
             if (name.Contains(" "))
             {
-                throw new ArgumentException("Command name must not contain a blank");
+                throw new ArgumentException("Command name must not contain a blank.");
             }
 
             if (IsRegistered(name))

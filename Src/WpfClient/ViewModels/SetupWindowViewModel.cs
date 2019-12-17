@@ -43,11 +43,11 @@ namespace CNCLib.WpfClient.ViewModels
 
         public SetupWindowViewModel(IFactory<IMachineService> machineService, IFactory<IJoystickService> joystickService, IMapper mapper, Global global, ICNCLibUserContext userContext)
         {
-            _machineService  = machineService ?? throw new ArgumentNullException(nameof(machineService));
-            _joystickService = joystickService ?? throw new ArgumentNullException(nameof(joystickService));
-            _mapper          = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _global          = global ?? throw new ArgumentNullException(nameof(global));
-            _userContext     = userContext ?? throw new ArgumentNullException(nameof(global));
+            _machineService  = machineService;
+            _joystickService = joystickService;
+            _mapper          = mapper;
+            _global          = global;
+            _userContext     = userContext;
 
             ResetOnConnect = false;
         }
@@ -309,13 +309,13 @@ namespace CNCLib.WpfClient.ViewModels
             await LoadJoystick();
         }
 
-        public void SetDefaultMachine()
+        public async void SetDefaultMachine()
         {
             if (Machine != null)
             {
                 using (var scope = _machineService.Create())
                 {
-                    scope.Instance.SetDefaultMachine(Machine.MachineId);
+                    await scope.Instance.SetDefaultMachine(Machine.MachineId);
                 }
             }
         }

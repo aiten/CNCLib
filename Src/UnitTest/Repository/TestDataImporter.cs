@@ -42,8 +42,8 @@ namespace CNCLib.UnitTest.Repository
             _configurationMap = ImportCsv<int, Configuration>("ConfigurationTest.csv", c => c.ConfigurationId, (c, key) =>
             {
                 c.ConfigurationId = key;
-                c.User   = _userMap[c.UserId];
-                c.UserId = 0;
+                c.User            = _userMap[c.UserId];
+                c.UserId          = 0;
             });
         }
     }

@@ -50,9 +50,9 @@ namespace CNCLib.WebAPI.Controllers
 
         private static LoadBase CallLoadWithContent(LoadOptions opt)
         {
-            var filename = opt.FileName;
+            var filename    = opt.FileName;
             var fileContent = opt.FileContent;
-            
+
             string pathFileName = Path.GetFileName(filename);
             string tmpFile      = Path.GetTempPath() + pathFileName;
 

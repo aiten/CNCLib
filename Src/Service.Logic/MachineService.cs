@@ -31,7 +31,7 @@ namespace CNCLib.Service.Logic
 
         public MachineService(IMachineManager manager) : base(manager)
         {
-            _manager = manager ?? throw new ArgumentNullException(nameof(manager));
+            _manager = manager;
         }
 
         public async Task<Machine> DefaultMachine()

@@ -28,7 +28,7 @@ namespace CNCLib.WebAPI.Filter
 
         public SetUserContextFilter(ICNCLibUserContext userContext)
         {
-            _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
+            _userContext = userContext;
         }
 
         public void OnActionExecuting(ActionExecutingContext context)

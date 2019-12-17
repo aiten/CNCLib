@@ -37,8 +37,8 @@ namespace CNCLib.WebAPI.Controllers
     {
         public CambamController(ILoadOptionsManager loadOptionsManager, ICNCLibUserContext userContext)
         {
-            _loadOptionsManager = loadOptionsManager ?? throw new ArgumentNullException(nameof(loadOptionsManager));
-            _userContext        = userContext ?? throw new ArgumentNullException(nameof(userContext));
+            _loadOptionsManager = loadOptionsManager;
+            _userContext        = userContext;
         }
 
         readonly ILoadOptionsManager _loadOptionsManager;

@@ -30,7 +30,7 @@ namespace CNCLib.WpfClient.ViewModels.ManualControl
 
         public CommandHistoryViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
         {
-            _global = global ?? throw new ArgumentNullException(nameof(global));
+            _global = global;
         }
 
         public const string CommandHistoryFile = @"%USERPROFILE%\Documents\Command.txt";

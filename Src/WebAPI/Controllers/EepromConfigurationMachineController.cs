@@ -36,8 +36,8 @@ namespace CNCLib.WebAPI.Controllers
 
         public EepromConfigurationController(IEepromConfigurationManager eepromConfigurationManager, ICNCLibUserContext userContext)
         {
-            _eepromConfigurationManager = eepromConfigurationManager ?? throw new ArgumentNullException(nameof(eepromConfigurationManager));
-            _userContext                = userContext ?? throw new ArgumentNullException(nameof(userContext));
+            _eepromConfigurationManager = eepromConfigurationManager;
+            _userContext                = userContext;
         }
 
         [HttpGet]

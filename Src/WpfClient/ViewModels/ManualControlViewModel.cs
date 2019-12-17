@@ -31,7 +31,7 @@ namespace CNCLib.WpfClient.ViewModels
 
         public ManualControlViewModel(Global global)
         {
-            _global = global ?? throw new ArgumentNullException(nameof(global));
+            _global = global;
 
             AxisX = new AxisViewModel(this, global)
             {

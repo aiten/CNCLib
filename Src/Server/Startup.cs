@@ -34,6 +34,7 @@ using CNCLib.WebAPI.Filter;
 using CNCLib.WebAPI.Hubs;
 
 using Framework.Dependency;
+using Framework.Localization;
 using Framework.Logic;
 using Framework.Logic.Abstraction;
 using Framework.Tools;
@@ -86,6 +87,12 @@ namespace CNCLib.Server
         public void ConfigureServices(IServiceCollection services)
         {
             var controllerAssembly = typeof(CambamController).Assembly;
+
+            var localizationCollector = new LocalizationCollector();
+            localizationCollector.Resources.Add(Framework.Logic.ErrorMessages.ResourceManager);
+            localizationCollector.Resources.Add(Framework.Repository.ErrorMessages.ResourceManager);
+
+            services.AddSingleton<LocalizationCollector>(localizationCollector);
 
             services.AddControllers();
 
@@ -140,10 +147,10 @@ namespace CNCLib.Server
                                 Id   = "basic"
                             }
                         },
-                        new string[] {}
+                        new string[] { }
                     }
                 });
-                c.OperationFilter<SecurityRequirementsOperationFilter>(true,"basic");
+                c.OperationFilter<SecurityRequirementsOperationFilter>(true, "basic");
             });
 
             GlobalServiceCollection.Instance = services;

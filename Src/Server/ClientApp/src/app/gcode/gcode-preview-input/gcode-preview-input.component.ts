@@ -72,13 +72,13 @@ export class GcodePreviewInputComponent implements OnInit {
   }
 
   rotate1() {
-      this.previewOptForm.patchValue({
-          Rotate3DAngle: -1.0407742907225024,
-          Rotate3DVectX: 101,
-          Rotate3DVectY: -13,
-          Rotate3DVectZ: 1,
-          OffsetX: -10,
-          OffsetY: 10,
+    this.previewOptForm.patchValue({
+      Rotate3DAngle: -1.0407742907225024,
+      Rotate3DVectX: 101,
+      Rotate3DVectY: -13,
+      Rotate3DVectZ: 1,
+      OffsetX: -10,
+      OffsetY: 10,
     });
   }
 

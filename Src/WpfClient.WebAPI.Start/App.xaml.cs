@@ -53,8 +53,8 @@ namespace CNCLib.WpfClient.WebAPI.Start
             _logger.Info(@"Starting ...");
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
-            var userContextRW = new CNCLibUserContext();
-            ICNCLibUserContext userContext = userContextRW;
+            var                userContextRW = new CNCLibUserContext();
+            ICNCLibUserContext userContext   = userContextRW;
 
             GlobalServiceCollection.Instance = new ServiceCollection();
             GlobalServiceCollection.Instance

@@ -31,7 +31,7 @@ namespace CNCLib.Service.Logic
 
         public UserService(IUserManager manager) : base(manager)
         {
-            _manager = manager ?? throw new ArgumentNullException(nameof(manager));
+            _manager = manager;
         }
 
         public async Task<User> GetByName(string username)

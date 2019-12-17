@@ -595,7 +595,7 @@ namespace CNCLib.GCode.Draw
                 return;
             }
 
-            var g = (Graphics)param;
+            var g    = (Graphics)param;
             var from = ToClientF(ptCenter);
             g.DrawEllipse(GetPen(drawType, LineDrawType.Ellipse), from.X - radiusX / 2, from.Y - radiusY / 2, radiusX, radiusY);
         }

@@ -49,9 +49,9 @@ namespace CNCLib.WebAPI.Controllers
 
         public GCodeController(ILoadOptionsManager loadOptionsManager, IUserFileManager fileManager, ICNCLibUserContext userContext)
         {
-            _loadOptionsManager = loadOptionsManager ?? throw new ArgumentNullException(nameof(loadOptionsManager));
-            _fileManager        = fileManager ?? throw new ArgumentNullException(nameof(fileManager));
-            _userContext        = userContext ?? throw new ArgumentNullException(nameof(userContext));
+            _loadOptionsManager = loadOptionsManager;
+            _fileManager        = fileManager;
+            _userContext        = userContext;
         }
 
         [HttpPost]
@@ -110,7 +110,7 @@ namespace CNCLib.WebAPI.Controllers
             bitmap.Save(memoryStream, ImageFormat.Png);
             memoryStream.Position = 0;
             var fileName = "preview.png";
-            return File(memoryStream, this.GetContentType(fileName), fileName );
+            return File(memoryStream, this.GetContentType(fileName), fileName);
         }
     }
 }

@@ -41,8 +41,8 @@ namespace CNCLib.WebAPI.Controllers
 
         public UserFileController(IUserFileManager manager, ICNCLibUserContext userContext)
         {
-            _manager     = manager ?? throw new ArgumentNullException(nameof(manager));
-            _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
+            _manager     = manager;
+            _userContext = userContext;
         }
 
         [HttpGet]
@@ -64,11 +64,11 @@ namespace CNCLib.WebAPI.Controllers
             }
 
             var memoryStream = new MemoryStream(dto.Content);
-            var fileName = Path.GetFileName(dto.FileName);
+            var fileName     = Path.GetFileName(dto.FileName);
             memoryStream.Position = 0;
             return File(memoryStream, this.GetContentType(fileName), fileName);
         }
-        
+
         public class UserFile
         {
             public string FileName { get; set; }
@@ -97,7 +97,7 @@ namespace CNCLib.WebAPI.Controllers
 
             if (userFileDto != null)
             {
-                var fileIdFromUri = await _manager.GetFileId(fileName);
+                var fileIdFromUri   = await _manager.GetFileId(fileName);
                 var fileIdFromValue = await _manager.GetFileId(value.FileName);
                 await this.Update(_manager, fileIdFromUri, fileIdFromValue, userFileDto);
                 return Ok(value.FileName);
@@ -114,6 +114,7 @@ namespace CNCLib.WebAPI.Controllers
         }
 
         #endregion
+
         private UserFileDto GetUserFileDto(UserFile value)
         {
             using (var memoryStream = new MemoryStream())

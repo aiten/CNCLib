@@ -28,7 +28,7 @@ namespace CNCLib.WpfClient.ViewModels.ManualControl
 
         public ShiftViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
         {
-            _global = global ?? throw new ArgumentNullException(nameof(global));
+            _global = global;
         }
 
         #region Properties

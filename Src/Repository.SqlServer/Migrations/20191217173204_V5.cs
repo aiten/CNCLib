@@ -6,13 +6,6 @@ namespace CNCLib.Repository.SqlServer.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("update Configuration set UserId = (select top 1 UserId from [User]) where userid is null");
-            migrationBuilder.Sql("update Machine set UserId = (select top 1 UserId from [User]) where userid is null");
-            migrationBuilder.Sql("update Item set UserId = (select top 1 UserId from [User]) where UserId is null");
-
-            migrationBuilder.Sql("update [user] set [Name]='global', Password='Z2xvYmFs' where [name] = 'Herbert'");
-
-
             migrationBuilder.DropForeignKey(
                 name: "FK_Item_User_UserId",
                 table: "Item");
@@ -20,6 +13,10 @@ namespace CNCLib.Repository.SqlServer.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_Machine_User_UserId",
                 table: "Machine");
+
+            migrationBuilder.DropUniqueConstraint(
+                name: "AK_UserFile_UserId_FileName",
+                table: "UserFile");
 
             migrationBuilder.DropIndex(
                 name: "IX_Machine_UserId",
@@ -57,20 +54,29 @@ namespace CNCLib.Repository.SqlServer.Migrations
                 oldType: "int",
                 oldNullable: true);
 
-            migrationBuilder.AddUniqueConstraint(
-                name: "AK_Machine_UserId_Name",
+            migrationBuilder.CreateIndex(
+                name: "IX_UserFile_UserId_FileName",
+                table: "UserFile",
+                columns: new[] { "UserId", "FileName" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Machine_UserId_Name",
                 table: "Machine",
-                columns: new[] { "UserId", "Name" });
+                columns: new[] { "UserId", "Name" },
+                unique: true);
 
-            migrationBuilder.AddUniqueConstraint(
-                name: "AK_Item_UserId_Name",
+            migrationBuilder.CreateIndex(
+                name: "IX_Item_UserId_Name",
                 table: "Item",
-                columns: new[] { "UserId", "Name" });
+                columns: new[] { "UserId", "Name" },
+                unique: true);
 
-            migrationBuilder.AddUniqueConstraint(
-                name: "AK_Configuration_UserId_Group_Name",
+            migrationBuilder.CreateIndex(
+                name: "IX_Configuration_UserId_Group_Name",
                 table: "Configuration",
-                columns: new[] { "UserId", "Group", "Name" });
+                columns: new[] { "UserId", "Group", "Name" },
+                unique: true);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Item_User_UserId",
@@ -99,16 +105,20 @@ namespace CNCLib.Repository.SqlServer.Migrations
                 name: "FK_Machine_User_UserId",
                 table: "Machine");
 
-            migrationBuilder.DropUniqueConstraint(
-                name: "AK_Machine_UserId_Name",
+            migrationBuilder.DropIndex(
+                name: "IX_UserFile_UserId_FileName",
+                table: "UserFile");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Machine_UserId_Name",
                 table: "Machine");
 
-            migrationBuilder.DropUniqueConstraint(
-                name: "AK_Item_UserId_Name",
+            migrationBuilder.DropIndex(
+                name: "IX_Item_UserId_Name",
                 table: "Item");
 
-            migrationBuilder.DropUniqueConstraint(
-                name: "AK_Configuration_UserId_Group_Name",
+            migrationBuilder.DropIndex(
+                name: "IX_Configuration_UserId_Group_Name",
                 table: "Configuration");
 
             migrationBuilder.AlterColumn<int>(
@@ -124,6 +134,11 @@ namespace CNCLib.Repository.SqlServer.Migrations
                 type: "int",
                 nullable: true,
                 oldClrType: typeof(int));
+
+            migrationBuilder.AddUniqueConstraint(
+                name: "AK_UserFile_UserId_FileName",
+                table: "UserFile",
+                columns: new[] { "UserId", "FileName" });
 
             migrationBuilder.AddUniqueConstraint(
                 name: "AK_Configuration_Group_Name_UserId",

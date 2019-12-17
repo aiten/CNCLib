@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CNCLib.Repository.SqLite.Migrations
 {
     [DbContext(typeof(CNCLibContext))]
-    [Migration("20191213115140_V5b")]
+    [Migration("20191217175143_V5b")]
     partial class V5b
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,7 +48,8 @@ namespace CNCLib.Repository.SqLite.Migrations
 
                     b.HasKey("ConfigurationId");
 
-                    b.HasAlternateKey("UserId", "Group", "Name");
+                    b.HasIndex("UserId", "Group", "Name")
+                        .IsUnique();
 
                     b.ToTable("Configuration");
                 });
@@ -74,7 +75,8 @@ namespace CNCLib.Repository.SqLite.Migrations
 
                     b.HasKey("ItemId");
 
-                    b.HasAlternateKey("UserId", "Name");
+                    b.HasIndex("UserId", "Name")
+                        .IsUnique();
 
                     b.ToTable("Item");
                 });
@@ -195,7 +197,8 @@ namespace CNCLib.Repository.SqLite.Migrations
 
                     b.HasKey("MachineId");
 
-                    b.HasAlternateKey("UserId", "Name");
+                    b.HasIndex("UserId", "Name")
+                        .IsUnique();
 
                     b.ToTable("Machine");
                 });
@@ -305,7 +308,8 @@ namespace CNCLib.Repository.SqLite.Migrations
 
                     b.HasKey("UserFileId");
 
-                    b.HasAlternateKey("UserId", "FileName");
+                    b.HasIndex("UserId", "FileName")
+                        .IsUnique();
 
                     b.ToTable("UserFile");
                 });

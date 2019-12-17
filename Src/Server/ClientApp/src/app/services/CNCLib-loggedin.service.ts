@@ -16,9 +16,9 @@
 
 export abstract class CNCLibLoggedinService {
 
-    public abstract username(): string;
+  public abstract username(): string;
 
-    public abstract isUserLoggedIn(): boolean;
+  public abstract isUserLoggedIn(): boolean;
 
-    public abstract logout(): void;
+  public abstract logout(): void;
 }

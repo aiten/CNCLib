@@ -44,8 +44,8 @@ namespace CNCLib.GCode.GUI.ViewModels
 
         public LoadOptionViewModel(IFactory<ILoadOptionsService> loadOptionsService, IMapper mapper)
         {
-            _loadOptionsService = loadOptionsService ?? throw new ArgumentNullException(nameof(loadOptionsService));
-            _mapper             = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _loadOptionsService = loadOptionsService;
+            _mapper             = mapper;
         }
 
         readonly IFactory<ILoadOptionsService> _loadOptionsService;

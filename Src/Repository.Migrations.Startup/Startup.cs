@@ -38,8 +38,8 @@ namespace CNCLib.Repository.Migrations.Startup
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<CNCLibContext>(options => SqlServerDatabaseTools.OptionBuilder(options));
-            // services.AddDbContext<CNCLibContext>(options => SqliteDatabaseTools.OptionBuilder(options));
+            // services.AddDbContext<CNCLibContext>(options => SqlServerDatabaseTools.OptionBuilder(options));
+            services.AddDbContext<CNCLibContext>(options => SqliteDatabaseTools.OptionBuilder(options));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -51,10 +51,7 @@ namespace CNCLib.Repository.Migrations.Startup
 
             app.UseRouting();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

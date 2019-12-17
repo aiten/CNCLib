@@ -7,6 +7,7 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Framework\Localization\Localization.csproj" />
     <ProjectReference Include="..\Framework\WebAPI\WebAPI.csproj" />
     <ProjectReference Include="..\GCode.Draw\GCode.Draw.csproj" />
     <ProjectReference Include="..\GCode\GCode.csproj" />

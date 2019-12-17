@@ -36,7 +36,6 @@ namespace CNCLib.Repository.SqLite.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Configuration", x => x.ConfigurationId);
-                    table.UniqueConstraint("AK_Configuration_UserId_Group_Name", x => new { x.UserId, x.Group, x.Name });
                     table.ForeignKey(
                         name: "FK_Configuration_User_UserId",
                         column: x => x.UserId,
@@ -58,7 +57,6 @@ namespace CNCLib.Repository.SqLite.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Item", x => x.ItemId);
-                    table.UniqueConstraint("AK_Item_UserId_Name", x => new { x.UserId, x.Name });
                     table.ForeignKey(
                         name: "FK_Item_User_UserId",
                         column: x => x.UserId,
@@ -106,7 +104,6 @@ namespace CNCLib.Repository.SqLite.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Machine", x => x.MachineId);
-                    table.UniqueConstraint("AK_Machine_UserId_Name", x => new { x.UserId, x.Name });
                     table.ForeignKey(
                         name: "FK_Machine_User_UserId",
                         column: x => x.UserId,
@@ -128,7 +125,6 @@ namespace CNCLib.Repository.SqLite.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserFile", x => x.UserFileId);
-                    table.UniqueConstraint("AK_UserFile_UserId_FileName", x => new { x.UserId, x.FileName });
                     table.ForeignKey(
                         name: "FK_UserFile_User_UserId",
                         column: x => x.UserId,
@@ -202,6 +198,24 @@ namespace CNCLib.Repository.SqLite.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Configuration_UserId_Group_Name",
+                table: "Configuration",
+                columns: new[] { "UserId", "Group", "Name" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Item_UserId_Name",
+                table: "Item",
+                columns: new[] { "UserId", "Name" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Machine_UserId_Name",
+                table: "Machine",
+                columns: new[] { "UserId", "Name" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MachineCommand_MachineId",
                 table: "MachineCommand",
                 column: "MachineId");
@@ -217,11 +231,17 @@ namespace CNCLib.Repository.SqLite.Migrations
                 column: "Name",
                 unique: true);
 
+            migrationBuilder.CreateIndex(
+                name: "IX_UserFile_UserId_FileName",
+                table: "UserFile",
+                columns: new[] { "UserId", "FileName" },
+                unique: true);
+
             migrationBuilder.Sql("insert into User (UserId,Name,Password) select UserId,Name,Password from User_backup");
 
             migrationBuilder.Sql("insert into Configuration ([ConfigurationId],[UserId],[Group],[Name],[Type],[Value]) select [ConfigurationId],[UserId],[Group],[Name],[Type],[Value] from Configuration_backup");
             migrationBuilder.Sql("insert into UserFile (UserFileId,UserId,FileName,Content) select UserFileId,UserId,FileName,Content from UserFile_backup");
-        
+
             migrationBuilder.Sql("insert into Item (ItemId,UserId,Name,ClassName) select ItemId,UserId,Name,ClassName from Item_backup");
             migrationBuilder.Sql("insert into ItemProperty ([ItemId],[Name],[Value]) select [ItemId],[Name],[Value] from ItemProperty_backup");
 

@@ -67,8 +67,9 @@ namespace CNCLib.Repository
             else
             {
                 // syn with existing
-                configuration.UserId = cInDb.UserId;
-                configuration.User   = cInDb.User;
+                configuration.ConfigurationId = cInDb.ConfigurationId;
+                configuration.UserId          = cInDb.UserId;
+                configuration.User            = cInDb.User;
                 SetValue(cInDb, configuration);
             }
         }
