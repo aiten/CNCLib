@@ -36,9 +36,9 @@ namespace CNCLib.WpfClient.Test
                 Mapper = config.CreateMapper();
             }
 
-            if (GlobalServiceCollection.Instance == null)
+            if (AppService.ServiceCollection == null)
             {
-                GlobalServiceCollection.Instance = new ServiceCollection();
+                AppService.ServiceCollection = new ServiceCollection();
             }
         }
     }

@@ -26,6 +26,7 @@ using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Dependency;
 using Framework.Pattern;
 
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;
@@ -39,7 +40,7 @@ namespace CNCLib.WpfClient
             _joystickSerialCommunication =
                 new JoystickArduinoSerialCommunication(
                     new FactoryCreate<ISerialPort>(() => new SerialPort()),
-                    GlobalServiceCollection.Instance.Resolve<ILogger<Framework.Arduino.SerialCommunication.Serial>>(),
+                    AppService.GetRequiredService<ILogger<Framework.Arduino.SerialCommunication.Serial>>(),
                     this);
         }
 

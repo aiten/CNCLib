@@ -37,8 +37,11 @@ using Framework.Logic;
 using Framework.Tools;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using NLog;
+
+using ILogger = NLog.ILogger;
 
 namespace CNCLib.WpfClient.Start
 {
@@ -69,10 +72,11 @@ namespace CNCLib.WpfClient.Start
 
             var userContext = new CNCLibUserContext("global");
 
-            GlobalServiceCollection.Instance = new ServiceCollection();
-            GlobalServiceCollection.Instance
+            AppService.ServiceCollection = new ServiceCollection();
+            AppService.ServiceCollection
                 .AddFrameWorkTools()
-//                .AddFrameworkLogging()
+                .AddTransient<ILoggerFactory, LoggerFactory>()
+                .AddTransient(typeof(ILogger<>), typeof(Logger<>))
                 .AddRepository(SqliteDatabaseTools.OptionBuilder)
                 .AddLogic()
                 .AddLogicClient()
@@ -89,6 +93,7 @@ namespace CNCLib.WpfClient.Start
                         }))
                 .AddSingleton((ICNCLibUserContext)userContext);
 
+            AppService.BuildServiceProvider();
             // Open Database here
 
             try

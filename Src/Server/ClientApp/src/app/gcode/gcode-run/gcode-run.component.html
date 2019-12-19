@@ -3,7 +3,7 @@
   <div *ngIf="gCommands == null">
     <h1>create G-Code for: {{ entry.SettingName }}</h1>
     <ha-gcode-run-input [entry]="entry"></ha-gcode-run-input>
-    <button mat-stroked-button class="btn btn-default" (click)='createGCode()'>Run (x)</button>
+    <button mat-stroked-button class="btn btn-default" (click)='createGCode()'>Run ...</button>
   </div>
 
   <div *ngIf="gCommands != null">

@@ -19,6 +19,8 @@ using System.Windows;
 using Framework.Dependency;
 using Framework.Wpf.Views;
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace CNCLib.WpfClient.Views
 {
     /// <summary>
@@ -28,7 +30,7 @@ namespace CNCLib.WpfClient.Views
     {
         public MachineView()
         {
-            var vm = GlobalServiceCollection.Instance.Resolve<ViewModels.MachineViewModel>();
+            var vm = AppService.GetRequiredService<ViewModels.MachineViewModel>();
             DataContext = vm;
 
             InitializeComponent();

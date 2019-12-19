@@ -14,10 +14,14 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
+using System.Threading.Tasks;
+
 using Framework.Dependency;
 using Framework.Wpf.ViewModels;
 
 using MahApps.Metro.Controls;
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CNCLib.WpfClient.Views
 {
@@ -28,7 +32,7 @@ namespace CNCLib.WpfClient.Views
     {
         public MainWindow()
         {
-            var vm = GlobalServiceCollection.Instance.Resolve<ViewModels.MainWindowViewModel>();
+            var vm = AppService.GetRequiredService<ViewModels.MainWindowViewModel>();
             DataContext = vm;
 
             InitializeComponent();
@@ -45,16 +49,21 @@ namespace CNCLib.WpfClient.Views
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            var global = GlobalServiceCollection.Instance.Resolve<Global>();
+            Windows_ClosingAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+        }
+
+        private async Task Windows_ClosingAsync()
+        {
+            var global = AppService.GetRequiredService<Global>();
 
             if (global.Com.LocalCom.IsConnected)
             {
-                global.Com.LocalCom.DisconnectAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                await global.Com.LocalCom.DisconnectAsync();
             }
 
             if (global.ComJoystick.IsConnected)
             {
-                global.ComJoystick.DisconnectAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                await global.ComJoystick.DisconnectAsync();
             }
         }
     }

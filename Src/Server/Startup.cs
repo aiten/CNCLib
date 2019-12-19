@@ -153,7 +153,6 @@ namespace CNCLib.Server
                 c.OperationFilter<SecurityRequirementsOperationFilter>(true, "basic");
             });
 
-            GlobalServiceCollection.Instance = services;
             services
                 .AddFrameWorkTools()
                 .AddRepository(SqlServerDatabaseTools.OptionBuilder)

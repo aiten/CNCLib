@@ -26,6 +26,8 @@ using Framework.Dependency;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.Views;
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace CNCLib.WpfClient.Views
 {
     /// <summary>
@@ -35,7 +37,7 @@ namespace CNCLib.WpfClient.Views
     {
         public PreviewPage()
         {
-            var vm = GlobalServiceCollection.Instance.Resolve<PreviewViewModel>();
+            var vm = AppService.GetRequiredService<PreviewViewModel>();
             DataContext = vm;
 
             InitializeComponent();

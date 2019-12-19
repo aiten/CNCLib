@@ -22,7 +22,10 @@ using CNCLib.Service.Abstraction;
 using CNCLib.Shared;
 
 using Framework.Dependency;
+using Framework.Pattern;
 using Framework.Tools;
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CNCLib.WpfClient
 {
@@ -57,9 +60,11 @@ namespace CNCLib.WpfClient
             try
             {
                 UserName = userName;
-                using (var userService = GlobalServiceCollection.Instance.Resolve<IUserService>())
+                using (var scope = AppService.ServiceProvider.CreateScope())
                 {
-                    var user = await userService.GetByName(UserName);
+                    var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
+                    var user        = await userService.GetByName(UserName);
+
                     if (user == null)
                     {
                         user        = new User();

@@ -20,13 +20,15 @@ using System.Windows.Controls;
 using Framework.Dependency;
 using Framework.Wpf.Views;
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace CNCLib.WpfClient.Views
 {
     public partial class LoginView : Window
     {
         public LoginView()
         {
-            var vm = GlobalServiceCollection.Instance.Resolve<ViewModels.LoginViewModel>();
+            var vm = AppService.GetRequiredService<ViewModels.LoginViewModel>();
             DataContext = vm;
 
             InitializeComponent();

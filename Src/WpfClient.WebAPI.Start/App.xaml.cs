@@ -37,8 +37,11 @@ using Framework.Service.WebAPI;
 using Framework.Tools;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using NLog;
+
+using ILogger = NLog.ILogger;
 
 namespace CNCLib.WpfClient.WebAPI.Start
 {
@@ -56,10 +59,11 @@ namespace CNCLib.WpfClient.WebAPI.Start
             var                userContextRW = new CNCLibUserContext();
             ICNCLibUserContext userContext   = userContextRW;
 
-            GlobalServiceCollection.Instance = new ServiceCollection();
-            GlobalServiceCollection.Instance
+            AppService.ServiceCollection = new ServiceCollection();
+            AppService.ServiceCollection
                 .AddFrameWorkTools()
-//                .AddFrameworkLogging()
+                .AddTransient<ILoggerFactory, LoggerFactory>()
+                .AddTransient(typeof(ILogger<>), typeof(Logger<>))
                 .AddLogicClient()
                 .AddSerialCommunication()
                 .AddServiceAsWebAPI(httpClient =>
@@ -80,6 +84,8 @@ namespace CNCLib.WpfClient.WebAPI.Start
                         }))
                 .AddSingleton(userContext);
 
+            AppService.BuildServiceProvider();
+
             // Open WebAPI Connection
             //
             bool ok = Task.Run(
@@ -89,18 +95,13 @@ namespace CNCLib.WpfClient.WebAPI.Start
                     {
                         await userContextRW.InitUserContext(userContextRW.UserName);
 
-                        using (var controller = GlobalServiceCollection.Instance.Resolve<IMachineService>())
+                        using (var scope = AppService.ServiceProvider.CreateScope())
                         {
-                            var m = await controller.Get(1000000);
-/*
-						if (m == -1)
-						{
-							throw new ArgumentException("cannot connect to service");
-						}
-*/
-                        }
+                            var controller = scope.ServiceProvider.GetRequiredService<IMachineService>();
+                            var m          = await controller.Get(1000000);
 
-                        return true;
+                            return true;
+                        }
                     }
                     catch (Exception ex)
                     {

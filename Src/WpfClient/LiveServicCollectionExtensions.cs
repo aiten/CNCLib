@@ -28,7 +28,7 @@ namespace CNCLib.WpfClient
     {
         public static IServiceCollection AddCNCLibWpf(this IServiceCollection services)
         {
-            services.AddSingleton(new Global())
+            services.AddSingleton<Global>()
                 .AddTransient<IJoystickService, JoystickService>()
                 .AddTransient<IFactory<IMachineService>, FactoryResolve<IMachineService>>()
                 .AddTransient<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>()

@@ -86,7 +86,6 @@ namespace CNCLib.Serial.Server
 
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "CNCLib API", Version = "v1" }); });
 
-            GlobalServiceCollection.Instance = services;
             services
                 .AddSerialCommunication()
                 .AddFrameWorkTools()
@@ -96,6 +95,9 @@ namespace CNCLib.Serial.Server
             {
                 services.AddScoped<ISerialPort, SerialPortLib>();
             }
+
+            AppService.ServiceCollection = services;
+            AppService.BuildServiceProvider();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
