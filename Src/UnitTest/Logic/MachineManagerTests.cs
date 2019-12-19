@@ -154,11 +154,12 @@ namespace CNCLib.UnitTest.Logic
         [Fact]
         public async Task GetMachinesOne()
         {
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var rep        = Substitute.For<IMachineRepository>();
-            var repC       = Substitute.For<IConfigurationRepository>();
+            var unitOfWork  = Substitute.For<IUnitOfWork>();
+            var rep         = Substitute.For<IMachineRepository>();
+            var repC        = Substitute.For<IConfigurationRepository>();
+            var userContext = new CNCLibUserContext();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
+            var ctrl = new MachineManager(unitOfWork, rep, repC, userContext, Mapper);
 
             var machineEntity = new[]
             {
@@ -167,11 +168,12 @@ namespace CNCLib.UnitTest.Logic
                     MachineId           = 1,
                     Name                = "Maxi",
                     BufferSize          = 115200,
+                    UserId              = userContext.UserId,
                     MachineCommands     = new List<MachineCommand>(),
                     MachineInitCommands = new MachineInitCommand[0]
                 }
             };
-            rep.GetAll().Returns(machineEntity);
+            rep.GetByUser(userContext.UserId).Returns(machineEntity);
 
             var machines = (await ctrl.GetAll()).ToArray();
             machines.Length.Should().Be(1);
@@ -187,11 +189,12 @@ namespace CNCLib.UnitTest.Logic
         [Fact]
         public async Task GetMachinesMany()
         {
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var rep        = Substitute.For<IMachineRepository>();
-            var repC       = Substitute.For<IConfigurationRepository>();
+            var unitOfWork  = Substitute.For<IUnitOfWork>();
+            var rep         = Substitute.For<IMachineRepository>();
+            var repC        = Substitute.For<IConfigurationRepository>();
+            var userContext = new CNCLibUserContext();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
+            var ctrl = new MachineManager(unitOfWork, rep, repC, userContext, Mapper);
 
             var machineEntity = new[]
             {
@@ -201,13 +204,15 @@ namespace CNCLib.UnitTest.Logic
                     Name                = "Maxi",
                     BufferSize          = 115200,
                     MachineCommands     = new List<MachineCommand>(),
-                    MachineInitCommands = new List<MachineInitCommand>()
+                    MachineInitCommands = new List<MachineInitCommand>(),
+                    UserId              = userContext.UserId
                 },
                 new Machine
                 {
                     MachineId  = 2,
                     Name       = "Maxi",
                     BufferSize = 115200,
+                    UserId     = userContext.UserId,
                     MachineCommands = new List<MachineCommand>()
                     {
                         new MachineCommand
@@ -231,7 +236,7 @@ namespace CNCLib.UnitTest.Logic
                 }
             };
 
-            rep.GetAll().Returns(machineEntity);
+            rep.GetByUser(userContext.UserId).Returns(machineEntity);
 
             var machines = (await ctrl.GetAll()).ToArray();
             machines.Length.Should().Be(2);

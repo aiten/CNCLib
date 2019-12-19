@@ -66,7 +66,7 @@ namespace CNCLib.UnitTest.Repository
                         mic.MachineId = key;
                     }
                 },
-                CompareEntity = (entity1, entity2) => CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] { @"MachineId", @"MachineCommandId", @"MachineInitCommandId" })
+                CompareEntity = (entity1, entity2) => CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] { @"MachineId", @"MachineCommandId", @"MachineInitCommandId", @"User" })
             };
         }
 
@@ -157,7 +157,7 @@ namespace CNCLib.UnitTest.Repository
             await CreateTestContext().AddUpdateDeleteBulk(
                 () => new[]
                 {
-                    CreateMachine(@"AddUpdateDeleteBulkTest1"), CreateMachine(@"AddUpdateDeleteBulkTest2"), CreateMachine(@"AddUpdateDeleteBulkTest2")
+                    CreateMachine(@"AddUpdateDeleteBulkTest1"), CreateMachine(@"AddUpdateDeleteBulkTest2"), CreateMachine(@"AddUpdateDeleteBulkTest3")
                 },
                 (entities) =>
                 {
@@ -181,6 +181,7 @@ namespace CNCLib.UnitTest.Repository
         {
             var machine = new Machine
             {
+                UserId              = 1,
                 ComPort             = "com47",
                 Axis                = 2,
                 BaudRate            = 6500,

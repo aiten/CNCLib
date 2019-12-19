@@ -54,16 +54,17 @@ namespace CNCLib.UnitTest.Logic
         [Fact]
         public async Task GetItemAll()
         {
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var rep        = Substitute.For<IItemRepository>();
+            var unitOfWork  = Substitute.For<IUnitOfWork>();
+            var rep         = Substitute.For<IItemRepository>();
+            var userContext = new CNCLibUserContext();
 
-            var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Mapper);
+            var ctrl = new ItemManager(unitOfWork, rep, userContext, Mapper);
 
             var itemEntity = new[]
             {
-                new Item { ItemId = 1, Name = "Test1" }, new Item { ItemId = 2, Name = "Test2" }
+                new Item { ItemId = 1, Name = "Test1", UserId = userContext.UserId }, new Item { ItemId = 2, Name = "Test2", UserId = userContext.UserId }
             };
-            rep.GetAll().Returns(itemEntity);
+            rep.GetByUser(userContext.UserId).Returns(itemEntity);
 
             var all = (await ctrl.GetAll()).ToArray();
 

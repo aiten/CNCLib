@@ -19,6 +19,7 @@ using AutoMapper;
 using Framework.Dependency;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace CNCLib.WpfClient.Test
 {
@@ -39,6 +40,12 @@ namespace CNCLib.WpfClient.Test
             if (AppService.ServiceCollection == null)
             {
                 AppService.ServiceCollection = new ServiceCollection();
+
+                AppService.ServiceCollection
+                    .AddTransient<ILoggerFactory, LoggerFactory>()
+                    .AddTransient(typeof(ILogger<>), typeof(Logger<>));
+
+                AppService.BuildServiceProvider();
             }
         }
     }

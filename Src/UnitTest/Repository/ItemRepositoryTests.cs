@@ -61,7 +61,7 @@ namespace CNCLib.UnitTest.Repository
                         itemProp.ItemId = key;
                     }
                 },
-                CompareEntity = (entity1, entity2) => CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] { @"ItemId" })
+                CompareEntity = (entity1, entity2) => CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] { @"ItemId", @"User" })
             };
         }
 
@@ -137,7 +137,8 @@ namespace CNCLib.UnitTest.Repository
             {
                 Name           = name,
                 ClassName      = "Dummy",
-                ItemProperties = new List<ItemProperty>()
+                ItemProperties = new List<ItemProperty>(),
+                UserId         = 1
             };
             return e;
         }

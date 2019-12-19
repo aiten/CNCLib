@@ -66,9 +66,8 @@ namespace CNCLib.UnitTest.Repository
         public async Task GetAllTest()
         {
             var entities = (await CreateTestContext().GetAll()).OrderBy(u => u.Name);
-            entities.Count().Should().BeGreaterThan(1);
-            entities.ElementAt(0).Name.Should().Be("Edith");
-            entities.ElementAt(1).Name.Should().Be("Herbert");
+            entities.Count().Should().BeGreaterOrEqualTo(1);
+            entities.ElementAt(0).Name.Should().Be("global");
         }
 
         [Fact]
@@ -81,8 +80,8 @@ namespace CNCLib.UnitTest.Repository
         [Fact]
         public async Task GetTrackingOKTest()
         {
-            var entity = await CreateTestContext().GetTrackingOK(2);
-            entity.UserId.Should().Be(2);
+            var entity = await CreateTestContext().GetTrackingOK(1);
+            entity.UserId.Should().Be(1);
         }
 
         [Fact]
@@ -112,8 +111,8 @@ namespace CNCLib.UnitTest.Repository
         {
             using (var ctx = CreateTestContext().CreateTestDbContext())
             {
-                var users = await ctx.Repository.Get(2);
-                users.UserId.Should().Be(2);
+                var users = await ctx.Repository.Get(1);
+                users.UserId.Should().Be(1);
 
                 var usersByName = await ctx.Repository.GetByName(users.Name);
                 usersByName.UserId.Should().Be(users.UserId);
@@ -137,7 +136,7 @@ namespace CNCLib.UnitTest.Repository
 
             using (var ctx = CreateTestContext().CreateTestDbContext())
             {
-                existingUserName = (await ctx.Repository.Get(2)).Name;
+                existingUserName = (await ctx.Repository.Get(1)).Name;
             }
 
             using (var ctx = CreateTestContext().CreateTestDbContext())
