@@ -161,6 +161,9 @@ namespace CNCLib.Server
                 .AddServiceAsLogic() // used for Logic.Client
                 .AddScoped<ICNCLibUserContext, CNCLibUserContext>()
                 .AddMapper(new MapperConfiguration(cfg => { cfg.AddProfile<LogicAutoMapperProfile>(); }));
+
+            AppService.ServiceCollection = services;
+            AppService.BuildServiceProvider();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
