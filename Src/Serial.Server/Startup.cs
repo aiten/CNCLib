@@ -62,7 +62,7 @@ namespace CNCLib.Serial.Server
 
             //services.AddControllers();
 
-            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+            services.AddCors(options => options.AddPolicy("AllowAll", options => options.SetIsOriginAllowed(x => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
 
             services.AddSignalR(hu => hu.EnableDetailedErrors = true);
 
@@ -88,12 +88,11 @@ namespace CNCLib.Serial.Server
 
             services
                 .AddSerialCommunication()
-                .AddFrameWorkTools()
-                .AddAssembylIncludingInternals(ServiceLifetime.Scoped, typeof(Framework.Arduino.SerialCommunication.Serial).Assembly);
+                .AddFrameWorkTools();
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                services.AddScoped<ISerialPort, SerialPortLib>();
+                services.AddTransient<ISerialPort, SerialPortLib>();
             }
 
             AppService.ServiceCollection = services;

@@ -73,11 +73,13 @@ namespace CNCLib.Serial.WebAPI.SerialPort
 
         public ISerial Serial { get; set; }
 
-        public bool IsConnected => Serial != null && Serial.IsConnected;
+        public bool IsConnected => Serial?.IsConnected ?? false;
 
-        public bool IsAborted       => Serial != null && Serial.Aborted;
-        public bool IsSingleStep    => Serial?.Pause ?? false;
-        public int  CommandsInQueue => Serial?.CommandsInQueue ?? 0;
+        public bool IsAborted => Serial?.Aborted ?? false;
+
+        public bool IsSingleStep => Serial?.Pause ?? false;
+
+        public int CommandsInQueue => Serial?.CommandsInQueue ?? 0;
 
         #endregion
     }

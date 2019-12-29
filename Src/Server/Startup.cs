@@ -96,7 +96,7 @@ namespace CNCLib.Server
 
             services.AddControllers();
 
-            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+            services.AddCors(options => options.AddPolicy("AllowAll", options => options.SetIsOriginAllowed(x => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
 
             services.AddSignalR(hu => hu.EnableDetailedErrors = true);
 

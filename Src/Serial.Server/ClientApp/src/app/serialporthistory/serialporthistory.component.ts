@@ -30,7 +30,7 @@ export class SerialPortHistoryComponent implements OnChanges {
 
   constructor(
     private serivalServerService: SerialServerService,
-    @Inject('BASE_URL') public baseUrl: string,
+    @Inject('WEBAPI_URL') public baseUrl: string,
   ) {
   }
 

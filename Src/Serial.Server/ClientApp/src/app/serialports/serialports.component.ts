@@ -32,7 +32,7 @@ export class SerialPortsComponent {
   displayedColumns: string[] = ['Id', 'PortName', 'IsConnected', 'IsAborted', 'IsSingleStep', 'CommandsInQueue', 'Task'];
 
   constructor(
-    private serivalServerService: SerialServerService,
+    private serialServerService: SerialServerService,
     private router: Router
   ) {
   }
@@ -42,29 +42,29 @@ export class SerialPortsComponent {
   }
 
   async reload(): Promise<void> {
-    this.serialports = await this.serivalServerService.getPorts();
+    this.serialports = await this.serialServerService.getPorts();
   }
 
   async refresh(): Promise<void> {
-    this.serialports = await this.serivalServerService.refresh();
+    this.serialports = await this.serialServerService.refresh();
   }
 
-  showHistory(showhistoryportid: number) {
-    this.historyportid = showhistoryportid;
+  showHistory(serialPortId: number) {
+    this.historyportid = serialPortId;
   }
 
-  machineControl(showhistoryportid: number) {
-    this.router.navigate([machinecontrolURL, showhistoryportid]);
+  machineControl(serialPortId: number) {
+    this.router.navigate([machinecontrolURL, serialPortId]);
   }
 
-  async clearQueue(serialportid: number): Promise<void> {
-    await this.serivalServerService.abort(serialportid);
-    await this.serivalServerService.resume(serialportid);
+  async clearQueue(serialPortId: number): Promise<void> {
+    await this.serialServerService.abort(serialPortId);
+    await this.serialServerService.resume(serialPortId);
     await this.reload();
   }
 
-  async disconnect(serialportid: number): Promise<void> {
-    await this.serivalServerService.disconnect(serialportid);
+  async disconnect(serialPortId: number): Promise<void> {
+    await this.serialServerService.disconnect(serialPortId);
     await this.reload();
   }
 }
