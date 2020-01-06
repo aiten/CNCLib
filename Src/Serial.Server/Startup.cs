@@ -22,7 +22,6 @@ using CNCLib.Serial.WebAPI.Controllers;
 using CNCLib.Serial.WebAPI.Hubs;
 using CNCLib.Serial.WebAPI.SerialPort;
 
-using Framework.Arduino.Linux.SerialCommunication;
 using Framework.Arduino.SerialCommunication;
 using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Dependency;
@@ -89,11 +88,6 @@ namespace CNCLib.Serial.Server
             services
                 .AddSerialCommunication()
                 .AddFrameWorkTools();
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                services.AddTransient<ISerialPort, SerialPortLib>();
-            }
 
             AppService.ServiceCollection = services;
             AppService.BuildServiceProvider();
