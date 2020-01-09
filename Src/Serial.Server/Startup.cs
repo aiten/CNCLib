@@ -46,6 +46,8 @@ namespace CNCLib.Serial.Server
 {
     public class Startup
     {
+        private const string CorsAllowAllName = "AllowAll";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -61,7 +63,7 @@ namespace CNCLib.Serial.Server
 
             //services.AddControllers();
 
-            services.AddCors(options => options.AddPolicy("AllowAll", options => options.SetIsOriginAllowed(x => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
+            services.AddCors(options => options.AddPolicy(CorsAllowAllName, options => options.SetIsOriginAllowed(x => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
 
             services.AddSignalR(hu => hu.EnableDetailedErrors = true);
 
@@ -115,7 +117,7 @@ namespace CNCLib.Serial.Server
             app.UseRouting();
             app.UseHttpsRedirection();
 
-            app.UseCors("AllowAll");
+            app.UseCors(CorsAllowAllName);
 
             void callback(object x)
             {

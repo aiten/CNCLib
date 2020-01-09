@@ -62,6 +62,7 @@ namespace CNCLib.Server
 {
     public class Startup
     {
+        private const string CorsAllowAllName = "AllowAll";
         private const string AuthenticationScheme = "BasicAuthentication";
 
         public Startup(IConfiguration configuration)
@@ -96,7 +97,7 @@ namespace CNCLib.Server
 
             services.AddControllers();
 
-            services.AddCors(options => options.AddPolicy("AllowAll", options => options.SetIsOriginAllowed(x => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
+            services.AddCors(options => options.AddPolicy(CorsAllowAllName, options => options.SetIsOriginAllowed(x => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
 
             services.AddSignalR(hu => hu.EnableDetailedErrors = true);
 
@@ -188,7 +189,7 @@ namespace CNCLib.Server
             app.UseRouting();
             app.UseHttpsRedirection();
 
-            app.UseCors("AllowAll");
+            app.UseCors(CorsAllowAllName);
 
             app.UseAuthentication();
             app.UseAuthorization();

@@ -1,6 +1,6 @@
 Param(
 	[Parameter(Mandatory=$False)]
-    [string]$SourceBinFolder = "..\WpfClient.Sql.Start\bin\Debug\net471"
+    [string]$SourceBinFolder = "..\WpfClient.Sql.Start\bin\Debug\netcoreapp3.1"
 )
 
 $OutputDir = "./Output"

@@ -80,24 +80,7 @@ export class SerialPortHistoryComponent implements OnChanges {
     this.serialcommands = await this.serivalServerService.getHistory(this.forserialportid);
 
     console.log('refresh1');
-/*
-    this.serialcommands = [
-      { SeqId: 1, CommandText: 'g0x0y0', ReplyType: 'OK', SentTime: Date.now(), ReplyReceivedTime: Date.now() },
-      { SeqId: 2, CommandText: 'g0x0y0', ReplyType: 'OK', SentTime: Date.now(), ReplyReceivedTime: Date.now() },
-      { SeqId: 3, CommandText: 'g0x0y0', ReplyType: 'OK', SentTime: Date.now(), ReplyReceivedTime: Date.now() },
-      { SeqId: 4, CommandText: 'g0x0y0', ReplyType: 'OK', SentTime: Date.now(), ReplyReceivedTime: Date.now() },
-      { SeqId: 5, CommandText: 'g0x0y0', ReplyType: 'OK', SentTime: Date.now(), ReplyReceivedTime: Date.now() },
-      { SeqId: 6, CommandText: 'g0x0y0', ReplyType: 'OK', SentTime: Date.now(), ReplyReceivedTime: Date.now() },
-      { SeqId: 7, CommandText: 'g0x0y0', ReplyType: 'OK', SentTime: Date.now(), ReplyReceivedTime: Date.now() },
-      { SeqId: 8, CommandText: 'g0x0y0', ReplyType: 'OK', SentTime: Date.now(), ReplyReceivedTime: Date.now() },
-      { SeqId: 9, CommandText: 'g0x0y0', ReplyType: 'OK', SentTime: Date.now(), ReplyReceivedTime: Date.now() },
-      { SeqId: 10, CommandText: 'g0x0y0', ReplyType: 'OK', SentTime: Date.now(), ReplyReceivedTime: Date.now() },
-      { SeqId: 11, CommandText: 'g0x0y0', ReplyType: 'OK', SentTime: Date.now(), ReplyReceivedTime: Date.now() },
-      { SeqId: 12, CommandText: 'g0x0y0', ReplyType: 'OK', SentTime: Date.now(), ReplyReceivedTime: Date.now() },
-      { SeqId: 13, CommandText: 'g0x0y0', ReplyType: 'OK', SentTime: Date.now(), ReplyReceivedTime: Date.now() },
-      { SeqId: 14, CommandText: 'g0x0y0', ReplyType: 'OK', SentTime: Date.now(), ReplyReceivedTime: Date.now() },
-    ];
-*/
+
     this.serialcommandsDataSource = new MatTableDataSource<SerialCommand>(this.serialcommands);
     this.serialcommandsDataSource.paginator = this.paginator;
     console.log('refresh done');

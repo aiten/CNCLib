@@ -53,9 +53,12 @@ namespace CNCLib.Server
 
         private static IWebHostBuilder BuildWebHost(string[] args)
         {
+            var hostConfig = new ConfigurationBuilder()
+                .AddJsonFile("hosting.json", optional: true)
+                .Build();
+
             return WebHost.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration(
-                    (hostingContext, config) => { config.AddJsonFile("hosting.json", optional: true); })
+                .UseConfiguration(hostConfig)
                 .UseStartup<Startup>()
                 .ConfigureLogging(logging =>
                 {
