@@ -24,7 +24,7 @@ using Framework.Service.Logic;
 
 namespace CNCLib.Service.Logic
 {
-    public class LoadOptionsService : CRUDService<LoadOptions, int>, ILoadOptionsService
+    public class LoadOptionsService : CrudService<LoadOptions, int>, ILoadOptionsService
     {
         readonly ILoadOptionsManager _manager;
 

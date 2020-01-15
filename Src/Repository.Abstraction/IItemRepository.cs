@@ -23,7 +23,7 @@ using Framework.Repository.Abstraction;
 
 namespace CNCLib.Repository.Abstraction
 {
-    public interface IItemRepository : ICRUDRepository<Item, int>
+    public interface IItemRepository : ICrudRepository<Item, int>
     {
         Task<IList<Item>> GetByUser(int userId);
 

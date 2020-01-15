@@ -38,7 +38,7 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
         {
             var client = GetHttpClient();
 
-            var info = new LoadOptions { LoadType = LoadOptions.ELoadType.HPGL };
+            var info = new LoadOptions { LoadType = LoadOptions.ELoadType.Hpgl };
 
             Assembly ass     = Assembly.GetExecutingAssembly();
             string   assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);

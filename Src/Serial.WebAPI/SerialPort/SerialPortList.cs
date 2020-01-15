@@ -31,7 +31,7 @@ namespace CNCLib.Serial.WebAPI.SerialPort
 
         public static ISerialPort SerialPort { get; private set; }
 
-        public static SerialPortWrapper[] Ports { get; private set; } = GetPortDefinitions().ToArray();
+        public static IEnumerable<SerialPortWrapper> Ports { get; private set; } = GetPortDefinitions();
 
         public static SerialPortWrapper GetPort(int id)
         {
@@ -60,17 +60,12 @@ namespace CNCLib.Serial.WebAPI.SerialPort
 
             var portNames = SerialPort.GetPortNames();
 
-            if (Environment.MachineName == "AIT7" && !portNames.Any())
-            {
-                portNames = new[] { "com0", "com1", "com3", "com4", "com5", "com6", "com10" };
-            }
-
             return portNames.Select(
                 (port, index) => new SerialPortWrapper()
                 {
                     Id       = GetIdFromPortName(port, index),
                     PortName = port
-                });
+                }).ToList();
         }
 
         public static void Refresh()
@@ -100,7 +95,7 @@ namespace CNCLib.Serial.WebAPI.SerialPort
                 }
             }
 
-            Ports = newList.ToArray();
+            Ports = newList;
         }
 
         #endregion

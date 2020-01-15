@@ -30,7 +30,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository
 {
-    public class UserFileRepository : CRUDRepository<CNCLibContext, UserFile, int>, IUserFileRepository
+    public class UserFileRepository : CrudRepository<CNCLibContext, UserFile, int>, IUserFileRepository
     {
         #region ctr/default/overrides
 

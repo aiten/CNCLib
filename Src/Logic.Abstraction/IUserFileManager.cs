@@ -22,7 +22,7 @@ using Framework.Logic.Abstraction;
 
 namespace CNCLib.Logic.Abstraction
 {
-    public interface IUserFileManager : ICRUDManager<DTO.UserFile, int>
+    public interface IUserFileManager : ICrudManager<DTO.UserFile, int>
     {
         Task<int> GetFileId(string fileName);
 

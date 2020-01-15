@@ -23,7 +23,7 @@ using Framework.Service.Abstraction;
 
 namespace CNCLib.Service.Abstraction
 {
-    public interface IMachineService : IDisposable, ICRUDService<Machine, int>
+    public interface IMachineService : IDisposable, ICrudService<Machine, int>
     {
         Task<Machine> DefaultMachine();
         Task<int>     GetDefaultMachine();

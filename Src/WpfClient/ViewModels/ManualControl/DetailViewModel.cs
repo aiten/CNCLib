@@ -59,7 +59,7 @@ namespace CNCLib.WpfClient.ViewModels.ManualControl
 
         public bool CanSendGCode()
         {
-            return CanSend() && _global.Machine.CommandSyntax != CommandSyntax.HPGL;
+            return CanSend() && _global.Machine.CommandSyntax != CommandSyntax.Hpgl;
         }
 
         #endregion

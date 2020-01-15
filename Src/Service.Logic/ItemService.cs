@@ -26,7 +26,7 @@ using Framework.Service.Logic;
 
 namespace CNCLib.Service.Logic
 {
-    public class ItemService : CRUDService<Item, int>, IItemService
+    public class ItemService : CrudService<Item, int>, IItemService
     {
         readonly IItemManager _manager;
 

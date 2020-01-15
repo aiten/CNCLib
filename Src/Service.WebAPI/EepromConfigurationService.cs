@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using CNCLib.Logic.Abstraction.DTO;
 using CNCLib.Service.Abstraction;
 
+using Framework.Pattern;
 using Framework.Service.WebAPI;
 using Framework.Service.WebAPI.Uri;
 
@@ -27,32 +28,41 @@ namespace CNCLib.Service.WebAPI
 {
     public class EepromConfigurationService : ServiceBase, IEepromConfigurationService
     {
-        public EepromConfigurationService(HttpClient httpClient) : base(httpClient)
+        private HttpClient _httpClient;
+
+        public EepromConfigurationService(HttpClient httpClient)
         {
             BaseApi = @"api/EepromConfiguration";
+            _httpClient = httpClient;
+        }
+        protected override IScope<HttpClient> CreateScope()
+        {
+            return new ScopeInstance<HttpClient>(_httpClient);
         }
 
         public async Task<EepromConfiguration> CalculateConfig(EepromConfigurationInput param)
         {
-            var client = GetHttpClient();
-
-            var paramUri = new UriQueryBuilder();
-            paramUri.Add("teeth", param.Teeth)
-                .Add("toothSizeInMm",          param.ToothSizeInMm)
-                .Add("microSteps",             param.MicroSteps)
-                .Add("stepsPerRotation",       param.StepsPerRotation)
-                .Add("estimatedRotationSpeed", param.EstimatedRotationSpeed)
-                .Add("timeToAcc",              param.TimeToAcc)
-                .Add("timeToDec",              param.TimeToDec);
-
-            HttpResponseMessage response = await client.GetAsync(CreatePathBuilder().AddQuery(paramUri).Build());
-            if (response.IsSuccessStatusCode)
+            using (var scope = CreateScope())
             {
-                EepromConfiguration value = await response.Content.ReadAsAsync<EepromConfiguration>();
-                return value;
-            }
 
-            return null;
+                var paramUri = new UriQueryBuilder();
+                paramUri.Add("teeth", param.Teeth)
+                    .Add("toothSizeInMm",          param.ToothSizeInMm)
+                    .Add("microSteps",             param.MicroSteps)
+                    .Add("stepsPerRotation",       param.StepsPerRotation)
+                    .Add("estimatedRotationSpeed", param.EstimatedRotationSpeed)
+                    .Add("timeToAcc",              param.TimeToAcc)
+                    .Add("timeToDec",              param.TimeToDec);
+
+                HttpResponseMessage response = await scope.Instance.GetAsync(CreatePathBuilder().AddQuery(paramUri).Build());
+                if (response.IsSuccessStatusCode)
+                {
+                    EepromConfiguration value = await response.Content.ReadAsAsync<EepromConfiguration>();
+                    return value;
+                }
+
+                return null;
+            }
         }
     }
 }

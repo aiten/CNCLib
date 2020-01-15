@@ -29,7 +29,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository
 {
-    public class MachineRepository : CRUDRepository<CNCLibContext, Machine, int>, IMachineRepository
+    public class MachineRepository : CrudRepository<CNCLibContext, Machine, int>, IMachineRepository
     {
         #region ctr/default/overrides
 

@@ -28,14 +28,14 @@ using Xunit;
 
 namespace CNCLib.UnitTest.Load
 {
-    public class LoadHPGLTest
+    public class LoadHpglTest
     {
         [Fact]
-        public void LoadHPGL00()
+        public void LoadHpgl00()
         {
             var loadInfo = new LoadOptions
             {
-                LoadType    = LoadOptions.ELoadType.HPGL,
+                LoadType    = LoadOptions.ELoadType.Hpgl,
                 AutoScale   = false,
                 FileContent = Encoding.ASCII.GetBytes("IN;PU0,0")
             };
@@ -55,11 +55,11 @@ namespace CNCLib.UnitTest.Load
         }
 
         [Fact]
-        public void LoadHPGLSkipPU()
+        public void LoadHpglSkipPU()
         {
             var loadInfo = new LoadOptions
             {
-                LoadType    = LoadOptions.ELoadType.HPGL,
+                LoadType    = LoadOptions.ELoadType.Hpgl,
                 AutoScale   = false,
                 PenMoveType = LoadOptions.PenType.CommandString,
                 MoveSpeed   = 499,
@@ -83,11 +83,11 @@ namespace CNCLib.UnitTest.Load
         }
 
         [Fact]
-        public void LoadHPGLGengraveParam()
+        public void LoadHpglGengraveParam()
         {
             var loadInfo = new LoadOptions
             {
-                LoadType              = LoadOptions.ELoadType.HPGL,
+                LoadType              = LoadOptions.ELoadType.Hpgl,
                 AutoScale             = false,
                 PenMoveType           = LoadOptions.PenType.ZMove,
                 EngravePosInParameter = true,
@@ -109,11 +109,11 @@ namespace CNCLib.UnitTest.Load
         }
 
         [Fact]
-        public void LoadHPGLGengraveNoParamAndSpeed()
+        public void LoadHpglGengraveNoParamAndSpeed()
         {
             var loadInfo = new LoadOptions
             {
-                LoadType              = LoadOptions.ELoadType.HPGL,
+                LoadType              = LoadOptions.ELoadType.Hpgl,
                 AutoScale             = false,
                 PenMoveType           = LoadOptions.PenType.ZMove,
                 EngravePosInParameter = false,
@@ -144,11 +144,11 @@ namespace CNCLib.UnitTest.Load
         }
 
         [Fact]
-        public void LoadHPGLLaser()
+        public void LoadHpglLaser()
         {
             var loadInfo = new LoadOptions
             {
-                LoadType    = LoadOptions.ELoadType.HPGL,
+                LoadType    = LoadOptions.ELoadType.Hpgl,
                 AutoScale   = false,
                 PenMoveType = LoadOptions.PenType.CommandString,
                 MoveSpeed   = 499,
@@ -170,11 +170,11 @@ namespace CNCLib.UnitTest.Load
         }
 
         [Fact]
-        public void LoadHPGLConvertOpenLine()
+        public void LoadHpglConvertOpenLine()
         {
             var loadInfo = new LoadOptions
             {
-                LoadType    = LoadOptions.ELoadType.HPGL,
+                LoadType    = LoadOptions.ELoadType.Hpgl,
                 AutoScale   = false,
                 PenMoveType = LoadOptions.PenType.CommandString,
                 MoveSpeed   = 499,
@@ -197,11 +197,11 @@ namespace CNCLib.UnitTest.Load
         }
 
         [Fact]
-        public void LoadHPGLConvertClosedLine()
+        public void LoadHpglConvertClosedLine()
         {
             var loadInfo = new LoadOptions
             {
-                LoadType    = LoadOptions.ELoadType.HPGL,
+                LoadType    = LoadOptions.ELoadType.Hpgl,
                 AutoScale   = false,
                 PenMoveType = LoadOptions.PenType.CommandString,
                 MoveSpeed   = 499,

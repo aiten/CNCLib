@@ -23,7 +23,7 @@ using Framework.Repository.Abstraction;
 
 namespace CNCLib.Repository.Abstraction
 {
-    public interface IMachineRepository : ICRUDRepository<Machine, int>
+    public interface IMachineRepository : ICrudRepository<Machine, int>
     {
         Task<IList<Machine>>            GetByUser(int              userId);
         Task<IList<MachineCommand>>     GetMachineCommands(int     machineId);

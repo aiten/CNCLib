@@ -172,9 +172,9 @@ namespace CNCLib.WpfClient.ViewModels
             }
         }
 
-        private bool IsHPGLAndPlotter()
+        private bool IsHpglAndPlotter()
         {
-            if (_global.Machine.CommandSyntax != CommandSyntax.HPGL)
+            if (_global.Machine.CommandSyntax != CommandSyntax.Hpgl)
             {
                 return true;
             }
@@ -266,7 +266,7 @@ namespace CNCLib.WpfClient.ViewModels
                         _global.Com.Current.ClearCommandHistory();
                         var cmdDefList = new List<CommandToIndex>();
 
-                        if (_global.Machine.CommandSyntax == CommandSyntax.HPGL && IsHPGLAndPlotter())
+                        if (_global.Machine.CommandSyntax == CommandSyntax.Hpgl && IsHpglAndPlotter())
                         {
                             Commands.ForEach(
                                 cmd =>
@@ -345,7 +345,7 @@ namespace CNCLib.WpfClient.ViewModels
 
         public bool CanSendTo()
         {
-            return !_loadingOrSending && _global.Com.Current.IsConnected && Commands.Count > 0 && IsHPGLAndPlotter();
+            return !_loadingOrSending && _global.Com.Current.IsConnected && Commands.Count > 0 && IsHpglAndPlotter();
         }
 
         public bool CanLoad()

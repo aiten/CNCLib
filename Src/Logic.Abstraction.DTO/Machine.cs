@@ -23,7 +23,7 @@ namespace CNCLib.Logic.Abstraction.DTO
         GCodeBasic = 0,
         GCode      = 1,
         Grbl       = 2,
-        HPGL       = 7 // max 3 bit
+        Hpgl       = 7 // max 3 bit
     }
 
     public class Machine

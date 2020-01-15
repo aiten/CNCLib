@@ -32,7 +32,7 @@ using UserFileEntity = CNCLib.Repository.Abstraction.Entities.UserFile;
 
 namespace CNCLib.Logic.Manager
 {
-    public class UserFileManager : CRUDManager<UserFile, int, UserFileEntity>, IUserFileManager
+    public class UserFileManager : CrudManager<UserFile, int, UserFileEntity>, IUserFileManager
     {
         private readonly IUnitOfWork         _unitOfWork;
         private readonly IUserFileRepository _repository;

@@ -19,15 +19,24 @@ using System.Net.Http;
 using CNCLib.Logic.Abstraction.DTO;
 using CNCLib.Service.Abstraction;
 
+using Framework.Pattern;
 using Framework.Service.WebAPI;
 
 namespace CNCLib.Service.WebAPI
 {
-    public class LoadOptionsService : CRUDServiceBase<LoadOptions, int>, ILoadOptionsService
+    public class LoadOptionsService : CrudServiceBase<LoadOptions, int>, ILoadOptionsService
     {
-        public LoadOptionsService(HttpClient httpClient) : base(httpClient)
+        private HttpClient _httpClient;
+
+        public LoadOptionsService(HttpClient httpClient)
         {
-            BaseApi = @"api/LoadOptions";
+            BaseApi     = @"api/LoadOptions";
+            _httpClient = httpClient;
+        }
+
+        protected override IScope<HttpClient> CreateScope()
+        {
+            return new ScopeInstance<HttpClient>(_httpClient);
         }
 
         protected override int GetKey(LoadOptions value) => value.Id;

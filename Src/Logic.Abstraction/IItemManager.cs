@@ -21,7 +21,7 @@ using Framework.Logic.Abstraction;
 
 namespace CNCLib.Logic.Abstraction
 {
-    public interface IItemManager : ICRUDManager<DTO.Item, int>
+    public interface IItemManager : ICrudManager<DTO.Item, int>
     {
         Task<IEnumerable<DTO.Item>> GetByClassName(string classname);
     }

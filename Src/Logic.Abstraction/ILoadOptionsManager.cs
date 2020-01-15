@@ -18,7 +18,7 @@ using Framework.Logic.Abstraction;
 
 namespace CNCLib.Logic.Abstraction
 {
-    public interface ILoadOptionsManager : ICRUDManager<DTO.LoadOptions, int>
+    public interface ILoadOptionsManager : ICrudManager<DTO.LoadOptions, int>
     {
     }
 }

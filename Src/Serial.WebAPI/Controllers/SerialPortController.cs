@@ -14,6 +14,7 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,8 +33,6 @@ namespace CNCLib.Serial.WebAPI.Controllers
     [Route("api/[controller]")]
     public class SerialPortController : Controller
     {
-        protected string CurrentUri => $"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}";
-
         private readonly IHubContext<CNCLibHub> _hubContext;
         private static   IHubContext<CNCLibHub> _myHubContext;
 
@@ -72,9 +71,16 @@ namespace CNCLib.Serial.WebAPI.Controllers
         #region Query/Info
 
         [HttpGet]
-        public async Task<IEnumerable<SerialPortDefinition>> Get()
+        public async Task<IEnumerable<SerialPortDefinition>> Get(string portName = null)
         {
-            return await Task.FromResult(SerialPortList.Ports.Select(GetDefinition));
+            var allPorts = SerialPortList.Ports.Select(GetDefinition);
+
+            if (!string.IsNullOrEmpty(portName))
+            {
+                allPorts = allPorts.Where(port => 0 == string.Compare(port.PortName, portName, StringComparison.OrdinalIgnoreCase));
+            }
+
+            return await Task.FromResult(allPorts);
         }
 
         [HttpGet("{id:int}")]

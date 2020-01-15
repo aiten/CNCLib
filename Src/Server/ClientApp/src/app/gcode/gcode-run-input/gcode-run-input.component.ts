@@ -50,12 +50,12 @@ export class GcodeRunInputComponent implements OnInit {
     });
   }
 
-  isHPGL() {
-    return this.entry.LoadType == ELoadType.HPGL;
+  isHpgl() {
+    return this.entry.LoadType == ELoadType.Hpgl;
   }
 
-  isHPGLorImageOrImageHole() {
-    return this.isHPGL() || this.isImageOrImageHole();
+  isHpglorImageOrImageHole() {
+    return this.isHpgl() || this.isImageOrImageHole();
   }
 
   isImage() {
@@ -71,23 +71,23 @@ export class GcodeRunInputComponent implements OnInit {
   }
 
   isAutoScale() {
-    return this.isHPGLorImageOrImageHole() && this.entry.AutoScale;
+    return this.isHpglorImageOrImageHole() && this.entry.AutoScale;
   }
 
   isScale() {
-    return this.isHPGLorImageOrImageHole() && this.entry.AutoScale == false;
+    return this.isHpglorImageOrImageHole() && this.entry.AutoScale == false;
   }
 
   isSmooth() {
-    return this.isHPGL() && this.entry.SmoothType != SmoothTypeEnum.NoSmooth;
+    return this.isHpgl() && this.entry.SmoothType != SmoothTypeEnum.NoSmooth;
   }
 
   isLaser() {
-    return (this.isHPGL() && this.entry.PenMoveType == PenType.CommandString) || this.isImageOrImageHole();
+    return (this.isHpgl() && this.entry.PenMoveType == PenType.CommandString) || this.isImageOrImageHole();
   }
 
   isEngrave() {
-    return this.isHPGL() && this.entry.PenMoveType == PenType.ZMove;
+    return this.isHpgl() && this.entry.PenMoveType == PenType.ZMove;
   }
 
   async savegCode(value: any): Promise<void> {

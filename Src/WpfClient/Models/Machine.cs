@@ -187,7 +187,7 @@ namespace CNCLib.WpfClient.Models
 
         [Category(CATEGORY_FEATURES)]
         [DisplayName("CommandSyntax")]
-        [Description("Syntax of machine commands, e.g. GCode, HPGL")]
+        [Description("Syntax of machine commands, e.g. GCode, Hpgl")]
         public CommandSyntax CommandSyntax { get; set; }
 
         private ObservableCollection<MachineCommand> _machineCommands;

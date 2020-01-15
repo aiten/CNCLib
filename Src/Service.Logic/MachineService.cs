@@ -25,7 +25,7 @@ using Framework.Service.Logic;
 
 namespace CNCLib.Service.Logic
 {
-    public class MachineService : CRUDService<Machine, int>, IMachineService
+    public class MachineService : CrudService<Machine, int>, IMachineService
     {
         readonly IMachineManager _manager;
 

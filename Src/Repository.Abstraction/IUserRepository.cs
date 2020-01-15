@@ -22,7 +22,7 @@ using Framework.Repository.Abstraction;
 
 namespace CNCLib.Repository.Abstraction
 {
-    public interface IUserRepository : ICRUDRepository<User, int>
+    public interface IUserRepository : ICrudRepository<User, int>
     {
         Task<User> GetByName(string username);
     }

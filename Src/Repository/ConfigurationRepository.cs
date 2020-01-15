@@ -31,7 +31,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository
 {
-    public class ConfigurationRepository : CRUDRepository<CNCLibContext, Configuration, int>, IConfigurationRepository
+    public class ConfigurationRepository : CrudRepository<CNCLibContext, Configuration, int>, IConfigurationRepository
     {
         #region ctr/default/overrides
 

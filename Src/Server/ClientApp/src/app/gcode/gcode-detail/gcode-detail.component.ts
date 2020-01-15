@@ -25,7 +25,7 @@ import { MessageBoxComponent } from "../../modal/message-box/message-box.compone
 import { MessageBoxData } from "../../modal/message-box-data";
 import { gcodeURL } from '../../app.global';
 
-import HPGL = ELoadType.HPGL;
+import Hpgl = ELoadType.Hpgl;
 import ZMove = PenType.ZMove;
 import ImageHole = ELoadType.ImageHole;
 import ImageHole1 = ELoadType.ImageHole;
@@ -198,12 +198,12 @@ export class GcodeDetailComponent implements OnInit {
 
   }
 
-  isHPGL() {
-    return this.entry.LoadType == ELoadType.HPGL;
+  isHpgl() {
+    return this.entry.LoadType == ELoadType.Hpgl;
   }
 
-  isHPGLorImageOrImageHole() {
-    return this.isHPGL() || this.isImageOrImageHole();
+  isHpglorImageOrImageHole() {
+    return this.isHpgl() || this.isImageOrImageHole();
   }
 
   isImage() {
@@ -219,23 +219,23 @@ export class GcodeDetailComponent implements OnInit {
   }
 
   isAutoScale() {
-    return this.isHPGLorImageOrImageHole() && this.entry.AutoScale;
+    return this.isHpglorImageOrImageHole() && this.entry.AutoScale;
   }
 
   isScale() {
-    return this.isHPGLorImageOrImageHole() && this.entry.AutoScale == false;
+    return this.isHpglorImageOrImageHole() && this.entry.AutoScale == false;
   }
 
   isSmooth() {
-    return this.isHPGL() && this.entry.SmoothType != SmoothTypeEnum.NoSmooth;
+    return this.isHpgl() && this.entry.SmoothType != SmoothTypeEnum.NoSmooth;
   }
 
   isLaser() {
-    return (this.isHPGL() && this.entry.PenMoveType == PenType.CommandString) || this.isImageOrImageHole();
+    return (this.isHpgl() && this.entry.PenMoveType == PenType.CommandString) || this.isImageOrImageHole();
   }
 
   isEngrave() {
-    return this.isHPGL() && this.entry.PenMoveType == PenType.ZMove;
+    return this.isHpgl() && this.entry.PenMoveType == PenType.ZMove;
   }
 
   async ngOnInit() {

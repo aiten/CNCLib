@@ -37,7 +37,7 @@ namespace CNCLib.WpfClient.Helpers
         public static string GetCommandPrefix(this Machine machine)
         {
             var prefix = machine.CommandSyntax;
-            if (prefix == CommandSyntax.HPGL)
+            if (prefix == CommandSyntax.Hpgl)
             {
                 return ((char)27).ToString();
             }

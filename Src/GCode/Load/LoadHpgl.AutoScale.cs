@@ -24,14 +24,14 @@ using Framework.Drawing;
 
 namespace CNCLib.GCode.Load
 {
-    public partial class LoadHPGL
+    public partial class LoadHpgl
     {
         private class AutoScale
         {
             public LoadOptions LoadOptions { get; set; }
-            public LoadHPGL    LoadX       { get; set; }
+            public LoadHpgl    LoadX       { get; set; }
 
-            public void AutoScaleList(IList<HPGLCommand> list)
+            public void AutoScaleList(IList<HpglCommand> list)
             {
                 LoadX.AddComment("AutoScaleX", LoadX.LoadOptions.AutoScaleSizeX);
                 LoadX.AddComment("AutoScaleY", LoadX.LoadOptions.AutoScaleSizeY);

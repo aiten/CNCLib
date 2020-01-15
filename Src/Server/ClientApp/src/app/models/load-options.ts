@@ -16,7 +16,7 @@
 
 export enum ELoadType {
   GCode = 0,
-  HPGL = 1,
+  Hpgl = 1,
   Image = 2,
   ImageHole = 3
 }
@@ -71,14 +71,14 @@ export class LoadOptions {
   SubstG82: boolean;
   AddLineNumbers: boolean;
 
-  //HPGL
+  //Hpgl
   SwapXY: boolean;
   ScaleX: number;
   ScaleY: number;
   OfsX: number;
   OfsY: number;
 
-  //HPGL+IMG
+  //Hpgl+IMG
   AutoScale: boolean;
   AutoScaleKeepRatio: boolean;
 
@@ -141,12 +141,12 @@ export class LoadOptions {
 
   HoleType: EHoleType;
 
-  isHPGL(): boolean {
-    return this.LoadType == ELoadType.HPGL;
+  isHpgl(): boolean {
+    return this.LoadType == ELoadType.Hpgl;
   }
 
-  isHPGLorImageOrImageHole() {
-    return this.isHPGL() || this.isImageOrImageHole();
+  isHpglorImageOrImageHole() {
+    return this.isHpgl() || this.isImageOrImageHole();
   }
 
   isImage() {
@@ -162,22 +162,22 @@ export class LoadOptions {
   }
 
   isAutoScale() {
-    return this.isHPGLorImageOrImageHole() && this.AutoScale;
+    return this.isHpglorImageOrImageHole() && this.AutoScale;
   }
 
   isScale() {
-    return this.isHPGLorImageOrImageHole() && this.AutoScale == false;
+    return this.isHpglorImageOrImageHole() && this.AutoScale == false;
   }
 
   isSmooth() {
-    return this.isHPGL() && this.SmoothType != SmoothTypeEnum.NoSmooth;
+    return this.isHpgl() && this.SmoothType != SmoothTypeEnum.NoSmooth;
   }
 
   isLaser() {
-    return (this.isHPGL() && this.PenMoveType == PenType.CommandString) || this.isImageOrImageHole();
+    return (this.isHpgl() && this.PenMoveType == PenType.CommandString) || this.isImageOrImageHole();
   }
 
   isEngrave() {
-    return this.isHPGL() && this.PenMoveType == PenType.ZMove;
+    return this.isHpgl() && this.PenMoveType == PenType.ZMove;
   }
 }

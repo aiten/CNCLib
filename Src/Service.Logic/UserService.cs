@@ -25,7 +25,7 @@ using Framework.Service.Logic;
 
 namespace CNCLib.Service.Logic
 {
-    public class UserService : CRUDService<User, int>, IUserService
+    public class UserService : CrudService<User, int>, IUserService
     {
         readonly IUserManager _manager;
 

@@ -9,7 +9,7 @@ export function getBaseUrl() {
 }
 
 export function getWebApiUrl() {
-//  return 'http://a0:5000/';
+  // return 'https://ait.dlinkddns.com:5000/';
   return document.getElementsByTagName('base')[0].href;
 }
 

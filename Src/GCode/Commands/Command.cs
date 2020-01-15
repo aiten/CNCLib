@@ -68,7 +68,7 @@ namespace CNCLib.GCode.Commands
         public int? LineNumber { get; set; }
 
         /// <summary>
-        /// ImportInfo, e.g. HPGL Command
+        /// ImportInfo, e.g. Hpgl Command
         /// </summary>
         public string ImportInfo { get; set; }
 

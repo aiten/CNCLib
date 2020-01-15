@@ -14,40 +14,34 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using Framework.Drawing;
+using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
-namespace CNCLib.GCode.Load
+using Framework.Pattern;
+using Framework.Service.WebAPI;
+
+namespace CNCLib.Serial.Client
 {
-    public partial class LoadHPGL
+    public class MyServiceBase : ServiceBase
     {
-        class HPGLCommand
+        protected string WebServerUri { get; set; } = @"http://localhost:5000";
+
+        public MyServiceBase() 
         {
-            public enum HPGLCommandType
-            {
-                PenUp,
-                PenDown,
-                Other
-            }
+        }
 
-            public HPGLCommandType CommandType { get; set; } = HPGLCommandType.Other;
+        protected override IScope<HttpClient> CreateScope()
+        {
+            return new ScopeDispose<HttpClient>(CreateHttpClient());
+        }
 
-            public bool IsPenCommand =>
-                CommandType == HPGLCommandType.PenUp || CommandType == HPGLCommandType.PenDown;
-
-            public bool    IsPenDownCommand      => CommandType == HPGLCommandType.PenDown;
-            public bool    IsPointToValid        => IsPenCommand;
-            public Point3D PointFrom             { get; set; }
-            public Point3D PointTo               { get; set; }
-            public double? LineAngle             { get; set; }
-            public double? DiffLineAngleWithNext { get; set; }
-            public string  CommandString         { get; set; }
-
-            public void ResetCalculated()
-            {
-                PointFrom             = null;
-                DiffLineAngleWithNext = null;
-                LineAngle             = null;
-            }
+        private HttpClient CreateHttpClient()
+        {
+            var client = new HttpClient { BaseAddress = new Uri(WebServerUri) };
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            return client;
         }
     }
 }

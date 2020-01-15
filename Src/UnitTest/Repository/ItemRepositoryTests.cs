@@ -41,16 +41,16 @@ namespace CNCLib.UnitTest.Repository
         {
         }
 
-        protected CRUDRepositoryTests<CNCLibContext, Item, int, IItemRepository> CreateTestContext()
+        protected CrudRepositoryTests<CNCLibContext, Item, int, IItemRepository> CreateTestContext()
         {
-            return new CRUDRepositoryTests<CNCLibContext, Item, int, IItemRepository>()
+            return new CrudRepositoryTests<CNCLibContext, Item, int, IItemRepository>()
             {
                 CreateTestDbContext = () =>
                 {
                     var context = TestFixture.CreateDbContext();
                     var uow     = new UnitOfWork<CNCLibContext>(context);
                     var rep     = new ItemRepository(context);
-                    return new CRUDTestDbContext<CNCLibContext, Item, int, IItemRepository>(context, uow, rep);
+                    return new CrudTestDbContext<CNCLibContext, Item, int, IItemRepository>(context, uow, rep);
                 },
                 GetEntityKey = (entity) => entity.ItemId,
                 SetEntityKey = (entity, key) =>

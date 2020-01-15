@@ -70,7 +70,9 @@ namespace CNCLib.Serial.Server
         private static IWebHostBuilder BuildWebHost(string[] args)
         {
             var hostConfig = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("hosting.json", optional: true)
+                .AddCommandLine(args)
                 .Build();
 
             return WebHost.CreateDefaultBuilder(args)

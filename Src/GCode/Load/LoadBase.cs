@@ -85,8 +85,8 @@ namespace CNCLib.GCode.Load
                 case LoadOptions.ELoadType.GCode:
                     load = new LoadGCode();
                     break;
-                case LoadOptions.ELoadType.HPGL:
-                    load = new LoadHPGL();
+                case LoadOptions.ELoadType.Hpgl:
+                    load = new LoadHpgl();
                     break;
                 case LoadOptions.ELoadType.Image:
                     load = new LoadImage();

@@ -24,7 +24,7 @@ using Framework.Service.Abstraction;
 
 namespace CNCLib.Service.Abstraction
 {
-    public interface IItemService : IDisposable, ICRUDService<Item, int>
+    public interface IItemService : IDisposable, ICrudService<Item, int>
     {
         Task<IEnumerable<Item>> GetByClassName(string classname);
     }

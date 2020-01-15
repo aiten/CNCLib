@@ -21,13 +21,13 @@ using Framework.Drawing;
 
 namespace CNCLib.GCode.Load
 {
-    public partial class LoadHPGL
+    public partial class LoadHpgl
     {
-        private class HPGLLine
+        private class HpglLine
         {
-            public IEnumerable<HPGLCommand> PreCommands  { get; set; }
-            public IEnumerable<HPGLCommand> Commands     { get; set; }
-            public IEnumerable<HPGLCommand> PostCommands { get; set; }
+            public IEnumerable<HpglCommand> PreCommands  { get; set; }
+            public IEnumerable<HpglCommand> Commands     { get; set; }
+            public IEnumerable<HpglCommand> PostCommands { get; set; }
 
             //public Polygon2D Polygon { get { Load(); return _polygon; } }
 
@@ -76,7 +76,7 @@ namespace CNCLib.GCode.Load
                 }
             }
 
-            public bool IsEmbedded(HPGLLine to)
+            public bool IsEmbedded(HpglLine to)
             {
                 if (ReferenceEquals(this, to))
                 {
@@ -92,14 +92,14 @@ namespace CNCLib.GCode.Load
                 return IsEmbeddedEx(to);
             }
 
-            public bool IsEmbeddedEx(HPGLLine to)
+            public bool IsEmbeddedEx(HpglLine to)
             {
                 return _polygon.ArePointsInPolygon(to._polygon.Points);
             }
 
             public int Level => ParentLine?.Level + 1 ?? 0;
 
-            public HPGLLine ParentLine { get; set; }
+            public HpglLine ParentLine { get; set; }
 
             private void Load()
             {

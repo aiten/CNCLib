@@ -33,7 +33,7 @@ using ItemEntity = CNCLib.Repository.Abstraction.Entities.Item;
 
 namespace CNCLib.Logic.Manager
 {
-    public class ItemManager : CRUDManager<Item, int, ItemEntity>, IItemManager
+    public class ItemManager : CrudManager<Item, int, ItemEntity>, IItemManager
     {
         private readonly IUnitOfWork        _unitOfWork;
         private readonly IItemRepository    _repository;

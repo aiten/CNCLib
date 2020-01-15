@@ -25,7 +25,7 @@ namespace CNCLib.Logic.Abstraction.DTO
         public enum ELoadType
         {
             GCode     = 0,
-            HPGL      = 1,
+            Hpgl      = 1,
             Image     = 2,
             ImageHole = 3
         }
@@ -48,14 +48,14 @@ namespace CNCLib.Logic.Abstraction.DTO
         public bool SubstG82       { get; set; } = false;
         public bool AddLineNumbers { get; set; } = false;
 
-        //HPGL
+        //Hpgl
         public bool    SwapXY { get; set; } = false;
         public decimal ScaleX { get; set; } = 1;
         public decimal ScaleY { get; set; } = 1;
         public decimal OfsX   { get; set; } = 0;
         public decimal OfsY   { get; set; } = 0;
 
-        //HPGL+IMG
+        //Hpgl+IMG
         public bool AutoScale          { get; set; } = false;
         public bool AutoScaleKeepRatio { get; set; } = true;
 

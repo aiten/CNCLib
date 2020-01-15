@@ -22,7 +22,7 @@ using Framework.Service.Abstraction;
 
 namespace CNCLib.Service.Abstraction
 {
-    public interface ILoadOptionsService : IDisposable, ICRUDService<LoadOptions, int>
+    public interface ILoadOptionsService : IDisposable, ICrudService<LoadOptions, int>
     {
     }
 }

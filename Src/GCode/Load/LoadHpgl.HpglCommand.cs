@@ -14,24 +14,40 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
+using Framework.Drawing;
 
-using Framework.Pattern;
-
-namespace CNCLib.Serial.Client
+namespace CNCLib.GCode.Load
 {
-    public class ServiceBase : DisposeWrapper
+    public partial class LoadHpgl
     {
-        protected string WebServerUri { get; set; } = @"http://localhost:5000";
-
-        protected HttpClient CreateHttpClient()
+        class HpglCommand
         {
-            var client = new HttpClient { BaseAddress = new Uri(WebServerUri) };
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            return client;
+            public enum HpglCommandType
+            {
+                PenUp,
+                PenDown,
+                Other
+            }
+
+            public HpglCommandType CommandType { get; set; } = HpglCommandType.Other;
+
+            public bool IsPenCommand =>
+                CommandType == HpglCommandType.PenUp || CommandType == HpglCommandType.PenDown;
+
+            public bool    IsPenDownCommand      => CommandType == HpglCommandType.PenDown;
+            public bool    IsPointToValid        => IsPenCommand;
+            public Point3D PointFrom             { get; set; }
+            public Point3D PointTo               { get; set; }
+            public double? LineAngle             { get; set; }
+            public double? DiffLineAngleWithNext { get; set; }
+            public string  CommandString         { get; set; }
+
+            public void ResetCalculated()
+            {
+                PointFrom             = null;
+                DiffLineAngleWithNext = null;
+                LineAngle             = null;
+            }
         }
     }
 }

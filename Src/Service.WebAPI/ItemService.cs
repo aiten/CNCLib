@@ -21,18 +21,27 @@ using System.Threading.Tasks;
 using CNCLib.Logic.Abstraction.DTO;
 using CNCLib.Service.Abstraction;
 
+using Framework.Pattern;
 using Framework.Service.WebAPI;
 using Framework.Service.WebAPI.Uri;
 
 namespace CNCLib.Service.WebAPI
 {
-    public class ItemService : CRUDServiceBase<Item, int>, IItemService
+    public class ItemService : CrudServiceBase<Item, int>, IItemService
     {
+        private HttpClient _httpClient;
+
         protected override int GetKey(Item i) => i.ItemId;
 
-        public ItemService(HttpClient httpClient) : base(httpClient)
+        public ItemService(HttpClient httpClient)
         {
-            BaseApi = @"api/Item";
+            BaseApi     = @"api/Item";
+            _httpClient = httpClient;
+        }
+
+        protected override IScope<HttpClient> CreateScope()
+        {
+            return new ScopeInstance<HttpClient>(_httpClient);
         }
 
         public async Task<Item> DefaultItem()
@@ -42,14 +51,15 @@ namespace CNCLib.Service.WebAPI
 
         public async Task<IEnumerable<Item>> GetByClassName(string classname)
         {
-            var client = GetHttpClient();
+            using (var scope = CreateScope())
+            {
+                var paramUri = new UriQueryBuilder();
+                paramUri.Add("classname", classname);
 
-            var paramUri = new UriQueryBuilder();
-            paramUri.Add("classname", classname);
-
-            HttpResponseMessage response = await client.GetAsync(CreatePathBuilder().AddQuery(paramUri).Build());
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsAsync<IEnumerable<Item>>();
+                HttpResponseMessage response = await scope.Instance.GetAsync(CreatePathBuilder().AddQuery(paramUri).Build());
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsAsync<IEnumerable<Item>>();
+            }
         }
     }
 }

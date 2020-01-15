@@ -33,7 +33,7 @@ using MachineEntity = CNCLib.Repository.Abstraction.Entities.Machine;
 
 namespace CNCLib.Logic.Manager
 {
-    public class MachineManager : CRUDManager<Machine, int, MachineEntity>, IMachineManager
+    public class MachineManager : CrudManager<Machine, int, MachineEntity>, IMachineManager
     {
         private readonly IUnitOfWork              _unitOfWork;
         private readonly IMachineRepository       _repository;

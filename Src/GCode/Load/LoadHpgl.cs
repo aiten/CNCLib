@@ -28,15 +28,15 @@ using Framework.Parser;
 
 namespace CNCLib.GCode.Load
 {
-    public partial class LoadHPGL : LoadBase
+    public partial class LoadHpgl : LoadBase
     {
         readonly bool _DEBUG = false;
 
         #region Read PLT
 
-        private IList<HPGLCommand> ReadHPGLCommandList()
+        private IList<HpglCommand> ReadHpglCommandList()
         {
-            var list = new List<HPGLCommand>();
+            var list = new List<HpglCommand>();
             using (StreamReader sr = GetStreamReader())
             {
                 string line;
@@ -82,9 +82,9 @@ namespace CNCLib.GCode.Load
                                 }
 
                                 list.Add(
-                                    new HPGLCommand
+                                    new HpglCommand
                                     {
-                                        CommandType = isPenUp ? HPGLCommand.HPGLCommandType.PenUp : HPGLCommand.HPGLCommandType.PenDown,
+                                        CommandType = isPenUp ? HpglCommand.HpglCommandType.PenUp : HpglCommand.HpglCommandType.PenDown,
                                         PointTo     = pt
                                     });
 
@@ -100,7 +100,7 @@ namespace CNCLib.GCode.Load
                         else
                         {
                             var hpglCmd = stream.ReadString(new[] { ';' });
-                            list.Add(new HPGLCommand { CommandString = hpglCmd });
+                            list.Add(new HpglCommand { CommandString = hpglCmd });
                         }
                     }
                 }
@@ -109,7 +109,7 @@ namespace CNCLib.GCode.Load
             return list;
         }
 
-        private void RemoveFirstPenUp(IList<HPGLCommand> list)
+        private void RemoveFirstPenUp(IList<HpglCommand> list)
         {
             // remove first PU0,0 PU50,50 PU 100,100 => autoScale problem
             var toRemoveList = list.TakeWhile(h => !h.IsPenCommand || !h.IsPenDownCommand).ToList();
@@ -129,7 +129,7 @@ namespace CNCLib.GCode.Load
             }
         }
 
-        private void RemoveLastPenUp(IList<HPGLCommand> list)
+        private void RemoveLastPenUp(IList<HpglCommand> list)
         {
             // remove last PU0,0 => autoScale problem
             var toRemoveList = list.Reverse().TakeWhile(h => !h.IsPenCommand || !h.IsPenDownCommand).ToList();
@@ -163,7 +163,7 @@ namespace CNCLib.GCode.Load
         public override void Load()
         {
             PreLoad();
-            var list = ReadHPGLCommandList();
+            var list = ReadHpglCommandList();
 
             RemoveFirstPenUp(list);
             RemoveLastPenUp(list);
@@ -268,7 +268,7 @@ namespace CNCLib.GCode.Load
             PostLoad();
         }
 
-        private bool Command(HPGLCommand cmd)
+        private bool Command(HpglCommand cmd)
         {
             bool isPenUp = true;
 
@@ -276,10 +276,10 @@ namespace CNCLib.GCode.Load
             {
                 switch (cmd.CommandType)
                 {
-                    case HPGLCommand.HPGLCommandType.PenDown:
+                    case HpglCommand.HpglCommandType.PenDown:
                         isPenUp = false;
                         break;
-                    case HPGLCommand.HPGLCommandType.PenUp:
+                    case HpglCommand.HpglCommandType.PenUp:
                         isPenUp = true;
                         break;
                 }
@@ -329,7 +329,7 @@ namespace CNCLib.GCode.Load
             else
             {
                 var r = new GxxCommand();
-                r.SetCode($";HPGL={cmd.CommandString}");
+                r.SetCode($";Hpgl={cmd.CommandString}");
                 r.ImportInfo = cmd.CommandString;
                 Commands.AddCommand(r);
             }
@@ -421,7 +421,7 @@ namespace CNCLib.GCode.Load
 
         #region Debug-Helpers
 
-        private void WriteLineToFile(IEnumerable<HPGLCommand> list, int lineIdx)
+        private void WriteLineToFile(IEnumerable<HpglCommand> list, int lineIdx)
         {
             if (list.Any())
             {

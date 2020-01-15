@@ -10,7 +10,7 @@ ItemId;Name;Value
 1;LaserOffCommand;M5
 1;LaserOnCommand;M3\ng4 P0.3
 1;LaserSize;0.3
-1;LoadType;HPGL
+1;LoadType;Hpgl
 1;MoveSpeed;450
 1;PenMoveType;CommandString
 1;SettingName;laser cut 160mg paper
@@ -36,7 +36,7 @@ ItemId;Name;Value
 3;LaserLastOffCommand;M5
 3;LaserOffCommand;M5
 3;LaserOnCommand;M3
-3;LoadType;HPGL
+3;LoadType;Hpgl
 3;MoveSpeed;450
 3;PenMoveType;CommandString
 3;SettingName;laser grave
@@ -67,7 +67,7 @@ ItemId;Name;Value
 6;EngravePosInParameter;false
 6;EngravePosUp;1.5
 6;FileName;Examples\snoopy.plt
-6;LoadType;HPGL
+6;LoadType;Hpgl
 6;MoveSpeed;450
 6;PenMoveType;ZMove
 6;SettingName;mill grave
@@ -81,7 +81,7 @@ ItemId;Name;Value
 7;EngravePosUp;1.5
 7;FileName;Examples\witch.hpgl
 7;LaserSize;1
-7;LoadType;HPGL
+7;LoadType;Hpgl
 7;MoveSpeed;450
 7;PenMoveType;ZMove
 7;SettingName;mill cut

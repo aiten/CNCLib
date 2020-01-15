@@ -20,61 +20,73 @@ using System.Threading.Tasks;
 using CNCLib.Logic.Abstraction.DTO;
 using CNCLib.Service.Abstraction;
 
+using Framework.Pattern;
 using Framework.Service.WebAPI;
 using Framework.Service.WebAPI.Uri;
 
 namespace CNCLib.Service.WebAPI
 {
-    public class MachineService : CRUDServiceBase<Machine, int>, IMachineService
+    public class MachineService : CrudServiceBase<Machine, int>, IMachineService
     {
-        public MachineService(HttpClient httpClient) : base(httpClient)
+        private HttpClient _httpClient;
+
+        public MachineService(HttpClient httpClient)
         {
-            BaseApi = @"api/Machine";
+            BaseApi     = @"api/Machine";
+            _httpClient = httpClient;
+        }
+
+        protected override IScope<HttpClient> CreateScope()
+        {
+            return new ScopeInstance<HttpClient>(_httpClient);
         }
 
         protected override int GetKey(Machine m) => m.MachineId;
 
         public async Task<Machine> DefaultMachine()
         {
-            var client = GetHttpClient();
-
-            HttpResponseMessage response = await client.GetAsync(CreatePathBuilder().AddPath("default").Build());
-            if (response.IsSuccessStatusCode)
+            using (var scope = CreateScope())
             {
-                var value = await response.Content.ReadAsAsync<Machine>();
+                HttpResponseMessage response = await scope.Instance.GetAsync(CreatePathBuilder().AddPath("default").Build());
+                if (response.IsSuccessStatusCode)
+                {
+                    var value = await response.Content.ReadAsAsync<Machine>();
 
-                return value;
+                    return value;
+                }
+
+                return null;
             }
-
-            return null;
         }
 
         public async Task<int> GetDefaultMachine()
         {
-            var client = GetHttpClient();
-
-            HttpResponseMessage response = await client.GetAsync(CreatePathBuilder().AddPath("defaultmachine").Build());
-            if (response.IsSuccessStatusCode)
+            using (var scope = CreateScope())
             {
-                int value = await response.Content.ReadAsAsync<int>();
+                HttpResponseMessage response = await scope.Instance.GetAsync(CreatePathBuilder().AddPath("defaultmachine").Build());
+                if (response.IsSuccessStatusCode)
+                {
+                    int value = await response.Content.ReadAsAsync<int>();
 
-                return value;
+                    return value;
+                }
+
+                return -1;
             }
-
-            return -1;
         }
 
         public async Task SetDefaultMachine(int id)
         {
-            var client = GetHttpClient();
-
-            var paramUri = new UriQueryBuilder();
-            paramUri.Add("id", id);
-            HttpResponseMessage response = await client.PutAsJsonAsync(CreatePathBuilder().AddPath("defaultmachine").AddQuery(paramUri).Build(), "dummy");
-
-            if (response.IsSuccessStatusCode)
+            using (var scope = CreateScope())
             {
-                return;
+                var paramUri = new UriQueryBuilder();
+                paramUri.Add("id", id);
+                HttpResponseMessage response = await scope.Instance.PutAsJsonAsync(CreatePathBuilder().AddPath("defaultmachine").AddQuery(paramUri).Build(), "dummy");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return;
+                }
             }
         }
     }

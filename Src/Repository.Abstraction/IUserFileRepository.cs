@@ -24,7 +24,7 @@ using Framework.Repository.Abstraction;
 
 namespace CNCLib.Repository.Abstraction
 {
-    public interface IUserFileRepository : ICRUDRepository<UserFile, int>
+    public interface IUserFileRepository : ICrudRepository<UserFile, int>
     {
         Task<IList<UserFile>> GetByUser(int userId);
 

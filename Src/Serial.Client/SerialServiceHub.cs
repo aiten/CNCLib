@@ -23,7 +23,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace CNCLib.Serial.Client
 {
-    public class SerialServiceHub : ServiceBase
+    public class SerialServiceHub : MyServiceBase
     {
         public SerialServiceHub(string adr, ISerial serial)
         {

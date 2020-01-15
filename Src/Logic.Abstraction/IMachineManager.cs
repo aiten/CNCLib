@@ -20,7 +20,7 @@ using Framework.Logic.Abstraction;
 
 namespace CNCLib.Logic.Abstraction
 {
-    public interface IMachineManager : ICRUDManager<DTO.Machine, int>
+    public interface IMachineManager : ICrudManager<DTO.Machine, int>
     {
         Task<DTO.Machine> DefaultMachine();
         Task<int>         GetDefaultMachine();

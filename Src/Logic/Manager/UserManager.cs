@@ -32,7 +32,7 @@ using UserEntity = CNCLib.Repository.Abstraction.Entities.User;
 
 namespace CNCLib.Logic.Manager
 {
-    public class UserManager : CRUDManager<User, int, UserEntity>, IUserManager
+    public class UserManager : CrudManager<User, int, UserEntity>, IUserManager
     {
         private readonly IUnitOfWork     _unitOfWork;
         private readonly IUserRepository _repository;

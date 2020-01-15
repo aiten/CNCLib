@@ -24,16 +24,16 @@ using Framework.Drawing;
 
 namespace CNCLib.GCode.Load
 {
-    public partial class LoadHPGL
+    public partial class LoadHpgl
     {
         private class Smooth
         {
             public LoadOptions LoadOptions { get; set; }
-            public LoadHPGL    LoadX       { get; set; }
+            public LoadHpgl    LoadX       { get; set; }
 
-            public IList<HPGLCommand> SmoothList(IList<HPGLCommand> list)
+            public IList<HpglCommand> SmoothList(IList<HpglCommand> list)
             {
-                var newList = new List<HPGLCommand>();
+                var newList = new List<HpglCommand>();
 
                 int startIdx = 0;
                 while (startIdx < list.Count)
@@ -54,14 +54,14 @@ namespace CNCLib.GCode.Load
 
             int _lineIdx = 1;
 
-            private IList<HPGLCommand> SmoothLine(IEnumerable<HPGLCommand> line)
+            private IList<HpglCommand> SmoothLine(IEnumerable<HpglCommand> line)
             {
                 if (LoadX._DEBUG)
                 {
                     LoadX.WriteLineToFile(line, _lineIdx++);
                 }
 
-                var    list     = new List<HPGLCommand>();
+                var    list     = new List<HpglCommand>();
                 double maxAngle = LoadOptions.SmoothMinAngle.HasValue ? (double)LoadOptions.SmoothMinAngle.Value : (45 * (Math.PI / 180));
 
                 int startIdx = 0;
@@ -85,7 +85,7 @@ namespace CNCLib.GCode.Load
                 return list;
             }
 
-            private IEnumerable<HPGLCommand> SplitLine(IEnumerable<HPGLCommand> line)
+            private IEnumerable<HpglCommand> SplitLine(IEnumerable<HpglCommand> line)
             {
                 if (line.Count() < 2)
                 {
@@ -108,15 +108,15 @@ namespace CNCLib.GCode.Load
                 return line;
             }
 
-            private IEnumerable<HPGLCommand> SplitLineImpl(IEnumerable<HPGLCommand> line)
+            private IEnumerable<HpglCommand> SplitLineImpl(IEnumerable<HpglCommand> line)
             {
                 if (line.Count() < 3)
                 {
                     return line;
                 }
 
-                var         newline       = new List<HPGLCommand>();
-                HPGLCommand prev          = null;
+                var         newline       = new List<HpglCommand>();
+                HpglCommand prev          = null;
                 double      minLineLength = LoadOptions.SmoothMinLineLength.HasValue ? (double)LoadOptions.SmoothMinLineLength.Value : double.MaxValue;
                 double      maxError      = LoadOptions.SmoothMaxError.HasValue ? (double)LoadOptions.SmoothMaxError.Value : 1.0 / 40.0;
                 minLineLength /= (double)LoadOptions.ScaleX;
@@ -173,7 +173,7 @@ namespace CNCLib.GCode.Load
             /// <summary>
             /// Create a new point based on a existing line (x,y are based on the line vector)
             /// </summary>
-            private HPGLCommand GetNewCommand(HPGLCommand pt, double x, double y)
+            private HpglCommand GetNewCommand(HpglCommand pt, double x, double y)
             {
                 double diffAlpha = Math.Atan2(y, x);
                 double lineAlpha = diffAlpha + (pt.LineAngle ?? 0);
@@ -181,22 +181,22 @@ namespace CNCLib.GCode.Load
                 double dx = x * Math.Cos(lineAlpha);
                 double dy = x * Math.Sin(lineAlpha);
 
-                return new HPGLCommand
+                return new HpglCommand
                 {
                     CommandType = pt.CommandType,
                     PointTo     = new Point3D { X = pt.PointFrom.X + dx, Y = pt.PointFrom.Y + dy }
                 };
             }
 
-            public static void CalculateAngles(IEnumerable<HPGLCommand> list, Point3D firstFrom)
+            public static void CalculateAngles(IEnumerable<HpglCommand> list, Point3D firstFrom)
             {
-                HPGLCommand last = null;
+                HpglCommand last = null;
                 if (firstFrom != null)
                 {
-                    last = new HPGLCommand
+                    last = new HpglCommand
                     {
                         PointTo     = firstFrom,
-                        CommandType = HPGLCommand.HPGLCommandType.PenDown
+                        CommandType = HpglCommand.HpglCommandType.PenDown
                     };
                 }
 

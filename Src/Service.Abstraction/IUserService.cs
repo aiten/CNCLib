@@ -23,7 +23,7 @@ using Framework.Service.Abstraction;
 
 namespace CNCLib.Service.Abstraction
 {
-    public interface IUserService : IDisposable, ICRUDService<User, int>
+    public interface IUserService : IDisposable, ICrudService<User, int>
     {
         Task<User> GetByName(string username);
 

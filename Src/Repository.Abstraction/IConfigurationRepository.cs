@@ -22,7 +22,7 @@ using Framework.Repository.Abstraction;
 
 namespace CNCLib.Repository.Abstraction
 {
-    public interface IConfigurationRepository : ICRUDRepository<Configuration, int>
+    public interface IConfigurationRepository : ICrudRepository<Configuration, int>
     {
         Task<Configuration> Get(int userId, string group, string name);
 

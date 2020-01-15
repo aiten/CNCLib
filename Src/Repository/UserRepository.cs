@@ -27,7 +27,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CNCLib.Repository
 {
-    public class UserRepository : CRUDRepository<CNCLibContext, User, int>, IUserRepository
+    public class UserRepository : CrudRepository<CNCLibContext, User, int>, IUserRepository
     {
         #region ctr/default/overrides
 

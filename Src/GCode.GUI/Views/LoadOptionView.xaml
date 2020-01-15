@@ -51,8 +51,8 @@
                             <RadioButton GroupName="LoadTypeGroup" Content="GCode"
                                          IsChecked="{Binding LoadOptionsValue.LoadType, ConverterParameter=GCode, Converter={StaticResource EnumBooleanConverter}}"
                                          Margin="0,0,0,0" VerticalContentAlignment="Center" />
-                            <RadioButton GroupName="LoadTypeGroup" Content="HPGL"
-                                         IsChecked="{Binding LoadOptionsValue.LoadType, ConverterParameter=HPGL, Converter={StaticResource EnumBooleanConverter}}"
+                            <RadioButton GroupName="LoadTypeGroup" Content="Hpgl"
+                                         IsChecked="{Binding LoadOptionsValue.LoadType, ConverterParameter=Hpgl, Converter={StaticResource EnumBooleanConverter}}"
                                          Margin="0,0,0,0" VerticalContentAlignment="Center" />
                             <RadioButton GroupName="LoadTypeGroup" Content="Image"
                                          IsChecked="{Binding LoadOptionsValue.LoadType, ConverterParameter=Image, Converter={StaticResource EnumBooleanConverter}}"
@@ -174,7 +174,7 @@
             <TabItem Header="Engrave/Laser" Custom:HeaderedControlHelper.HeaderFontSize="15">
                 <StackPanel>
                     <GroupBox Header="Laser">
-                        <!-- IsEnabled="{Binding IsChecked, ElementName=_HPGLLaser}"> -->
+                        <!-- IsEnabled="{Binding IsChecked, ElementName=_HpglLaser}"> -->
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Laser first on" Width="120" />
@@ -245,9 +245,9 @@
                     </GroupBox>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="HPGL" Custom:HeaderedControlHelper.HeaderFontSize="15">
+            <TabItem Header="Hpgl" Custom:HeaderedControlHelper.HeaderFontSize="15">
                 <StackPanel>
-                    <RadioButton x:Name="_HPGLLaser" GroupName="PenCommandMoveTypeGroup" Content="Generate for Laser"
+                    <RadioButton x:Name="_HpglLaser" GroupName="PenCommandMoveTypeGroup" Content="Generate for Laser"
                                  IsChecked="{Binding LoadOptionsValue.PenMoveType, ConverterParameter=CommandString, Converter={StaticResource EnumBooleanConverter}}"
                                  Margin="10,10,0,0" />
                     <RadioButton GroupName="PenCommandMoveTypeGroup" Content="Generate for engrave"
