@@ -13,6 +13,7 @@ namespace CNCLib.Repository.SqlServer.Migrations
                 nullable: true);
 
             migrationBuilder.Sql("update Machine set SerialServerProtocol='http'");
+            migrationBuilder.Sql("update ItemProperty set value = N'Hpgl' where name = 'LoadType' and value = N'HPGL'");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
