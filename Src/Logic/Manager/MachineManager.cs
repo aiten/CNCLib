@@ -86,6 +86,7 @@ namespace CNCLib.Logic.Manager
                 Name                = "New",
                 ComPort             = "comX",
                 SerialServerPort    = 5000,
+                SerialServerProtocol = "http",
                 Axis                = 3,
                 SizeX               = 130m,
                 SizeY               = 45m,

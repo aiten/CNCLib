@@ -24,13 +24,14 @@ namespace CNCLib.Repository.Abstraction.Entities
         public int  UserId    { get; set; }
         public User User      { get; set; }
 
-        public string Name             { get; set; }
-        public string SerialServer     { get; set; }
-        public int    SerialServerPort { get; set; }
-        public string ComPort          { get; set; }
-        public int    Axis             { get; set; }
-        public int    BaudRate         { get; set; }
-        public bool   DtrIsReset       { get; set; }
+        public string Name                 { get; set; }
+        public string SerialServer         { get; set; }
+        public int    SerialServerPort     { get; set; }
+        public string SerialServerProtocol { get; set; }
+        public string ComPort              { get; set; }
+        public int    Axis                 { get; set; }
+        public int    BaudRate             { get; set; }
+        public bool   DtrIsReset           { get; set; }
 
         public bool NeedDtr { get; set; } // do not delete the column because SQLite limitation of drop columns
 

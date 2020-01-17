@@ -14,7 +14,7 @@ namespace CNCLib.Repository.SqLite.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.0");
+                .HasAnnotation("ProductVersion", "3.1.1");
 
             modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.Configuration", b =>
                 {
@@ -168,6 +168,10 @@ namespace CNCLib.Repository.SqLite.Migrations
 
                     b.Property<int>("SerialServerPort")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("SerialServerProtocol")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(10);
 
                     b.Property<decimal>("SizeA")
                         .HasColumnType("TEXT");

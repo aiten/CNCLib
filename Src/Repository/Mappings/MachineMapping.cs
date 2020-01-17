@@ -32,6 +32,7 @@ namespace CNCLib.Repository.Mappings
             entity.HasIndex(c => new { c.UserId, c.Name }).IsUnique();
 
             entity.Property(m => m.Name).IsRequired().HasMaxLength(64);
+            entity.Property(m => m.SerialServerProtocol).HasMaxLength(10);
 
             entity.Property(m => m.ComPort).IsRequired().HasMaxLength(32);
 

@@ -49,6 +49,11 @@ namespace CNCLib.WpfClient.Models
         public int SerialServerPort { get; set; }
 
         [Category(CATEGORY_COMMUNICATION)]
+        [DisplayName("SerialServerProtocol")]
+        [Description("Protocol of the CNCLib.Serial.Server, default is http")]
+        public string SerialServerProtocol { get; set; }
+
+        [Category(CATEGORY_COMMUNICATION)]
         [DisplayName("ComPort")]
         [Description("Com of attached arduino")]
         public string ComPort { get; set; }
@@ -64,7 +69,7 @@ namespace CNCLib.WpfClient.Models
                     comport = comport.Substring(1);
                 }
 
-                comport = $@"http://{SerialServer}:{SerialServerPort}/{comport}";
+                comport = $@"{SerialServerProtocol}://{SerialServer}:{SerialServerPort}/{comport}";
             }
 
             return comport;
