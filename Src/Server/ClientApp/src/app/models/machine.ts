@@ -23,6 +23,8 @@ export class Machine {
   serialServer: string;
   serialServerPort: number;
   serialServerProtocol: string;
+  serialServerUser: string;
+  serialServerPassword: string;
   comPort: string;
   sizeX: number;
   sizeY: number;

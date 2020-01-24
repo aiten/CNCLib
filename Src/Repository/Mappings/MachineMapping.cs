@@ -33,6 +33,8 @@ namespace CNCLib.Repository.Mappings
 
             entity.Property(m => m.Name).IsRequired().HasMaxLength(64);
             entity.Property(m => m.SerialServerProtocol).HasMaxLength(10);
+            entity.Property(m => m.SerialServerUser).HasMaxLength(32);
+            entity.Property(m => m.SerialServerPassword).HasMaxLength(64);
 
             entity.Property(m => m.ComPort).IsRequired().HasMaxLength(32);
 

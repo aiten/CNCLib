@@ -25,7 +25,7 @@ import { CNCLibEepromConfigService } from './CNCLib-eeprom-config.service';
 export class LocalCNCLibEepromConfigService implements CNCLibEepromConfigService {
   constructor(
     private http: HttpClient,
-    @Inject('BASE_URL') public baseUrl: string,
+    @Inject('WEBAPI_URL') public baseUrl: string,
   ) {
   }
 

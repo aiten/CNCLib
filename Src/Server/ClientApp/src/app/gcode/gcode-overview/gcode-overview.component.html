@@ -34,20 +34,5 @@
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
 </table>
-<!--
-<table>
-  <tr>
-    <th>Id</th>
-    <th>SettingName</th>
-  </tr>
-  <tr *ngFor="let entry of entries">
-    <td>{{ entry.Id }}</td>
-    <td>{{ entry.SettingName }}</td>
-    <td>
-      <button mat-stroked-button (click)='detailLoadOption(entry.Id)'>Details</button>
-    </td>
-  </tr>
-</table>
--->
 
 <button mat-stroked-button [disabled]="!cncLibloggedinService.isUserLoggedIn()" (click)='newLoadOption()'>new</button>

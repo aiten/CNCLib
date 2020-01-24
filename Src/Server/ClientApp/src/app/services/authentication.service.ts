@@ -22,7 +22,7 @@ import { User } from "../models/user";
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
   constructor(private http: HttpClient,
-    @Inject('BASE_URL') public baseUrl: string,
+    @Inject('WEBAPI_URL') public baseUrl: string,
   ) {
   }
 

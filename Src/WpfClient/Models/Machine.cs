@@ -54,6 +54,16 @@ namespace CNCLib.WpfClient.Models
         public string SerialServerProtocol { get; set; }
 
         [Category(CATEGORY_COMMUNICATION)]
+        [DisplayName("SerialServerUser")]
+        [Description("User to be used for to connect to the CNCLib.Serial.Server, default is empty")]
+        public string SerialServerUser { get; set; }
+
+        [Category(CATEGORY_COMMUNICATION)]
+        [DisplayName("SerialServerPassword")]
+        [Description("Password to be used for the CNCLib.Serial.Server, default is empty")]
+        public string SerialServerPassword { get; set; }
+
+        [Category(CATEGORY_COMMUNICATION)]
         [DisplayName("ComPort")]
         [Description("Com of attached arduino")]
         public string ComPort { get; set; }

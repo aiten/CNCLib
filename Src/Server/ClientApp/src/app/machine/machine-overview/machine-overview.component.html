@@ -1,41 +1,60 @@
 <h1>CNCLib machines</h1>
 
-<div>
+<table mat-table [dataSource]="entries" class="mat-elevation-z8">
 
-  <head>
-    <style>
-      table,
-      th,
-      td { border: 1px solid black; }
-    </style>
-  </head>
-  <table>
-    <tr>
-      <th>Id</th>
-      <th>Description</th>
-      <th>comPort</th>
-      <th>BaudRate</th>
-      <th>Axis</th>
-      <th>Size-X</th>
-      <th>Size-Y</th>
-      <th>Size-Z</th>
-      <th>Edit</th>
-    </tr>
-    <tr *ngFor="let entry of entries">
-      <td>{{ entry.id }}</td>
-      <td>{{ entry.description }}</td>
-      <td>{{ entry.comPort }} </td>
-      <td>{{ entry.baudRate }} </td>
-      <td>{{ entry.axis }} </td>
-      <td>{{ entry.sizeX }} </td>
-      <td>{{ entry.sizeY }} </td>
-      <td>{{ entry.sizeZ }} </td>
-      <td>
-        <button mat-stroked-button (click)='detailMachine(entry.id)'>Details</button>
-      </td>
-    </tr>
-  </table>
-</div>
+  <ng-container matColumnDef="Id">
+    <th mat-header-cell *matHeaderCellDef> Id </th>
+    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="Description">
+    <th mat-header-cell *matHeaderCellDef> Description </th>
+    <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="SerialServer">
+    <th mat-header-cell *matHeaderCellDef> SerialServer </th>
+    <td mat-cell *matCellDef="let element"> {{element.serialServer}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="ComPort">
+    <th mat-header-cell *matHeaderCellDef> ComPort </th>
+    <td mat-cell *matCellDef="let element"> {{element.comPort}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="SizeX">
+    <th mat-header-cell *matHeaderCellDef> SizeX </th>
+    <td mat-cell *matCellDef="let element"> {{element.sizeX}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="SizeY">
+    <th mat-header-cell *matHeaderCellDef> SizeY </th>
+    <td mat-cell *matCellDef="let element"> {{element.sizeY}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="SizeZ">
+    <th mat-header-cell *matHeaderCellDef> SizeZ </th>
+    <td mat-cell *matCellDef="let element"> {{element.sizeZ}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="Detail">
+    <th mat-header-cell *matHeaderCellDef> Detail </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-stroked-button (click)='detailMachine(element.id)'>Details</button>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="Connect">
+    <th mat-header-cell *matHeaderCellDef> Connect </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-stroked-button *ngIf="canConnectTo(element)" (click)='connectToMachine(element)'>Connect</button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+</table>
 
 <button mat-stroked-button [disabled]="!cncLibloggedinService.isUserLoggedIn()" (click)='newMachine()'>new</button>
 

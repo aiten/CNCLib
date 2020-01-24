@@ -42,7 +42,7 @@ export const eepromConfigRoutes =
   }
 ];
 
-export const eepromConfigRoutingComponents =
+export const eepromConfigComponents =
 [
   EepromConfigComponent,
   EepromConfigFormComponent,

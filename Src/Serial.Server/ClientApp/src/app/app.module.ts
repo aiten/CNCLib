@@ -29,18 +29,13 @@ import { MaterialModule } from './material.module';
 
 import { SerialPortsComponent } from './serialports/serialports.component';
 import { SerialPortHistoryComponent } from './serialporthistory/serialporthistory.component';
-import { machineControlRoutes, machineControlRoutingComponents } from './machinecontrol/machinecontrol.routing';
+import { machineControlRoutes, machineControlComponents } from './machinecontrol/machinecontrol.routing';
 
 import { SerialServerService } from './services/serialserver.service';
-import { LocalSerialServerService } from './services/local.serialserver.service';
+import { LocalSerialServerService } from './services/local-serialserver.service';
 
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
-import { faSync } from '@fortawesome/free-solid-svg-icons';
-import { faPlug } from '@fortawesome/free-solid-svg-icons';
-
-library.add(faHome, faSync, faPlug);
+import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { faHome, faSync, faPlug } from '@fortawesome/free-solid-svg-icons';
 
 @NgModule({
   declarations: [
@@ -49,7 +44,7 @@ library.add(faHome, faSync, faPlug);
     HomeComponent,
     SerialPortsComponent,
     SerialPortHistoryComponent,
-    ...machineControlRoutingComponents,
+    ...machineControlComponents,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -72,4 +67,8 @@ library.add(faHome, faSync, faPlug);
   bootstrap: [AppComponent]
 })
 export class AppModule {
+  constructor(library: FaIconLibrary) {
+
+    library.addIcons(faHome, faSync, faPlug);
+  }
 }

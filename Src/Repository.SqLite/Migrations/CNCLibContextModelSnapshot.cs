@@ -166,12 +166,20 @@ namespace CNCLib.Repository.SqLite.Migrations
                     b.Property<string>("SerialServer")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("SerialServerPassword")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(64);
+
                     b.Property<int>("SerialServerPort")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("SerialServerProtocol")
                         .HasColumnType("TEXT")
                         .HasMaxLength(10);
+
+                    b.Property<string>("SerialServerUser")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(32);
 
                     b.Property<decimal>("SizeA")
                         .HasColumnType("TEXT");

@@ -24,7 +24,7 @@ import { CNCLibInfoService } from './CNCLib-Info.service';
 export class LocalCNCLibInfoService implements CNCLibInfoService {
   constructor(
     private http: HttpClient,
-    @Inject('BASE_URL') public baseUrl: string,
+    @Inject('WEBAPI_URL') public baseUrl: string,
   ) {
   }
 

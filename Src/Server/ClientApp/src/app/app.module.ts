@@ -48,37 +48,38 @@ import { LocalCNCLibLoggedinService } from './services/local-CNCLib-loggedin.ser
 import { CNCLibGCodeService } from './services/CNCLib-gcode.service';
 import { LocalCNCLibGCodeService } from './services/local-CNCLib-gcode.service';
 
-import { eepromConfigRoutes, eepromConfigRoutingComponents } from './eeprom-config/eeprom-config-routing';
-import { machineRoutes, machineRoutingComponents } from './machine/machine-routing';
+import { SerialPortHistoryComponent } from './serialporthistory/serialporthistory.component';
+import { machineControlRoutes, machineControlComponents } from './machinecontrol/machinecontrol.routing';
+import { SerialServerService } from './services/serialserver.service';
+import { LocalSerialServerService } from './services/local-serialserver.service';
+
+import { eepromConfigRoutes, eepromConfigComponents } from './eeprom-config/eeprom-config-routing';
+import { machineRoutes, machineComponents } from './machine/machine-routing';
 
 import { MessageBoxComponent } from './modal/message-box/message-box.component';
 
-import { gcodeRoutes, gcodeRoutingComponents } from './gcode/gcode-routing';
+import { gcodeRoutes, gcodeComponents } from './gcode/gcode-routing';
 
 import { BasicAuthInterceptor, ErrorInterceptor } from './_helpers';
 
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
-import { faSync } from '@fortawesome/free-solid-svg-icons';
-import { faPlug } from '@fortawesome/free-solid-svg-icons';
-import { faCalculator } from '@fortawesome/free-solid-svg-icons';
-import { faToolbox } from '@fortawesome/free-solid-svg-icons';
-import { faCogs } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { faHome, faSync, faPlug, faCalculator, faToolbox, faCogs } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faHome, faSync, faPlug, faCalculator, faToolbox, faCogs);
+import { SerialServerConnection } from './serialServer/serialServerConnection';
+import { MachineControlGlobal } from './machinecontrol/machinecontrol.global';
 
-@
-NgModule({
+@NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     HomeComponent,
     LoginComponent,
+    SerialPortHistoryComponent,
     MessageBoxComponent,
-    ...machineRoutingComponents,
-    ...eepromConfigRoutingComponents,
-    ...gcodeRoutingComponents
+    ...machineComponents,
+    ...machineControlComponents,
+    ...eepromConfigComponents,
+    ...gcodeComponents
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -93,10 +94,12 @@ NgModule({
       { path: 'home', component: HomeComponent },
       ...eepromConfigRoutes,
       ...machineRoutes,
+      ...machineControlRoutes,
       ...gcodeRoutes,
     ]),
   ],
   providers: [
+    { provide: SerialServerService, useClass: LocalSerialServerService },
     { provide: CNCLibService, useClass: LocalCNCLibInfoService },
     { provide: CNCLibEepromConfigService, useClass: LocalCNCLibEepromConfigService },
     { provide: CNCLibMachineService, useClass: LocalCNCLibMachineService },
@@ -105,9 +108,15 @@ NgModule({
     { provide: CNCLibGCodeService, useClass: LocalCNCLibGCodeService },
     { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    SerialServerConnection,
+    MachineControlGlobal
   ],
   bootstrap: [AppComponent],
   entryComponents: [MessageBoxComponent]
 })
 export class AppModule {
+  constructor(library: FaIconLibrary) {
+
+    library.addIcons(faHome, faSync, faPlug, faCalculator, faToolbox, faCogs);
+  }
 }

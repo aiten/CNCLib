@@ -36,7 +36,7 @@ export const machineControlRoutes =
   }
 ];
 
-export const machineControlRoutingComponents =
+export const machineControlComponents =
 [
   MachineControlComponent,
   MachineControlOverviewComponent,

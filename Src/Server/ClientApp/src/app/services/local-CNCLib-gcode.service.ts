@@ -28,7 +28,7 @@ import { CNCLibGCodeService } from './CNCLib-gcode.service';
 export class LocalCNCLibGCodeService implements CNCLibGCodeService {
   constructor(
     private http: HttpClient,
-    @Inject('BASE_URL') public baseUrl: string,
+    @Inject('WEBAPI_URL') public baseUrl: string,
   ) {
   }
 

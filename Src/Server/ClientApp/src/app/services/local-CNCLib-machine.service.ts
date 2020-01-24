@@ -27,7 +27,7 @@ import { CNCLibMachineService } from './CNCLib-machine.service';
 export class LocalCNCLibMachineService implements CNCLibMachineService {
   constructor(
     private http: HttpClient,
-    @Inject('BASE_URL') public baseUrl: string,
+    @Inject('WEBAPI_URL') public baseUrl: string,
   ) {
   }
 
@@ -114,6 +114,8 @@ function toMachine(r: any): Machine {
       serialServer: r.SerialServer,
       serialServerPort: r.SerialServerPort,
       serialServerProtocol: r.SerialServerProtocol,
+      serialServerUser: r.SerialServerUser,
+      serialServerPassword: r.SerialServerPassword,
       comPort: r.ComPort,
       sizeX: r.SizeX,
       sizeY: r.SizeY,
@@ -177,6 +179,8 @@ function fromMachine(r: Machine): any {
       SerialServer: r.serialServer,
       SerialServerPort: r.serialServerPort,
       SerialServerProtocol: r.serialServerProtocol,
+      SerialServerUser: r.serialServerUser,
+      SerialServerPassword: r.serialServerPassword,
       SizeX: r.sizeX,
       SizeY: r.sizeY,
       SizeZ: r.sizeZ,

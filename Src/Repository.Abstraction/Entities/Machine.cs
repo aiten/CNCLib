@@ -28,6 +28,8 @@ namespace CNCLib.Repository.Abstraction.Entities
         public string SerialServer         { get; set; }
         public int    SerialServerPort     { get; set; }
         public string SerialServerProtocol { get; set; }
+        public string SerialServerUser     { get; set; }
+        public string SerialServerPassword { get; set; }
         public string ComPort              { get; set; }
         public int    Axis                 { get; set; }
         public int    BaudRate             { get; set; }

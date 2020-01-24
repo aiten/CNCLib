@@ -25,7 +25,7 @@ import { CNCLibLoadOptionService } from './CNCLib-load-option.service';
 export class LocalCNCLibLoadOptionService implements CNCLibLoadOptionService {
   constructor(
     private http: HttpClient,
-    @Inject('BASE_URL') public baseUrl: string,
+    @Inject('WEBAPI_URL') public baseUrl: string,
   ) {
   }
 

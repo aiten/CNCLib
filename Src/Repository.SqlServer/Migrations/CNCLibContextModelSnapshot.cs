@@ -172,12 +172,20 @@ namespace CNCLib.Repository.SqlServer.Migrations
                     b.Property<string>("SerialServer")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SerialServerPassword")
+                        .HasColumnType("nvarchar(64)")
+                        .HasMaxLength(64);
+
                     b.Property<int>("SerialServerPort")
                         .HasColumnType("int");
 
                     b.Property<string>("SerialServerProtocol")
                         .HasColumnType("nvarchar(10)")
                         .HasMaxLength(10);
+
+                    b.Property<string>("SerialServerUser")
+                        .HasColumnType("nvarchar(32)")
+                        .HasMaxLength(32);
 
                     b.Property<decimal>("SizeA")
                         .HasColumnType("decimal(18,2)");

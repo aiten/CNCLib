@@ -15,4 +15,5 @@
 */
 
 export const machineURL = '/machine';
+export const machineControlURL = '/machinecontrol';
 export const gcodeURL = '/gcode';

@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private cncLibInfoService: CNCLibInfoService,
     public cncLibloggedinService: CNCLibLoggedinService,
-    @Inject('BASE_URL') public baseUrl: string
+    @Inject('WEBAPI_URL') public baseUrl: string
   ) {
   }
 

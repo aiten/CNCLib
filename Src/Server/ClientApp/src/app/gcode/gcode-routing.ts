@@ -40,7 +40,7 @@ export const gcodeRoutes =
   }
 ];
 
-export const gcodeRoutingComponents =
+export const gcodeComponents =
 [
   GcodeComponent,
   GcodeOverviewComponent,

@@ -46,3 +46,4 @@ obj
 /Src/NsisSetup/Output/CNCLib.Web_install.exe
 *.Cache
 /Src/Serial.Server/.config/dotnet-tools.json
+/Src/Server/.config/dotnet-tools.json

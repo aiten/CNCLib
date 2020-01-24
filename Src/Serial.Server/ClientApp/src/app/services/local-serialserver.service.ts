@@ -16,7 +16,7 @@
 
 import { Injectable, Inject } from '@angular/core';
 import { Response } from '@angular/http';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { SerialServerService } from './serialserver.service';
 import { SerialCommand } from "../models/serial.command";
 import { SerialPortDefinition } from '../models/serial.port.definition';
@@ -29,6 +29,10 @@ export class LocalSerialServerService implements SerialServerService {
     private http: HttpClient,
     @Inject('WEBAPI_URL') public baseUrl: string,
   ) {
+  }
+
+  setBaseUrl(baseUrl: string) {
+    this.baseUrl = baseUrl;
   }
 
   getInfo(): Promise<CNCLibServerInfo> {
@@ -45,23 +49,27 @@ export class LocalSerialServerService implements SerialServerService {
     return this.http.get<SerialPortDefinition>(this.baseUrl + 'api/SerialPort/' + id).toPromise();
   }
 
+  getPortByName(port: string): Promise<SerialPortDefinition> {
+    let params = new HttpParams();
+    params = params.set('portName', port);
+    return this.http.get<SerialPortDefinition[]>(this.baseUrl + 'api/SerialPort?' + params.toString())
+      .toPromise()
+      .then(result => result[0]);
+  }
+
   refresh(): Promise<SerialPortDefinition[]> {
     return this.http.post<SerialPortDefinition[]>(this.baseUrl + 'api/SerialPort/refresh', "x").toPromise()
       .catch(this.handleErrorPromise);
   }
 
   connect(serialportid: number, baudrate: number, dtrIsReset: boolean, resetonConnect: boolean): Promise<void> {
-    return this.http
-      .post<void>(this.baseUrl +
-        'api/SerialPort/' +
-        serialportid +
-        '/connect/?baudrate=' +
-        baudrate +
-        '&dtrIsReset=' +
-        (dtrIsReset ? 'true' : 'false') +
-        '&resetOnConnect=' +
-        (resetonConnect ? 'true' : 'false'),
-        "x").toPromise()
+
+    let params = new HttpParams();
+    params = params.set('baudrate', baudrate.toString());
+    params = params.set('dtrIsReset', (dtrIsReset ? 'true' : 'false'));
+    params = params.set('resetOnConnect', (resetonConnect ? 'true' : 'false'));
+
+    return this.http.post<void>(this.baseUrl + 'api/SerialPort/' + serialportid + '/connect/?' + params.toString(), "x").toPromise()
       .catch(this.handleErrorPromise);
   }
 

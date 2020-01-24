@@ -1,0 +1,39 @@
+<div class="grid-container">
+  <div class="grid-item"></div>
+  <div class="grid-item">
+    <div>+Y</div>
+    <button class="move-button" (click)='postcommand("g91 g0y" + machineControlGlobal.moveDist + " g90")'>{{machineControlGlobal.moveDist}}</button>
+  </div>
+  <div class="grid-item" style="margin-left: 10px">
+    <div>+Z</div>
+    <button class="move-button" (click)='postcommand("g91 g0z" + machineControlGlobal.moveDist + " g90")'>{{machineControlGlobal.moveDist}}</button>
+  </div>
+  <div class="grid-item">
+    <div>-X</div>
+    <button class="move-button" (click)='postcommand("g91 g0x-" + machineControlGlobal.moveDist + " g90")'>{{machineControlGlobal.moveDist}}</button>
+  </div>
+  <div class="grid-item">
+    <div class="select-grid-container">
+      <input class="select-grid-item" type="number" step="0.1" min="0.001" max="100" [value]="machineControlGlobal.moveDist" (input)="machineControlGlobal.moveDist=$event.target.value" />
+      <div class="select-grid-item">
+        <button class="select-button" (click)='machineControlGlobal.moveDist = 0.1'>0.1</button>
+        <button class="select-button" (click)='machineControlGlobal.moveDist = 1'>1</button>
+        <button class="select-button" (click)='machineControlGlobal.moveDist = 10'>10</button>
+        <button class="select-button" (click)='machineControlGlobal.moveDist = 100'>100</button>
+      </div>
+    </div>
+  </div>
+  <div class="grid-item">
+    <div>+X</div>
+    <button class="move-button" (click)='postcommand("g91 g0x" + machineControlGlobal.moveDist + " g90")'>{{machineControlGlobal.moveDist}}</button>
+  </div>
+  <div class="grid-item"></div>
+  <div class="grid-item">
+    <div>-Y</div>
+    <button class="move-button" (click)='postcommand("g91 g0y-" + machineControlGlobal.moveDist + " g90")'>{{machineControlGlobal.moveDist}}</button>
+  </div>
+  <div class="grid-item" style="margin-left: 10px">
+    <div>-Z</div>
+    <button class="move-button" (click)='postcommand("g91 g0z-" + machineControlGlobal.moveDist + " g90")'>{{machineControlGlobal.moveDist}}</button>
+  </div>
+</div>
