@@ -134,6 +134,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GCode.Draw", "GCode.Draw\GC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Localization", "Framework\Localization\Localization.csproj", "{C6E37584-6284-488F-BA0C-1DDB28AECC2C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GCode.Serial", "GCode.Serial\GCode.Serial.csproj", "{B5258CB6-4853-4B46-B5A5-C30F738F1B74}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -336,6 +338,10 @@ Global
 		{C6E37584-6284-488F-BA0C-1DDB28AECC2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6E37584-6284-488F-BA0C-1DDB28AECC2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6E37584-6284-488F-BA0C-1DDB28AECC2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5258CB6-4853-4B46-B5A5-C30F738F1B74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5258CB6-4853-4B46-B5A5-C30F738F1B74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5258CB6-4853-4B46-B5A5-C30F738F1B74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5258CB6-4853-4B46-B5A5-C30F738F1B74}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -391,6 +397,7 @@ Global
 		{55F3D543-5CC1-4E3F-80A8-8AD0FF55C9A5} = {96217F41-39D9-4FCF-AACF-7EAEB4E4479C}
 		{0F7B105A-2F4C-4001-B992-967A5C2A8211} = {B8C8CCF8-D608-41B8-AD61-3D3FA2A4A30D}
 		{C6E37584-6284-488F-BA0C-1DDB28AECC2C} = {96217F41-39D9-4FCF-AACF-7EAEB4E4479C}
+		{B5258CB6-4853-4B46-B5A5-C30F738F1B74} = {B8C8CCF8-D608-41B8-AD61-3D3FA2A4A30D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {149E2CA7-C574-4FFF-8699-9678D9AFC1FA}

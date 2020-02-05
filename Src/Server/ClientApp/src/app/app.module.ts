@@ -63,7 +63,7 @@ import { gcodeRoutes, gcodeComponents } from './gcode/gcode-routing';
 import { BasicAuthInterceptor, ErrorInterceptor } from './_helpers';
 
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { faHome, faSync, faPlug, faCalculator, faToolbox, faCogs } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faSync, faPlug, faCalculator, faToolbox, faCogs, faEllipsisV, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 
 import { SerialServerConnection } from './serialServer/serialServerConnection';
 import { MachineControlGlobal } from './machinecontrol/machinecontrol.global';
@@ -117,6 +117,6 @@ import { MachineControlGlobal } from './machinecontrol/machinecontrol.global';
 export class AppModule {
   constructor(library: FaIconLibrary) {
 
-    library.addIcons(faHome, faSync, faPlug, faCalculator, faToolbox, faCogs);
+    library.addIcons(faHome, faSync, faPlug, faCalculator, faToolbox, faCogs, faEllipsisV, faArrowDown);
   }
 }

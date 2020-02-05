@@ -17,6 +17,7 @@
 using System.ComponentModel;
 
 using CNCLib.GCode;
+using CNCLib.GCode.Serial;
 
 namespace CNCLib.WpfClient.Models
 {

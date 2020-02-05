@@ -21,8 +21,6 @@ export class Machine {
   id: number;
   description: string;
   serialServer: string;
-  serialServerPort: number;
-  serialServerProtocol: string;
   serialServerUser: string;
   serialServerPassword: string;
   comPort: string;
@@ -48,6 +46,7 @@ export class Machine {
   coolant: boolean;
   laser: boolean;
   rotate: boolean;
+  workOffsets: number;
   commandSyntax: number;
 
   commands: MachineCommand[];

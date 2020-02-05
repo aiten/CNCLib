@@ -205,6 +205,9 @@ namespace CNCLib.Repository.SqLite.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("WorkOffsets")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("MachineId");
 
                     b.HasIndex("UserId", "Name")

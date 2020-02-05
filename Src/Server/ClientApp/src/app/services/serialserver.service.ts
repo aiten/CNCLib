@@ -46,5 +46,11 @@ export abstract class SerialServerService {
 
   public abstract queueCommands(serialportid: number, command: string[], timeout: number): Promise<SerialCommand[]>;
 
+  public abstract sendCommand(serialportid: number, command: string[], timeout: number): Promise<SerialCommand[]>;
+
   public abstract sendWhileOkCommands(serialportid: number, command: string[], timeout: number): Promise<SerialCommand[]>;
+
+  public abstract getParameter(serialportid: number, parameterNo: number): Promise<number>;
+
+  public abstract getPosition(serialportid: number): Promise<number[][]>;
 }

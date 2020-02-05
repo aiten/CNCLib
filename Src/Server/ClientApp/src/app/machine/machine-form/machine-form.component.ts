@@ -53,8 +53,6 @@ export class MachineFormComponent implements OnInit {
         description: ['', [Validators.required, Validators.maxLength(64)]],
         comPort: ['', [Validators.required, Validators.maxLength(32)]],
         serialServer: ['', [Validators.maxLength(256)]],
-        serialServerPort: [5000, [Validators.required]],
-        serialServerProtocol: ['http', [Validators.required]],
         // http://stackoverflow.com/questions/39847862/min-max-validator-in-angular-2-final
         serialServerUser: [''],
         serialServerPassword: [''],
@@ -80,6 +78,7 @@ export class MachineFormComponent implements OnInit {
         coolant: [false, [Validators.required]],
         laser: [false, [Validators.required]],
         rotate: [false, [Validators.required]],
+        workOffsets: [0],
         commandSyntax: [0],
 
         commands: fb.array(

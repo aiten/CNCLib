@@ -19,6 +19,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 using CNCLib.GCode;
+using CNCLib.GCode.Serial;
 using CNCLib.Logic.Abstraction.DTO;
 
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
@@ -317,7 +318,7 @@ namespace CNCLib.WpfClient.Models
         [Description("Capability of macine commands")]
         public CommandSyntax CommandSyntax
         {
-            get => EepromV1.GetCommandSyntax(Info1);
+            get => (CommandSyntax) EepromV1.GetCommandSyntax(Info1);
             set { }
         }
 
@@ -343,6 +344,15 @@ namespace CNCLib.WpfClient.Models
         [DisplayName("Info2")]
         [Description("Info 32bit"), ReadOnly(true)]
         public uint Info2 { get; set; }
+
+        [Category(CATEGORY_INFO)]
+        [DisplayName("WorkOffsetCount")]
+        [Description("Count of work offsets (G54-??)")]
+        public uint WorkOffsetCount
+        {
+            get => EepromV1.GetWorkOffsetCount(Info1);
+            set { }
+        }
 
         #endregion
 

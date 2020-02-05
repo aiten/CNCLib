@@ -21,21 +21,36 @@ import { Machine } from '../models/machine';
 
 @Injectable()
 export class MachineControlGlobal {
-  lastCommands: string[];
 
-  probeSize: number = 25.0;
-  retractDist: number = 3.0;
-  probeDist: number = 10.0;
+  lastCommands: string[] = [];
 
   moveDist: number = 0.5;
 
-  workOfsX: number[] = [0, 0, 0, 0, 0, 0];
-  workOfsY: number[] = [0, 0, 0, 0, 0, 0];
-  workOfsZ: number[] = [0, 0, 0, 0, 0, 0];
+  workOfsX: number[] = [null, null, null, null, null, null];
+  workOfsY: number[] = [null, null, null, null, null, null];
+  workOfsZ: number[] = [null, null, null, null, null, null];
+
+  offsetG92: number[] = [0, 0, 0, 0, 0, 0];
+
+  position: number[] = [null, null, null, null, null, null];
+  positionAbs: number[] = [null, null, null, null, null, null];
+
+  sdFileName: string = 'auto0.g';
+
+  showSpindle: boolean = true;
+  showLaser: boolean = true;
+  showCoolant: boolean = false;
+  showRotate: boolean = false;
+  showRefMove: boolean = false;
+  showCustom: boolean = false;
+  showSd: boolean = false;
+  showMove: boolean = true;
+  showInfo: boolean = true;
+  showCommand: boolean = true;
+  showPosition: boolean = true;
+  showOffset: boolean = true;
+  showWorkOffset: boolean = false;
 
   setFromMachine(machine: Machine) {
-    this.probeDist = machine.probeDist;
-    this.retractDist = 3.0;
-    this.probeSize = machine.probeSizeZ;
   }
 }

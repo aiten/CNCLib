@@ -58,6 +58,7 @@ namespace CNCLib.Logic.Abstraction.DTO
         public bool    Coolant              { get; set; }
         public bool    Laser                { get; set; }
         public bool    Rotate               { get; set; }
+        public int     WorkOffsets          { get; set; }
 
         public CommandSyntax CommandSyntax { get; set; }
 

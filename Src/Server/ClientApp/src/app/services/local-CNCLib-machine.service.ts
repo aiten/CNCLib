@@ -112,8 +112,6 @@ function toMachine(r: any): Machine {
       id: r.MachineId,
       description: r.Name,
       serialServer: r.SerialServer,
-      serialServerPort: r.SerialServerPort,
-      serialServerProtocol: r.SerialServerProtocol,
       serialServerUser: r.SerialServerUser,
       serialServerPassword: r.SerialServerPassword,
       comPort: r.ComPort,
@@ -138,6 +136,7 @@ function toMachine(r: any): Machine {
       coolant: r.Coolant,
       laser: r.Laser,
       rotate: r.Rotate,
+      workOffsets: r.WorkOffsets,
       commandSyntax: r.CommandSyntax
     });
 
@@ -177,8 +176,6 @@ function fromMachine(r: Machine): any {
       Name: r.description,
       ComPort: r.comPort,
       SerialServer: r.serialServer,
-      SerialServerPort: r.serialServerPort,
-      SerialServerProtocol: r.serialServerProtocol,
       SerialServerUser: r.serialServerUser,
       SerialServerPassword: r.serialServerPassword,
       SizeX: r.sizeX,
@@ -202,6 +199,7 @@ function fromMachine(r: Machine): any {
       Coolant: r.coolant,
       Laser: r.laser,
       Rotate: r.rotate,
+      WorkOffsets: r.workOffsets,
       CommandSyntax: r.commandSyntax
     });
 

@@ -19,6 +19,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Input;
 
+using CNCLib.GCode.Serial;
 using CNCLib.WpfClient.Helpers;
 
 using Framework.Arduino.SerialCommunication;
@@ -190,87 +191,19 @@ namespace CNCLib.WpfClient.ViewModels.ManualControl
             RunAndUpdate(() => { _global.Com.Current.QueueCommand("m101"); });
         }
 
-        private decimal[] Convert(string[] list)
-        {
-            var ret = new decimal[list.Length];
-            for (int i = 0; i < list.Length; i++)
-            {
-                decimal val;
-                if (decimal.TryParse(list[i], NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out val))
-                {
-                    ret[i] = val;
-                }
-            }
-
-            return ret;
-        }
-
-        string TrimMsg(string msg, string replace)
-        {
-            return msg.Replace("ok", "").Replace(" ", "").Replace(replace, "").Replace(">", "");
-        }
-
-        decimal[] Convert(string msg, string replace)
-        {
-            return Convert(TrimMsg(msg, replace).Split(':', ','));
-        }
-
-        decimal[] TryConvert(string[] tags, string txt)
-        {
-            string tag = tags.FirstOrDefault((s) => s.StartsWith(txt));
-            if (tag != null)
-            {
-                return Convert(TrimMsg(tag, txt).Split(':', ','));
-            }
-
-            return null;
-        }
-
         public void ReadPosition()
         {
             RunAndUpdate(
                 async () =>
                 {
-                    string message = await _global.Com.Current.SendCommandAndReadOKReplyAsync(_global.Machine.PrepareCommand("?"), 10 * 1000);
+                    var position = (await _global.Com.Current.GetPosition(_global.Machine.GetCommandPrefix())).ToList();
 
-                    if (!string.IsNullOrEmpty(message))
+                    if (position.Any())
                     {
-                        if (message.Contains("MPos:"))
+                        SetPositions(position.First().ToArray(), 0);
+                        if (position.Count > 1)
                         {
-                            // new or grbl format
-                            message = message.Replace("ok", "").Replace("<", "").Replace(">", "").Trim();
-
-                            string[] tags = message.Split('|');
-
-                            var mPos = TryConvert(tags, "MPos:");
-                            if (mPos != null)
-                            {
-                                SetPositions(mPos, 0);
-
-                                var wco = TryConvert(tags, "WCO:");
-                                if (wco != null)
-                                {
-                                    for (int i = 0; i < wco.Length; i++)
-                                    {
-                                        mPos[i] -= wco[i];
-                                    }
-                                }
-
-                                SetPositions(mPos, 1);
-                            }
-                        }
-                        else
-                        {
-                            decimal[] mPos = Convert(message, "dummy");
-                            SetPositions(mPos, 0);
-
-                            message = await _global.Com.Current.SendCommandAndReadOKReplyAsync(_global.Machine.PrepareCommand("m114 s1"), 10 * 1000);
-
-                            if (!string.IsNullOrEmpty(message))
-                            {
-                                decimal[] rPos = Convert(message, "dummy");
-                                SetPositions(rPos, 1);
-                            }
+                            SetPositions(position[1].ToArray(), 1);
                         }
                     }
                 });

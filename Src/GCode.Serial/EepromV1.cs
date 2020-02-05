@@ -17,9 +17,7 @@
 using System;
 using System.Collections.Generic;
 
-using CNCLib.Logic.Abstraction.DTO;
-
-namespace CNCLib.GCode
+namespace CNCLib.GCode.Serial
 {
     public class EepromV1
     {
@@ -164,12 +162,19 @@ namespace CNCLib.GCode
 
             EEPROM_INFO_NEED_EEPROM_FLUSH = (1 << 16),
             EEPROM_INFO_NEED_DTR          = (1 << 17), // deprecated
-            EEPROM_INFO_DTR_IS_RESET      = (1 << 18)
+            EEPROM_INFO_DTR_IS_RESET      = (1 << 18),
+
+            EEPROM_INFO_WORKOFFSETCOUT        = (1 << 19), // 4 bits
         }
 
-        public static CommandSyntax GetCommandSyntax(uint info1)
+        public static int GetCommandSyntax(uint info1)
         {
-            return (CommandSyntax)((info1 >> 6) & 7);
+            return (int)((info1 >> 6) & 7);
+        }
+
+        public static uint GetWorkOffsetCount(uint info1)
+        {
+            return (uint)((info1 >> 19) & 15);
         }
 
         #endregion

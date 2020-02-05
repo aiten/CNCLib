@@ -36,8 +36,8 @@ export class MachineControlDetailComponent {
 
   constructor(
     private serialServerService: SerialServerService,
-    private serialServer: SerialServerConnection,
-    private machineControlGlobal: MachineControlGlobal 
+    public serialServer: SerialServerConnection,
+    public machineControlGlobal: MachineControlGlobal 
   ) {
   }
 

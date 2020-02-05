@@ -79,6 +79,8 @@ namespace CNCLib.Serial.WebAPI.SerialPort
 
         public bool IsSingleStep => Serial?.Pause ?? false;
 
+        public string GCodeCommandPrefix { get; set; } = "";
+
         public int CommandsInQueue => Serial?.CommandsInQueue ?? 0;
 
         #endregion

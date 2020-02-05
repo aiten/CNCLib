@@ -57,6 +57,7 @@ namespace CNCLib.Repository.Abstraction.Entities
         public bool    Laser          { get; set; }
         public bool    Rotate         { get; set; }
         public int     CommandSyntax  { get; set; }
+        public int     WorkOffsets    { get; set; }
 
         public ICollection<MachineCommand>     MachineCommands     { get; set; }
         public ICollection<MachineInitCommand> MachineInitCommands { get; set; }

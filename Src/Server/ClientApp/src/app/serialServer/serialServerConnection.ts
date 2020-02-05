@@ -30,7 +30,7 @@ export class SerialServerConnection {
 
   constructor(
     private serialServerService: SerialServerService,
-    private machineControlGlobal: MachineControlGlobal
+    public machineControlGlobal: MachineControlGlobal
   ) {
 
     console.log("Create new");
@@ -56,7 +56,7 @@ export class SerialServerConnection {
   async connectTo(machine: Machine): Promise<string> {
 
     var url =
-      await this.getInfoX(machine.serialServer, machine.serialServerPort, machine.serialServerProtocol, machine.comPort, machine.baudRate);
+      await this.getInfoX(machine.serialServer, machine.comPort, machine.baudRate);
 
     this.machine = machine;
 
@@ -65,9 +65,9 @@ export class SerialServerConnection {
     return url;
   }
 
-  async getInfoX(serialServer: string, serialServerPort: number, serialServerProtocol: string, comPort: string, baudrate: number): Promise<string> {
+  async getInfoX(serialServer: string, comPort: string, baudrate: number): Promise<string> {
 
-    var uri = serialServerProtocol + '://' + serialServer + ':' + serialServerPort + '/';
+    var uri = serialServer + '/';
     console.log('uri:' + uri);
 
     this.serialServerService.setBaseUrl(uri);

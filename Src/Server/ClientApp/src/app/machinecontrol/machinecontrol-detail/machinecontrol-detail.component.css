@@ -14,8 +14,24 @@
   text-align: left;
 }
 
-.workOfs {
+.menuShow-button {
+  width: 100px;
   padding: 0px;
-  padding-bottom: 5px;
-  padding-right: 3px;
 }
+
+.menuHide-button {
+  font-size: 110%;
+  padding: 0px;
+  float: right;
+}
+
+.detail-card {
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+.menu-card {
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+

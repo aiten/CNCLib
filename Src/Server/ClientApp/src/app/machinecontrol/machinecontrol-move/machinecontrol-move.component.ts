@@ -32,7 +32,7 @@ export class MachineControlMoveComponent {
 
   constructor(
     private serialServerService: SerialServerService,
-    private serialServer: SerialServerConnection,
+    public serialServer: SerialServerConnection,
     public machineControlGlobal: MachineControlGlobal 
   ) {
   }

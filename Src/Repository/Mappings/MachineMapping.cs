@@ -45,6 +45,7 @@ namespace CNCLib.Repository.Mappings
             entity.Property(m => m.SizeZ).IsRequired();
 
             entity.Property(m => m.CommandSyntax).IsRequired();
+            entity.Property(m => m.WorkOffsets).IsRequired();
 
             entity.HasOne(p => p.User);
             entity.Property(m => m.UserId);

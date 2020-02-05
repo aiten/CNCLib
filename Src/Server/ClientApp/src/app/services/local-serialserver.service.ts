@@ -107,6 +107,15 @@ export class LocalSerialServerService implements SerialServerService {
       .catch(this.handleErrorPromise);
   }
 
+  sendCommand(serialportid: number, command: string[], timeout: number): Promise<SerialCommand[]> {
+    let cmd = new QueueSendCommand();
+    cmd.Commands = command;
+    cmd.TimeOut = timeout;
+
+    return this.http.post<SerialCommand[]>(this.baseUrl + 'api/SerialPort/' + serialportid + '/send', cmd).toPromise()
+      .catch(this.handleErrorPromise);
+  }
+
   sendWhileOkCommands(serialportid: number, command: string[], timeout: number): Promise<SerialCommand[]> {
     let cmd = new QueueSendCommand();
     cmd.Commands = command;
@@ -114,6 +123,21 @@ export class LocalSerialServerService implements SerialServerService {
 
     return this.http.post<SerialCommand[]>(this.baseUrl + 'api/SerialPort/' + serialportid + '/sendWhileOk', cmd)
       .toPromise()
+      .catch(this.handleErrorPromise);
+  }
+
+  getParameter(serialportid: number, parameterNo): Promise<number> {
+
+    let params = new HttpParams();
+    params = params.set('paramNo', parameterNo.toString());
+
+    return this.http.post<number>(this.baseUrl + 'api/GCode/' + serialportid + '/getParameter?' + params.toString(), "x").toPromise()
+      .catch(this.handleErrorPromise);
+  }
+
+  getPosition(serialportid: number): Promise<number[][]> {
+
+    return this.http.post<number[][]>(this.baseUrl + 'api/GCode/' + serialportid + '/getPosition', "x").toPromise()
       .catch(this.handleErrorPromise);
   }
 

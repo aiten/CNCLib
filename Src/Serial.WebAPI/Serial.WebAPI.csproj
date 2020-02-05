@@ -19,6 +19,7 @@
     <ProjectReference Include="..\Framework\Tools\Tools.csproj" />
     <ProjectReference Include="..\Framework\Arduino\Arduino.csproj" />
     <ProjectReference Include="..\Framework\WebAPI\WebAPI.csproj" />
+    <ProjectReference Include="..\GCode.Serial\GCode.Serial.csproj" />
     <ProjectReference Include="..\Serial.Shared\Serial.Shared.csproj" />
   </ItemGroup>
 

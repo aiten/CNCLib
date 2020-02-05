@@ -201,6 +201,11 @@ namespace CNCLib.WpfClient.Models
         public bool Rotate { get; set; }
 
         [Category(CATEGORY_FEATURES)]
+        [DisplayName("WorkOffsets")]
+        [Description("Count off work offsets")]
+        public int WorkOffsets{ get; set; }
+
+        [Category(CATEGORY_FEATURES)]
         [DisplayName("CommandSyntax")]
         [Description("Syntax of machine commands, e.g. GCode, Hpgl")]
         public CommandSyntax CommandSyntax { get; set; }

@@ -18,6 +18,17 @@ import { NgModule } from '@angular/core';
 import { MachineControlDetailComponent } from './machinecontrol-detail/machinecontrol-detail.component';
 import { MachineControlMoveComponent } from './machinecontrol-move/machinecontrol-move.component';
 import { MachineControlWorkOffsetComponent } from './machinecontrol-workoffset/machinecontrol-workoffset.component';
+import { MachineControlOffsetComponent } from './machinecontrol-offset/machinecontrol-offset.component';
+import { MachineControlRotateComponent } from './machinecontrol-rotate/machinecontrol-rotate.component';
+import { MachineControlPositionComponent } from './machinecontrol-position/machinecontrol-position.component';
+import { MachineControlSdComponent } from './machinecontrol-sd/machinecontrol-sd.component';
+import { MachineControlRefMoveComponent } from './machinecontrol-refmove/machinecontrol-refmove.component';
+import { MachineControlLaserComponent } from './machinecontrol-laser/machinecontrol-laser.component';
+import { MachineControlSpindleComponent } from './machinecontrol-spindle/machinecontrol-spindle.component';
+import { MachineControlCoolantComponent } from './machinecontrol-coolant/machinecontrol-coolant.component';
+import { MachineControlCustomComponent } from './machinecontrol-custom/machinecontrol-custom.component';
+import { MachineControlCommandComponent } from './machinecontrol-command/machinecontrol-command.component';
+import { MachineControlInfoComponent } from './machinecontrol-info/machinecontrol-info.component';
 import { MachineControlComponent } from './machinecontrol.component';
 import { Routes, RouterModule } from '@angular/router';
 import { MachineControlGlobal } from './machinecontrol.global';
@@ -41,5 +52,16 @@ export const machineControlComponents =
   MachineControlComponent,
   MachineControlDetailComponent,
   MachineControlMoveComponent,
+  MachineControlOffsetComponent,
   MachineControlWorkOffsetComponent,
+  MachineControlRotateComponent,
+  MachineControlPositionComponent,
+  MachineControlSdComponent,
+  MachineControlRefMoveComponent,
+  MachineControlLaserComponent,
+  MachineControlSpindleComponent,
+  MachineControlCoolantComponent,
+  MachineControlCustomComponent,
+  MachineControlCommandComponent,
+  MachineControlInfoComponent,
 ];

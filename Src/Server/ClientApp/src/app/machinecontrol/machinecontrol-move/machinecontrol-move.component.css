@@ -15,8 +15,9 @@
 }
 
 .move-button {
-  width: 40px;
-  height: 40px;
+  width: 40px !important;
+  min-width: unset !important;
+  padding: 0px;
 }
 
 .select-grid-container {
@@ -26,13 +27,17 @@
   padding-left: 15px;
 }
 
-.select-grid-item {
+.inputMoveDist {
+  width: 60px;
   text-align: center;
   padding: 0px;
 }
 
 .select-button {
-  width: 30px;
+  width: 30px !important;
+  min-width: unset !important;
+  height: 30px !important;
+  min-height: 30px !important;
   padding: 0px;
 }
 

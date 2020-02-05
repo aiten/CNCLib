@@ -24,14 +24,6 @@
       <td>{{ entry.serialServer }} </td>
     </tr>
     <tr>
-      <td>Serial Server Port</td>
-      <td>{{ entry.serialServerPort }} </td>
-    </tr>
-    <tr>
-      <td>Serial Server Protocol</td>
-      <td>{{ entry.serialServerProtocol }} </td>
-    </tr>
-    <tr>
       <td>Serial Server User</td>
       <td>{{ entry.serialServerUser }} </td>
     </tr>
@@ -134,6 +126,10 @@
     <tr *ngIf="_isMore">
       <td>probeFeed</td>
       <td>{{ entry.probeFeed }} </td>
+    </tr>
+    <tr *ngIf="_isMore">
+      <td>workOffsets</td>
+      <td>{{ entry.workOffsets }} </td>
     </tr>
   </table>
 </div>

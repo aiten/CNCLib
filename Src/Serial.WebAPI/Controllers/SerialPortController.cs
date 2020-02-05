@@ -16,9 +16,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
+using CNCLib.GCode.Serial;
 using CNCLib.Serial.Shared;
 using CNCLib.Serial.WebAPI.Hubs;
 using CNCLib.Serial.WebAPI.SerialPort;
@@ -55,19 +57,6 @@ namespace CNCLib.Serial.WebAPI.Controllers
             };
         }
 
-        private async Task<SerialPortWrapper> GetPort(int id)
-        {
-            var port = SerialPortList.GetPort(id);
-            if (port == null)
-            {
-                // rescan
-                SerialPortList.Refresh();
-                port = SerialPortList.GetPort(id);
-            }
-
-            return await Task.FromResult(port);
-        }
-
         #region Query/Info
 
         [HttpGet]
@@ -86,7 +75,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<SerialPortDefinition>> Get(int id)
         {
-            var port = await GetPort(id);
+            var port = await SerialPortList.GetPortAndRescan(id);
             if (port == null)
             {
                 return NotFound();
@@ -107,13 +96,13 @@ namespace CNCLib.Serial.WebAPI.Controllers
         #region Connect/Disconnect
 
         [HttpPost("{id:int}/connect")]
-        public async Task<ActionResult<SerialPortDefinition>> Connect(int id, int? baudRate = null, bool? dtrIsReset = true, bool? resetOnConnect = false)
+        public async Task<ActionResult<SerialPortDefinition>> Connect(int id, string commandPrefix = null, int? baudRate = null, bool? dtrIsReset = true, bool? resetOnConnect = false)
         {
             bool dtrIsResetN0     = dtrIsReset ?? true;
             bool resetOnConnectN0 = resetOnConnect ?? false;
             int  baudRateN0       = baudRate ?? 250000;
 
-            var port = await GetPort(id);
+            var port = await SerialPortList.GetPortAndRescan(id);
             if (port == null)
             {
                 return NotFound();
@@ -132,6 +121,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
             port.Serial.BaudRate       = baudRateN0;
             port.Serial.DtrIsReset     = dtrIsResetN0;
             port.Serial.ResetOnConnect = resetOnConnectN0;
+            port.GCodeCommandPrefix    = commandPrefix??"";
 
             await port.Serial.ConnectAsync(port.PortName);
 
@@ -143,7 +133,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
         [HttpPost("{id:int}/disconnect")]
         public async Task<ActionResult<SerialPortDefinition>> DisConnect(int id)
         {
-            var port = await GetPort(id);
+            var port = await SerialPortList.GetPortAndRescan(id);
             if (port == null)
             {
                 return NotFound();
@@ -164,7 +154,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
         [HttpPost("{id:int}/queue")]
         public async Task<ActionResult<IEnumerable<SerialCommand>>> QueueCommand(int id, [FromBody] SerialCommands commands)
         {
-            var port = await GetPort(id);
+            var port = await SerialPortList.GetPortAndRescan(id);
 
             if (port == null || commands == null || commands.Commands == null)
             {
@@ -178,7 +168,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
         [HttpPost("{id:int}/send")]
         public async Task<ActionResult<IEnumerable<SerialCommand>>> SendCommand(int id, [FromBody] SerialCommands commands)
         {
-            var port = await GetPort(id);
+            var port = await SerialPortList.GetPortAndRescan(id);
 
             if (port == null || commands == null || commands.Commands == null)
             {
@@ -192,7 +182,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
         [HttpPost("{id:int}/sendWhileOk")]
         public async Task<ActionResult<IEnumerable<SerialCommand>>> SendWhileOkCommand(int id, [FromBody] SerialCommands commands)
         {
-            var port = await GetPort(id);
+            var port = await SerialPortList.GetPortAndRescan(id);
 
             if (port == null || commands == null || commands.Commands == null)
             {
@@ -216,7 +206,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
         [HttpPost("{id:int}/abort")]
         public async Task<ActionResult> AbortCommand(int id)
         {
-            var port = await GetPort(id);
+            var port = await SerialPortList.GetPortAndRescan(id);
             if (port == null)
             {
                 return NotFound();
@@ -229,7 +219,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
         [HttpPost("{id:int}/resume")]
         public async Task<ActionResult> ResumeCommand(int id)
         {
-            var port = await GetPort(id);
+            var port = await SerialPortList.GetPortAndRescan(id);
             if (port == null)
             {
                 return NotFound();
@@ -242,7 +232,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
         [HttpPost("{id:int}/enablesinglestep")]
         public async Task<ActionResult> EnableSingleStepCommand(int id)
         {
-            var port = await GetPort(id);
+            var port = await SerialPortList.GetPortAndRescan(id);
             if (port == null)
             {
                 return NotFound();
@@ -255,7 +245,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
         [HttpPost("{id:int}/disbablesinglestep")]
         public async Task<ActionResult> DisableSingleStepCommand(int id)
         {
-            var port = await GetPort(id);
+            var port = await SerialPortList.GetPortAndRescan(id);
             if (port == null)
             {
                 return NotFound();
@@ -268,7 +258,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
         [HttpPost("{id:int}/singlestep")]
         public async Task<ActionResult> SingleStepCommand(int id)
         {
-            var port = await GetPort(id);
+            var port = await SerialPortList.GetPortAndRescan(id);
             if (port == null)
             {
                 return NotFound();
@@ -285,7 +275,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
         [HttpPost("{id:int}/history/clear")]
         public async Task<IActionResult> ClearCommandHistory(int id)
         {
-            var port = await GetPort(id);
+            var port = await SerialPortList.GetPortAndRescan(id);
             if (port == null)
             {
                 return NotFound();
@@ -298,7 +288,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
         [HttpGet("{id:int}/history")]
         public async Task<ActionResult<IEnumerable<SerialCommand>>> GetCommandHistory(int id)
         {
-            var port = await GetPort(id);
+            var port = await SerialPortList.GetPortAndRescan(id);
             if (port == null)
             {
                 return NotFound();

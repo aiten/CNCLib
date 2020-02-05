@@ -42,7 +42,7 @@ export class MachineOverviewComponent implements OnInit {
     private router: Router,
     public cncLibloggedinService: CNCLibLoggedinService,
     private machineService: CNCLibMachineService,
-    private serialServer: SerialServerConnection
+    public serialServer: SerialServerConnection
   ) {
   }
 

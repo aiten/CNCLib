@@ -35,21 +35,14 @@ export class MachineControlWorkOffsetComponent {
 
   constructor(
     private serialServerService: SerialServerService,
-    private serialServer: SerialServerConnection,
-    public machineControlGlobal: MachineControlGlobal 
+    public serialServer: SerialServerConnection,
+    public machineControlGlobal: MachineControlGlobal
   ) {
   }
 
-  async selectOfs(): Promise<void> {
-    await this.postcommand("g" + (54 + this.offsetId).toString())
-  }
+  addXYZ(): string {
 
-  async getOfs(): Promise<void> {
-  }
-
-  async setOfs(): Promise<void> {
-
-    var cmd = "g10 l2 p" + this.offsetId;
+    var cmd = "";
 
     if (this.machineControlGlobal.workOfsX[this.offsetId].toString().length > 0) {
       cmd = cmd + " x" + this.machineControlGlobal.workOfsX[this.offsetId];
@@ -63,10 +56,28 @@ export class MachineControlWorkOffsetComponent {
       cmd = cmd + " z" + this.machineControlGlobal.workOfsZ[this.offsetId];
     }
 
+    return cmd;
+  }
+
+  async selectOfs(): Promise<void> {
+    await this.postcommand("g" + (54 + this.offsetId).toString())
+  }
+
+  async getOfs(): Promise<void> {
+    this.machineControlGlobal.workOfsX[this.offsetId] = await this.serialServerService.getParameter(this.serialServer.getSerialServerPortId(), 5221 + this.offsetId * 20);
+    this.machineControlGlobal.workOfsY[this.offsetId] = await this.serialServerService.getParameter(this.serialServer.getSerialServerPortId(), 5222 + this.offsetId * 20);
+    this.machineControlGlobal.workOfsZ[this.offsetId] = await this.serialServerService.getParameter(this.serialServer.getSerialServerPortId(), 5223 + this.offsetId * 20);
+  }
+
+  async setOfs(): Promise<void> {
+
+    var cmd = "g10 l2 p" + (this.offsetId + 1).toString() + this.addXYZ();
     await this.postcommand(cmd);
   }
 
   async relOfs(): Promise<void> {
+    var cmd = "g10 l2 g91 p" + (this.offsetId + 1).toString() + " x0y0";
+    await this.postcommand(cmd);
   }
 
   async postcommand(command: string): Promise<void> {

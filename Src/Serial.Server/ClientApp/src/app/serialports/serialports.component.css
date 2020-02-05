@@ -12,6 +12,6 @@ table { }
 
 .mat-column-CommandsInQueue { width: 90px; }
 
-.mat-column-Task { width: 350px; }
+.mat-column-Task { width: 400px; }
 
 .taskbutton { margin-right: 5px; }

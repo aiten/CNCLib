@@ -211,6 +211,9 @@ namespace CNCLib.Repository.SqlServer.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<int>("WorkOffsets")
+                        .HasColumnType("int");
+
                     b.HasKey("MachineId");
 
                     b.HasIndex("UserId", "Name")

@@ -16,7 +16,7 @@ import { SerialServerConnection } from '../serialServer/serialServerConnection';
 })
 export class SerialPortHistoryComponent implements OnChanges {
 
-  forserialportid!: number;
+  forserialportid: number = -1;
 
   @Input()
   autoreloadonempty: boolean = false;
@@ -30,10 +30,11 @@ export class SerialPortHistoryComponent implements OnChanges {
   paginator: MatPaginator;
 
   private _hubConnection: HubConnection;
+  private _initDone: boolean = false;
 
   constructor(
     private serivalServerService: SerialServerService,
-    private serialServer: SerialServerConnection
+    public serialServer: SerialServerConnection
   ) {
   }
 
@@ -48,6 +49,8 @@ export class SerialPortHistoryComponent implements OnChanges {
 
       this._hubConnection = new HubConnectionBuilder().withUrl(this.serialServer.getSerialServerUrl() + 'serialSignalR').build();
 
+      console.log("hub OK");
+
       this._hubConnection.on('queueEmpty',
         (portid: number) => {
           if (portid == this.forserialportid) {
@@ -59,7 +62,9 @@ export class SerialPortHistoryComponent implements OnChanges {
           console.log('SignalR received: heartbeat');
         });
 
-      this._hubConnection.start()
+      console.log("hub Starting:");
+
+      await this._hubConnection.start()
         .then(() => {
           console.log('Hub connection started');
         })
@@ -69,6 +74,8 @@ export class SerialPortHistoryComponent implements OnChanges {
     }
 
     console.log('ngOnInit done');
+
+    this._initDone = true;
 
     await this.refresh();
   }
@@ -82,13 +89,16 @@ export class SerialPortHistoryComponent implements OnChanges {
 
     console.log('refresh');
 
-    this.serialcommands = await this.serivalServerService.getHistory(this.forserialportid);
+    if (this._initDone) {
 
-    console.log('refresh1');
+      this.serialcommands = await this.serivalServerService.getHistory(this.forserialportid);
 
-    this.serialcommandsDataSource = new MatTableDataSource<SerialCommand>(this.serialcommands);
-    this.serialcommandsDataSource.paginator = this.paginator;
-    console.log('refresh done');
+      console.log('refresh1');
+
+      this.serialcommandsDataSource = new MatTableDataSource<SerialCommand>(this.serialcommands);
+      this.serialcommandsDataSource.paginator = this.paginator;
+      console.log('refresh done');
+    }
   }
 
   async clear(): Promise<void> {

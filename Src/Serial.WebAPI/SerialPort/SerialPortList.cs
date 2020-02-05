@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Dependency;
@@ -28,6 +29,19 @@ namespace CNCLib.Serial.WebAPI.SerialPort
     public class SerialPortList
     {
         #region INTERNAL List
+
+        public static async Task<SerialPortWrapper> GetPortAndRescan(int id)
+        {
+            var port = SerialPortList.GetPort(id);
+            if (port == null)
+            {
+                // rescan
+                SerialPortList.Refresh();
+                port = SerialPortList.GetPort(id);
+            }
+
+            return await Task.FromResult(port);
+        }
 
         public static ISerialPort SerialPort { get; private set; }
 

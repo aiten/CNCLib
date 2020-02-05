@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 
 using CNCLib.GCode;
+using CNCLib.GCode.Serial;
 using CNCLib.WpfClient.Helpers;
 
 using Framework.Arduino.SerialCommunication;
@@ -124,19 +125,7 @@ namespace CNCLib.WpfClient.ViewModels.ManualControl
 
         private async Task<decimal?> GetParameterValue(int parameter)
         {
-            string message = await _global.Com.Current.SendCommandAndReadOKReplyAsync(_global.Machine.PrepareCommand($"(print, #{parameter})"), 10 * 1000);
-
-            if (!string.IsNullOrEmpty(message))
-            {
-                // expected response : 0\nok
-                string pos = message.Split('\n').FirstOrDefault();
-                if (decimal.TryParse(pos, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal val))
-                {
-                    return val;
-                }
-            }
-
-            return null;
+            return await _global.Com.Current.GetParameterValueAsync(parameter, _global.Machine.GetCommandPrefix());
         }
 
         public void GetG5x(int offsetG)

@@ -23,6 +23,7 @@ using System.Media;
 using System.Threading.Tasks;
 
 using CNCLib.GCode;
+using CNCLib.GCode.Serial;
 using CNCLib.WpfClient.Models;
 
 using Framework.Arduino.SerialCommunication;
