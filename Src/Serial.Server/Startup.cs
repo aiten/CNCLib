@@ -97,6 +97,8 @@ namespace CNCLib.Serial.Server
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
+            // app.UsePathBase("/Serial.Server");
+
             Services = app.ApplicationServices;
 
             SerialPortWrapper.OnCreateHub = () => Hub;

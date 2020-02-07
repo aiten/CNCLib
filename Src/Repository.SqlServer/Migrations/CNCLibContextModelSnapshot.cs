@@ -142,9 +142,6 @@ namespace CNCLib.Repository.SqlServer.Migrations
                         .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
-                    b.Property<bool>("NeedDtr")
-                        .HasColumnType("bit");
-
                     b.Property<decimal>("ProbeDist")
                         .HasColumnType("decimal(18,2)");
 
@@ -170,18 +167,12 @@ namespace CNCLib.Repository.SqlServer.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("SerialServer")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
                     b.Property<string>("SerialServerPassword")
                         .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
-
-                    b.Property<int>("SerialServerPort")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SerialServerProtocol")
-                        .HasColumnType("nvarchar(10)")
-                        .HasMaxLength(10);
 
                     b.Property<string>("SerialServerUser")
                         .HasColumnType("nvarchar(32)")

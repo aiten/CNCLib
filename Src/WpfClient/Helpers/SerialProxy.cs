@@ -42,9 +42,9 @@ namespace CNCLib.WpfClient.Helpers
 
         public ISerial Current { get; private set; }
 
-        public void SetCurrent(string portName)
+        public void SetCurrent(string serverName)
         {
-            Current = portName.StartsWith("com") ? LocalCom : RemoteCom;
+            Current = string.IsNullOrEmpty(serverName) ? LocalCom : RemoteCom;
         }
     }
 }

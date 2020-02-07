@@ -1,11 +1,13 @@
-
 <p *ngIf="!serialcommands">
   <em>Loading...</em>
 </p>
 
-<p>Command history: {{forserialportid}}
+<span class="reloadbuttons">
   <button mat-stroked-button (click)='refresh()'>Refresh</button>
   <button mat-stroked-button (click)='clear()'>Clear</button>
+</span>
+<p>
+  Command history: {{forserialportid}}
 </p>
 
 <div *ngIf="serialcommands" class="mat-elevation-z8">

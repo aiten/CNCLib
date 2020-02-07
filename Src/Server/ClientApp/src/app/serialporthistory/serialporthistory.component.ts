@@ -24,7 +24,7 @@ export class SerialPortHistoryComponent implements OnChanges {
   serialcommands!: SerialCommand[];
   serialcommandsDataSource = new MatTableDataSource<SerialCommand>(this.serialcommands);
 
-  displayedColumns: string[] = ['SeqId', 'SentTime', 'CommandText', 'ReplyType', 'ResultText', 'ReplyReceivedTime'];
+  displayedColumns: string[] = [ /* 'SeqId', */ 'SentTime', 'CommandText', 'ReplyType', 'ResultText', 'ReplyReceivedTime'];
 
   @ViewChild(MatPaginator, { static: false })
   paginator: MatPaginator;

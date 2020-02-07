@@ -14,3 +14,7 @@ table {
 .mat-column-ResultText { flex: 0 0 35% !important; }
 
 .mat-column-ReplyReceivedTime { width: 90px; }
+
+.reloadbuttons {
+  float: right
+}

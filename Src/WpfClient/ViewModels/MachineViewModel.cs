@@ -164,14 +164,12 @@ namespace CNCLib.WpfClient.ViewModels
             {
                 try
                 {
-                    string comport = Machine.GetComPort();
-
-                    _global.Com.SetCurrent(comport);
+                    _global.Com.SetCurrent(Machine.SerialServer);
                     _global.Com.Current.DtrIsReset     = Machine.DtrIsReset;
                     _global.Com.Current.ResetOnConnect = _global.ResetOnConnect;
                     _global.Com.Current.CommandToUpper = Machine.CommandToUpper;
                     _global.Com.Current.BaudRate       = Machine.BaudRate;
-                    await _global.Com.Current.ConnectAsync(comport);
+                    await _global.Com.Current.ConnectAsync(Machine.ComPort, Machine.SerialServer);
 
                     await _global.Com.Current.SendCommandAsync("?", 3000);
                     await Task.Delay(100);

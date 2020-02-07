@@ -95,27 +95,16 @@ namespace CNCLib.Serial.Client
             return null;
         }
 
-        public async Task ConnectAsync(string portName)
+        public async Task ConnectAsync(string portName, string serverName)
         {
             if (WaitForSend != null || CommandSent != null || WaitCommandSent != null || ReplyReceived != null || ReplyOk != null || ReplyError != null || ReplyInfo != null || ReplyUnknown != null)
             {
                 // dummy do not get "unused"                
             }
 
-            // linuxPort => http://a0:5000/dev/ttyUSB0
-            // win       => http://a0:5000/com4
-
-            int lastColon = portName.LastIndexOf(':');
-            int lastSlash = portName.IndexOf('/', lastColon);
-            if (lastSlash > 0)
+            if (!string.IsNullOrEmpty(portName))
             {
-                WebServerUri = portName.Substring(0, lastSlash);
-                portName     = portName.Substring(lastSlash + 1);
-                if (portName.IndexOf('/') >= 0)
-                {
-                    portName = "/" + portName;
-                }
-
+                WebServerUri = serverName;
                 using (var scope = CreateScope())
                 {
                     var port = await GetSerialPortDefinition(scope.Instance, portName) ?? await RefreshAndGetSerialPortDefinition(scope.Instance, portName);
@@ -136,7 +125,7 @@ namespace CNCLib.Serial.Client
                 }
             }
 
-            throw new Exception("Connect to SerialPort failed");
+            throw new Exception($"Connect to SerialPort failed: {serverName}/{portName}");
         }
 
         public async Task DisconnectAsync()

@@ -1,4 +1,4 @@
 
-Add-Migration -Name V8 -StartupProject Repository\Repository.Migrations.Startup -Project Repository\Repository.SqLite -OutputDir Migrations
+Add-Migration -Name V9a -StartupProject Repository\Repository.Migrations.Startup -Project Repository\Repository.SqLite -OutputDir Migrations
 
 Remove-Migration -StartupProject Repository\Repository.Migrations.Startup -Project Repository\Repository.SqLite

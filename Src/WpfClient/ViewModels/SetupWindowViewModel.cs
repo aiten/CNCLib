@@ -192,16 +192,14 @@ namespace CNCLib.WpfClient.ViewModels
         {
             try
             {
-                string comport = Machine.GetComPort();
-
-                _global.Com.SetCurrent(comport);
+                _global.Com.SetCurrent(Machine.SerialServer);
 
                 _global.Com.Current.DtrIsReset     = Machine.DtrIsReset;
                 _global.Com.Current.ResetOnConnect = ResetOnConnect;
 
                 _global.Com.Current.CommandToUpper = Machine.CommandToUpper;
                 _global.Com.Current.BaudRate       = Machine.BaudRate;
-                await _global.Com.Current.ConnectAsync(comport);
+                await _global.Com.Current.ConnectAsync(Machine.ComPort,Machine.SerialServer);
                 await SetGlobal();
 
                 if (SendInitCommands && Machine != null)
@@ -235,7 +233,7 @@ namespace CNCLib.WpfClient.ViewModels
                 _global.ComJoystick.ResetOnConnect = true;
                 _global.ComJoystick.CommandToUpper = false;
                 _global.ComJoystick.BaudRate       = Joystick.BaudRate;
-                await _global.ComJoystick.ConnectAsync(Joystick.ComPort);
+                await _global.ComJoystick.ConnectAsync(Joystick.ComPort,null);
             }
             catch (Exception e)
             {

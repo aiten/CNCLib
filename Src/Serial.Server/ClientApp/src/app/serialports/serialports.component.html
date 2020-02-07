@@ -1,7 +1,11 @@
 <div>
-  <h1>Serial ports</h1>
-  <button mat-stroked-button (click)='reload()'>Reload</button>
-  <button mat-stroked-button (click)='refresh()'>Refresh(scan ports)</button>
+  <h1>
+    Serial ports
+    <div class="reloadbuttons">
+      <button mat-stroked-button (click)='reload()'>Reload</button>
+      <button mat-stroked-button (click)='refresh()'>Refresh(scan ports)</button>
+    </div>
+  </h1>
 </div>
 
 <p *ngIf="!serialports">
@@ -64,6 +68,6 @@
   </table>
 </div>
 
-<div *ngIf="historyportid >= 0">
+<div class="div-alporthistory "*ngIf="historyportid >= 0">
   <serialporthistory [forserialportid]=historyportid>Loading...</serialporthistory>
 </div>

@@ -123,7 +123,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
             port.Serial.ResetOnConnect = resetOnConnectN0;
             port.GCodeCommandPrefix    = commandPrefix??"";
 
-            await port.Serial.ConnectAsync(port.PortName);
+            await port.Serial.ConnectAsync(port.PortName,null);
 
             await _hubContext.Clients.All.SendAsync("connected", id);
 
@@ -286,7 +286,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
         }
 
         [HttpGet("{id:int}/history")]
-        public async Task<ActionResult<IEnumerable<SerialCommand>>> GetCommandHistory(int id)
+        public async Task<ActionResult<IEnumerable<SerialCommand>>> GetCommandHistory(int id, bool? sortDesc = null)
         {
             var port = await SerialPortList.GetPortAndRescan(id);
             if (port == null)
@@ -295,6 +295,12 @@ namespace CNCLib.Serial.WebAPI.Controllers
             }
 
             var cmdList = port.Serial.CommandHistoryCopy;
+
+            if (sortDesc??true)
+            {
+                cmdList = cmdList.OrderByDescending(h => h.SeqId).ToList();
+            }
+
             return Ok(cmdList);
         }
 

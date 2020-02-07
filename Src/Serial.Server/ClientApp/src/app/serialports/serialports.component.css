@@ -1,5 +1,9 @@
 table { }
 
+.reloadbuttons {
+  float:right
+}
+
 .mat-column-Id { width: 50px; }
 
 .mat-column-PortName { width: 200px; }
@@ -12,6 +16,10 @@ table { }
 
 .mat-column-CommandsInQueue { width: 90px; }
 
-.mat-column-Task { width: 400px; }
+.mat-column-Task { width: 450px; }
 
 .taskbutton { margin-right: 5px; }
+
+.div-alporthistory {
+  margin-top: 5px
+}

@@ -40,18 +40,8 @@ namespace CNCLib.WpfClient.Models
 
         [Category(CATEGORY_COMMUNICATION)]
         [DisplayName("SerialServer")]
-        [Description("Name of the CNCLib.Serial.Server, e.g. IP-Address, localhost or url - if empty, local port is used")]
+        [Description("Name of the CNCLib.Serial.Server, e.g. IP-Address, localhost or url - if empty, local port is used, e.g: https://servername:5000/serial.server")]
         public string SerialServer { get; set; }
-
-        [Category(CATEGORY_COMMUNICATION)]
-        [DisplayName("SerialServerPort")]
-        [Description("Port of the CNCLib.Serial.Server, default is 5000")]
-        public int SerialServerPort { get; set; }
-
-        [Category(CATEGORY_COMMUNICATION)]
-        [DisplayName("SerialServerProtocol")]
-        [Description("Protocol of the CNCLib.Serial.Server, default is http")]
-        public string SerialServerProtocol { get; set; }
 
         [Category(CATEGORY_COMMUNICATION)]
         [DisplayName("SerialServerUser")]
@@ -67,23 +57,6 @@ namespace CNCLib.WpfClient.Models
         [DisplayName("ComPort")]
         [Description("Com of attached arduino")]
         public string ComPort { get; set; }
-
-        public string GetComPort()
-        {
-            string comport = ComPort;
-
-            if (string.IsNullOrEmpty(SerialServer) == false)
-            {
-                if (comport.StartsWith(@"/")) // linux: /dev/tty
-                {
-                    comport = comport.Substring(1);
-                }
-
-                comport = $@"{SerialServerProtocol}://{SerialServer}:{SerialServerPort}/{comport}";
-            }
-
-            return comport;
-        }
 
         [Category(CATEGORY_COMMUNICATION)]
         [DisplayName("BaudRate")]
