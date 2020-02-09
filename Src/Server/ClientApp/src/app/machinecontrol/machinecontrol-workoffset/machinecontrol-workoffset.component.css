@@ -1,6 +1,4 @@
-.container {
-  width: 75px;
-}
+.container { width: 75px; }
 
 .setget-button {
   width: 25px;
@@ -19,15 +17,11 @@
   height: 30px;
 }
 
-.ofsRow {
-  height: 30px;
-}
+.ofsRow { height: 30px; }
 
 .row {
   width: 75px;
   padding: 0px;
 }
 
-.lable-axis {
-   width: 15px;
-}
+.lable-axis { width: 15px; }

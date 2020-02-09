@@ -95,7 +95,7 @@ namespace CNCLib.Serial.Client
             return null;
         }
 
-        public async Task ConnectAsync(string portName, string serverName)
+        public async Task ConnectAsync(string portName, string serverName, string userName, string password)
         {
             if (WaitForSend != null || CommandSent != null || WaitCommandSent != null || ReplyReceived != null || ReplyOk != null || ReplyError != null || ReplyInfo != null || ReplyUnknown != null)
             {
@@ -105,6 +105,8 @@ namespace CNCLib.Serial.Client
             if (!string.IsNullOrEmpty(portName))
             {
                 WebServerUri = serverName;
+                UserName     = userName;
+                Password     = password;
                 using (var scope = CreateScope())
                 {
                     var port = await GetSerialPortDefinition(scope.Instance, portName) ?? await RefreshAndGetSerialPortDefinition(scope.Instance, portName);

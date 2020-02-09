@@ -8,13 +8,13 @@
       <li class="nav-item">
         <a class="nav-link" routerLink="/home"><fa-icon icon="home"></fa-icon> Home</a>
       </li>
-      <li class="nav-item">
+      <li *ngIf="cncLibloggedinService.isUserLoggedIn()" class="nav-item">
         <a class="nav-link" routerLink="/machine"><fa-icon icon="toolbox"></fa-icon> Machines</a>
       </li>
-      <li class="nav-item">
+      <li *ngIf="cncLibloggedinService.isUserLoggedIn()" class="nav-item">
         <a class="nav-link" routerLink="/machinecontrol"><fa-icon icon="sync"></fa-icon> Machinecontrol</a>
       </li>
-      <li class="nav-item">
+      <li *ngIf="cncLibloggedinService.isUserLoggedIn()" class="nav-item">
         <a class="nav-link" routerLink="/gcode"><fa-icon icon="cogs"></fa-icon> G-Code</a>
       </li>
       <li class="nav-item">

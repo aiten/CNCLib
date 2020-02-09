@@ -30,7 +30,7 @@ import { LoginComponent } from "./login/login.component"
 
 import { EepromConfigComponent } from "./eeprom-config/eeprom-config.component";
 
-import { CNCLibInfoService as CNCLibService } from './services/CNCLib-Info.service';
+import { CNCLibInfoService } from './services/CNCLib-Info.service';
 import { LocalCNCLibInfoService } from './services/local-CNCLib-Info.service';
 
 import { CNCLibEepromConfigService } from './services/CNCLib-eeprom-config.service';
@@ -50,6 +50,7 @@ import { LocalCNCLibGCodeService } from './services/local-CNCLib-gcode.service';
 
 import { SerialPortHistoryComponent } from './serialporthistory/serialporthistory.component';
 import { machineControlRoutes, machineControlComponents } from './machinecontrol/machinecontrol.routing';
+
 import { SerialServerService } from './services/serialserver.service';
 import { LocalSerialServerService } from './services/local-serialserver.service';
 
@@ -100,7 +101,7 @@ import { MachineControlGlobal } from './machinecontrol/machinecontrol.global';
   ],
   providers: [
     { provide: SerialServerService, useClass: LocalSerialServerService },
-    { provide: CNCLibService, useClass: LocalCNCLibInfoService },
+    { provide: CNCLibInfoService, useClass: LocalCNCLibInfoService },
     { provide: CNCLibEepromConfigService, useClass: LocalCNCLibEepromConfigService },
     { provide: CNCLibMachineService, useClass: LocalCNCLibMachineService },
     { provide: CNCLibLoadOptionService, useClass: LocalCNCLibLoadOptionService },

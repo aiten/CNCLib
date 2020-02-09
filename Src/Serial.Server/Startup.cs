@@ -20,14 +20,17 @@ using System.Threading;
 
 using CNCLib.Serial.WebAPI.Controllers;
 using CNCLib.Serial.WebAPI.Hubs;
+using CNCLib.Serial.WebAPI.Manager;
 using CNCLib.Serial.WebAPI.SerialPort;
 
 using Framework.Arduino.SerialCommunication;
 using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Dependency;
+using Framework.Logic.Abstraction;
 using Framework.Tools;
 using Framework.WebAPI.Filter;
 
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -37,16 +40,20 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Serialization;
 
-using Microsoft.OpenApi.Models;
+using NLog;
+
+using Swashbuckle.AspNetCore.Filters;
 
 namespace CNCLib.Serial.Server
 {
     public class Startup
     {
         private const string CorsAllowAllName = "AllowAll";
+        private const string AuthenticationScheme = "BasicAuthentication";
 
         public Startup(IConfiguration configuration)
         {
@@ -82,10 +89,42 @@ namespace CNCLib.Serial.Server
                         options.SerializerSettings.ContractResolver = new DefaultContractResolver())
                 .AddApplicationPart(controllerAssembly);
 
+            services.AddAuthentication(AuthenticationScheme)
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>(AuthenticationScheme, null);
+
+            services.AddScoped<IAuthenticationManager, UserManager>();
+
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
 
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "CNCLib API", Version = "v1" }); });
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CNCLib API", Version = "v1" });
+                c.AddSecurityDefinition("basic", new OpenApiSecurityScheme
+                {
+                    Name        = "Authorization",
+                    Type        = SecuritySchemeType.Http,
+                    Scheme      = "basic",
+                    In          = ParameterLocation.Header,
+                    Description = "Basic Authorization header using the Bearer scheme."
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id   = "basic"
+                            }
+                        },
+                        new string[] { }
+                    }
+                });
+                c.OperationFilter<SecurityRequirementsOperationFilter>(true, "basic");
+            });
+
 
             services
                 .AddSerialCommunication()
@@ -120,6 +159,9 @@ namespace CNCLib.Serial.Server
             app.UseHttpsRedirection();
 
             app.UseCors(CorsAllowAllName);
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             void callback(object x)
             {

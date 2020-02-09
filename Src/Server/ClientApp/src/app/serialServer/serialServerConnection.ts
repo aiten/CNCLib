@@ -40,6 +40,7 @@ export class SerialServerConnection {
 
   private serialServerUrl: string;
   private serialServerPortId: number;
+  private serialServerAuth: string;
 
   getMachine(): Machine {
     return this.machine;
@@ -53,10 +54,14 @@ export class SerialServerConnection {
     return this.serialServerPortId;
   }
 
+  getSerialServerAuth(): string {
+    return this.serialServerAuth;
+  }
+
   async connectTo(machine: Machine): Promise<string> {
 
     var url =
-      await this.getInfoX(machine.serialServer, machine.comPort, machine.baudRate);
+      await this.getInfoX(machine.serialServer, machine.serialServerUser, machine.serialServerPassword, machine.comPort, machine.baudRate);
 
     this.machine = machine;
 
@@ -65,12 +70,14 @@ export class SerialServerConnection {
     return url;
   }
 
-  async getInfoX(serialServer: string, comPort: string, baudrate: number): Promise<string> {
+  async getInfoX(serialServer: string, username: string, password: string, comPort: string, baudrate: number): Promise<string> {
 
     var uri = serialServer + '/';
     console.log('uri:' + uri);
 
-    this.serialServerService.setBaseUrl(uri);
+    var auth = window.btoa(username + ':' + password);
+
+    this.serialServerService.setBaseUrl(uri, auth);
 
     var port = await this.serialServerService.getPortByName(comPort);
 
@@ -82,6 +89,7 @@ export class SerialServerConnection {
 
     this.serialServerUrl = uri;
     this.serialServerPortId = port.Id;
+    this.serialServerAuth = auth;
 
     return this.serialServerUrl;
   }

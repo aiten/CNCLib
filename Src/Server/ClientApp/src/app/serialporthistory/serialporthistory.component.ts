@@ -24,7 +24,7 @@ export class SerialPortHistoryComponent implements OnChanges {
   serialcommands!: SerialCommand[];
   serialcommandsDataSource = new MatTableDataSource<SerialCommand>(this.serialcommands);
 
-  displayedColumns: string[] = [ /* 'SeqId', */ 'SentTime', 'CommandText', 'ReplyType', 'ResultText', 'ReplyReceivedTime'];
+  displayedColumns: string[] = [/* 'SeqId', */ 'SentTime', 'CommandText', 'ReplyType', 'ResultText', 'ReplyReceivedTime'];
 
   @ViewChild(MatPaginator, { static: false })
   paginator: MatPaginator;
@@ -49,8 +49,6 @@ export class SerialPortHistoryComponent implements OnChanges {
 
       this._hubConnection = new HubConnectionBuilder().withUrl(this.serialServer.getSerialServerUrl() + 'serialSignalR').build();
 
-      console.log("hub OK");
-
       this._hubConnection.on('queueEmpty',
         (portid: number) => {
           if (portid == this.forserialportid) {
@@ -73,31 +71,22 @@ export class SerialPortHistoryComponent implements OnChanges {
         });
     }
 
-    console.log('ngOnInit done');
-
     this._initDone = true;
 
     await this.refresh();
   }
 
   async ngOnChanges(): Promise<void> {
-    console.log('ngOnChanges');
     await this.refresh();
   }
 
   async refresh(): Promise<void> {
 
-    console.log('refresh');
-
     if (this._initDone) {
-
       this.serialcommands = await this.serivalServerService.getHistory(this.forserialportid);
-
-      console.log('refresh1');
 
       this.serialcommandsDataSource = new MatTableDataSource<SerialCommand>(this.serialcommands);
       this.serialcommandsDataSource.paginator = this.paginator;
-      console.log('refresh done');
     }
   }
 

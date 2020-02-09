@@ -43,7 +43,7 @@ export class MachineControlRefMoveComponent {
   }
 
   async refMove(axis: number): Promise<void> {
-    await this.serialServerService.queueCommands(this.serialServer.getSerialServerPortId(), [ "g28 " + this.toAxisName(axis) + "0"], 1000);
+    await this.serialServerService.queueCommands(this.serialServer.getSerialServerPortId(), ["g28 " + this.toAxisName(axis) + "0"], 1000);
   }
 
   async postcommand(command: string): Promise<void> {

@@ -20,12 +20,15 @@ using System.Net.Http.Headers;
 
 using Framework.Pattern;
 using Framework.Service.WebAPI;
+using Framework.Tools;
 
 namespace CNCLib.Serial.Client
 {
     public class MyServiceBase : ServiceBase
     {
         protected string WebServerUri { get; set; } = @"http://localhost:5000";
+        protected string UserName { get; set; }
+        protected string Password { get; set; }
 
         public MyServiceBase() 
         {
@@ -41,6 +44,9 @@ namespace CNCLib.Serial.Client
             var client = new HttpClient { BaseAddress = new Uri(WebServerUri) };
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Base64Helper.StringToBase64($"{UserName}:{Password}"));
+
             return client;
         }
     }

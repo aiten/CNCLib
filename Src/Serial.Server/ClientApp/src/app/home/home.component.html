@@ -24,3 +24,10 @@
   <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and the <code>webpack</code> build tool produces minified static CSS and JavaScript files.</li>
 </ul>
 -->
+
+<login *ngIf="!cncLibloggedinService.isUserLoggedIn()"></login>
+
+<div *ngIf="cncLibloggedinService.isUserLoggedIn()">
+  <p>Login in as : {{cncLibloggedinService.username()}}</p>
+  <button class="btn btn-warning" (click)="cncLibloggedinService.logout()">Logout</button>
+</div>

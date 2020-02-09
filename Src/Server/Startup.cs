@@ -62,7 +62,7 @@ namespace CNCLib.Server
 {
     public class Startup
     {
-        private const string CorsAllowAllName = "AllowAll";
+        private const string CorsAllowAllName     = "AllowAll";
         private const string AuthenticationScheme = "BasicAuthentication";
 
         public Startup(IConfiguration configuration)

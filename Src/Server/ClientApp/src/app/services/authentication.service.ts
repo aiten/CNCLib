@@ -43,7 +43,7 @@ export class AuthenticationService {
         user.username = username;
         user.password = password;
         user.authData = window.btoa(username + ':' + password);
-        localStorage.setItem('currentUser', JSON.stringify(user));
+        localStorage.setItem('CNCLib.currentUser', JSON.stringify(user));
         console.log('Authentication:login OK');
       })
       .catch(this.handleErrorPromise);
@@ -59,6 +59,6 @@ export class AuthenticationService {
   logout() {
     // remove user from local storage to log user out
     console.log('Authentication:logout');
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem('CNCLib.currentUser');
   }
 }

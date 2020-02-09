@@ -38,12 +38,12 @@ export class LocalCNCLibLoggedinService implements CNCLibLoggedinService {
 
   public logout() {
     console.log('Logout current user');
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem('CNCLib.currentUser');
   }
 
   private getCurrentUser() {
 
-    let currentuser = JSON.parse(localStorage.getItem('currentUser'));
+    let currentuser = JSON.parse(localStorage.getItem('CNCLib.currentUser'));
     return currentuser;
   }
 

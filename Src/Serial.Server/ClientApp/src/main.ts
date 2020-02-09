@@ -25,7 +25,7 @@ export function getBaseUrl() {
 }
 
 export function getWebApiUrl() {
-  //return 'https://ait.dlinkddns.com:5000/';
+  //return 'https://ait.dlinkddns.com/';
   return document.getElementsByTagName('base')[0].href;
 }
 

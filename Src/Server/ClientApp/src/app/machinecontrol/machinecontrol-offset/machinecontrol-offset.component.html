@@ -2,7 +2,7 @@
   <div *ngFor="let item of [].constructor(serialServer.getMachine().axis); let i = index">
     <div class="row ofsRow">
       <span class="lable-axis">{{toAxisName(i)}}:</span>
-      <input class="ofsValue" type="number" [value]="machineControlGlobal.offsetG92[i]" (input)="machineControlGlobal.offsetG92[i]=$event.target.value" />
+      <input class="ofsValue" type="number" [value]="machineControlGlobal.offsetG92[i]" (input)="machineControlGlobal.offsetG92[i]=$event.target.value"/>
       <button mat-stroked-button class="set-button" (click)='setOfs(i)'>set</button>
       <button mat-stroked-button *ngIf="i < 3" class="probe-button" (click)='probe(i)'>probe</button>
     </div>

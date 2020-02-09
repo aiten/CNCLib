@@ -20,7 +20,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { SerialServerService } from './serialserver.service';
 import { SerialCommand } from "../models/serial.command";
 import { SerialPortDefinition } from '../models/serial.port.definition';
-import { CNCLibServerInfo } from '../models/CNCLib.Server.Info';
 import { QueueSendCommand } from '../models/queue.send.command';
 
 @Injectable()
@@ -33,11 +32,6 @@ export class LocalSerialServerService implements SerialServerService {
 
   setBaseUrl(baseUrl: string) {
     this.baseUrl = baseUrl;
-  }
-
-  getInfo(): Promise<CNCLibServerInfo> {
-    return this.http.get<CNCLibServerInfo>(this.baseUrl + 'api/Info').toPromise()
-      .catch(this.handleErrorPromise);
   }
 
   getPorts(): Promise<SerialPortDefinition[]> {

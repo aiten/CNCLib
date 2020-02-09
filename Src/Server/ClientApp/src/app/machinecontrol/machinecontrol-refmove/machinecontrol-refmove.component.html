@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row ofsRow">
     <div *ngFor="let item of [].constructor(serialServer.getMachine().axis); let i = index">
-      <button mat-stroked-button class= "ref-button" (click)='refMove(i)'>{{toAxisName(i)}}</button>
+      <button mat-stroked-button class="ref-button" (click)='refMove(i)'>{{toAxisName(i)}}</button>
     </div>
   </div>
 </div>

@@ -32,7 +32,7 @@ import { MachineControlInfoComponent } from './machinecontrol-info/machinecontro
 import { MachineControlComponent } from './machinecontrol.component';
 import { Routes, RouterModule } from '@angular/router';
 import { MachineControlGlobal } from './machinecontrol.global';
- 
+
 export const machinecontrolURL = '/machinecontrol';
 
 export const machineControlRoutes =

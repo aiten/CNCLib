@@ -3,199 +3,226 @@
 </p>
 
 <div *ngIf="!isLoading">
-  <div *ngIf="!isConnected">
-    <p>NOT Connected...</p>
-  </div>
-  <div *ngIf="isConnected">
+<div *ngIf="!isConnected">
+  <p>NOT Connected...</p>
+</div>
+<div *ngIf="isConnected">
 
-    <div class="container-fluid">
+<div class="container-fluid">
 
-      <div class="row">
+<div class="row">
 
-        <mat-card class="menu-card">
-          <mat-card-title>Menu</mat-card-title>
-          <mat-card-content>
-            <div class="col-sm" *ngIf="!machineControlGlobal.showMove">
-              <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showMove = true'>Move</button>
-            </div>
-            <div class="col-sm" *ngIf="!machineControlGlobal.showInfo">
-              <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showInfo = true'>Info</button>
-            </div>
-            <div class="col-sm" *ngIf="!machineControlGlobal.showCommand">
-              <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showCommand = true'>Command</button>
-            </div>
-            <div class="col-sm" *ngIf="!machineControlGlobal.showPosition">
-              <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showPosition = true'>Position</button>
-            </div>
-            <div class="col-sm" *ngIf="!machineControlGlobal.showOffset">
-              <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showOffset = true'>Offset</button>
-            </div>
-            <div class="col-sm" *ngIf="serialServer.getMachine().workOffsets > 0 && !machineControlGlobal.showWorkOffset">
-              <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showWorkOffset = true'>Work Offset</button>
-            </div>
-            <div class="col-sm" *ngIf="serialServer.getMachine().spindle && !machineControlGlobal.showSpindle">
-              <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showSpindle = true'>Spindle</button>
-            </div>
-            <div class="col-sm" *ngIf="serialServer.getMachine().coolant && !machineControlGlobal.showCoolant">
-              <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showCoolant = true'>Coolant</button>
-            </div>
-            <div class="col-sm" *ngIf="serialServer.getMachine().laser && !machineControlGlobal.showLaser">
-              <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showLaser = true'>Laser</button>
-            </div>
-            <div class="col-sm" *ngIf="serialServer.getMachine().rotate && !machineControlGlobal.showRotate">
-              <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showRotate = true'>Rotate</button>
-            </div>
-            <div class="col-sm" *ngIf="serialServer.getMachine().SDSupport && !machineControlGlobal.showSd">
-              <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showSd = true'>SD</button>
-            </div>
-            <div class="col-sm" *ngIf="!machineControlGlobal.showRefMove">
-              <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showRefMove = true'>Ref</button>
-            </div>
-            <div class="col-sm" *ngIf="!machineControlGlobal.showCustom">
-              <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showCustom = true'>Custom</button>
-            </div>
-          </mat-card-content>
-        </mat-card>
-
-
-        <mat-card class="detail-card" *ngIf="machineControlGlobal.showMove">
-          <mat-card-title>Move
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showMove = false'><fa-icon icon="chevron-down"></fa-icon></button>
-          </mat-card-title>
-          <mat-card-content>
-            <machinecontrolmove></machinecontrolmove>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="detail-card" *ngIf="machineControlGlobal.showInfo">
-          <mat-card-title>
-            Info
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showInfo = false'><fa-icon icon="chevron-down"></fa-icon></button>
-          </mat-card-title>
-          <mat-card-content>
-            <machinecontrolinfo></machinecontrolinfo>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="detail-card" *ngIf="machineControlGlobal.showCommand">
-          <mat-card-title>
-            Command
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showCommand = false'><fa-icon icon="chevron-down"></fa-icon></button>
-          </mat-card-title>
-          <mat-card-content>
-            <machinecontrolcommand></machinecontrolcommand>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="detail-card" *ngIf="machineControlGlobal.showPosition">
-          <mat-card-title>
-            Position
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showPosition = false'><fa-icon icon="chevron-down"></fa-icon></button>
-          </mat-card-title>
-          <mat-card-content>
-            <machinecontrolposition></machinecontrolposition>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="detail-card" *ngIf="machineControlGlobal.showOffset">
-          <mat-card-title>
-            Offset
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showOffset = false'><fa-icon icon="chevron-down"></fa-icon></button>
-          </mat-card-title>
-          <mat-card-content>
-            <machinecontroloffset></machinecontroloffset>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="detail-card" *ngIf="serialServer.getMachine().workOffsets > 0 && machineControlGlobal.showWorkOffset">
-          <mat-card-title>
-            Work Offset
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showWorkOffset = false'><fa-icon icon="chevron-down"></fa-icon></button>
-          </mat-card-title>
-          <mat-card-content>
-            <div class="container-fluid">
-              <div class="row">
-                <div *ngFor="let item of [].constructor(serialServer.getMachine().workOffsets); let i = index">
-                  <machinecontrolworkoffset [offsetId]=i></machinecontrolworkoffset>
-                </div>
-              </div>
-            </div>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="detail-card" *ngIf="serialServer.getMachine().spindle && machineControlGlobal.showSpindle">
-          <mat-card-title>
-            Spindle
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showSpindle = false'><fa-icon icon="chevron-down"></fa-icon></button>
-          </mat-card-title>
-          <mat-card-content>
-            <machinecontrolspindle></machinecontrolspindle>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="detail-card" *ngIf="serialServer.getMachine().coolant && machineControlGlobal.showCoolant">
-          <mat-card-title>
-            Coolant
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showCoolant = false'><fa-icon icon="chevron-down"></fa-icon></button>
-          </mat-card-title>
-          <mat-card-content>
-            <machinecontrolcoolant></machinecontrolcoolant>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="detail-card" *ngIf="serialServer.getMachine().laser && machineControlGlobal.showLaser">
-          <mat-card-title>
-            Laser
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showLaser = false'><fa-icon icon="chevron-down"></fa-icon></button>
-          </mat-card-title>
-          <mat-card-content>
-            <machinecontrollaser></machinecontrollaser>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="detail-card" *ngIf="serialServer.getMachine().rotate && machineControlGlobal.showRotate">
-          <mat-card-title>
-            Rotate
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showRotate = false'><fa-icon icon="chevron-down"></fa-icon></button>
-          </mat-card-title>
-          <mat-card-content>
-            <machinecontrolrotate></machinecontrolrotate>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="detail-card" *ngIf="serialServer.getMachine().SDSupport  && machineControlGlobal.showSd">
-          <mat-card-title>
-            SD
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showSd = false'><fa-icon icon="chevron-down"></fa-icon></button>
-          </mat-card-title>
-          <mat-card-content>
-            <machinecontrolsd></machinecontrolsd>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="detail-card" *ngIf="machineControlGlobal.showRefMove">
-          <mat-card-title>
-            Ref
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showRefMove = false'><fa-icon icon="chevron-down"></fa-icon></button>
-          </mat-card-title>
-          <mat-card-content>
-            <machinecontrolrefmove></machinecontrolrefmove>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="detail-card" *ngIf="machineControlGlobal.showCustom">
-          <mat-card-title>
-            Custom
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showCustom = false'><fa-icon icon="chevron-down"></fa-icon></button>
-          </mat-card-title>
-          <mat-card-content>
-            <machinecontrolcustom></machinecontrolcustom>
-          </mat-card-content>
-        </mat-card>
-
-      </div>
-
-      <serialporthistory [autoreloadonempty]=true>Loading...</serialporthistory>
+<mat-card class="menu-card">
+  <mat-card-title>Menu</mat-card-title>
+  <mat-card-content>
+    <div class="col-sm" *ngIf="!machineControlGlobal.showMove">
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showMove = true'>Move</button>
     </div>
-  </div>
+    <div class="col-sm" *ngIf="!machineControlGlobal.showInfo">
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showInfo = true'>Info</button>
+    </div>
+    <div class="col-sm" *ngIf="!machineControlGlobal.showCommand">
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showCommand = true'>Command</button>
+    </div>
+    <div class="col-sm" *ngIf="!machineControlGlobal.showPosition">
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showPosition = true'>Position</button>
+    </div>
+    <div class="col-sm" *ngIf="!machineControlGlobal.showOffset">
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showOffset = true'>Offset</button>
+    </div>
+    <div class="col-sm" *ngIf="serialServer.getMachine().workOffsets > 0 && !machineControlGlobal.showWorkOffset">
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showWorkOffset = true'>Work Offset</button>
+    </div>
+    <div class="col-sm" *ngIf="serialServer.getMachine().spindle && !machineControlGlobal.showSpindle">
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showSpindle = true'>Spindle</button>
+    </div>
+    <div class="col-sm" *ngIf="serialServer.getMachine().coolant && !machineControlGlobal.showCoolant">
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showCoolant = true'>Coolant</button>
+    </div>
+    <div class="col-sm" *ngIf="serialServer.getMachine().laser && !machineControlGlobal.showLaser">
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showLaser = true'>Laser</button>
+    </div>
+    <div class="col-sm" *ngIf="serialServer.getMachine().rotate && !machineControlGlobal.showRotate">
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showRotate = true'>Rotate</button>
+    </div>
+    <div class="col-sm" *ngIf="serialServer.getMachine().SDSupport && !machineControlGlobal.showSd">
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showSd = true'>SD</button>
+    </div>
+    <div class="col-sm" *ngIf="!machineControlGlobal.showRefMove">
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showRefMove = true'>Ref</button>
+    </div>
+    <div class="col-sm" *ngIf="!machineControlGlobal.showCustom">
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showCustom = true'>Custom</button>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+
+<mat-card class="detail-card" *ngIf="machineControlGlobal.showMove">
+  <mat-card-title>
+    Move
+    <button mat-button class="menuHide-button" (click)='machineControlGlobal.showMove = false'>
+      <fa-icon icon="chevron-down"></fa-icon>
+    </button>
+  </mat-card-title>
+  <mat-card-content>
+    <machinecontrolmove></machinecontrolmove>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="detail-card" *ngIf="machineControlGlobal.showInfo">
+  <mat-card-title>
+    Info
+    <button mat-button class="menuHide-button" (click)='machineControlGlobal.showInfo = false'>
+      <fa-icon icon="chevron-down"></fa-icon>
+    </button>
+  </mat-card-title>
+  <mat-card-content>
+    <machinecontrolinfo></machinecontrolinfo>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="detail-card" *ngIf="machineControlGlobal.showCommand">
+  <mat-card-title>
+    Command
+    <button mat-button class="menuHide-button" (click)='machineControlGlobal.showCommand = false'>
+      <fa-icon icon="chevron-down"></fa-icon>
+    </button>
+  </mat-card-title>
+  <mat-card-content>
+    <machinecontrolcommand></machinecontrolcommand>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="detail-card" *ngIf="machineControlGlobal.showPosition">
+  <mat-card-title>
+    Position
+    <button mat-button class="menuHide-button" (click)='machineControlGlobal.showPosition = false'>
+      <fa-icon icon="chevron-down"></fa-icon>
+    </button>
+  </mat-card-title>
+  <mat-card-content>
+    <machinecontrolposition></machinecontrolposition>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="detail-card" *ngIf="machineControlGlobal.showOffset">
+  <mat-card-title>
+    Offset
+    <button mat-button class="menuHide-button" (click)='machineControlGlobal.showOffset = false'>
+      <fa-icon icon="chevron-down"></fa-icon>
+    </button>
+  </mat-card-title>
+  <mat-card-content>
+    <machinecontroloffset></machinecontroloffset>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="detail-card" *ngIf="serialServer.getMachine().workOffsets > 0 && machineControlGlobal.showWorkOffset">
+  <mat-card-title>
+    Work Offset
+    <button mat-button class="menuHide-button" (click)='machineControlGlobal.showWorkOffset = false'>
+      <fa-icon icon="chevron-down"></fa-icon>
+    </button>
+  </mat-card-title>
+  <mat-card-content>
+    <div class="container-fluid">
+      <div class="row">
+        <div *ngFor="let item of [].constructor(serialServer.getMachine().workOffsets); let i = index">
+          <machinecontrolworkoffset [offsetId]=i></machinecontrolworkoffset>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="detail-card" *ngIf="serialServer.getMachine().spindle && machineControlGlobal.showSpindle">
+  <mat-card-title>
+    Spindle
+    <button mat-button class="menuHide-button" (click)='machineControlGlobal.showSpindle = false'>
+      <fa-icon icon="chevron-down"></fa-icon>
+    </button>
+  </mat-card-title>
+  <mat-card-content>
+    <machinecontrolspindle></machinecontrolspindle>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="detail-card" *ngIf="serialServer.getMachine().coolant && machineControlGlobal.showCoolant">
+  <mat-card-title>
+    Coolant
+    <button mat-button class="menuHide-button" (click)='machineControlGlobal.showCoolant = false'>
+      <fa-icon icon="chevron-down"></fa-icon>
+    </button>
+  </mat-card-title>
+  <mat-card-content>
+    <machinecontrolcoolant></machinecontrolcoolant>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="detail-card" *ngIf="serialServer.getMachine().laser && machineControlGlobal.showLaser">
+  <mat-card-title>
+    Laser
+    <button mat-button class="menuHide-button" (click)='machineControlGlobal.showLaser = false'>
+      <fa-icon icon="chevron-down"></fa-icon>
+    </button>
+  </mat-card-title>
+  <mat-card-content>
+    <machinecontrollaser></machinecontrollaser>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="detail-card" *ngIf="serialServer.getMachine().rotate && machineControlGlobal.showRotate">
+  <mat-card-title>
+    Rotate
+    <button mat-button class="menuHide-button" (click)='machineControlGlobal.showRotate = false'>
+      <fa-icon icon="chevron-down"></fa-icon>
+    </button>
+  </mat-card-title>
+  <mat-card-content>
+    <machinecontrolrotate></machinecontrolrotate>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="detail-card" *ngIf="serialServer.getMachine().SDSupport  && machineControlGlobal.showSd">
+  <mat-card-title>
+    SD
+    <button mat-button class="menuHide-button" (click)='machineControlGlobal.showSd = false'>
+      <fa-icon icon="chevron-down"></fa-icon>
+    </button>
+  </mat-card-title>
+  <mat-card-content>
+    <machinecontrolsd></machinecontrolsd>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="detail-card" *ngIf="machineControlGlobal.showRefMove">
+  <mat-card-title>
+    Ref
+    <button mat-button class="menuHide-button" (click)='machineControlGlobal.showRefMove = false'>
+      <fa-icon icon="chevron-down"></fa-icon>
+    </button>
+  </mat-card-title>
+  <mat-card-content>
+    <machinecontrolrefmove></machinecontrolrefmove>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="detail-card" *ngIf="machineControlGlobal.showCustom">
+  <mat-card-title>
+    Custom
+    <button mat-button class="menuHide-button" (click)='machineControlGlobal.showCustom = false'>
+      <fa-icon icon="chevron-down"></fa-icon>
+    </button>
+  </mat-card-title>
+  <mat-card-content>
+    <machinecontrolcustom></machinecontrolcustom>
+  </mat-card-content>
+</mat-card>
+
+</div>
+
+<serialporthistory [autoreloadonempty]=true>Loading...</serialporthistory>
+</div>
+</div>
 </div>

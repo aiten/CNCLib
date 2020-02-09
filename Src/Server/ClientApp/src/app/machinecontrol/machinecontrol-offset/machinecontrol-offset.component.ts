@@ -57,7 +57,8 @@ export class MachineControlOffsetComponent {
 
     await this.sendWhileOkcommands([
       "g91 g31z-" + this.serialServer.getMachine().probeDist + " f" + this.serialServer.getMachine().probeFeed + " g90",
-      "g92 z-" + this.serialServer.getMachine().probeSizeZ, " g91 g0z" + this.serialServer.getMachine().probeDistUp + " g90"]);
+      "g92 z-" + this.serialServer.getMachine().probeSizeZ, " g91 g0z" + this.serialServer.getMachine().probeDistUp + " g90"
+    ]);
   }
 
   async postcommand(command: string): Promise<void> {

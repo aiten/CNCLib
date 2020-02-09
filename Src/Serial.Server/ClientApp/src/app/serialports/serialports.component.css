@@ -1,8 +1,6 @@
 table { }
 
-.reloadbuttons {
-  float:right
-}
+.reloadbuttons { float: right }
 
 .mat-column-Id { width: 50px; }
 
@@ -20,6 +18,4 @@ table { }
 
 .taskbutton { margin-right: 5px; }
 
-.div-alporthistory {
-  margin-top: 5px
-}
+.div-alporthistory { margin-top: 5px }

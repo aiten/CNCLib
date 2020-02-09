@@ -22,8 +22,6 @@ export abstract class SerialServerService {
 
   public abstract setBaseUrl(baseUrl: string);
 
-  public abstract getInfo(): Promise<CNCLibServerInfo>;
-
   public abstract getPorts(): Promise<SerialPortDefinition[]>;
 
   public abstract getPort(id: number): Promise<SerialPortDefinition>;

@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="row ofsRow">
-    <input class="fileName" [value]="machineControlGlobal.sdFileName" (input)="machineControlGlobal.sdFileName=$event.target.value" />
+    <input class="fileName" [value]="machineControlGlobal.sdFileName" (input)="machineControlGlobal.sdFileName=$event.target.value"/>
     <button mat-stroked-button class="sd-button" (click)='postcommand("m23 ");postcommand("m24 " + machineControlGlobal.sdFileName)'>M24 - Start</button>
     <button mat-stroked-button class="sd-button" (click)='postcommand("")'>M28 - Copy(File)</button>
     <button mat-stroked-button class="sd-button" (click)='postcommand("m28 " + machineControlGlobal.sdFileName)'>M28 - Copy(Preview)</button>

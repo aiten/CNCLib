@@ -17,7 +17,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import 'hammerjs';
@@ -26,6 +26,12 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { MaterialModule } from './material.module';
+import { LoginComponent } from "./login/login.component"
+
+import { CNCLibInfoService } from './services/CNCLib-Info.service';
+import { LocalCNCLibInfoService } from './services/local-CNCLib-Info.service';
+import { CNCLibLoggedinService } from './services/CNCLib-loggedin.service';
+import { LocalCNCLibLoggedinService } from './services/local-CNCLib-loggedin.service';
 
 import { SerialPortsComponent } from './serialports/serialports.component';
 import { SerialPortHistoryComponent } from './serialporthistory/serialporthistory.component';
@@ -33,6 +39,8 @@ import { machineControlRoutes, machineControlComponents } from './machinecontrol
 
 import { SerialServerService } from './services/serialserver.service';
 import { LocalSerialServerService } from './services/local-serialserver.service';
+
+import { BasicAuthInterceptor, ErrorInterceptor } from './_helpers';
 
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faHome, faSync, faPlug } from '@fortawesome/free-solid-svg-icons';
@@ -42,6 +50,7 @@ import { faHome, faSync, faPlug } from '@fortawesome/free-solid-svg-icons';
     AppComponent,
     NavMenuComponent,
     HomeComponent,
+    LoginComponent,
     SerialPortsComponent,
     SerialPortHistoryComponent,
     ...machineControlComponents,
@@ -63,6 +72,10 @@ import { faHome, faSync, faPlug } from '@fortawesome/free-solid-svg-icons';
   ],
   providers: [
     { provide: SerialServerService, useClass: LocalSerialServerService },
+    { provide: CNCLibInfoService, useClass: LocalCNCLibInfoService },
+    { provide: CNCLibLoggedinService, useClass: LocalCNCLibLoggedinService },
+    { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

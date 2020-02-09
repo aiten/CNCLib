@@ -169,7 +169,7 @@ namespace CNCLib.WpfClient.ViewModels
                     _global.Com.Current.ResetOnConnect = _global.ResetOnConnect;
                     _global.Com.Current.CommandToUpper = Machine.CommandToUpper;
                     _global.Com.Current.BaudRate       = Machine.BaudRate;
-                    await _global.Com.Current.ConnectAsync(Machine.ComPort, Machine.SerialServer);
+                    await _global.Com.Current.ConnectAsync(Machine.ComPort, Machine.SerialServer, Machine.SerialServerUser, Machine.SerialServerPassword);
 
                     await _global.Com.Current.SendCommandAsync("?", 3000);
                     await Task.Delay(100);

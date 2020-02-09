@@ -16,22 +16,22 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
-using CNCLib.GCode.Serial;
 using CNCLib.Serial.Shared;
 using CNCLib.Serial.WebAPI.Hubs;
 using CNCLib.Serial.WebAPI.SerialPort;
 
 using Framework.Arduino.SerialCommunication;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
 namespace CNCLib.Serial.WebAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class SerialPortController : Controller
     {
@@ -123,7 +123,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
             port.Serial.ResetOnConnect = resetOnConnectN0;
             port.GCodeCommandPrefix    = commandPrefix??"";
 
-            await port.Serial.ConnectAsync(port.PortName,null);
+            await port.Serial.ConnectAsync(port.PortName,null, null, null);
 
             await _hubContext.Clients.All.SendAsync("connected", id);
 

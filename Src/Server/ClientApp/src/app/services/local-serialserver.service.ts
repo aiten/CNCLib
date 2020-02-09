@@ -16,7 +16,7 @@
 
 import { Injectable, Inject } from '@angular/core';
 import { Response } from '@angular/http';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { SerialServerService } from './serialserver.service';
 import { SerialCommand } from "../models/serial.command";
 import { SerialPortDefinition } from '../models/serial.port.definition';
@@ -31,34 +31,42 @@ export class LocalSerialServerService implements SerialServerService {
   ) {
   }
 
-  setBaseUrl(baseUrl: string) {
+  basicAuth: string;
+
+
+  setBaseUrl(baseUrl: string, basicAuth: string) {
     this.baseUrl = baseUrl;
+    this.basicAuth = basicAuth;
+  }
+
+  getHeaders(): HttpHeaders {
+    return new HttpHeaders({ 'Authorization': 'Basic ' + this.basicAuth });
   }
 
   getInfo(): Promise<CNCLibServerInfo> {
-    return this.http.get<CNCLibServerInfo>(this.baseUrl + 'api/Info').toPromise()
+    return this.http.get<CNCLibServerInfo>(this.baseUrl + 'api/Info', { headers: this.getHeaders() }).toPromise()
       .catch(this.handleErrorPromise);
   }
 
   getPorts(): Promise<SerialPortDefinition[]> {
-    return this.http.get<SerialPortDefinition[]>(this.baseUrl + 'api/SerialPort').toPromise()
+    return this.http.get<SerialPortDefinition[]>(this.baseUrl + 'api/SerialPort', { headers: this.getHeaders() }).toPromise()
       .catch(this.handleErrorPromise);
   }
 
   getPort(id: number): Promise<SerialPortDefinition> {
-    return this.http.get<SerialPortDefinition>(this.baseUrl + 'api/SerialPort/' + id).toPromise();
+    return this.http.get<SerialPortDefinition>(this.baseUrl + 'api/SerialPort/' + id, { headers: this.getHeaders() }).toPromise();
   }
 
   getPortByName(port: string): Promise<SerialPortDefinition> {
     let params = new HttpParams();
     params = params.set('portName', port);
-    return this.http.get<SerialPortDefinition[]>(this.baseUrl + 'api/SerialPort?' + params.toString())
+    return this.http.get<SerialPortDefinition[]>(this.baseUrl + 'api/SerialPort?' + params.toString(), { headers: this.getHeaders() })
       .toPromise()
       .then(result => result[0]);
   }
 
   refresh(): Promise<SerialPortDefinition[]> {
-    return this.http.post<SerialPortDefinition[]>(this.baseUrl + 'api/SerialPort/refresh', "x").toPromise()
+    return this.http.post<SerialPortDefinition[]>(this.baseUrl + 'api/SerialPort/refresh', "x", { headers: this.getHeaders() }).toPromise()
       .catch(this.handleErrorPromise);
   }
 
@@ -69,32 +77,32 @@ export class LocalSerialServerService implements SerialServerService {
     params = params.set('dtrIsReset', (dtrIsReset ? 'true' : 'false'));
     params = params.set('resetOnConnect', (resetonConnect ? 'true' : 'false'));
 
-    return this.http.post<void>(this.baseUrl + 'api/SerialPort/' + serialportid + '/connect/?' + params.toString(), "x").toPromise()
+    return this.http.post<void>(this.baseUrl + 'api/SerialPort/' + serialportid + '/connect/?' + params.toString(), "x", { headers: this.getHeaders() }).toPromise()
       .catch(this.handleErrorPromise);
   }
 
   disconnect(serialportid: number): Promise<void> {
-    return this.http.post<void>(this.baseUrl + 'api/SerialPort/' + serialportid + '/disconnect', "x").toPromise()
+    return this.http.post<void>(this.baseUrl + 'api/SerialPort/' + serialportid + '/disconnect', "x", { headers: this.getHeaders() }).toPromise()
       .catch(this.handleErrorPromise);
   }
 
   abort(serialportid: number): Promise<void> {
-    return this.http.post<void>(this.baseUrl + 'api/SerialPort/' + serialportid + '/abort', "x").toPromise()
+    return this.http.post<void>(this.baseUrl + 'api/SerialPort/' + serialportid + '/abort', "x", { headers: this.getHeaders() }).toPromise()
       .catch(this.handleErrorPromise);
   }
 
   resume(serialportid: number): Promise<void> {
-    return this.http.post<void>(this.baseUrl + 'api/SerialPort/' + serialportid + '/resume', "x").toPromise()
+    return this.http.post<void>(this.baseUrl + 'api/SerialPort/' + serialportid + '/resume', "x", { headers: this.getHeaders() }).toPromise()
       .catch(this.handleErrorPromise);
   }
 
   getHistory(serialportid: number): Promise<SerialCommand[]> {
-    return this.http.get<SerialCommand[]>(this.baseUrl + 'api/SerialPort/' + serialportid + '/history').toPromise()
+    return this.http.get<SerialCommand[]>(this.baseUrl + 'api/SerialPort/' + serialportid + '/history', { headers: this.getHeaders() }).toPromise()
       .catch(this.handleErrorPromise);
   }
 
   clearHistory(serialportid: number): Promise<void> {
-    return this.http.post<void>(this.baseUrl + 'api/SerialPort/' + serialportid + '/history/clear', "x").toPromise()
+    return this.http.post<void>(this.baseUrl + 'api/SerialPort/' + serialportid + '/history/clear', "x", { headers: this.getHeaders() }).toPromise()
       .catch(this.handleErrorPromise);
   }
 
@@ -103,7 +111,7 @@ export class LocalSerialServerService implements SerialServerService {
     cmd.Commands = command;
     cmd.TimeOut = timeout;
 
-    return this.http.post<SerialCommand[]>(this.baseUrl + 'api/SerialPort/' + serialportid + '/queue', cmd).toPromise()
+    return this.http.post<SerialCommand[]>(this.baseUrl + 'api/SerialPort/' + serialportid + '/queue', cmd, { headers: this.getHeaders() }).toPromise()
       .catch(this.handleErrorPromise);
   }
 
@@ -112,7 +120,7 @@ export class LocalSerialServerService implements SerialServerService {
     cmd.Commands = command;
     cmd.TimeOut = timeout;
 
-    return this.http.post<SerialCommand[]>(this.baseUrl + 'api/SerialPort/' + serialportid + '/send', cmd).toPromise()
+    return this.http.post<SerialCommand[]>(this.baseUrl + 'api/SerialPort/' + serialportid + '/send', cmd, { headers: this.getHeaders() }).toPromise()
       .catch(this.handleErrorPromise);
   }
 
@@ -121,7 +129,7 @@ export class LocalSerialServerService implements SerialServerService {
     cmd.Commands = command;
     cmd.TimeOut = timeout;
 
-    return this.http.post<SerialCommand[]>(this.baseUrl + 'api/SerialPort/' + serialportid + '/sendWhileOk', cmd)
+    return this.http.post<SerialCommand[]>(this.baseUrl + 'api/SerialPort/' + serialportid + '/sendWhileOk', cmd, { headers: this.getHeaders() })
       .toPromise()
       .catch(this.handleErrorPromise);
   }
@@ -131,13 +139,13 @@ export class LocalSerialServerService implements SerialServerService {
     let params = new HttpParams();
     params = params.set('paramNo', parameterNo.toString());
 
-    return this.http.post<number>(this.baseUrl + 'api/GCode/' + serialportid + '/getParameter?' + params.toString(), "x").toPromise()
+    return this.http.post<number>(this.baseUrl + 'api/GCode/' + serialportid + '/getParameter?' + params.toString(), "x", { headers: this.getHeaders() }).toPromise()
       .catch(this.handleErrorPromise);
   }
 
   getPosition(serialportid: number): Promise<number[][]> {
 
-    return this.http.post<number[][]>(this.baseUrl + 'api/GCode/' + serialportid + '/getPosition', "x").toPromise()
+    return this.http.post<number[][]>(this.baseUrl + 'api/GCode/' + serialportid + '/getPosition', "x", { headers: this.getHeaders() }).toPromise()
       .catch(this.handleErrorPromise);
   }
 

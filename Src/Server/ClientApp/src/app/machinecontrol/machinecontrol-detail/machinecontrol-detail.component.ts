@@ -37,22 +37,21 @@ export class MachineControlDetailComponent {
   constructor(
     private serialServerService: SerialServerService,
     public serialServer: SerialServerConnection,
-    public machineControlGlobal: MachineControlGlobal 
+    public machineControlGlobal: MachineControlGlobal
   ) {
   }
 
-  async ngOnInit(): Promise<void>
-  {
-      await this.load();
+  async ngOnInit(): Promise<void> {
+    await this.load();
   }
 
   async load(): Promise<void> {
 
     if (this.serialServer.getMachine() != null) {
-      
+
       console.log(this.serialServer.getSerialServerUrl());
 
-      this.serialServerService.setBaseUrl(this.serialServer.getSerialServerUrl());
+      this.serialServerService.setBaseUrl(this.serialServer.getSerialServerUrl(), this.serialServer.getSerialServerAuth());
       var id = this.serialServer.getSerialServerPortId();
 
       this.serialport = await this.serialServerService.getPort(id);

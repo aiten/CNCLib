@@ -20,7 +20,7 @@ import { CNCLibServerInfo } from '../models/CNCLib.Server.Info'
 
 export abstract class SerialServerService {
 
-  public abstract setBaseUrl(baseUrl: string);
+  public abstract setBaseUrl(baseUrl: string, basicAuth: string);
 
   public abstract getInfo(): Promise<CNCLibServerInfo>;
 

@@ -23,7 +23,6 @@ using Framework.Dependency;
 using Framework.Tools;
 
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace CNCLib.Serial.WebAPI.SerialPort
 {

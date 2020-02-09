@@ -27,6 +27,7 @@ export class SerialPortHistoryComponent implements OnChanges {
   paginator: MatPaginator;
 
   private _hubConnection: HubConnection;
+  private _initDone: boolean = false;
 
   constructor(
     private serivalServerService: SerialServerService,
@@ -54,7 +55,9 @@ export class SerialPortHistoryComponent implements OnChanges {
           console.log('SignalR received: heartbeat');
         });
 
-      this._hubConnection.start()
+      console.log("hub Starting:");
+
+      await this._hubConnection.start()
         .then(() => {
           console.log('Hub connection started');
         })
@@ -63,27 +66,23 @@ export class SerialPortHistoryComponent implements OnChanges {
         });
     }
 
-    console.log('ngOnInit done');
+    this._initDone = true;
 
     await this.refresh();
   }
 
   async ngOnChanges(): Promise<void> {
-    console.log('ngOnChanges');
     await this.refresh();
   }
 
   async refresh(): Promise<void> {
 
-    console.log('refresh');
+    if (this._initDone) {
+      this.serialcommands = await this.serivalServerService.getHistory(this.forserialportid);
 
-    this.serialcommands = await this.serivalServerService.getHistory(this.forserialportid);
-
-    console.log('refresh1');
-
-    this.serialcommandsDataSource = new MatTableDataSource<SerialCommand>(this.serialcommands);
-    this.serialcommandsDataSource.paginator = this.paginator;
-    console.log('refresh done');
+      this.serialcommandsDataSource = new MatTableDataSource<SerialCommand>(this.serialcommands);
+      this.serialcommandsDataSource.paginator = this.paginator;
+    }
   }
 
   async clear(): Promise<void> {
