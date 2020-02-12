@@ -30,7 +30,7 @@ namespace CNCLib.Serial.WebAPI.SerialPort
     {
         #region ctr/SignalR
 
-        public static Func<IHubContext<CNCLibHub>> OnCreateHub { get; set; }
+        public static Func<IHubContext<CNCLibHub, ICNCLibHubClient>> OnCreateHub { get; set; }
 
         public void InitPort()
         {
@@ -38,20 +38,20 @@ namespace CNCLib.Serial.WebAPI.SerialPort
             {
                 Serial = AppService.GetRequiredService<ISerial>();
 
-                Serial.CommandQueueEmpty += async (sender, e) => { await OnCreateHub().Clients.All.SendAsync("queueEmpty", Id); };
+                Serial.CommandQueueEmpty += async (sender, e) => { await OnCreateHub().Clients.All.QueueEmpty(Id); };
                 Serial.CommandQueueChanged += (sender, e) =>
                 {
                     _delayExecuteQueueChanged.Execute(
                         1000,
                         () => _pendingLastQueueLength = e.QueueLength,
-                        () => { OnCreateHub().Clients.All.SendAsync("queueChanged", Id, _pendingLastQueueLength); });
+                        () => { OnCreateHub().Clients.All.QueueChanged(Id, _pendingLastQueueLength); });
                 };
                 Serial.CommandSending += (sender, e) =>
                 {
                     _delayExecuteSendingCommand.Execute(
                         1000,
                         () => _pendingSendingCommandSeqId = e.SeqId,
-                        () => { OnCreateHub().Clients.All.SendAsync("sendingCommand", Id, _pendingSendingCommandSeqId); });
+                        () => { OnCreateHub().Clients.All.SendingCommand(Id, _pendingSendingCommandSeqId); });
                 };
             }
         }

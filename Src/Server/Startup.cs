@@ -83,7 +83,7 @@ namespace CNCLib.Server
 
         public        IConfiguration         Configuration { get; }
         public static IServiceProvider       Services      { get; private set; }
-        public static IHubContext<CNCLibHub> Hub           => Services.GetService<IHubContext<CNCLibHub>>();
+        public static IHubContext<CNCLibHub, ICNCLibHubClient> Hub           => Services.GetService<IHubContext<CNCLibHub, ICNCLibHubClient>>();
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -196,7 +196,7 @@ namespace CNCLib.Server
 
             void callback(object x)
             {
-                Hub.Clients.All.SendAsync("heartbeat");
+                Hub.Clients.All.HeartBeat();
             }
 
             var timer = new Timer(callback);

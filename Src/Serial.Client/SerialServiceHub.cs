@@ -27,7 +27,7 @@ namespace CNCLib.Serial.Client
     {
         public SerialServiceHub(string adr, ISerial serial)
         {
-            WebServerUri = adr + "/serialSignalR";
+            WebServerUri = adr + "/serialSignalR/";
             _serial      = serial;
         }
 

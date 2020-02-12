@@ -19,18 +19,20 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.SignalR;
 
-namespace CNCLib.WebAPI.Hubs
+namespace CNCLib.Serial.WebAPI.Hubs
 {
-    public class CNCLibHub : Hub<ICNCLibHubClient>
+    public interface ICNCLibHubClient
     {
-        public override Task OnDisconnectedAsync(Exception exception)
-        {
-            return base.OnDisconnectedAsync(exception);
-        }
+        Task HeartBeat();
 
-        public async Task HeartBeat()
-        {
-            await Clients.All.HeartBeat();
-        }
+        Task QueueEmpty(int id);
+
+        Task QueueChanged(int id, int queueLength);
+
+        Task SendingCommand(int id, int seqId);
+
+        Task Connected(int id);
+
+        Task Disconnected(int id);
     }
 }

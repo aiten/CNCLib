@@ -47,17 +47,17 @@ export class SerialPortHistoryComponent implements OnChanges {
     if (this.autoreloadonempty) {
       console.log('SignalR to ' + this.serialServer.getSerialServerUrl() + 'serialSignalR');
 
-      this._hubConnection = new HubConnectionBuilder().withUrl(this.serialServer.getSerialServerUrl() + 'serialSignalR').build();
+      this._hubConnection = new HubConnectionBuilder().withUrl(this.serialServer.getSerialServerUrl() + 'serialSignalR/').build();
 
-      this._hubConnection.on('queueEmpty',
+      this._hubConnection.on('QueueEmpty',
         (portid: number) => {
           if (portid == this.forserialportid) {
             this.refresh();
           }
         });
-      this._hubConnection.on('heartbeat',
+      this._hubConnection.on('HeartBeat',
         () => {
-          console.log('SignalR received: heartbeat');
+          console.log('SignalR received: HeartBeat');
         });
 
       console.log("hub Starting:");

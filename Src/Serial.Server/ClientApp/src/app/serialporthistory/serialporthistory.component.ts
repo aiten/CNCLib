@@ -2,8 +2,7 @@ import { Component, Inject, Input, OnChanges, OnInit, ViewChild } from '@angular
 import { SerialCommand } from '../models/serial.command';
 import { SerialPortDefinition } from '../models/serial.port.definition';
 import { SerialServerService } from '../services/serialserver.service';
-import { HubConnection } from '@aspnet/signalr';
-import { HubConnectionBuilder } from '@aspnet/signalr';
+import { HubConnection, HubConnectionBuilder, HttpTransportType, LogLevel } from '@aspnet/signalr';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
@@ -42,17 +41,20 @@ export class SerialPortHistoryComponent implements OnChanges {
     if (this.autoreloadonempty) {
       console.log('SignalR to ' + this.baseUrl + 'serialSignalR');
 
-      this._hubConnection = new HubConnectionBuilder().withUrl(this.baseUrl + 'serialSignalR').build();
+      this._hubConnection = new HubConnectionBuilder()
+        .configureLogging(LogLevel.Debug)
+        .withUrl(this.baseUrl + 'serialSignalR/')
+        .build();
 
-      this._hubConnection.on('queueEmpty',
+      this._hubConnection.on('QueueEmpty',
         (portid: number) => {
           if (portid == this.forserialportid) {
             this.refresh();
           }
         });
-      this._hubConnection.on('heartbeat',
+      this._hubConnection.on('HeartBeat',
         () => {
-          console.log('SignalR received: heartbeat');
+          console.log('SignalR received: HeartBeat');
         });
 
       console.log("hub Starting:");

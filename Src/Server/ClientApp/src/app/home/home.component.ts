@@ -56,12 +56,12 @@ export class HomeComponent implements OnInit {
 
     console.log('SignalR to ' + this.baseUrl + 'cncLibSignalR');
 
-    this._hubConnection = new HubConnectionBuilder().withUrl(this.baseUrl + 'cncLibSignalR').build();
+    this._hubConnection = new HubConnectionBuilder().withUrl(this.baseUrl + 'cncLibSignalR/').build();
 
-    this._hubConnection.on('heartbeat',
+    this._hubConnection.on('HeartBeat',
       () => {
         this.incrementCounter();
-        console.log('SignalR received: heartbeat');
+        console.log('SignalR received: HeartBeat');
       });
 
     this._hubConnection.start()

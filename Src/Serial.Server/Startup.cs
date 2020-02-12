@@ -52,7 +52,7 @@ namespace CNCLib.Serial.Server
 {
     public class Startup
     {
-        private const string CorsAllowAllName = "AllowAll";
+        private const string CorsAllowAllName     = "AllowAll";
         private const string AuthenticationScheme = "BasicAuthentication";
 
         public Startup(IConfiguration configuration)
@@ -60,9 +60,10 @@ namespace CNCLib.Serial.Server
             Configuration = configuration;
         }
 
-        public        IConfiguration         Configuration { get; }
-        public static IServiceProvider       Services      { get; private set; }
-        public static IHubContext<CNCLibHub> Hub           => Services.GetService<IHubContext<CNCLibHub>>();
+        public        IConfiguration   Configuration { get; }
+        public static IServiceProvider Services      { get; private set; }
+
+        public static IHubContext<CNCLibHub, ICNCLibHubClient> Hub => Services.GetService<IHubContext<CNCLibHub, ICNCLibHubClient>>();
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -165,7 +166,7 @@ namespace CNCLib.Serial.Server
 
             void callback(object x)
             {
-                Hub.Clients.All.SendAsync("heartbeat");
+                Hub.Clients.All.HeartBeat();
             }
 
             var timer = new Timer(callback);

@@ -35,10 +35,10 @@ namespace CNCLib.Serial.WebAPI.Controllers
     [Route("api/[controller]")]
     public class SerialPortController : Controller
     {
-        private readonly IHubContext<CNCLibHub> _hubContext;
-        private static   IHubContext<CNCLibHub> _myHubContext;
+        private readonly IHubContext<CNCLibHub, ICNCLibHubClient> _hubContext;
+        private static   IHubContext<CNCLibHub, ICNCLibHubClient> _myHubContext;
 
-        public SerialPortController(IHubContext<CNCLibHub> hubContext)
+        public SerialPortController(IHubContext<CNCLibHub, ICNCLibHubClient> hubContext)
         {
             _hubContext   = hubContext;
             _myHubContext = _hubContext;
@@ -125,7 +125,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
 
             await port.Serial.ConnectAsync(port.PortName,null, null, null);
 
-            await _hubContext.Clients.All.SendAsync("connected", id);
+            await _hubContext.Clients.All.Connected(id);
 
             return Ok(GetDefinition(port));
         }
@@ -142,7 +142,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
             await port.Serial.DisconnectAsync();
             port.Serial = null;
 
-            await _hubContext.Clients.All.SendAsync("disconnected", id);
+            await _hubContext.Clients.All.Disconnected(id);
 
             return Ok();
         }

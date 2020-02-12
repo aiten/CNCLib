@@ -25,7 +25,7 @@ export function getBaseUrl() {
 }
 
 export function getWebApiUrl() {
-  //return 'https://ait.dlinkddns.com/';
+  // return 'https://ait.dlinkddns.com/serial.server/';
   return document.getElementsByTagName('base')[0].href;
 }
 
