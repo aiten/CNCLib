@@ -15,6 +15,7 @@
 */
 
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using Framework.Logic.Abstraction;
@@ -43,7 +44,7 @@ namespace CNCLib.Serial.WebAPI.Manager
             return Base64Helper.StringToBase64(password);
         }
 
-        public async Task<int?> Authenticate(string userName, string password)
+        public async Task<ClaimsPrincipal> Authenticate(string userName, string password)
         {
             if (!string.IsNullOrEmpty(userName))
             {
@@ -59,13 +60,21 @@ namespace CNCLib.Serial.WebAPI.Manager
                         // password is stored with username as prefix
                         if (ComparePassword(passwordInConfig, $"{userName}:{password}"))
                         {
-                            return 1;
+                            var claims = new[]
+                            {
+                                new Claim(ClaimTypes.NameIdentifier, 1.ToString()),
+                                new Claim(ClaimTypes.Name,           userName),
+                            };
+                            var identity = new ClaimsIdentity(claims, "BasicAuthentication");
+                            var principal = new ClaimsPrincipal(identity);
+
+                            return principal;
                         }
                     }
                 }
             }
 
-            return await Task.FromResult<int?>(null);
+            return await Task.FromResult<ClaimsPrincipal>(null);
         }
 
         private bool ComparePassword(string pwd1, string pwd2)

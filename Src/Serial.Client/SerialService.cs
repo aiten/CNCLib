@@ -40,7 +40,7 @@ namespace CNCLib.Serial.Client
             var connection = await _serviceHub.Start();
 
             connection.On(
-                "queueEmpty",
+                "QueueEmpty",
                 (int id) =>
                 {
                     if (PortId == id)
@@ -49,7 +49,7 @@ namespace CNCLib.Serial.Client
                     }
                 });
             connection.On(
-                "queueChanged",
+                "QueueChanged",
                 (int id, int queueLength) =>
                 {
                     if (PortId == id)
@@ -58,7 +58,7 @@ namespace CNCLib.Serial.Client
                     }
                 });
             connection.On(
-                "sendingCommand",
+                "SendingCommand",
                 (int id, int seqId) =>
                 {
                     if (PortId == id)

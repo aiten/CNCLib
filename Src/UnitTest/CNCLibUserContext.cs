@@ -16,18 +16,30 @@
 
 using CNCLib.Shared;
 
+using System.Security.Claims;
+
 namespace CNCLib.UnitTest
 {
     public class CNCLibUserContext : ICNCLibUserContextRW
     {
-        public CNCLibUserContext()
-        {
-            UserName = @"Test";
-            UserId   = 1;
-        }
-
+        public int    UserId   { get; private set; }
         public string UserName { get; private set; }
 
-        public int UserId { get; private set; }
+        public ClaimsPrincipal User { get; private set; }
+
+        public CNCLibUserContext()
+        {
+            UserName = "Maxi";
+            UserId   = 1;
+
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, UserId.ToString()),
+                new Claim(ClaimTypes.Name,           UserName),
+            };
+            var identity = new ClaimsIdentity(claims, "BasicAuthentication");
+
+            User = new ClaimsPrincipal(identity);
+        }
     }
 }

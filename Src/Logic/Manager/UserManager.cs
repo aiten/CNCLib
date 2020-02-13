@@ -14,8 +14,7 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.Buffers.Text;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -74,13 +73,21 @@ namespace CNCLib.Logic.Manager
             return MapToDto(await _repository.GetByName(username));
         }
 
-        public async Task<int?> Authenticate(string userName, string password)
+        public async Task<ClaimsPrincipal> Authenticate(string userName, string password)
         {
             var userEntity = await _repository.GetByName(userName);
 
             if (userEntity != null && ComparePassword(password, DecodePassword(userEntity.Password)))
             {
-                return userEntity.UserId;
+                var claims = new[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, userEntity.UserId.ToString()),
+                    new Claim(ClaimTypes.Name,           userName),
+                };
+                var identity  = new ClaimsIdentity(claims, "BasicAuthentication");
+                var principal = new ClaimsPrincipal(identity);
+
+                return principal;
             }
 
             return null;

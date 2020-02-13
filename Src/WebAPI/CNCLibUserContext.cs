@@ -14,6 +14,7 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
+using System.Linq;
 using System.Security.Claims;
 
 using CNCLib.Shared;
@@ -24,18 +25,21 @@ namespace CNCLib.WebAPI
 {
     public class CNCLibUserContext : ICNCLibUserContextRW
     {
-        public string UserName { get; private set; }
+        public ClaimsPrincipal User { get; private set; }
 
         public int UserId { get; private set; }
 
+        public string UserName { get; private set; }
+
         public void InitFromController(Controller controller)
         {
-            UserName = controller.User.Identity.Name;
+            User = controller.User;
             string userIdString = controller.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (!string.IsNullOrEmpty(userIdString))
             {
                 UserId = int.Parse(userIdString);
             }
+            UserName = controller.User.FindFirst(ClaimTypes.Name)?.Value;
         }
     }
 }

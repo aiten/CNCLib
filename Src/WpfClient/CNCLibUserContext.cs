@@ -15,6 +15,7 @@
 */
 
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using CNCLib.Logic.Abstraction.DTO;
@@ -38,9 +39,26 @@ namespace CNCLib.WpfClient
                 userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
             }
 
+            UserId = 1;
+            User   = CreatePrincipal(userName, UserId);
+
             UserName          = userName; // Environment.UserName;
             EncriptedPassword = Base64Helper.StringToBase64(UserName);
         }
+
+        private ClaimsPrincipal CreatePrincipal(string userName, int userId)
+        {
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+                new Claim(ClaimTypes.Name,           userName),
+            };
+            var identity = new ClaimsIdentity(claims, "BasicAuthentication");
+
+            return new ClaimsPrincipal(identity);
+        }
+
+        public ClaimsPrincipal User { get; private set; }
 
         public string UserName { get; private set; }
 
@@ -73,6 +91,7 @@ namespace CNCLib.WpfClient
                     }
 
                     UserId            = user.UserId;
+                    User              = CreatePrincipal(UserName, UserId);
                     EncriptedPassword = Base64Helper.StringToBase64(UserName);
                 }
             }

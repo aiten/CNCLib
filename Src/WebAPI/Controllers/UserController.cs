@@ -60,16 +60,14 @@ namespace CNCLib.WebAPI.Controllers
 
         [AllowAnonymous]
         [HttpGet("isValidUser")]
-        public async Task<ActionResult<int?>> IsValidUser(string userName, string password)
+        public async Task<ActionResult> IsValidUser(string userName, string password)
         {
-            int? userId = null;
-
-            if (!string.IsNullOrEmpty(userName))
+            if ((await _manager.Authenticate(userName, password)) == null)
             {
-                userId = (await _manager.Authenticate(userName, password));
+                return Forbid();
             }
 
-            return Ok(userId);
+            return Ok();
         }
 
         [HttpGet("currentUser")]

@@ -39,10 +39,10 @@ namespace CNCLib.Service.Logic
             return await _manager.GetByName(username);
         }
 
-        public async Task<int?> IsValidUser(string username, string password)
+        public async Task<bool> IsValidUser(string username, string password)
         {
-            var userId = await _manager.Authenticate(username, password);
-            return userId;
+            var claimsPrincipal = await _manager.Authenticate(username, password);
+            return claimsPrincipal != null;
         }
     }
 }

@@ -51,9 +51,9 @@ namespace CNCLib.Service.WebAPI
                 .FirstOrDefault();
         }
 
-        public async Task<int?> IsValidUser(string username, string password)
+        public async Task<bool> IsValidUser(string username, string password)
         {
-            var isValidUser = await Read<int?>(
+            var isValidUser = await Read<bool>(
                 CreatePathBuilder()
                     .AddPath("isValidUser")
                     .AddQuery(new UriQueryBuilder()

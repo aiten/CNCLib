@@ -34,7 +34,7 @@ export class AuthenticationService {
       .set('password', password);
 
     const authentication = this.http
-      .get<any>(`${this.baseUrl}api/user/isvaliduser`, { params })
+      .get(`${this.baseUrl}api/user/isvaliduser`, { params })
       .toPromise()
       .then((response: Response) => {
         console.log('Authentication:login OK');
