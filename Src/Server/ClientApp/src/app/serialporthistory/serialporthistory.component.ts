@@ -26,7 +26,7 @@ export class SerialPortHistoryComponent implements OnChanges {
 
   displayedColumns: string[] = [/* 'SeqId', */ 'SentTime', 'CommandText', 'ReplyType', 'ResultText', 'ReplyReceivedTime'];
 
-  @ViewChild(MatPaginator, { static: false })
+  @ViewChild(MatPaginator)
   paginator: MatPaginator;
 
   private _hubConnection: HubConnection;
