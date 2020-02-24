@@ -15,7 +15,6 @@
 */
 
 import { HttpClient } from '@angular/common/http';
-import { Response, Headers, RequestOptions, } from '@angular/http';
 
 import { Injectable, Inject, Pipe } from '@angular/core';
 import { Machine } from '../models/machine';

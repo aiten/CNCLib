@@ -15,7 +15,6 @@
 */
 
 import { Injectable, Inject } from '@angular/core';
-import { Response } from '@angular/http';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { SerialServerService } from './serialserver.service';
 import { SerialCommand } from "../models/serial.command";

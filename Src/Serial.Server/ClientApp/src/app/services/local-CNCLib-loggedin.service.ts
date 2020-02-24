@@ -15,7 +15,6 @@
 */
 
 import { Injectable, Inject } from '@angular/core';
-import { Response } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
 import { CNCLibServerInfo } from '../models/CNCLib.Server.Info';
 import { CNCLibLoggedinService } from './CNCLib-loggedin.service';

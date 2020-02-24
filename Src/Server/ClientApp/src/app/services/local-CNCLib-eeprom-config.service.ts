@@ -17,8 +17,7 @@
 import { Injectable, Inject, Pipe } from '@angular/core';
 import { EepromConfigInput } from '../models/eeprom-config-input';
 import { EepromConfig } from '../models/eeprom-config';
-import { Http, Response, Headers, RequestOptions, } from '@angular/http';
-import { HttpClient } from '@angular/common/http';
+import { HttpResponse, HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { CNCLibEepromConfigService } from './CNCLib-eeprom-config.service';
 
 @Injectable()
@@ -39,13 +38,6 @@ export class LocalCNCLibEepromConfigService implements CNCLibEepromConfigService
       .then((response: Response) => toEeconfig(response))
       .catch(this.handleErrorPromise);
     return m;
-  }
-
-  private getHeaders() {
-    const headers = new RequestOptions();
-    headers.headers = new Headers();
-    headers.headers.append('Accept', 'application/json');
-    return headers;
   }
 
   private handleErrorPromise(error: Response | any) {
