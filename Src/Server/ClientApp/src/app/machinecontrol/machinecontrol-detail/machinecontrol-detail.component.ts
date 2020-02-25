@@ -55,16 +55,16 @@ export class MachineControlDetailComponent {
       var id = this.serialServer.getSerialServerPortId();
 
       this.serialport = await this.serialServerService.getPort(id);
-      this.isConnected = this.serialport.IsConnected != 0;
+      this.isConnected = this.serialport.isConnected != 0;
     }
     this.isLoading = false;
   }
 
   async postcommand(command: string): Promise<void> {
-    await this.serialServerService.queueCommands(this.serialport.Id, [command], 1000);
+    await this.serialServerService.queueCommands(this.serialport.id, [command], 1000);
   }
 
   async sendWhileOkcommands(commands: string[]): Promise<void> {
-    await this.serialServerService.sendWhileOkCommands(this.serialport.Id, commands, 10000);
+    await this.serialServerService.sendWhileOkCommands(this.serialport.id, commands, 10000);
   }
 }

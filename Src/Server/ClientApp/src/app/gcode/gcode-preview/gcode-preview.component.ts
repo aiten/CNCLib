@@ -36,25 +36,25 @@ export class GcodePreviewComponent implements OnInit {
     private gCodeService: CNCLibGCodeService,
   ) {
     this.previewOpt = new PreviewGCode();
-    this.previewOpt.SizeX = 200;
-    this.previewOpt.SizeY = 200;
-    this.previewOpt.SizeZ = 200;
+    this.previewOpt.sizeX = 200;
+    this.previewOpt.sizeY = 200;
+    this.previewOpt.sizeZ = 200;
 
-    this.previewOpt.OffsetX = 0;
-    this.previewOpt.OffsetY = 0;
-    this.previewOpt.OffsetZ = 0;
+    this.previewOpt.offsetX = 0;
+    this.previewOpt.offsetY = 0;
+    this.previewOpt.offsetZ = 0;
 
-    this.previewOpt.Zoom = 1.0;
-    this.previewOpt.LaserSize = 0.254;
-    this.previewOpt.CutterSize = 0;
-    this.previewOpt.RenderSizeX = 800;
-    this.previewOpt.RenderSizeY = 800;
+    this.previewOpt.zoom = 1.0;
+    this.previewOpt.laserSize = 0.254;
+    this.previewOpt.cutterSize = 0;
+    this.previewOpt.renderSizeX = 800;
+    this.previewOpt.renderSizeY = 800;
 
-    this.previewOpt.Rotate3DAngle = 0;
-    this.previewOpt.Rotate3DVectX = 0;
-    this.previewOpt.Rotate3DVectY = 0;
-    this.previewOpt.Rotate3DVectZ = 1.0;
-    this.previewOpt.Rotate3DVect = [this.previewOpt.Rotate3DVectX, this.previewOpt.Rotate3DVectY, this.previewOpt.Rotate3DVectZ];
+    this.previewOpt.rotate3DAngle = 0;
+    this.previewOpt.rotate3DVectX = 0;
+    this.previewOpt.rotate3DVectY = 0;
+    this.previewOpt.rotate3DVectZ = 1.0;
+    this.previewOpt.rotate3DVect = [this.previewOpt.rotate3DVectX, this.previewOpt.rotate3DVectY, this.previewOpt.rotate3DVectZ];
   }
 
   async refreshImage() {
@@ -67,7 +67,7 @@ export class GcodePreviewComponent implements OnInit {
     this.previewOpt.commands = this.gCommands;
 
     console.log("getGCode");
-    this.previewOpt.Rotate3DVect = [this.previewOpt.Rotate3DVectX, this.previewOpt.Rotate3DVectY, this.previewOpt.Rotate3DVectZ];
+    this.previewOpt.rotate3DVect = [this.previewOpt.rotate3DVectX, this.previewOpt.rotate3DVectY, this.previewOpt.rotate3DVectZ];
     let blob = await this.gCodeService.getGCodeAsImage(this.previewOpt);
     console.log("getGCode image");
     let ok = await this.createImageFromBlob(blob);

@@ -87,7 +87,7 @@ namespace CNCLib.Serial.Server
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddNewtonsoftJson(
                     options =>
-                        options.SerializerSettings.ContractResolver = new DefaultContractResolver())
+                        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
                 .AddApplicationPart(controllerAssembly);
 
             services.AddAuthentication(AuthenticationScheme)

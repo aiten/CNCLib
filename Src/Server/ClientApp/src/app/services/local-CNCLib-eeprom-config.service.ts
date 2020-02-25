@@ -49,27 +49,27 @@ export class LocalCNCLibEepromConfigService implements CNCLibEepromConfigService
 function toEeconfig(r: any): EepromConfig {
   const eeConfig = <EepromConfig>(
     {
-      maxStepRate: r.MaxStepRate,
-      acc: r.Acc,
-      dec: r.Dec,
-      jerkSpeed: r.JerkSpeed,
-      stepsPerMm1000: r.StepsPerMm1000,
+      maxStepRate: r.maxStepRate,
+      acc: r.acc,
+      dec: r.dec,
+      jerkSpeed: r.jerkSpeed,
+      stepsPerMm1000: r.stepsPerMm1000,
 
-      stepsPerRotation: r.StepsPerRotation,
-      distancePerRotationInMm: r.DistancePerRotationInMm,
-      distancePerStepInMm: r.DistancePerStepInMm,
-      stepsPerMm: r.StepsPerMm,
+      stepsPerRotation: r.stepsPerRotation,
+      distancePerRotationInMm: r.distancePerRotationInMm,
+      distancePerStepInMm: r.distancePerStepInMm,
+      stepsPerMm: r.stepsPerMm,
 
-      estimatedMaxStepRate: r.EstimatedMaxStepRate,
-      estimatedMaxSpeedInMmSec: r.EstimatedMaxSpeedInMmSec,
-      estimatedMaxSpeedInMmMin: r.EstimatedMaxSpeedInMmMin,
-      estimatedAccelerationInMmSec2: r.EstimatedAccelerationInMmSec2,
-      estimatedDecelerationInMmSec2: r.EstimatedDecelerationInMmSec2,
-      estimatedAccelerationDistToMaxSpeedInMm: r.EstimatedAccelerationDistToMaxSpeedInMm,
-      estimatedDecelerationDistFromMaxSpeedInMm: r.EstimatedDecelerationDistFromMaxSpeedInMm,
-      estimatedAcc: r.EstimatedAcc,
-      estimatedDec: r.EstimatedDec,
-      estimatedJerkSpeed: r.EstimatedJerkSpeed,
+      estimatedMaxStepRate: r.estimatedMaxStepRate,
+      estimatedMaxSpeedInMmSec: r.estimatedMaxSpeedInMmSec,
+      estimatedMaxSpeedInMmMin: r.estimatedMaxSpeedInMmMin,
+      estimatedAccelerationInMmSec2: r.estimatedAccelerationInMmSec2,
+      estimatedDecelerationInMmSec2: r.estimatedDecelerationInMmSec2,
+      estimatedAccelerationDistToMaxSpeedInMm: r.estimatedAccelerationDistToMaxSpeedInMm,
+      estimatedDecelerationDistFromMaxSpeedInMm: r.estimatedDecelerationDistFromMaxSpeedInMm,
+      estimatedAcc: r.estimatedAcc,
+      estimatedDec: r.estimatedDec,
+      estimatedJerkSpeed: r.estimatedJerkSpeed,
     });
 
   console.log('Parsed toEeconfig:', eeConfig);

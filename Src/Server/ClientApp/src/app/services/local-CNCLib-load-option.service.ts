@@ -60,7 +60,7 @@ export class LocalCNCLibLoadOptionService implements CNCLibLoadOptionService {
   updateLoadOption(loadOption: LoadOptions): Promise<void> {
     console.log('LocalCNCLibLoadOptionService.updateLoadOptions');
     const m = this.http
-      .put<void>(`${this.baseUrl}api/LoadOptions/${loadOption.Id}`, loadOption)
+      .put<void>(`${this.baseUrl}api/LoadOptions/${loadOption.id}`, loadOption)
       .toPromise()
       .catch(this.handleErrorPromise);
     return m;

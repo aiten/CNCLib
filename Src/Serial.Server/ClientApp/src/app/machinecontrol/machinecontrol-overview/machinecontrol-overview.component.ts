@@ -30,7 +30,7 @@ const machinecontrolURL = '/machinecontrol';
 export class MachineControlOverviewComponent {
   serialports!: SerialPortDefinition[];
 
-  displayedColumns: string[] = ['Id', 'PortName', 'IsConnected', 'Task'];
+  displayedColumns: string[] = ['id', 'portName', 'isConnected', 'task'];
 
   constructor(
     private serialServerService: SerialServerService,
@@ -46,6 +46,6 @@ export class MachineControlOverviewComponent {
   }
 
   useport(serialport: SerialPortDefinition) {
-    this.router.navigate([machinecontrolURL, serialport.Id]);
+    this.router.navigate([machinecontrolURL, serialport.id]);
   }
 }

@@ -35,13 +35,13 @@ export class GcodeRunInputComponent implements OnInit {
 
     this.gCodeForm = fb.group(
       {
-        FileName: ['', [Validators.required, Validators.maxLength(512)]],
-        AutoScaleKeepRatio: [false, [Validators.required]],
-        AutoScaleCenter: [false, [Validators.required]],
-        AutoScaleSizeX: [0.0, [Validators.required]],
-        AutoScaleSizeY: [0.0, [Validators.required]],
-        AutoScaleBorderDistX: [0.0, [Validators.required]],
-        AutoScaleBorderDistY: [0.0, [Validators.required]],
+        fileName: ['', [Validators.required, Validators.maxLength(512)]],
+        autoScaleKeepRatio: [false, [Validators.required]],
+        autoScaleCenter: [false, [Validators.required]],
+        autoScaleSizeX: [0.0, [Validators.required]],
+        autoScaleSizeY: [0.0, [Validators.required]],
+        autoScaleBorderDistX: [0.0, [Validators.required]],
+        autoScaleBorderDistY: [0.0, [Validators.required]],
       });
 
     this.gCodeForm.valueChanges.subscribe((
@@ -51,7 +51,7 @@ export class GcodeRunInputComponent implements OnInit {
   }
 
   isHpgl() {
-    return this.entry.LoadType == ELoadType.Hpgl;
+    return this.entry.loadType == ELoadType.Hpgl;
   }
 
   isHpglorImageOrImageHole() {
@@ -59,35 +59,35 @@ export class GcodeRunInputComponent implements OnInit {
   }
 
   isImage() {
-    return this.entry.LoadType == ELoadType.Image;
+    return this.entry.loadType == ELoadType.Image;
   }
 
   isImageHole() {
-    return this.entry.LoadType == ELoadType.ImageHole;
+    return this.entry.loadType == ELoadType.ImageHole;
   }
 
   isImageOrImageHole() {
-    return this.entry.LoadType == ELoadType.Image || this.entry.LoadType == ELoadType.ImageHole;
+    return this.entry.loadType == ELoadType.Image || this.entry.loadType == ELoadType.ImageHole;
   }
 
   isAutoScale() {
-    return this.isHpglorImageOrImageHole() && this.entry.AutoScale;
+    return this.isHpglorImageOrImageHole() && this.entry.autoScale;
   }
 
   isScale() {
-    return this.isHpglorImageOrImageHole() && this.entry.AutoScale == false;
+    return this.isHpglorImageOrImageHole() && this.entry.autoScale == false;
   }
 
   isSmooth() {
-    return this.isHpgl() && this.entry.SmoothType != SmoothTypeEnum.NoSmooth;
+    return this.isHpgl() && this.entry.smoothType != SmoothTypeEnum.NoSmooth;
   }
 
   isLaser() {
-    return (this.isHpgl() && this.entry.PenMoveType == PenType.CommandString) || this.isImageOrImageHole();
+    return (this.isHpgl() && this.entry.penMoveType == PenType.CommandString) || this.isImageOrImageHole();
   }
 
   isEngrave() {
-    return this.isHpgl() && this.entry.PenMoveType == PenType.ZMove;
+    return this.isHpgl() && this.entry.penMoveType == PenType.ZMove;
   }
 
   async savegCode(value: any): Promise<void> {

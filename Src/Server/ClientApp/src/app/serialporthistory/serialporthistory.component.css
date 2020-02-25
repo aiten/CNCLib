@@ -3,17 +3,17 @@ table {
   table-layout: fixed;
 }
 
-.mat-column-SeqId { width: 70px; }
+.mat-column-seqId { width: 70px; }
 
-.mat-column-SentTime { width: 90px; }
+.mat-column-sentTime { width: 90px; }
 
-.mat-column-CommandText { flex: 0 0 20% !important; }
+.mat-column-commandText { flex: 0 0 20% !important; }
 
-.mat-column-ReplyType { width: 50px; }
+.mat-column-replyType { width: 50px; }
 
-.mat-column-ResultText { flex: 0 0 35% !important; }
+.mat-column-resultText { flex: 0 0 35% !important; }
 
-.mat-column-ReplyReceivedTime { width: 90px; }
+.mat-column-replyReceivedTime { width: 90px; }
 
 .reloadbuttons {
   float: right

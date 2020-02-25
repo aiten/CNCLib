@@ -51,98 +51,98 @@ export enum EHoleType {
 }
 
 export class LoadOptions {
-  Id: number;
+  id: number;
 
-  LoadType: ELoadType;
+  loadType: ELoadType;
 
-  FileName: string;
-  FileContent: string;
+  fileName: string;
+  fileContent: string;
 
-  SettingName: string;
+  settingName: string;
 
-  GCodeWriteToFileName: string;
+  gCodeWriteToFileName: string;
 
   //ALL (not GCode)
-  StartupCommands: string;
-  ShutdownCommands: string;
+  startupCommands: string;
+  shutdownCommands: string;
 
   // G-CODE
 
-  SubstG82: boolean;
-  AddLineNumbers: boolean;
+  substG82: boolean;
+  addLineNumbers: boolean;
 
   //Hpgl
-  SwapXY: boolean;
-  ScaleX: number;
-  ScaleY: number;
-  OfsX: number;
-  OfsY: number;
+  swapXY: boolean;
+  scaleX: number;
+  scaleY: number;
+  ofsX: number;
+  ofsY: number;
 
   //Hpgl+IMG
-  AutoScale: boolean;
-  AutoScaleKeepRatio: boolean;
+  autoScale: boolean;
+  autoScaleKeepRatio: boolean;
 
-  AutoScaleCenter: boolean;
+  autoScaleCenter: boolean;
 
-  AutoScaleSizeX: number;
-  AutoScaleSizeY: number;
+  autoScaleSizeX: number;
+  autoScaleSizeY: number;
 
-  AutoScaleBorderDistX: number;
-  AutoScaleBorderDistY: number;
+  autoScaleBorderDistX: number;
+  autoScaleBorderDistY: number;
 
-  PenMoveType: PenType;
+  penMoveType: PenType;
 
-  EngravePosInParameter: boolean;
-  EngravePosUp: number;
-  EngravePosDown: number;
+  engravePosInParameter: boolean;
+  engravePosUp: number;
+  engravePosDown: number;
 
-  MoveSpeed: number | null;
-  EngraveDownSpeed: number | null;
+  moveSpeed: number | null;
+  engraveDownSpeed: number | null;
 
-  LaserFirstOnCommand: string;
-  LaserOnCommand: string;
-  LaserOffCommand: string;
-  LaserLastOffCommand: string;
+  laserFirstOnCommand: string;
+  laserOnCommand: string;
+  laserOffCommand: string;
+  laserLastOffCommand: string;
 
-  LaserSize: number;
-  LaserAccDist: number;
+  laserSize: number;
+  laserAccDist: number;
 
 
-  SmoothType: SmoothTypeEnum;
+  smoothType: SmoothTypeEnum;
 
-  ConvertType: ConvertTypeEnum;
+  convertType: ConvertTypeEnum;
 
-  SmoothMinAngle: number | null;
-  SmoothMinLineLength: number | null;
-  SmoothMaxError: number | null;
+  smoothMinAngle: number | null;
+  smoothMinLineLength: number | null;
+  smoothMaxError: number | null;
 
   //IMG
 
-  ImageWriteToFileName: string;
+  imageWriteToFileName: string;
 
-  GrayThreshold: number;
+  grayThreshold: number;
 
-  ImageDPIX: number | null;
-  ImageDPIY: number | null;
+  imageDPIX: number | null;
+  imageDPIY: number | null;
 
-  ImageInvert: boolean;
+  imageInvert: boolean;
 
-  Dither: DitherFilter;
-  NewspaperDitherSize: number;
+  dither: DitherFilter;
+  newspaperDitherSize: number;
 
   // Hole
 
-  DotDistX: number;
-  DotDistY: number;
-  DotSizeX: number;
-  DotSizeY: number;
-  UseYShift: boolean;
-  RotateHeart: boolean;
+  dotDistX: number;
+  dotDistY: number;
+  dotSizeX: number;
+  dotSizeY: number;
+  useYShift: boolean;
+  rotateHeart: boolean;
 
-  HoleType: EHoleType;
+  holeType: EHoleType;
 
   isHpgl(): boolean {
-    return this.LoadType == ELoadType.Hpgl;
+    return this.loadType == ELoadType.Hpgl;
   }
 
   isHpglorImageOrImageHole() {
@@ -150,34 +150,34 @@ export class LoadOptions {
   }
 
   isImage() {
-    return this.LoadType == ELoadType.Image;
+    return this.loadType == ELoadType.Image;
   }
 
   isImageHole() {
-    return this.LoadType == ELoadType.ImageHole;
+    return this.loadType == ELoadType.ImageHole;
   }
 
   isImageOrImageHole() {
-    return this.LoadType == ELoadType.Image || this.LoadType == ELoadType.ImageHole;
+    return this.loadType == ELoadType.Image || this.loadType == ELoadType.ImageHole;
   }
 
   isAutoScale() {
-    return this.isHpglorImageOrImageHole() && this.AutoScale;
+    return this.isHpglorImageOrImageHole() && this.autoScale;
   }
 
   isScale() {
-    return this.isHpglorImageOrImageHole() && this.AutoScale == false;
+    return this.isHpglorImageOrImageHole() && this.autoScale == false;
   }
 
   isSmooth() {
-    return this.isHpgl() && this.SmoothType != SmoothTypeEnum.NoSmooth;
+    return this.isHpgl() && this.smoothType != SmoothTypeEnum.NoSmooth;
   }
 
   isLaser() {
-    return (this.isHpgl() && this.PenMoveType == PenType.CommandString) || this.isImageOrImageHole();
+    return (this.isHpgl() && this.penMoveType == PenType.CommandString) || this.isImageOrImageHole();
   }
 
   isEngrave() {
-    return this.isHpgl() && this.PenMoveType == PenType.ZMove;
+    return this.isHpgl() && this.penMoveType == PenType.ZMove;
   }
 }

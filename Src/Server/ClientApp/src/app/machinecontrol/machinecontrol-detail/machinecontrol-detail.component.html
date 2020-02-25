@@ -45,7 +45,7 @@
     <div class="col-sm" *ngIf="serialServer.getMachine().rotate && !machineControlGlobal.showRotate">
       <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showRotate = true'>Rotate</button>
     </div>
-    <div class="col-sm" *ngIf="serialServer.getMachine().SDSupport && !machineControlGlobal.showSd">
+    <div class="col-sm" *ngIf="serialServer.getMachine().sdSupport && !machineControlGlobal.showSd">
       <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showSd = true'>SD</button>
     </div>
     <div class="col-sm" *ngIf="!machineControlGlobal.showRefMove">
@@ -184,7 +184,7 @@
   </mat-card-content>
 </mat-card>
 
-<mat-card class="detail-card" *ngIf="serialServer.getMachine().SDSupport  && machineControlGlobal.showSd">
+<mat-card class="detail-card" *ngIf="serialServer.getMachine().sdSupport  && machineControlGlobal.showSd">
   <mat-card-title>
     SD
     <button mat-button class="menuHide-button" (click)='machineControlGlobal.showSd = false'>

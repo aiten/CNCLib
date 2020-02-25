@@ -73,7 +73,7 @@ export class MachineFormComponent implements OnInit {
         probeDistUp: [3],
         probeDist: [10],
         probeFeed: [100],
-        SDSupport: [false, [Validators.required]],
+        sdSupport: [false, [Validators.required]],
         spindle: [false, [Validators.required]],
         coolant: [false, [Validators.required]],
         laser: [false, [Validators.required]],

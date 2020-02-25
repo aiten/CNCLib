@@ -17,55 +17,55 @@
 export class PreviewGCode {
   commands: string[];
 
-  SizeX: number;
+  sizeX: number;
 
-  SizeY: number;
+  sizeY: number;
 
-  SizeZ: number;
+  sizeZ: number;
 
-  KeepRatio: boolean;
+  keepRatio: boolean;
 
-  Zoom: number;
+  zoom: number;
 
-  OffsetX: number;
+  offsetX: number;
 
-  OffsetY: number;
+  offsetY: number;
 
-  OffsetZ: number;
+  offsetZ: number;
 
-  CutterSize: number;
+  cutterSize: number;
 
-  LaserSize: number;
+  laserSize: number;
 
-  MachineColor: number;
+  machineColor: number;
 
-  LaserOnColor: number;
+  laserOnColor: number;
 
-  LaserOffColor: number;
+  laserOffColor: number;
 
-  CutColor: number;
+  cutColor: number;
 
-  CutDotColor: number;
+  cutDotColor: number;
 
-  CutEllipseColor: number;
+  cutEllipseColor: number;
 
-  CutArcColor: number;
+  cutArcColor: number;
 
-  FastMoveColor: number;
+  fastMoveColor: number;
 
-  HelpLineColor: number;
+  helpLineColor: number;
 
 // public Rotate3D Rotate
 
-  Rotate3DAngle: number;
+  rotate3DAngle: number;
 
-  Rotate3DVect: number[];
+  rotate3DVect: number[];
 
-  Rotate3DVectX: number;
-  Rotate3DVectY: number;
-  Rotate3DVectZ: number;
+  rotate3DVectX: number;
+  rotate3DVectY: number;
+  rotate3DVectZ: number;
 
-  RenderSizeX: number;
+  renderSizeX: number;
 
-  RenderSizeY: number;
+  renderSizeY: number;
 }

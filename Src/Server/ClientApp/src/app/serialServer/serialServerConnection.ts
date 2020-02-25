@@ -83,12 +83,12 @@ export class SerialServerConnection {
 
     console.log(port);
 
-    if (!port.IsConnected) {
-      await this.serialServerService.connect(port.Id, baudrate, false, false);
+    if (!port.isConnected) {
+      await this.serialServerService.connect(port.id, baudrate, false, false);
     }
 
     this.serialServerUrl = uri;
-    this.serialServerPortId = port.Id;
+    this.serialServerPortId = port.id;
     this.serialServerAuth = auth;
 
     return this.serialServerUrl;

@@ -64,9 +64,9 @@ export class MachineControlConnectComponent {
     console.log(value);
     console.log(this.connectOptions);
 
-    console.log('save:' + this.entry.Id);
+    console.log('save:' + this.entry.id);
 
-    await this.serialServerService.connect(this.entry.Id,
+    await this.serialServerService.connect(this.entry.id,
       this.connectOptions.baudRate,
       this.connectOptions.dtrIsReset,
       this.connectOptions.resetOnConnect);

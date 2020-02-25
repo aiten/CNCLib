@@ -52,10 +52,10 @@ export class MachineControlDetailComponent {
   }
 
   async postcommand(command: string): Promise<void> {
-    await this.serialServerService.queueCommands(this.serialport.Id, [command], 1000);
+    await this.serialServerService.queueCommands(this.serialport.id, [command], 1000);
   }
 
   async sendWhileOkcommands(commands: string[]): Promise<void> {
-    await this.serialServerService.sendWhileOkCommands(this.serialport.Id, commands, 10000);
+    await this.serialServerService.sendWhileOkCommands(this.serialport.id, commands, 10000);
   }
 }

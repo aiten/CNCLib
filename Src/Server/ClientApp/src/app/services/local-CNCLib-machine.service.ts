@@ -108,59 +108,59 @@ export class LocalCNCLibMachineService implements CNCLibMachineService {
 function toMachine(r: any): Machine {
   const machine = <Machine>(
     {
-      id: r.MachineId,
-      description: r.Name,
-      serialServer: r.SerialServer,
-      serialServerUser: r.SerialServerUser,
-      serialServerPassword: r.SerialServerPassword,
-      comPort: r.ComPort,
-      sizeX: r.SizeX,
-      sizeY: r.SizeY,
-      sizeZ: r.SizeZ,
-      baudRate: r.BaudRate,
-      axis: r.Axis,
-      sizeA: r.SizeA,
-      sizeB: r.SizeB,
-      sizeC: r.SizeC,
-      bufferSize: r.BufferSize,
-      commandToUpper: r.CommandToUpper,
-      probeSizeX: r.ProbeSizeX,
-      probeSizeY: r.ProbeSizeY,
-      probeSizeZ: r.ProbeSizeZ,
-      probeDistUp: r.ProbeDistUp,
-      probeDist: r.ProbeDist,
-      probeFeed: r.ProbeFeed,
-      SDSupport: r.SDSupport,
-      spindle: r.Spindle,
-      coolant: r.Coolant,
-      laser: r.Laser,
-      rotate: r.Rotate,
-      workOffsets: r.WorkOffsets,
-      commandSyntax: r.CommandSyntax
+      id: r.machineId,
+      description: r.name,
+      serialServer: r.serialServer,
+      serialServerUser: r.serialServerUser,
+      serialServerPassword: r.serialServerPassword,
+      comPort: r.comPort,
+      sizeX: r.sizeX,
+      sizeY: r.sizeY,
+      sizeZ: r.sizeZ,
+      baudRate: r.baudRate,
+      axis: r.axis,
+      sizeA: r.sizeA,
+      sizeB: r.sizeB,
+      sizeC: r.sizeC,
+      bufferSize: r.bufferSize,
+      commandToUpper: r.commandToUpper,
+      probeSizeX: r.probeSizeX,
+      probeSizeY: r.probeSizeY,
+      probeSizeZ: r.probeSizeZ,
+      probeDistUp: r.probeDistUp,
+      probeDist: r.probeDist,
+      probeFeed: r.probeFeed,
+      sdSupport: r.sdSupport,
+      spindle: r.spindle,
+      coolant: r.coolant,
+      laser: r.laser,
+      rotate: r.rotate,
+      workOffsets: r.workOffsets,
+      commandSyntax: r.commandSyntax
     });
 
   machine.commands = [];
 
-  r.MachineCommands.forEach(element => {
+  r.machineCommands.forEach(element => {
     machine.commands.push(<MachineCommand>(
       {
-        id: element.MachineCommandId,
-        commandString: element.CommandString,
-        commandName: element.CommandName,
-        posX: element.PosX,
-        posY: element.PosY,
-        joystickMessage: element.JoystickMessage
+        id: element.machineCommandId,
+        commandString: element.commandString,
+        commandName: element.commandName,
+        posX: element.posX,
+        posY: element.posY,
+        joystickMessage: element.joystickMessage
       }));
   });
 
   machine.initCommands = [];
 
-  r.MachineInitCommands.forEach(element => {
+  r.machineInitCommands.forEach(element => {
     machine.initCommands.push(<MachineInitCommand>(
       {
-        id: element.MachineInitCommandId,
-        commandString: element.CommandString,
-        seqNo: element.SeqNo
+        id: element.machineInitCommandId,
+        commandString: element.commandString,
+        seqNo: element.seqNo
       }));
   });
 
@@ -171,50 +171,50 @@ function toMachine(r: any): Machine {
 function fromMachine(r: Machine): any {
   const machine = <any>(
     {
-      MachineId: r.id,
-      Name: r.description,
-      ComPort: r.comPort,
-      SerialServer: r.serialServer,
-      SerialServerUser: r.serialServerUser,
-      SerialServerPassword: r.serialServerPassword,
-      SizeX: r.sizeX,
-      SizeY: r.sizeY,
-      SizeZ: r.sizeZ,
-      BaudRate: r.baudRate,
-      Axis: r.axis,
-      SizeA: r.sizeA,
-      SizeB: r.sizeB,
-      SizeC: r.sizeC,
-      BufferSize: r.bufferSize,
-      CommandToUpper: r.commandToUpper,
-      ProbeSizeX: r.probeSizeX,
-      ProbeSizeY: r.probeSizeY,
-      ProbeSizeZ: r.probeSizeZ,
-      ProbeDistUp: r.probeDistUp,
-      ProbeDist: r.probeDist,
-      ProbeFeed: r.probeFeed,
-      SDSupport: r.SDSupport,
-      Spindle: r.spindle,
-      Coolant: r.coolant,
-      Laser: r.laser,
-      Rotate: r.rotate,
-      WorkOffsets: r.workOffsets,
-      CommandSyntax: r.commandSyntax
+      machineId: r.id,
+      name: r.description,
+      comPort: r.comPort,
+      serialServer: r.serialServer,
+      serialServerUser: r.serialServerUser,
+      serialServerPassword: r.serialServerPassword,
+      sizeX: r.sizeX,
+      sizeY: r.sizeY,
+      sizeZ: r.sizeZ,
+      baudRate: r.baudRate,
+      axis: r.axis,
+      sizeA: r.sizeA,
+      sizeB: r.sizeB,
+      sizeC: r.sizeC,
+      bBufferSize: r.bufferSize,
+      commandToUpper: r.commandToUpper,
+      probeSizeX: r.probeSizeX,
+      probeSizeY: r.probeSizeY,
+      probeSizeZ: r.probeSizeZ,
+      probeDistUp: r.probeDistUp,
+      probeDist: r.probeDist,
+      probeFeed: r.probeFeed,
+      sdSupport: r.sdSupport,
+      spindle: r.spindle,
+      coolant: r.coolant,
+      laser: r.laser,
+      rotate: r.rotate,
+      workOffsets: r.workOffsets,
+      commandSyntax: r.commandSyntax
     });
 
   machine.MachineCommands = [];
 
   if (r.commands != null) {
     r.commands.forEach(element => {
-      machine.MachineCommands.push(<any>(
+      machine.machineCommands.push(<any>(
         {
-          MachineId: r.id,
-          MachineCommandId: element.id,
-          CommandString: element.commandString,
-          CommandName: element.commandName,
-          PosX: element.posX,
-          PosY: element.posY,
-          JoystickMessage: element.joystickMessage
+          machineId: r.id,
+          machineCommandId: element.id,
+          commandString: element.commandString,
+          commandName: element.commandName,
+          posX: element.posX,
+          posY: element.posY,
+          joystickMessage: element.joystickMessage
         }));
     });
   }
@@ -223,12 +223,12 @@ function fromMachine(r: Machine): any {
 
   if (r.initCommands != null) {
     r.initCommands.forEach(element => {
-      machine.MachineInitCommands.push(<any>(
+      machine.machineInitCommands.push(<any>(
         {
-          MachineId: r.id,
-          MachineInitCommandId: element.id,
-          CommandString: element.commandString,
-          SeqNo: element.seqNo
+          machineId: r.id,
+          machineInitCommandId: element.id,
+          commandString: element.commandString,
+          seqNo: element.seqNo
         }));
     });
   }

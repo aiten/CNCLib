@@ -17,8 +17,8 @@
 import { Component, Inject } from '@angular/core';
 
 export class CNCLibServerInfo {
-  Version!: string;
-  Name!: string;
-  FullName!: string;
-  Copyright!: string;
+  version!: string;
+  name!: string;
+  fullName!: string;
+  copyright!: string;
 }

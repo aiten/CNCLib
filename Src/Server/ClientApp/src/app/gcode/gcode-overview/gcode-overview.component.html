@@ -3,30 +3,30 @@
 <table mat-table [dataSource]="entries" class="mat-elevation-z8">
 
   <!-- Position Column -->
-  <ng-container matColumnDef="Id">
+  <ng-container matColumnDef="id">
     <th mat-header-cell *matHeaderCellDef> Id </th>
-    <td mat-cell *matCellDef="let element"> {{element.Id}} </td>
+    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
   </ng-container>
 
   <!-- Name Column -->
-  <ng-container matColumnDef="SettingName">
+  <ng-container matColumnDef="settingName">
     <th mat-header-cell *matHeaderCellDef> Name </th>
-    <td mat-cell *matCellDef="let element"> {{element.SettingName}} </td>
+    <td mat-cell *matCellDef="let element"> {{element.settingName}} </td>
   </ng-container>
 
   <!-- Detail Column -->
-  <ng-container matColumnDef="Detail">
+  <ng-container matColumnDef="detail">
     <th mat-header-cell *matHeaderCellDef> Detail </th>
     <td mat-cell *matCellDef="let element">
-      <button mat-stroked-button (click)='detailLoadOption(element.Id)'>Details</button>
+      <button mat-stroked-button (click)='detailLoadOption(element.id)'>Details</button>
     </td>
   </ng-container>
 
   <!-- Run Column -->
-  <ng-container matColumnDef="Run">
+  <ng-container matColumnDef="run">
     <th mat-header-cell *matHeaderCellDef> Run </th>
     <td mat-cell *matCellDef="let element">
-      <button mat-stroked-button (click)='runLoadOption(element.Id)'>Run ...</button>
+      <button mat-stroked-button (click)='runLoadOption(element.id)'>Run ...</button>
     </td>
   </ng-container>
 

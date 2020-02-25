@@ -38,7 +38,7 @@ export class GcodeOverviewComponent implements OnInit {
   errorMessage: string = '';
   isLoading: boolean = true;
 
-  displayedColumns: string[] = [/* 'Id', */ 'SettingName', 'Detail', 'Run'];
+  displayedColumns: string[] = [ /* 'id', */ 'settingName', 'detail', 'run'];
 
   constructor(
     private router: Router,

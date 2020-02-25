@@ -35,34 +35,34 @@ export class GcodePreviewInputComponent implements OnInit {
 
     this.previewOptForm = fb.group(
       {
-        SizeX: [0.0, [Validators.required]],
-        SizeY: [0.0, [Validators.required]],
-        SizeZ: [0.0, [Validators.required]],
-        KeepRatio: [true, [Validators.required]],
-        Zoom: [0.0, [Validators.required]],
-        OffsetX: [0.0, [Validators.required]],
-        OffsetY: [0.0, [Validators.required]],
-        OffsetZ: [0.0, [Validators.required]],
-        CutterSize: [0.0, [Validators.required]],
-        LaserSize: [0.0, [Validators.required]],
-        MachineColor: [0, [Validators.required]],
-        LaserOnColor: [0, [Validators.required]],
-        LaserOffColor: [0, [Validators.required]],
-        CutColor: [0, [Validators.required]],
-        CutDotColor: [0, [Validators.required]],
-        CutEllipseColor: [0, [Validators.required]],
-        CutArcColor: [0, [Validators.required]],
-        FastMoveColor: [0, [Validators.required]],
-        HelpLineColor: [0, [Validators.required]],
+        sizeX: [0.0, [Validators.required]],
+        sizeY: [0.0, [Validators.required]],
+        sizeZ: [0.0, [Validators.required]],
+        keepRatio: [true, [Validators.required]],
+        zoom: [0.0, [Validators.required]],
+        offsetX: [0.0, [Validators.required]],
+        offsetY: [0.0, [Validators.required]],
+        offsetZ: [0.0, [Validators.required]],
+        cutterSize: [0.0, [Validators.required]],
+        lLaserSize: [0.0, [Validators.required]],
+        machineColor: [0, [Validators.required]],
+        laserOnColor: [0, [Validators.required]],
+        laserOffColor: [0, [Validators.required]],
+        cutColor: [0, [Validators.required]],
+        cutDotColor: [0, [Validators.required]],
+        cutEllipseColor: [0, [Validators.required]],
+        cutArcColor: [0, [Validators.required]],
+        fastMoveColor: [0, [Validators.required]],
+        helpLineColor: [0, [Validators.required]],
 
-        Rotate3DAngle: [0.0, [Validators.required]],
+        rotate3DAngle: [0.0, [Validators.required]],
 
-        Rotate3DVectX: [0.0, [Validators.required]],
-        Rotate3DVectY: [0.0, [Validators.required]],
-        Rotate3DVectZ: [1.0, [Validators.required]],
+        rotate3DVectX: [0.0, [Validators.required]],
+        rotate3DVectY: [0.0, [Validators.required]],
+        rotate3DVectZ: [1.0, [Validators.required]],
 
-        RenderSizeX: [0, [Validators.required]],
-        RenderSizeY: [0, [Validators.required]],
+        renderSizeX: [0, [Validators.required]],
+        renderSizeY: [0, [Validators.required]],
       });
 
     this.previewOptForm.valueChanges.subscribe((
@@ -73,12 +73,12 @@ export class GcodePreviewInputComponent implements OnInit {
 
   rotate1() {
     this.previewOptForm.patchValue({
-      Rotate3DAngle: -1.0407742907225024,
-      Rotate3DVectX: 101,
-      Rotate3DVectY: -13,
-      Rotate3DVectZ: 1,
-      OffsetX: -10,
-      OffsetY: 10,
+      rotate3DAngle: -1.0407742907225024,
+      rotate3DVectX: 101,
+      rotate3DVectY: -13,
+      rotate3DVectZ: 1,
+      offsetX: -10,
+      offsetY: 10,
     });
   }
 

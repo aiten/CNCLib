@@ -84,66 +84,66 @@ export class GcodeDetailComponent implements OnInit {
 
     this.gCodeForm = fb.group(
       {
-        Id: [0, [Validators.required]],
-        SettingName: ['', [Validators.required, Validators.maxLength(64)]],
-        FileName: ['', [Validators.required, Validators.maxLength(512)]],
-        LoadType: [],
-        StartupCommands: ['', [Validators.maxLength(512)]],
-        ShutdownCommands: ['', [Validators.maxLength(512)]],
-        SubstG82: [false, [Validators.required]],
-        AddLineNumbers: [false, [Validators.required]],
+        id: [0, [Validators.required]],
+        settingName: ['', [Validators.required, Validators.maxLength(64)]],
+        fileName: ['', [Validators.required, Validators.maxLength(512)]],
+        loadType: [],
+        startupCommands: ['', [Validators.maxLength(512)]],
+        shutdownCommands: ['', [Validators.maxLength(512)]],
+        substG82: [false, [Validators.required]],
+        addLineNumbers: [false, [Validators.required]],
 
-        SwapXY: [false, [Validators.required]],
-        AutoScale: [false, [Validators.required]],
+        swapXY: [false, [Validators.required]],
+        autoScale: [false, [Validators.required]],
 
-        AutoScaleKeepRatio: [false, [Validators.required]],
-        AutoScaleCenter: [false, [Validators.required]],
+        autoScaleKeepRatio: [false, [Validators.required]],
+        autoScaleCenter: [false, [Validators.required]],
 
-        AutoScaleSizeX: [0.0, [Validators.required]],
-        AutoScaleSizeY: [0.0, [Validators.required]],
-        AutoScaleBorderDistX: [0.0, [Validators.required]],
-        AutoScaleBorderDistY: [0.0, [Validators.required]],
+        autoScaleSizeX: [0.0, [Validators.required]],
+        autoScaleSizeY: [0.0, [Validators.required]],
+        autoScaleBorderDistX: [0.0, [Validators.required]],
+        autoScaleBorderDistY: [0.0, [Validators.required]],
 
-        PenMoveType: [],
-        EngravePosInParameter: [false, [Validators.required]],
-        EngravePosUp: [0.0, [Validators.required]],
-        EngravePosDown: [0.0, [Validators.required]],
-        MoveSpeed: [0.0, [Validators.required]],
-        EngraveDownSpeed: [0.0],
+        penMoveType: [],
+        engravePosInParameter: [false, [Validators.required]],
+        engravePosUp: [0.0, [Validators.required]],
+        engravePosDown: [0.0, [Validators.required]],
+        moveSpeed: [0.0, [Validators.required]],
+        engraveDownSpeed: [0.0],
 
-        ScaleX: [0.0],
-        ScaleY: [0.0],
-        OfsX: [0.0],
-        OfsY: [0.0],
+        scaleX: [0.0],
+        scaleY: [0.0],
+        ofsX: [0.0],
+        ofsY: [0.0],
 
-        LaserFirstOnCommand: ['', [Validators.maxLength(512)]],
-        LaserOnCommand: ['', [Validators.maxLength(512)]],
-        LaserOffCommand: ['', [Validators.maxLength(512)]],
-        LaserLastOffCommand: ['', [Validators.maxLength(512)]],
-        LaserSize: [0.0],
-        LaserAccDist: [0.0],
+        laserFirstOnCommand: ['', [Validators.maxLength(512)]],
+        laserOnCommand: ['', [Validators.maxLength(512)]],
+        laserOffCommand: ['', [Validators.maxLength(512)]],
+        laserLastOffCommand: ['', [Validators.maxLength(512)]],
+        laserSize: [0.0],
+        laserAccDist: [0.0],
 
-        SmoothType: [],
-        ConvertType: [],
-        SmoothMinAngle: [0.0],
-        SmoothMinLineLength: [0.0],
-        SmoothMaxError: [0.0],
+        smoothType: [],
+        convertType: [],
+        smoothMinAngle: [0.0],
+        smoothMinLineLength: [0.0],
+        smoothMaxError: [0.0],
 
-        ImageWriteToFileName: ['', [Validators.maxLength(512)]],
-        GrayThreshold: [0.0],
-        ImageDPIX: [0.0],
-        ImageDPIY: [0.0],
-        ImageInvert: [false, [Validators.required]],
-        Dither: [],
-        NewspaperDitherSize: [0.0],
+        imageWriteToFileName: ['', [Validators.maxLength(512)]],
+        grayThreshold: [0.0],
+        imageDPIX: [0.0],
+        imageDPIY: [0.0],
+        imageInvert: [false, [Validators.required]],
+        dither: [],
+        newspaperDitherSize: [0.0],
 
-        HoleType: [],
-        UseYShift: [false, [Validators.required]],
-        DotDistX: [0.0],
-        DotDistY: [0.0],
-        DotSizeX: [0.0],
-        DotSizeY: [0.0],
-        RotateHeart: [0],
+        holeType: [],
+        useYShift: [false, [Validators.required]],
+        dotDistX: [0.0],
+        dotDistY: [0.0],
+        dotSizeX: [0.0],
+        dotSizeY: [0.0],
+        rotateHeart: [0],
 
 
       });
@@ -199,7 +199,7 @@ export class GcodeDetailComponent implements OnInit {
   }
 
   isHpgl() {
-    return this.entry.LoadType == ELoadType.Hpgl;
+    return this.entry.loadType == ELoadType.Hpgl;
   }
 
   isHpglorImageOrImageHole() {
@@ -207,35 +207,35 @@ export class GcodeDetailComponent implements OnInit {
   }
 
   isImage() {
-    return this.entry.LoadType == ELoadType.Image;
+    return this.entry.loadType == ELoadType.Image;
   }
 
   isImageHole() {
-    return this.entry.LoadType == ELoadType.ImageHole;
+    return this.entry.loadType == ELoadType.ImageHole;
   }
 
   isImageOrImageHole() {
-    return this.entry.LoadType == ELoadType.Image || this.entry.LoadType == ELoadType.ImageHole;
+    return this.entry.loadType == ELoadType.Image || this.entry.loadType == ELoadType.ImageHole;
   }
 
   isAutoScale() {
-    return this.isHpglorImageOrImageHole() && this.entry.AutoScale;
+    return this.isHpglorImageOrImageHole() && this.entry.autoScale;
   }
 
   isScale() {
-    return this.isHpglorImageOrImageHole() && this.entry.AutoScale == false;
+    return this.isHpglorImageOrImageHole() && this.entry.autoScale == false;
   }
 
   isSmooth() {
-    return this.isHpgl() && this.entry.SmoothType != SmoothTypeEnum.NoSmooth;
+    return this.isHpgl() && this.entry.smoothType != SmoothTypeEnum.NoSmooth;
   }
 
   isLaser() {
-    return (this.isHpgl() && this.entry.PenMoveType == PenType.CommandString) || this.isImageOrImageHole();
+    return (this.isHpgl() && this.entry.penMoveType == PenType.CommandString) || this.isImageOrImageHole();
   }
 
   isEngrave() {
-    return this.isHpgl() && this.entry.PenMoveType == PenType.ZMove;
+    return this.isHpgl() && this.entry.penMoveType == PenType.ZMove;
   }
 
   async ngOnInit() {

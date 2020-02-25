@@ -16,32 +16,32 @@
 
     <ng-container matColumnDef="SeqId">
       <th mat-header-cell *matHeaderCellDef> Seq </th>
-      <td mat-cell *matCellDef="let element"> {{element.SeqId}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.seqId}} </td>
     </ng-container>
 
     <ng-container matColumnDef="SentTime">
       <th mat-header-cell *matHeaderCellDef> Sent </th>
-      <td mat-cell *matCellDef="let element"> {{element.SentTime | date:'HH:mm:ss'}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.sentTime | date:'HH:mm:ss'}} </td>
     </ng-container>
 
     <ng-container matColumnDef="CommandText">
       <th mat-header-cell *matHeaderCellDef> Command </th>
-      <td mat-cell *matCellDef="let element"> {{element.CommandText}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.commandText}} </td>
     </ng-container>
 
     <ng-container matColumnDef="ReplyType">
       <th mat-header-cell *matHeaderCellDef> Reply </th>
-      <td mat-cell *matCellDef="let element"> {{element.ReplyType}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.replyType}} </td>
     </ng-container>
 
     <ng-container matColumnDef="ResultText">
       <th mat-header-cell *matHeaderCellDef> Result </th>
-      <td mat-cell *matCellDef="let element"> {{element.ResultText}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.resultText}} </td>
     </ng-container>
 
     <ng-container matColumnDef="ReplyReceivedTime">
       <th mat-header-cell *matHeaderCellDef> ReplyTime </th>
-      <td mat-cell *matCellDef="let element"> {{element.ReplyReceivedTime | date:'HH:mm:ss'}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.replyReceivedTime | date:'HH:mm:ss'}} </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

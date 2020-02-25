@@ -7,7 +7,7 @@
 <form novalidate [formGroup]="gCodeForm" (ngSubmit)="savegCode(gCodeForm.value)">
 
 <h1>
-  G-Code details templates: {{ entry.SettingName }}
+  G-Code details templates: {{ entry.settingName }}
   <span class='right'>
     <button mat-stroked-button type="submit" class="btn btn-default" [disabled]="!gCodeForm.valid">Save</button>
   </span>
@@ -22,17 +22,17 @@
 
     <div class="form-group input-group">
       <span class="input-group-addon">Id</span>
-      <input matInput class="form-control" formControlName="Id"/>
+      <input matInput class="form-control" formControlName="id"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Setting-Name</span>
-      <input matInput class="form-control" formControlName="SettingName"/>
+      <input matInput class="form-control" formControlName="settingName"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Load-Type</span>
-      <mat-select formControlName="LoadType" class="form-control" [compareWith]="compareWithEnum">
+      <mat-select formControlName="loadType" class="form-control" [compareWith]="compareWithEnum">
         >
         <mat-option *ngFor="let key of keysELoadType" [value]="key">{{ELoadType[key]}}</mat-option>
       </mat-select>
@@ -40,27 +40,27 @@
 
     <div class="form-group input-group">
       <span class="input-group-addon">File-Name</span>
-      <input matInput class="form-control" formControlName="FileName"/>
+      <input matInput class="form-control" formControlName="fileName"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Startup Commands</span>
-      <input matInput class="form-control" formControlName="StartupCommands"/>
+      <input matInput class="form-control" formControlName="startupCommands"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Shutdown Commands</span>
-      <input matInput class="form-control" formControlName="ShutdownCommands"/>
+      <input matInput class="form-control" formControlName="shutdownCommands"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Substitute G82</span>
-      <mat-checkbox class="form-control" formControlName="SubstG82"></mat-checkbox>
+      <mat-checkbox class="form-control" formControlName="substG82"></mat-checkbox>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Add Line Numbers</span>
-      <mat-checkbox class="form-control" formControlName="AddLineNumbers"></mat-checkbox>
+      <mat-checkbox class="form-control" formControlName="addLineNumbers"></mat-checkbox>
     </div>
   </div>
 
@@ -70,17 +70,17 @@
 
     <div class="form-group input-group">
       <span class="input-group-addon">Min Angle (rad)</span>
-      <input matInput class="form-control" formControlName="SmoothMinAngle"/>
+      <input matInput class="form-control" formControlName="smoothMinAngle"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Min Line Length (mm)</span>
-      <input matInput class="form-control" formControlName="SmoothMinLineLength"/>
+      <input matInput class="form-control" formControlName="smoothMinLineLength"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Max Error (mm)</span>
-      <input matInput class="form-control" formControlName="SmoothMaxError"/>
+      <input matInput class="form-control" formControlName="smoothMaxError"/>
     </div>
 
   </div>
@@ -91,27 +91,27 @@
 
     <div class="form-group input-group">
       <span class="input-group-addon">Position In G-Parameter</span>
-      <mat-checkbox class="form-control" formControlName="EngravePosInParameter"></mat-checkbox>
+      <mat-checkbox class="form-control" formControlName="engravePosInParameter"></mat-checkbox>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Position Up</span>
-      <input matInput class="form-control" formControlName="EngravePosUp"/>
+      <input matInput class="form-control" formControlName="engravePosUp"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Position Down</span>
-      <input matInput class="form-control" formControlName="EngravePosDown"/>
+      <input matInput class="form-control" formControlName="engravePosDown"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Move Speed (mm/min)</span>
-      <input matInput class="form-control" formControlName="MoveSpeed"/>
+      <input matInput class="form-control" formControlName="moveSpeed"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Move Down Speed (mm/min)</span>
-      <input matInput class="form-control" formControlName="EngraveDownSpeed"/>
+      <input matInput class="form-control" formControlName="engraveDownSpeed"/>
     </div>
   </div>
 
@@ -121,37 +121,37 @@
 
     <div class="form-group input-group">
       <span class="input-group-addon">Move Speed (mm/min)</span>
-      <input matInput class="form-control" formControlName="MoveSpeed"/>
+      <input matInput class="form-control" formControlName="moveSpeed"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Laser First On Command</span>
-      <input matInput class="form-control" formControlName="LaserFirstOnCommand"/>
+      <input matInput class="form-control" formControlName="laserFirstOnCommand"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Laser On Command</span>
-      <input matInput class="form-control" formControlName="LaserOnCommand"/>
+      <input matInput class="form-control" formControlName="laserOnCommand"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Laser Off Command</span>
-      <input matInput class="form-control" formControlName="LaserOffCommand"/>
+      <input matInput class="form-control" formControlName="laserOffCommand"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Laser Last Off Command</span>
-      <input matInput class="form-control" formControlName="LaserLastOffCommand"/>
+      <input matInput class="form-control" formControlName="laserLastOffCommand"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Laser Size (mm)</span>
-      <input matInput class="form-control" formControlName="LaserSize"/>
+      <input matInput class="form-control" formControlName="laserSize"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Laser Acc Dist (mm)</span>
-      <input matInput class="form-control" formControlName="LaserAccDist"/>
+      <input matInput class="form-control" formControlName="laserAccDist"/>
     </div>
 
   </div>
@@ -165,33 +165,33 @@
 
     <div class="form-group input-group">
       <span class="input-group-addon">PenMoveType</span>
-      <mat-select formControlName="PenMoveType" class="form-control" [compareWith]="compareWithEnum">
+      <mat-select formControlName="penMoveType" class="form-control" [compareWith]="compareWithEnum">
         <mat-option *ngFor="let key of keysPenType" [value]="key">{{PenType[key]}}</mat-option>
       </mat-select>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Swap XY</span>
-      <mat-checkbox class="form-control" formControlName="SwapXY"></mat-checkbox>
+      <mat-checkbox class="form-control" formControlName="swapXY"></mat-checkbox>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Smooth Type</span>
-      <mat-select formControlName="SmoothType" class="form-control" [compareWith]="compareWithEnum">
+      <mat-select formControlName="smoothType" class="form-control" [compareWith]="compareWithEnum">
         <mat-option *ngFor="let key of keysSmoothTypeEnum" [value]="key">{{SmoothTypeEnum[key]}}</mat-option>
       </mat-select>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Convert Type</span>
-      <mat-select formControlName="ConvertType" class="form-control" [compareWith]="compareWithEnum">
+      <mat-select formControlName="convertType" class="form-control" [compareWith]="compareWithEnum">
         <mat-option *ngFor="let key of keysConvertTypeEnum" [value]="key">{{ConvertTypeEnum[key]}}</mat-option>
       </mat-select>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Auto Scale</span>
-      <mat-checkbox class="form-control" formControlName="AutoScale"></mat-checkbox>
+      <mat-checkbox class="form-control" formControlName="autoScale"></mat-checkbox>
     </div>
 
   </div>
@@ -202,32 +202,32 @@
 
     <div class="form-group input-group">
       <span class="input-group-addon">KeepRatio</span>
-      <mat-checkbox class="form-control" formControlName="AutoScaleKeepRatio"></mat-checkbox>
+      <mat-checkbox class="form-control" formControlName="autoScaleKeepRatio"></mat-checkbox>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Center</span>
-      <mat-checkbox class="form-control" formControlName="AutoScaleCenter"></mat-checkbox>
+      <mat-checkbox class="form-control" formControlName="autoScaleCenter"></mat-checkbox>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Size X (mm)</span>
-      <input matInput class="form-control" formControlName="AutoScaleSizeX"/>
+      <input matInput class="form-control" formControlName="autoScaleSizeX"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Size Y (mm)</span>
-      <input matInput class="form-control" formControlName="AutoScaleSizeY"/>
+      <input matInput class="form-control" formControlName="autoScaleSizeY"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Margin X (mm)</span>
-      <input matInput class="form-control" formControlName="AutoScaleBorderDistX"/>
+      <input matInput class="form-control" formControlName="autoScaleBorderDistX"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Margin Y (mm)</span>
-      <input matInput class="form-control" formControlName="AutoScaleBorderDistY"/>
+      <input matInput class="form-control" formControlName="autoScaleBorderDistY"/>
     </div>
 
   </div>
@@ -238,22 +238,22 @@
 
     <div class="form-group input-group">
       <span class="input-group-addon">Scale X</span>
-      <input matInput class="form-control" formControlName="ScaleX"/>
+      <input matInput class="form-control" formControlName="scaleX"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Scale Y</span>
-      <input matInput class="form-control" formControlName="ScaleY"/>
+      <input matInput class="form-control" formControlName="scaleY"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Offset X</span>
-      <input matInput class="form-control" formControlName="OfsX"/>
+      <input matInput class="form-control" formControlName="ofsX"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Offset Y</span>
-      <input matInput class="form-control" formControlName="OfsY"/>
+      <input matInput class="form-control" formControlName="ofsY"/>
     </div>
 
   </div>
@@ -266,44 +266,44 @@
 
       <div class="form-group input-group">
         <span class="input-group-addon">Auto Scale</span>
-        <mat-checkbox class="form-control" formControlName="AutoScale"></mat-checkbox>
+        <mat-checkbox class="form-control" formControlName="autoScale"></mat-checkbox>
       </div>
 
       <div class="form-group input-group">
         <span class="input-group-addon">ImageWriteToFileName</span>
-        <input matInput class="form-control" formControlName="ImageWriteToFileName"/>
+        <input matInput class="form-control" formControlName="imageWriteToFileName"/>
       </div>
 
       <div class="form-group input-group">
         <span class="input-group-addon">Gray Threshold</span>
-        <input matInput class="form-control" formControlName="GrayThreshold"/>
+        <input matInput class="form-control" formControlName="grayThreshold"/>
       </div>
 
       <div class="form-group input-group">
         <span class="input-group-addon">ImageDPI X</span>
-        <input matInput class="form-control" formControlName="ImageDPIX"/>
+        <input matInput class="form-control" formControlName="imageDPIX"/>
       </div>
 
       <div class="form-group input-group">
         <span class="input-group-addon">ImageDPI Y</span>
-        <input matInput class="form-control" formControlName="ImageDPIY"/>
+        <input matInput class="form-control" formControlName="imageDPIY"/>
       </div>
 
       <div class="form-group input-group">
         <span class="input-group-addon">Image Invert</span>
-        <mat-checkbox class="form-control" formControlName="ImageInvert"></mat-checkbox>
+        <mat-checkbox class="form-control" formControlName="imageInvert"></mat-checkbox>
       </div>
 
       <div class="form-group input-group">
         <span class="input-group-addon">Dither</span>
-        <mat-select formControlName="Dither" class="form-control" [compareWith]="compareWithEnum">
+        <mat-select formControlName="dither" class="form-control" [compareWith]="compareWithEnum">
           <mat-option *ngFor="let key of keysDitherFilter" [value]="key">{{DitherFilter[key]}}</mat-option>
         </mat-select>
       </div>
 
       <div class="form-group input-group">
         <span class="input-group-addon">Newspaper DitherSize</span>
-        <input matInput class="form-control" formControlName="NewspaperDitherSize"/>
+        <input matInput class="form-control" formControlName="newspaperDitherSize"/>
       </div>
 
     </div>
@@ -315,39 +315,39 @@
 
     <div class="form-group input-group">
       <span class="input-group-addon">Hole Type</span>
-      <mat-select formControlName="HoleType" class="form-control" [compareWith]="compareWithEnum">
+      <mat-select formControlName="holeType" class="form-control" [compareWith]="compareWithEnum">
         <mat-option *ngFor="let key of keysEHoleType" [value]="key">{{EHoleType[key]}}</mat-option>
       </mat-select>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">DotDist X</span>
-      <input matInput class="form-control" formControlName="DotDistX"/>
+      <input matInput class="form-control" formControlName="dotDistX"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">DotDist Y</span>
-      <input matInput class="form-control" formControlName="DotDistY"/>
+      <input matInput class="form-control" formControlName="dotDistY"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">DotSize X</span>
-      <input matInput class="form-control" formControlName="DotSizeX"/>
+      <input matInput class="form-control" formControlName="dotSizeX"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">DotSize Y</span>
-      <input matInput class="form-control" formControlName="DotSizeY"/>
+      <input matInput class="form-control" formControlName="dotSizeY"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Hole Type</span>
-      <input matInput class="form-control" formControlName="HoleType"/>
+      <input matInput class="form-control" formControlName="holeType"/>
     </div>
 
     <div class="form-group input-group">
       <span class="input-group-addon">RotateHeart</span>
-      <mat-checkbox class="form-control" formControlName="RotateHeart"></mat-checkbox>
+      <mat-checkbox class="form-control" formControlName="rotateHeart"></mat-checkbox>
     </div>
 
   </div>

@@ -39,8 +39,8 @@ export class HomeComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.appVersionInfo = await this.cncLibInfoService.getInfo();
-    this.appVersion = this.appVersionInfo.Version;
-    this.appName = this.appVersionInfo.Name;
-    this.appCopyright = this.appVersionInfo.Copyright;
+    this.appVersion = this.appVersionInfo.version;
+    this.appName = this.appVersionInfo.name;
+    this.appCopyright = this.appVersionInfo.copyright;
   }
 }

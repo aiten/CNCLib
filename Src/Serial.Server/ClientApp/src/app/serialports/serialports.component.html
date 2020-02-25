@@ -18,18 +18,18 @@
 
     <ng-container matColumnDef="Id">
       <th mat-header-cell *matHeaderCellDef> Id </th>
-      <td mat-cell *matCellDef="let element"> {{element.Id}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
     </ng-container>
 
     <ng-container matColumnDef="PortName">
       <th mat-header-cell *matHeaderCellDef> Port-Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.PortName}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.portName}} </td>
     </ng-container>
 
     <ng-container matColumnDef="IsConnected">
       <th mat-header-cell *matHeaderCellDef> Connected </th>
       <td mat-cell *matCellDef="let element">
-        <mat-checkbox [checked]="element.IsConnected" [disabled]="true"></mat-checkbox>
+        <mat-checkbox [checked]="element.isConnected" [disabled]="true"></mat-checkbox>
       </td>
     </ng-container>
 
@@ -49,16 +49,16 @@
 
     <ng-container matColumnDef="CommandsInQueue">
       <th mat-header-cell *matHeaderCellDef> Queue-Length </th>
-      <td mat-cell *matCellDef="let element"> {{element.CommandsInQueue}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.commandsInQueue}} </td>
     </ng-container>
 
     <ng-container matColumnDef="Task">
       <th mat-header-cell *matHeaderCellDef> Task </th>
       <td mat-cell *matCellDef="let element">
-        <button mat-stroked-button class="taskbutton" (click)='machineControl(element.Id)'>Use</button>
-        <button mat-stroked-button class="taskbutton" (click)='showHistory(element.Id)'>History</button>
-        <button mat-stroked-button class="taskbutton" *ngIf="element.IsConnected" (click)='clearQueue(element.Id)'>Clear Queue</button>
-        <button mat-stroked-button class="taskbutton" *ngIf="element.IsConnected" (click)='disconnect(element.Id)'>Disconnect</button>
+        <button mat-stroked-button class="taskbutton" (click)='machineControl(element.id)'>Use</button>
+        <button mat-stroked-button class="taskbutton" (click)='showHistory(element.id)'>History</button>
+        <button mat-stroked-button class="taskbutton" *ngIf="element.isConnected" (click)='clearQueue(element.id)'>Clear Queue</button>
+        <button mat-stroked-button class="taskbutton" *ngIf="element.isConnected" (click)='disconnect(element.id)'>Disconnect</button>
       </td>
     </ng-container>
 

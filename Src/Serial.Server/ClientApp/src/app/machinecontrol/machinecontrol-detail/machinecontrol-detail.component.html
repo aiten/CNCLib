@@ -3,10 +3,10 @@
 </p>
 
 <div *ngIf="!isLoading">
-  <div *ngIf="!serialport.IsConnected">
+  <div *ngIf="!serialport.isConnected">
     <machinecontrolconnect [entry]="serialport">Loading...</machinecontrolconnect>
   </div>
-  <div *ngIf="serialport.IsConnected">
+  <div *ngIf="serialport.isConnected">
     <div class="grid-container2">
       <div class="grid-item2">
         <div class="grid-container">
@@ -94,5 +94,5 @@
       </div>
     </div>
   </div>
-  <serialporthistory [forserialportid]=serialport.Id [autoreloadonempty]=true>Loading...</serialporthistory>
+  <serialporthistory [forserialportid]=serialport.id [autoreloadonempty]=true>Loading...</serialporthistory>
 </div>

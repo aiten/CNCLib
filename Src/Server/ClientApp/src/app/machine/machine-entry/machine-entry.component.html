@@ -29,7 +29,7 @@
     </tr>
     <tr>
       <td>Serial Server Password</td>
-      <td>{{ entry.serialServerPassword }} </td>
+      <td><div *ngIf="entry.serialServerPassword.length > 0">***</div></td>
     </tr>
     <tr>
     <tr>
@@ -80,7 +80,7 @@
     </tr>
     <tr *ngIf="_isMore">
       <td>SDSupport</td>
-      <td>{{ entry.SDSupport }} </td>
+      <td>{{ entry.sdSupport }} </td>
     </tr>
     <tr *ngIf="_isMore">
       <td>CommandSyntax</td>

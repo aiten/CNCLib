@@ -93,8 +93,8 @@ export class LocalSerialServerService implements SerialServerService {
 
   queueCommands(serialportid: number, command: string[], timeout: number): Promise<SerialCommand[]> {
     let cmd = new QueueSendCommand();
-    cmd.Commands = command;
-    cmd.TimeOut = timeout;
+    cmd.commands = command;
+    cmd.timeOut = timeout;
 
     return this.http.post<SerialCommand[]>(this.baseUrl + 'api/SerialPort/' + serialportid + '/queue', cmd).toPromise()
       .catch(this.handleErrorPromise);
@@ -102,8 +102,8 @@ export class LocalSerialServerService implements SerialServerService {
 
   sendWhileOkCommands(serialportid: number, command: string[], timeout: number): Promise<SerialCommand[]> {
     let cmd = new QueueSendCommand();
-    cmd.Commands = command;
-    cmd.TimeOut = timeout;
+    cmd.commands = command;
+    cmd.timeOut = timeout;
 
     return this.http.post<SerialCommand[]>(this.baseUrl + 'api/SerialPort/' + serialportid + '/sendWhileOk', cmd)
       .toPromise()

@@ -1,9 +1,9 @@
 table { }
 
-.mat-column-Id { width: 50px; }
+.mat-column-id { width: 50px; }
 
-.mat-column-PortName { width: 200px; }
+.mat-column-portName { width: 200px; }
 
-.mat-column-IsConnected { width: 90px; }
+.mat-column-isConnected { width: 90px; }
 
-.mat-column-Task { width: 150px; }
+.mat-column-task { width: 150px; }

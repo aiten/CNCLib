@@ -41,7 +41,7 @@ export class Machine {
   probeDistUp: number;
   probeDist: number;
   probeFeed: number;
-  SDSupport: boolean;
+  sdSupport: boolean;
   spindle: boolean;
   coolant: boolean;
   laser: boolean;

@@ -17,10 +17,10 @@
 import { Component, Inject } from '@angular/core';
 
 export class SerialCommand {
-  SeqId!: number;
-  SendTime!: string;
-  CommandText!: number;
-  ReplyType!: number;
-  ReplyReceivedTime!: string;
-  ResultText!: string;
+  seqId!: number;
+  sendTime!: string;
+  commandText!: number;
+  replyType!: number;
+  replyReceivedTime!: string;
+  resultText!: string;
 }
