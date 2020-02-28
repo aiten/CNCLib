@@ -202,7 +202,7 @@ function fromMachine(r: Machine): any {
       commandSyntax: r.commandSyntax
     });
 
-  machine.MachineCommands = [];
+  machine.machineCommands = [];
 
   if (r.commands != null) {
     r.commands.forEach(element => {
@@ -219,7 +219,7 @@ function fromMachine(r: Machine): any {
     });
   }
 
-  machine.MachineInitCommands = [];
+  machine.machineInitCommands = [];
 
   if (r.initCommands != null) {
     r.initCommands.forEach(element => {
