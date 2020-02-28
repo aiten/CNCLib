@@ -62,7 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Extended.Wpf.Toolkit">
-      <Version>3.7.0</Version>
+      <Version>3.8.1</Version>
     </PackageReference>
     <PackageReference Include="MahApps.Metro">
       <Version>2.0.0-alpha0660</Version>

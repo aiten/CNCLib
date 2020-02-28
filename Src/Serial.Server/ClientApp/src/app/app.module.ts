@@ -32,7 +32,6 @@ import { LocalCNCLibInfoService } from './services/local-CNCLib-Info.service';
 import { CNCLibLoggedinService } from './services/CNCLib-loggedin.service';
 import { LocalCNCLibLoggedinService } from './services/local-CNCLib-loggedin.service';
 
-import { SerialPortsComponent } from './serialports/serialports.component';
 import { SerialPortHistoryComponent } from './serialporthistory/serialporthistory.component';
 import { machineControlRoutes, machineControlComponents } from './machinecontrol/machinecontrol.routing';
 
@@ -50,7 +49,6 @@ import { faHome, faSync, faPlug } from '@fortawesome/free-solid-svg-icons';
     NavMenuComponent,
     HomeComponent,
     LoginComponent,
-    SerialPortsComponent,
     SerialPortHistoryComponent,
     ...machineControlComponents,
   ],
@@ -65,7 +63,6 @@ import { faHome, faSync, faPlug } from '@fortawesome/free-solid-svg-icons';
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
-      { path: 'serialports', component: SerialPortsComponent },
       ...machineControlRoutes,
     ])
   ],

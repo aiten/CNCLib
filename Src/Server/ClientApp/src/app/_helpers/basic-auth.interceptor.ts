@@ -14,17 +14,23 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { getWebApiUrl } from '../../main';
 
 @Injectable()
 export class BasicAuthInterceptor implements HttpInterceptor {
+
+  constructor(
+    @Inject('WEBAPI_URL') public baseUrl: string
+  ) {
+
+  }
+
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     // add authorization only if wepAPI server (not for serial.server)
-    if (request.url.startsWith(getWebApiUrl())) {
+    if (request.url.startsWith(this.baseUrl)) {
       // add authorization header with basic auth credentials if available
       let currentUser = JSON.parse(localStorage.getItem('CNCLib.currentUser'));
       if (currentUser && currentUser.authData) {

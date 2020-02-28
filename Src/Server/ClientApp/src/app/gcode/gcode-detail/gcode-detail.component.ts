@@ -198,6 +198,10 @@ export class GcodeDetailComponent implements OnInit {
 
   }
 
+  run() {
+    this.router.navigate([gcodeURL, 'run', this.entry.id]);
+  }
+
   isHpgl() {
     return this.entry.loadType == ELoadType.Hpgl;
   }

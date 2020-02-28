@@ -29,8 +29,9 @@ const machinecontrolURL = '/machinecontrol';
 })
 export class MachineControlOverviewComponent {
   serialports!: SerialPortDefinition[];
+  public historyportid: number = -1;
 
-  displayedColumns: string[] = ['id', 'portName', 'isConnected', 'task'];
+  displayedColumns: string[] = ['id', 'portName', 'isConnected', 'isAborted', 'isSingleStep', 'commandsInQueue', 'task'];
 
   constructor(
     private serialServerService: SerialServerService,
@@ -41,11 +42,34 @@ export class MachineControlOverviewComponent {
     await this.reload();
   }
 
+  useport(serialport: SerialPortDefinition) {
+    this.router.navigate([machinecontrolURL, serialport.id]);
+  }
+
   async reload(): Promise<void> {
     this.serialports = await this.serialServerService.getPorts();
   }
 
-  useport(serialport: SerialPortDefinition) {
-    this.router.navigate([machinecontrolURL, serialport.id]);
+  async refresh(): Promise<void> {
+    this.serialports = await this.serialServerService.refresh();
+  }
+
+  showHistory(serialPortId: number) {
+    this.historyportid = serialPortId;
+  }
+
+  machineControl(serialPortId: number) {
+    this.router.navigate([machinecontrolURL, serialPortId]);
+  }
+
+  async clearQueue(serialPortId: number): Promise<void> {
+    await this.serialServerService.abort(serialPortId);
+    await this.serialServerService.resume(serialPortId);
+    await this.reload();
+  }
+
+  async disconnect(serialPortId: number): Promise<void> {
+    await this.serialServerService.disconnect(serialPortId);
+    await this.reload();
   }
 }
