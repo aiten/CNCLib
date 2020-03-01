@@ -73,6 +73,10 @@
       <td>{{ entry.bufferSize }} </td>
     </tr>
 
+    <tr *ngIf="_isMore">
+      <td>dtrIsReste</td>
+      <td>{{ entry.dtrIsReset }} </td>
+    </tr>
 
     <tr *ngIf="_isMore">
       <td>commandToUpper</td>

@@ -61,7 +61,7 @@ export class SerialServerConnection {
   async connectTo(machine: Machine): Promise<string> {
 
     var url =
-      await this.getInfoX(machine.serialServer, machine.serialServerUser, machine.serialServerPassword, machine.comPort, machine.baudRate);
+      await this.getInfoX(machine.serialServer, machine.serialServerUser, machine.serialServerPassword, machine.comPort, machine.baudRate, machine.dtrIsReset);
 
     this.machine = machine;
 
@@ -70,7 +70,7 @@ export class SerialServerConnection {
     return url;
   }
 
-  async getInfoX(serialServer: string, username: string, password: string, comPort: string, baudrate: number): Promise<string> {
+  async getInfoX(serialServer: string, username: string, password: string, comPort: string, baudrate: number, dtrIsReset: boolean): Promise<string> {
 
     var uri = serialServer + '/';
     console.log('uri:' + uri);
@@ -84,7 +84,7 @@ export class SerialServerConnection {
     console.log(port);
 
     if (!port.isConnected) {
-      await this.serialServerService.connect(port.id, baudrate, false, false);
+      await this.serialServerService.connect(port.id, baudrate, dtrIsReset, false);
     }
 
     this.serialServerUrl = uri;

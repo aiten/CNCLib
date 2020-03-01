@@ -57,6 +57,7 @@ export class MachineFormComponent implements OnInit {
         serialServerUser: [''],
         serialServerPassword: [''],
         baudRate: [115200, [Validators.required]],
+        dtrIsReset: [true, [Validators.required]],
         axis: [3, [Validators.required]],
         sizeX: [100, [Validators.required]],
         sizeY: [100],

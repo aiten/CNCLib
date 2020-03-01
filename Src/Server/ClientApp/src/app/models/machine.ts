@@ -28,6 +28,8 @@ export class Machine {
   sizeY: number;
   sizeZ: number;
   baudRate: number;
+  dtrIsReset: boolean;
+
   axis: number;
 
   sizeA: number;
