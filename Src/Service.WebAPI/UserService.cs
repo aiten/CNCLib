@@ -53,13 +53,17 @@ namespace CNCLib.Service.WebAPI
 
         public async Task<bool> IsValidUser(string username, string password)
         {
-            var isValidUser = await Read<bool>(
-                CreatePathBuilder()
+            using (var scope = CreateScope())
+            {
+                var builder = CreatePathBuilder()
                     .AddPath("isValidUser")
                     .AddQuery(new UriQueryBuilder()
                         .Add("username", username)
-                        .Add("password", password)));
-            return isValidUser;
+                        .Add("password", password));
+
+                var response = await scope.Instance.GetAsync(builder.Build());
+                return response.IsSuccessStatusCode;
+            }
         }
     }
 }

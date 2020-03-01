@@ -14,6 +14,9 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
+using System.Net.Http;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -46,11 +49,28 @@ namespace CNCLib.Serial.Client
 
         public async Task<HubConnection> Start()
         {
-            _connection = new HubConnectionBuilder().WithUrl(WebServerUri)
+            bool ValidateCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+            {
+                return true;
+            }
 
-//            .WithConsoleLogger()
-//            .WithMessagePackProtocol()
-                //           .WithTransport(TransportType.All)
+            _connection = new HubConnectionBuilder().WithUrl(WebServerUri,
+                    options =>
+                    {
+                        options.WebSocketConfiguration = (config) => { config.RemoteCertificateValidationCallback = ValidateCertificate; };
+                        options.HttpMessageHandlerFactory = (handler) =>
+                        {
+                            if (handler is HttpClientHandler clientHandler)
+                            {
+                                clientHandler.ServerCertificateCustomValidationCallback = ValidateCertificate;
+                            }
+
+                            return handler;
+                        };
+                    })
+//              .WithConsoleLogger()
+//              .WithMessagePackProtocol()
+//              .WithTransport(TransportType.All)
                 .Build();
 
             await _connection.StartAsync();

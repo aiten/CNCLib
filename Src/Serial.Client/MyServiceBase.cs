@@ -41,7 +41,10 @@ namespace CNCLib.Serial.Client
 
         private HttpClient CreateHttpClient()
         {
-            var client = new HttpClient { BaseAddress = new Uri(WebServerUri) };
+            var httpClientHandler = new HttpClientHandler();
+            httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+            
+            var client = new HttpClient (httpClientHandler) { BaseAddress = new Uri(WebServerUri) };
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
