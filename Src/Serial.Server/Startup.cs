@@ -173,7 +173,7 @@ namespace CNCLib.Serial.Server
             timer.Change(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(30));
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "CNCLib API V1"); });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("v1/swagger.json", "CNCLib API V1"); });
 
             app.UseEndpoints(endpoints =>
             {

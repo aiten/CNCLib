@@ -14,7 +14,7 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 
 import { CNCLibGCodeService } from '../../services/CNCLib-gcode.service';
 import { PreviewGCode } from '../../models/gcode-view-input';
@@ -30,6 +30,7 @@ export class GcodePreviewComponent implements OnInit {
   @Input()
   gCommands: string[];
   previewOpt: PreviewGCode;
+  isShowParam: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -59,6 +60,10 @@ export class GcodePreviewComponent implements OnInit {
 
   async refreshImage() {
     await this.getThumbnail();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
   }
 
   imageBlobUrl: string;

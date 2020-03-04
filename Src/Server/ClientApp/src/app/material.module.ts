@@ -34,6 +34,7 @@ import { MatSortModule } from "@angular/material/sort";
 import { MatTableModule } from "@angular/material/table";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatMomentDateModule } from "@angular/material-moment-adapter";
+import { MatSliderModule } from '@angular/material/slider';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
@@ -62,7 +63,8 @@ import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
     MatDatepickerModule,
     MatMomentDateModule,
     FormsModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatSliderModule,
   ]
 })
 export class MaterialModule {

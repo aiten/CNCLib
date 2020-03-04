@@ -7,8 +7,13 @@
   </div>
 
   <div *ngIf="gCommands != null">
-    <ha-gcode-preview *ngIf="isShowImage" [gCommands]="gCommands"></ha-gcode-preview>
-    <ha-gcode-run-result *ngIf="!isShowImage" [gCommands]="gCommands"></ha-gcode-run-result>
-    <button (click)="isShowImage = !isShowImage">{{isShowImage ? 'Show commands' : 'Show image'}}</button>
+    <div *ngIf="isShowImage">
+      <ha-gcode-preview [gCommands]="gCommands"></ha-gcode-preview>
+      <button (click)="isShowImage = !isShowImage">Show commands</button>
+    </div>
+    <div *ngIf="!isShowImage">
+      <ha-gcode-run-result [gCommands]="gCommands"></ha-gcode-run-result>
+      <button (click)="isShowImage = !isShowImage">Show image</button>
+    </div>
   </div>
 </div>

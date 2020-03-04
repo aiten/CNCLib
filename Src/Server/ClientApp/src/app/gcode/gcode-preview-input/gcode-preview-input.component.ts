@@ -44,7 +44,7 @@ export class GcodePreviewInputComponent implements OnInit {
         offsetY: [0.0, [Validators.required]],
         offsetZ: [0.0, [Validators.required]],
         cutterSize: [0.0, [Validators.required]],
-        lLaserSize: [0.0, [Validators.required]],
+        laserSize: [0.0, [Validators.required]],
         machineColor: [0, [Validators.required]],
         laserOnColor: [0, [Validators.required]],
         laserOffColor: [0, [Validators.required]],
