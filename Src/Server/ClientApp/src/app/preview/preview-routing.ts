@@ -14,7 +14,29 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-export const machineURL = '/machine';
-export const machineControlURL = '/machinecontrol';
-export const gcodeURL = '/gcode';
-export const previewURL = '/preview';
+import { NgModule } from '@angular/core';
+import { PreviewComponent } from './preview.component';
+import { Routes, RouterModule } from '@angular/router';
+import { PreviewViewComponent } from './preview-view/preview-view.component';
+import { PreviewInputComponent } from './preview-input/preview-input.component';
+import { PreviewGCodeComponent } from './preview-gcode/preview-gcode.component';
+
+export const previewRoutes =
+[
+  {
+    path: 'preview',
+    component: PreviewComponent,
+    children:
+    [
+      { path: '', component: PreviewViewComponent },
+    ]
+  }
+];
+
+export const previewComponents =
+[
+  PreviewComponent,
+  PreviewViewComponent,
+  PreviewInputComponent,
+  PreviewGCodeComponent
+];

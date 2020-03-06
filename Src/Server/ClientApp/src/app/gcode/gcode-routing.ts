@@ -20,10 +20,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { GcodeOverviewComponent } from './gcode-overview/gcode-overview.component';
 import { GcodeDetailComponent } from './gcode-detail/gcode-detail.component';
 import { GcodeRunComponent } from './gcode-run/gcode-run.component';
-import { GcodeRunResultComponent } from './gcode-run-result/gcode-run-result.component';
 import { GcodeRunInputComponent } from './gcode-run-input/gcode-run-input.component';
-import { GcodePreviewComponent } from './gcode-preview/gcode-preview.component';
-import { GcodePreviewInputComponent } from './gcode-preview-input/gcode-preview-input.component';
 
 export const gcodeRoutes =
 [
@@ -46,8 +43,5 @@ export const gcodeComponents =
   GcodeOverviewComponent,
   GcodeDetailComponent,
   GcodeRunComponent,
-  GcodeRunResultComponent,
   GcodeRunInputComponent,
-  GcodePreviewComponent,
-  GcodePreviewInputComponent
 ];

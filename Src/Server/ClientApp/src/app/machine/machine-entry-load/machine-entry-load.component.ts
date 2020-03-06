@@ -24,7 +24,7 @@ import { switchMap } from 'rxjs/operators';
 import { machineURL } from '../../app.global';
 
 @Component({
-  selector: 'ha-machine-entry-load',
+  selector: 'machine-entry-load',
   templateUrl: './machine-entry-load.component.html',
   styleUrls: ['./machine-entry-load.component.css']
 })

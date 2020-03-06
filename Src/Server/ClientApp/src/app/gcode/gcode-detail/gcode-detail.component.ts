@@ -32,7 +32,7 @@ import ImageHole1 = ELoadType.ImageHole;
 
 @Component(
   {
-    selector: 'ha-gcode-detail',
+    selector: 'gcode-detail',
     templateUrl: './gcode-detail.component.html',
     styleUrls: ['./gcode-detail.component.css']
   })

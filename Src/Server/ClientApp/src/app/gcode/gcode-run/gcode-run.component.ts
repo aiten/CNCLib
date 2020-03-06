@@ -19,10 +19,12 @@ import { LoadOptions, EHoleType, ELoadType, PenType, SmoothTypeEnum, ConvertType
 import { CNCLibLoadOptionService } from '../../services/CNCLib-load-option.service';
 import { CNCLibGCodeService } from '../../services/CNCLib-gcode.service';
 import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
+import { PreviewGlobal } from '../../preview/preview.global';
+import { previewURL } from '../../app.global';
 
 @Component(
   {
-    selector: 'ha-gcode-run',
+    selector: 'gcode-run',
     templateUrl: './gcode-run.component.html',
     styleUrls: ['./gcode-run.component.css']
   })
@@ -32,17 +34,20 @@ export class GcodeRunComponent implements OnInit {
   errorMessage: string = '';
   isLoading: boolean = true;
   isLoaded: boolean = false;
-  isShowImage: boolean = true;
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private loadOptionService: CNCLibLoadOptionService,
     private gCodeService: CNCLibGCodeService,
+    private previewGlobal: PreviewGlobal
   ) {
   }
 
   async createGCode() {
     this.gCommands = await this.gCodeService.createGCode(this.entry);
+    this.previewGlobal.commands = this.gCommands;
+    this.router.navigate([previewURL]);
   }
 
   async ngOnInit() {
@@ -52,6 +57,5 @@ export class GcodeRunComponent implements OnInit {
     console.log("loadOptions loaded");
 
     this.isLoaded = true;
-
   }
 }

@@ -21,7 +21,7 @@ export class SerialPortHistoryComponent implements OnChanges {
   @Input()
   autoreloadonempty: boolean = false;
 
-  serialcommands!: SerialCommand[];
+  serialcommands: SerialCommand[] = [];
   serialcommandsDataSource = new MatTableDataSource<SerialCommand>(this.serialcommands);
 
   displayedColumns: string[] = [/* 'SeqId', */ 'sentTime', 'commandText', 'replyType', 'resultText', 'replyReceivedTime'];

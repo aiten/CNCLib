@@ -27,7 +27,7 @@ import { Router } from '@angular/router';
 
 @Component(
   {
-    selector: 'ha-machine-overview',
+    selector: 'machine-overview',
     templateUrl: './machine-overview.component.html',
     styleUrls: ['./machine-overview.component.css'],
   })

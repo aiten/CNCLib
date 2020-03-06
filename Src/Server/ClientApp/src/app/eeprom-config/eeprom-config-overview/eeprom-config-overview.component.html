@@ -5,18 +5,18 @@
   <div class="row">
     <div class="col-sm">
       <h1>Input</h1>
-      <ha-eeprom-config-form #eeinput [eepromConfigInput]="eepromConfigInput">
+      <eeprom-config-form #eeinput [eepromConfigInput]="eepromConfigInput">
         Loading ...
-      </ha-eeprom-config-form>
+      </eeprom-config-form>
       <button mat-stroked-button [disabled]="!eeinput.isValid()" (click)="eeinput.getFormValues(); calculateEepromConfig()">Calculate eeprom values</button>
     </div>
     <div class="col-sm">
       <div *ngIf="isCalculated">
         <h1>Result</h1>
         <p *ngIf="isCalculating">Calculating ...</p>
-        <ha-eeprom-config-result [entry]="eepromConfig" *ngIf="isCalculated">
+        <eeprom-config-result [entry]="eepromConfig" *ngIf="isCalculated">
           Loading ...
-        </ha-eeprom-config-result>
+        </eeprom-config-result>
       </div>
     </div>
   </div>

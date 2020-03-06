@@ -1,42 +1,21 @@
-table {
-}
+table { }
 
-.reloadbuttons {
-  float: right
-}
+.reloadbuttons { float: right }
 
-.mat-column-id {
-  width: 50px;
-}
+.mat-column-id { width: 50px; }
 
-.mat-column-portName {
-  width: 200px;
-}
+.mat-column-portName { width: 200px; }
 
-.mat-column-isConnected {
-  width: 90px;
-}
+.mat-column-isConnected { width: 90px; }
 
-.mat-column-isAborted {
-  width: 90px;
-}
+.mat-column-isAborted { width: 90px; }
 
-.mat-column-isSingleStep {
-  width: 90px;
-}
+.mat-column-isSingleStep { width: 90px; }
 
-.mat-column-commandsInQueue {
-  width: 90px;
-}
+.mat-column-commandsInQueue { width: 90px; }
 
-.mat-column-task {
-  width: 450px;
-}
+.mat-column-task { width: 450px; }
 
-.taskbutton {
-  margin-right: 5px;
-}
+.taskbutton { margin-right: 5px; }
 
-.div-alporthistory {
-  margin-top: 5px
-}
+.div-alporthistory { margin-top: 5px }

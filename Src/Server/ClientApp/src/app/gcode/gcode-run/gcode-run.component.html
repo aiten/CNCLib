@@ -1,19 +1,9 @@
 <div *ngIf="isLoaded">
 
-  <div *ngIf="gCommands == null">
+  <div>
     <h1>create G-Code for: {{ entry.SettingName }}</h1>
-    <ha-gcode-run-input [entry]="entry"></ha-gcode-run-input>
+    <gcode-run-input [entry]="entry"></gcode-run-input>
     <button mat-stroked-button class="btn btn-default" (click)='createGCode()'>Run ...</button>
   </div>
 
-  <div *ngIf="gCommands != null">
-    <div *ngIf="isShowImage">
-      <ha-gcode-preview [gCommands]="gCommands"></ha-gcode-preview>
-      <button (click)="isShowImage = !isShowImage">Show commands</button>
-    </div>
-    <div *ngIf="!isShowImage">
-      <ha-gcode-run-result [gCommands]="gCommands"></ha-gcode-run-result>
-      <button (click)="isShowImage = !isShowImage">Show image</button>
-    </div>
-  </div>
 </div>

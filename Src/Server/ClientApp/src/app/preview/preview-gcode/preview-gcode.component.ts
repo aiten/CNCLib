@@ -19,16 +19,17 @@ import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
+import { PreviewGlobal } from '../preview.global';
+
 
 @Component(
   {
-    selector: 'ha-gcode-run-result',
-    templateUrl: './gcode-run-result.component.html',
-    styleUrls: ['./gcode-run-result.component.css']
+    selector: 'preview-gcode',
+    templateUrl: './preview-gcode.component.html',
+    styleUrls: ['./preview-gcode.component.css']
   })
-export class GcodeRunResultComponent implements OnInit {
+export class PreviewGCodeComponent implements OnInit {
 
-  @Input()
   gCommands: string[];
 
   gCommandsDataSource = new MatTableDataSource<string>(this.gCommands);
@@ -39,11 +40,13 @@ export class GcodeRunResultComponent implements OnInit {
   paginator: MatPaginator;
 
   constructor(
+    private previewGlobal: PreviewGlobal
   ) {
 
   }
 
   async ngOnInit() {
+    this.gCommands = this.previewGlobal.commands;
     this.gCommandsDataSource = new MatTableDataSource<string>(this.gCommands);
     this.gCommandsDataSource.paginator = this.paginator;
   }

@@ -22,6 +22,7 @@
 import { Injectable } from '@angular/core';
 import { SerialServerService } from '../services/serialserver.service';
 import { MachineControlGlobal } from '../machinecontrol/machinecontrol.global';
+import { PreviewGlobal } from '../preview/preview.global';
 
 import { Machine } from '../models/machine';
 
@@ -30,7 +31,8 @@ export class SerialServerConnection {
 
   constructor(
     private serialServerService: SerialServerService,
-    public machineControlGlobal: MachineControlGlobal
+    public machineControlGlobal: MachineControlGlobal,
+    public previewGlobal: PreviewGlobal
   ) {
 
     console.log("Create new");
@@ -66,6 +68,7 @@ export class SerialServerConnection {
     this.machine = machine;
 
     this.machineControlGlobal.setFromMachine(machine);
+    this.previewGlobal.setFromMachine(machine);
 
     return url;
   }

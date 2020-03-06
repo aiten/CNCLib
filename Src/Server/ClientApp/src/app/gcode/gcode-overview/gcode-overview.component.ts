@@ -29,7 +29,7 @@ import { MessageBoxData } from "../../modal/message-box-data";
 
 @Component(
   {
-    selector: 'ha-gcode-overview',
+    selector: 'gcode-overview',
     templateUrl: './gcode-overview.component.html',
     styleUrls: ['./gcode-overview.component.css']
   })

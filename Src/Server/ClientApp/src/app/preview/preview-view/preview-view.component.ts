@@ -20,42 +20,28 @@ import { CNCLibGCodeService } from '../../services/CNCLib-gcode.service';
 import { PreviewGCode } from '../../models/gcode-view-input';
 import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
 
+import { SerialServerConnection } from "../../serialServer/serialServerConnection";
+import { SerialServerService } from '../../services/serialserver.service';
+
+import { PreviewGlobal } from '../preview.global';
+
 @Component(
   {
-    selector: 'ha-gcode-preview',
-    templateUrl: './gcode-preview.component.html',
-    styleUrls: ['./gcode-preview.component.css']
+    selector: 'preview-detail',
+    templateUrl: './preview-view.component.html',
+    styleUrls: ['./preview-view.component.css']
   })
-export class GcodePreviewComponent implements OnInit {
-  @Input()
-  gCommands: string[];
-  previewOpt: PreviewGCode;
-  isShowParam: boolean = false;
+export class PreviewViewComponent implements OnInit {
+  public previewOpt: PreviewGCode;
 
   constructor(
     private route: ActivatedRoute,
     private gCodeService: CNCLibGCodeService,
+    public serialServer: SerialServerConnection,
+    private serialServerService: SerialServerService,
+    public previewGlobal: PreviewGlobal
   ) {
-    this.previewOpt = new PreviewGCode();
-    this.previewOpt.sizeX = 200;
-    this.previewOpt.sizeY = 200;
-    this.previewOpt.sizeZ = 200;
-
-    this.previewOpt.offsetX = 0;
-    this.previewOpt.offsetY = 0;
-    this.previewOpt.offsetZ = 0;
-
-    this.previewOpt.zoom = 1.0;
-    this.previewOpt.laserSize = 0.254;
-    this.previewOpt.cutterSize = 0;
-    this.previewOpt.renderSizeX = 800;
-    this.previewOpt.renderSizeY = 800;
-
-    this.previewOpt.rotate3DAngle = 0;
-    this.previewOpt.rotate3DVectX = 0;
-    this.previewOpt.rotate3DVectY = 0;
-    this.previewOpt.rotate3DVectZ = 1.0;
-    this.previewOpt.rotate3DVect = [this.previewOpt.rotate3DVectX, this.previewOpt.rotate3DVectY, this.previewOpt.rotate3DVectZ];
+    this.previewOpt = previewGlobal.previewOpt;
   }
 
   async refreshImage() {
@@ -69,13 +55,16 @@ export class GcodePreviewComponent implements OnInit {
   imageBlobUrl: string;
 
   async getThumbnail(): Promise<void> {
-    this.previewOpt.commands = this.gCommands;
+    this.previewOpt.commands = this.previewGlobal.commands;
 
-    console.log("getGCode");
-    this.previewOpt.rotate3DVect = [this.previewOpt.rotate3DVectX, this.previewOpt.rotate3DVectY, this.previewOpt.rotate3DVectZ];
-    let blob = await this.gCodeService.getGCodeAsImage(this.previewOpt);
-    console.log("getGCode image");
-    let ok = await this.createImageFromBlob(blob);
+    if (this.previewOpt.commands != null) {
+
+      console.log("getGCode");
+      this.previewOpt.rotate3DVect = [this.previewOpt.rotate3DVectX, this.previewOpt.rotate3DVectY, this.previewOpt.rotate3DVectZ];
+      let blob = await this.gCodeService.getGCodeAsImage(this.previewOpt);
+      console.log("getGCode image");
+      let ok = await this.createImageFromBlob(blob);
+    }
   }
 
   async createImageFromBlob(image: Blob): Promise<void> {
@@ -87,6 +76,25 @@ export class GcodePreviewComponent implements OnInit {
       false);
     if (image) {
       reader.readAsDataURL(image);
+    }
+  }
+
+  canSendToMachine(): boolean {
+    return this.serialServer.getMachine() != null;
+  }
+
+  async sendToMachine(): Promise<void> {
+    if (this.serialServer.getMachine() != null) {
+      console.log("sendToMachine");
+      console.log(this.serialServer.getSerialServerUrl());
+
+      this.serialServerService.setBaseUrl(this.serialServer.getSerialServerUrl(), this.serialServer.getSerialServerAuth());
+      var id = this.serialServer.getSerialServerPortId();
+
+      this.serialServerService.queueCommands(id, this.previewOpt.commands, 1000000);
+      //this.serialport = await this.serialServerService.getPort(id);
+      //this.isConnected = this.serialport.isConnected != 0;
+
     }
   }
 

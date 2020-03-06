@@ -19,7 +19,7 @@ import { FormGroup, FormArray, FormControl, FormBuilder, Validators } from '@ang
 import { EepromConfigInput } from '../../models/eeprom-config-input';
 
 @Component({
-  selector: 'ha-eeprom-config-form',
+  selector: 'eeprom-config-form',
   templateUrl: './eeprom-config-form.component.html',
   styleUrls: ['./eeprom-config-form.component.css']
 })

@@ -17,25 +17,25 @@
 export class PreviewGCode {
   commands: string[];
 
-  sizeX: number;
+  sizeX: number = 200;
 
-  sizeY: number;
+  sizeY: number = 200;
 
-  sizeZ: number;
+  sizeZ: number = 200;
 
-  keepRatio: boolean;
+  keepRatio: boolean = true;
 
-  zoom: number;
+  zoom: number = 1;
 
-  offsetX: number;
+  offsetX: number = 0;
 
-  offsetY: number;
+  offsetY: number = 0;
 
-  offsetZ: number;
+  offsetZ: number = 0;
 
-  cutterSize: number;
+  cutterSize: number = 0.254;
 
-  laserSize: number;
+  laserSize: number = 0;
 
   machineColor: number;
 
@@ -57,15 +57,15 @@ export class PreviewGCode {
 
 // public Rotate3D Rotate
 
-  rotate3DAngle: number;
+  rotate3DAngle: number = 0;
 
-  rotate3DVect: number[];
+  rotate3DVectX: number = 0;
+  rotate3DVectY: number = 0;
+  rotate3DVectZ: number = 1.0;
 
-  rotate3DVectX: number;
-  rotate3DVectY: number;
-  rotate3DVectZ: number;
+  rotate3DVect: number[] = [this.rotate3DVectX, this.rotate3DVectY, this.rotate3DVectZ];
 
-  renderSizeX: number;
+  renderSizeX: number = 800;
 
-  renderSizeY: number;
+  renderSizeY: number = 800;
 }

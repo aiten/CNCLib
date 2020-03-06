@@ -20,11 +20,11 @@ import { PreviewGCode } from '../../models/gcode-view-input';
 
 @Component(
   {
-    selector: 'ha-gcode-preview-input',
-    templateUrl: './gcode-preview-input.component.html',
-    styleUrls: ['./gcode-preview-input.component.css']
+    selector: 'preview-input',
+    templateUrl: './preview-input.component.html',
+    styleUrls: ['./preview-input.component.css']
   })
-export class GcodePreviewInputComponent implements OnInit {
+export class PreviewInputComponent implements OnInit {
   @Input()
   previewOpt: PreviewGCode;
   previewOptForm: FormGroup;

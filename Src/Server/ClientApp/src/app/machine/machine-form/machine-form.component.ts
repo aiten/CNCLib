@@ -26,7 +26,7 @@ import { Router } from '@angular/router';
 
 
 @Component({
-  selector: 'ha-machine-form',
+  selector: 'machine-form',
   templateUrl: './machine-form.component.html',
   styleUrls: ['./machine-form.component.css']
 })

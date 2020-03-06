@@ -18,7 +18,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Machine } from '../../models/machine';
 
 @Component({
-  selector: 'ha-machine-entry',
+  selector: 'machine-entry',
   templateUrl: './machine-entry.component.html',
   styleUrls: ['./machine-entry.component.css']
 })

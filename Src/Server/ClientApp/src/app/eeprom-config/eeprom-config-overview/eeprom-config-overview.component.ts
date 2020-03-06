@@ -23,7 +23,7 @@ import { Router } from '@angular/router';
 
 @Component(
   {
-    selector: 'ha-eeprom-config-overview',
+    selector: 'eeprom-config-overview',
     templateUrl: './eeprom-config-overview.component.html',
     styleUrls: ['./eeprom-config-overview.component.css']
   })

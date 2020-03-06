@@ -18,9 +18,11 @@ import { Component, OnInit, Input } from '@angular/core';
 import { LoadOptions, EHoleType, ELoadType, PenType, SmoothTypeEnum, ConvertTypeEnum, DitherFilter } from '../../models/load-options';
 import { FormGroup, FormArray, FormControl, FormBuilder, Validators } from '@angular/forms';
 
+import { SerialServerConnection } from '../../serialServer/serialServerConnection';
+
 @Component(
   {
-    selector: 'ha-gcode-run-input',
+    selector: 'gcode-run-input',
     templateUrl: './gcode-run-input.component.html',
     styleUrls: ['./gcode-run-input.component.css']
   })
@@ -30,6 +32,7 @@ export class GcodeRunInputComponent implements OnInit {
   gCodeForm: FormGroup;
 
   constructor(
+    public serialServer: SerialServerConnection,
     private fb: FormBuilder
   ) {
 
@@ -94,6 +97,12 @@ export class GcodeRunInputComponent implements OnInit {
   }
 
   async ngOnInit() {
+
+    if (this.serialServer.getMachine()) {
+      this.entry.autoScaleSizeX = this.serialServer.getMachine().sizeX;
+      this.entry.autoScaleSizeY = this.serialServer.getMachine().sizeY;
+    }
+
     this.gCodeForm.patchValue(this.entry);
   }
 }

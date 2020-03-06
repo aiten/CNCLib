@@ -27,6 +27,7 @@ import { HomeComponent } from './home/home.component';
 import { MaterialModule } from './material.module';
 import { LoginComponent } from "./login/login.component"
 
+import { MessageBoxComponent } from './modal/message-box/message-box.component';
 import { EepromConfigComponent } from "./eeprom-config/eeprom-config.component";
 
 import { CNCLibInfoService } from './services/CNCLib-Info.service';
@@ -56,17 +57,17 @@ import { LocalSerialServerService } from './services/local-serialserver.service'
 import { eepromConfigRoutes, eepromConfigComponents } from './eeprom-config/eeprom-config-routing';
 import { machineRoutes, machineComponents } from './machine/machine-routing';
 
-import { MessageBoxComponent } from './modal/message-box/message-box.component';
-
 import { gcodeRoutes, gcodeComponents } from './gcode/gcode-routing';
+import { previewRoutes, previewComponents } from './preview/preview-routing';
 
 import { BasicAuthInterceptor, ErrorInterceptor } from './_helpers';
 
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { faHome, faSync, faPlug, faCalculator, faToolbox, faCogs, faEllipsisV, faArrowDown, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faSync, faPlug, faCalculator, faToolbox, faCogs, faEllipsisV, faArrowDown, faChevronDown, faDrawPolygon } from '@fortawesome/free-solid-svg-icons';
 
 import { SerialServerConnection } from './serialServer/serialServerConnection';
 import { MachineControlGlobal } from './machinecontrol/machinecontrol.global';
+import { PreviewGlobal } from './preview/preview.global';
 
 @NgModule({
   declarations: [
@@ -78,8 +79,9 @@ import { MachineControlGlobal } from './machinecontrol/machinecontrol.global';
     MessageBoxComponent,
     ...machineComponents,
     ...machineControlComponents,
+    ...previewComponents,
+    ...gcodeComponents,
     ...eepromConfigComponents,
-    ...gcodeComponents
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -96,6 +98,7 @@ import { MachineControlGlobal } from './machinecontrol/machinecontrol.global';
       ...machineRoutes,
       ...machineControlRoutes,
       ...gcodeRoutes,
+      ...previewRoutes,
     ]),
   ],
   providers: [
@@ -109,7 +112,8 @@ import { MachineControlGlobal } from './machinecontrol/machinecontrol.global';
     { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     SerialServerConnection,
-    MachineControlGlobal
+    MachineControlGlobal,
+    PreviewGlobal,
   ],
   bootstrap: [AppComponent],
   entryComponents: [MessageBoxComponent]
@@ -117,6 +121,6 @@ import { MachineControlGlobal } from './machinecontrol/machinecontrol.global';
 export class AppModule {
   constructor(library: FaIconLibrary) {
 
-    library.addIcons(faHome, faSync, faPlug, faCalculator, faToolbox, faCogs, faEllipsisV, faArrowDown, faChevronDown);
+    library.addIcons(faHome, faSync, faPlug, faCalculator, faToolbox, faCogs, faEllipsisV, faArrowDown, faChevronDown, faDrawPolygon);
   }
 }
