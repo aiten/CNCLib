@@ -48,9 +48,6 @@ export class MachineControlDetailComponent {
   async load(): Promise<void> {
 
     if (this.serialServer.getMachine() != null) {
-
-      console.log(this.serialServer.getSerialServerUrl());
-
       this.serialServerService.setBaseUrl(this.serialServer.getSerialServerUrl(), this.serialServer.getSerialServerAuth());
       var id = this.serialServer.getSerialServerPortId();
 

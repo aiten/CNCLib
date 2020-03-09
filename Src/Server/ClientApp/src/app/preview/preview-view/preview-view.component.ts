@@ -49,7 +49,6 @@ export class PreviewViewComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
   }
 
   imageBlobUrl: string;
@@ -58,11 +57,8 @@ export class PreviewViewComponent implements OnInit {
     this.previewOpt.commands = this.previewGlobal.commands;
 
     if (this.previewOpt.commands != null) {
-
-      console.log("getGCode");
       this.previewOpt.rotate3DVect = [this.previewOpt.rotate3DVectX, this.previewOpt.rotate3DVectY, this.previewOpt.rotate3DVectZ];
       let blob = await this.gCodeService.getGCodeAsImage(this.previewOpt);
-      console.log("getGCode image");
       let ok = await this.createImageFromBlob(blob);
     }
   }
@@ -85,9 +81,6 @@ export class PreviewViewComponent implements OnInit {
 
   async sendToMachine(): Promise<void> {
     if (this.serialServer.getMachine() != null) {
-      console.log("sendToMachine");
-      console.log(this.serialServer.getSerialServerUrl());
-
       this.serialServerService.setBaseUrl(this.serialServer.getSerialServerUrl(), this.serialServer.getSerialServerAuth());
       var id = this.serialServer.getSerialServerPortId();
 

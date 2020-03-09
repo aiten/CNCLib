@@ -47,16 +47,12 @@ export class MachineOverviewComponent implements OnInit {
   }
 
   detailMachine(id: number) {
-    console.log('Detail machine');
     this.router.navigate([machineURL, 'detail', String(id)]);
   }
 
   async connectToMachine(machine: Machine) {
-    console.log('connect to machine');
-    console.log(machine);
 
     await this.serialServer.connectTo(machine);
-
     this.router.navigate([machineControlURL]);
   }
 

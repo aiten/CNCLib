@@ -32,7 +32,6 @@ export class LocalCNCLibGCodeService implements CNCLibGCodeService {
   }
 
   createGCode(loadOption: LoadOptions): Promise<string[]> {
-    console.log('LocalCNCLibGCodeService.createGCode');
     const m = this.http
       .post<string[]>(`${this.baseUrl}api/GCode`, loadOption)
       .toPromise()
@@ -41,7 +40,6 @@ export class LocalCNCLibGCodeService implements CNCLibGCodeService {
   }
 
   getGCodeAsImage(viewInput: PreviewGCode): Promise<Blob> {
-    console.log('LocalCNCLibGCodeService.getGCodeAsImage');
     const m = this.http
       .put<Blob>(`${this.baseUrl}api/GCode/render`, viewInput, { responseType: 'blob' as 'json' })
       .toPromise()

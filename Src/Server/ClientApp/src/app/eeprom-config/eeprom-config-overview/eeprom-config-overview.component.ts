@@ -44,7 +44,6 @@ export class EepromConfigOverviewComponent implements OnInit {
 
   async calculateEepromConfig() {
     this.isCalculating = true;
-    console.log('calculateEepromConfig');
 
     this.eepromConfig = await this.eepromConfigService.calculateConfig(this.eepromConfigInput);;
     this.isCalculating = false;

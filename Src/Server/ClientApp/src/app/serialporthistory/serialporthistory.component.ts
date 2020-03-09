@@ -40,8 +40,6 @@ export class SerialPortHistoryComponent implements OnChanges {
 
   async ngOnInit() {
 
-    console.log('ngOnInit');
-
     this.forserialportid = this.serialServer.getSerialServerPortId();
 
     if (this.autoreloadonempty) {

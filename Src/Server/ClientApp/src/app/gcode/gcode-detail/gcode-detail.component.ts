@@ -175,10 +175,8 @@ export class GcodeDetailComponent implements OnInit {
   }
 
   async savegCode(value: any): Promise<void> {
-    console.log(value);
     Object.assign(this.entry, value);
     await this.loadOptionService.updateLoadOption(this.entry);
-    console.log("saved");
     window.location.reload();
 // this.router.navigate([gcodeURL, 'detail', this.entry.Id]);
   }

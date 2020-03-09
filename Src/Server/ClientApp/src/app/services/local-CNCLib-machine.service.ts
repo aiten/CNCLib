@@ -31,7 +31,6 @@ export class LocalCNCLibMachineService implements CNCLibMachineService {
   }
 
   getAll(): Promise<Machine[]> {
-    console.log('LocalCNCLibMachineService.getAll');
     const machine = this.http
       .get<any[]>(`${this.baseUrl}api/machine`)
       .toPromise()
@@ -42,7 +41,6 @@ export class LocalCNCLibMachineService implements CNCLibMachineService {
   }
 
   getById(id: number): Promise<Machine> {
-    console.log('LocalCNCLibMachineService.getById');
     const m = this.http
       .get(`${this.baseUrl}api/machine/${id}`)
       .toPromise()
@@ -52,8 +50,6 @@ export class LocalCNCLibMachineService implements CNCLibMachineService {
   }
 
   getDefault(): Promise<Machine> {
-
-    console.log('LocalCNCLibMachineService.getDefault');
     const m = this.http
       .get(`${this.baseUrl}api/machine/default`)
       .toPromise()
@@ -64,7 +60,6 @@ export class LocalCNCLibMachineService implements CNCLibMachineService {
 
   addMachine(machine: Machine): Promise<Machine> {
 
-    console.log('LocalCNCLibMachineService.addMachine');
     const m = this.http
       .post(`${this.baseUrl}api/machine`, fromMachine(machine))
       .toPromise()
@@ -74,7 +69,6 @@ export class LocalCNCLibMachineService implements CNCLibMachineService {
   }
 
   updateMachine(machine: Machine): Promise<void> {
-    console.log('LocalCNCLibMachineService.updateMachine');
     const m = this.http
       .put<void>(`${this.baseUrl}api/machine/${machine.id}`, fromMachine(machine))
       .toPromise()
@@ -83,14 +77,12 @@ export class LocalCNCLibMachineService implements CNCLibMachineService {
   }
 
   deleteMachineById(id: number): Promise<void> {
-    console.log('LocalCNCLibMachineService.addMachine');
     const m = this.http
       .delete<void>(`${this.baseUrl}api/machine/${id}`)
       .toPromise()
       .catch(this.handleErrorPromise);
     return m;
-    /*
-    console.log('LocalCNCLibMachineService.deleteMachine');
+/*
     const m = this.http
       .delete(`${this.baseUrl}/machine/${id}`, this.getHeaders())
       .map((response: Response) => toMachine(response.json()))
@@ -165,7 +157,6 @@ function toMachine(r: any): Machine {
       }));
   });
 
-  console.log('Parsed toMachine:', machine);
   return machine;
 }
 
@@ -234,6 +225,5 @@ function fromMachine(r: Machine): any {
         }));
     });
   }
-  console.log('Parsed FromMachine:', machine);
   return machine;
 }

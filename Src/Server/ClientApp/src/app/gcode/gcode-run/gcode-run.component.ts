@@ -54,7 +54,6 @@ export class GcodeRunComponent implements OnInit {
 
     let id = this.route.snapshot.paramMap.get('id');
     this.entry = await this.loadOptionService.getById(+id);
-    console.log("loadOptions loaded");
 
     this.isLoaded = true;
   }

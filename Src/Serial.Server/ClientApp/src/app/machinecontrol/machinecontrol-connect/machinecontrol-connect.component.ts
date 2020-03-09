@@ -61,10 +61,6 @@ export class MachineControlConnectComponent {
 
   async save(value: any): Promise<void> {
     Object.assign(this.connectOptions, value);
-    console.log(value);
-    console.log(this.connectOptions);
-
-    console.log('save:' + this.entry.id);
 
     await this.serialServerService.connect(this.entry.id,
       this.connectOptions.baudRate,

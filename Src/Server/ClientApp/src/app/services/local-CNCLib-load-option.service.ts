@@ -29,7 +29,6 @@ export class LocalCNCLibLoadOptionService implements CNCLibLoadOptionService {
   }
 
   getAll(): Promise<LoadOptions[]> {
-    console.log('LocalCNCLibLoadOptionService.getAll');
     const loadOptions = this.http
       .get<LoadOptions[]>(`${this.baseUrl}api/LoadOptions`)
       .toPromise()
@@ -39,7 +38,6 @@ export class LocalCNCLibLoadOptionService implements CNCLibLoadOptionService {
   }
 
   getById(id: number): Promise<LoadOptions> {
-    console.log('LocalCNCLibLoadOptionService.getById');
     const loadOption = this.http
       .get<LoadOptions>(`${this.baseUrl}api/LoadOptions/${id}`)
       .toPromise()
@@ -48,8 +46,6 @@ export class LocalCNCLibLoadOptionService implements CNCLibLoadOptionService {
   }
 
   addLoadOption(loadOption: LoadOptions): Promise<LoadOptions> {
-
-    console.log('LocalCNCLibLoadOptionService.addLoadOptions');
     const m = this.http
       .post<LoadOptions>(`${this.baseUrl}api/LoadOptions`, loadOption)
       .toPromise()
@@ -58,7 +54,6 @@ export class LocalCNCLibLoadOptionService implements CNCLibLoadOptionService {
   }
 
   updateLoadOption(loadOption: LoadOptions): Promise<void> {
-    console.log('LocalCNCLibLoadOptionService.updateLoadOptions');
     const m = this.http
       .put<void>(`${this.baseUrl}api/LoadOptions/${loadOption.id}`, loadOption)
       .toPromise()
@@ -67,14 +62,12 @@ export class LocalCNCLibLoadOptionService implements CNCLibLoadOptionService {
   }
 
   deleteLoadOptionById(id: number): Promise<void> {
-    console.log('LocalCNCLibLoadOptionService.addLoadOptions');
     const m = this.http
       .delete<void>(`${this.baseUrl}api/LoadOptions/${id}`)
       .toPromise()
       .catch(this.handleErrorPromise);
     return m;
-    /*
-    console.log('LocalCNCLibLoadOptionService.deleteLoadOptions');
+/*
     const m = this.http
       .delete(`${this.baseUrl}/loadOption/${id}`, this.getHeaders())
       .map((response: Response) => toLoadOptions(response.json()))

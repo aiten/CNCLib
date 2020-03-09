@@ -61,7 +61,6 @@ export class EepromConfigFormComponent implements OnInit {
   }
 
   calcEepromConfig(value: any) {
-    console.log(value);
     Object.assign(this.eepromConfigInput, value);
   }
 

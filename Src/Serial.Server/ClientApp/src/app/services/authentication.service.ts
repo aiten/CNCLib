@@ -28,7 +28,6 @@ export class AuthenticationService {
 
   login(username: string, password: string): Promise<void> {
 
-    console.log('Authentication:login');
     const params = new HttpParams()
       .set('userName', username)
       .set('password', password);
@@ -37,14 +36,12 @@ export class AuthenticationService {
       .get(`${this.baseUrl}api/user/isvaliduser`, { params })
       .toPromise()
       .then((response: Response) => {
-        console.log('Authentication:login OK');
         var user = new User();
         user.id = 1;
         user.username = username;
         user.password = password;
         user.authData = window.btoa(username + ':' + password);
         localStorage.setItem('Serial.Server.currentUser', JSON.stringify(user));
-        console.log('Authentication:login OK');
       })
       .catch(this.handleErrorPromise);
 
@@ -58,7 +55,6 @@ export class AuthenticationService {
 
   logout() {
     // remove user from local storage to log user out
-    console.log('Authentication:logout');
     localStorage.removeItem('Serial.Server.currentUser');
   }
 }

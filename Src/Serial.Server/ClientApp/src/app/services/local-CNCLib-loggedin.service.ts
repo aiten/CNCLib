@@ -36,7 +36,6 @@ export class LocalCNCLibLoggedinService implements CNCLibLoggedinService {
   }
 
   public logout() {
-    console.log('Logout current user');
     localStorage.removeItem('Serial.Server.currentUser');
   }
 

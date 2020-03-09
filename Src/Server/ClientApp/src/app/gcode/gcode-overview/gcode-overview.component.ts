@@ -63,12 +63,10 @@ export class GcodeOverviewComponent implements OnInit {
   }
 
   detailLoadOption(id: number) {
-    console.log('Detail gcode');
     this.router.navigate([gcodeURL, 'detail', String(id)]);
   }
 
   runLoadOption(id: number) {
-    console.log('Run gcode');
     this.router.navigate([gcodeURL, 'run', String(id)]);
   }
 

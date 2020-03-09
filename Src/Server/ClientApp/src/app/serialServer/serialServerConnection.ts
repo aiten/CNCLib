@@ -34,8 +34,6 @@ export class SerialServerConnection {
     public machineControlGlobal: MachineControlGlobal,
     public previewGlobal: PreviewGlobal
   ) {
-
-    console.log("Create new");
   }
 
   private machine: Machine;
@@ -76,15 +74,11 @@ export class SerialServerConnection {
   async getInfoX(serialServer: string, username: string, password: string, comPort: string, baudrate: number, dtrIsReset: boolean): Promise<string> {
 
     var uri = serialServer + '/';
-    console.log('uri:' + uri);
-
     var auth = window.btoa(username + ':' + password);
 
     this.serialServerService.setBaseUrl(uri, auth);
 
     var port = await this.serialServerService.getPortByName(comPort);
-
-    console.log(port);
 
     if (!port.isConnected) {
       await this.serialServerService.connect(port.id, baudrate, dtrIsReset, false);

@@ -36,8 +36,6 @@ export class SerialPortHistoryComponent implements OnChanges {
 
   async ngOnInit() {
 
-    console.log('ngOnInit');
-
     if (this.autoreloadonempty) {
       console.log('SignalR to ' + this.baseUrl + 'serialSignalR');
 
