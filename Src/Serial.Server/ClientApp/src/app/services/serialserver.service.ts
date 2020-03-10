@@ -17,6 +17,7 @@
 import { SerialCommand } from "../models/serial.command";
 import { SerialPortDefinition } from '../models/serial.port.definition';
 import { CNCLibServerInfo } from '../models/CNCLib.Server.Info'
+import { PreviewGCode } from '../models/preview-input';
 
 export abstract class SerialServerService {
 
@@ -45,4 +46,6 @@ export abstract class SerialServerService {
   public abstract queueCommands(serialportid: number, command: string[], timeout: number): Promise<SerialCommand[]>;
 
   public abstract sendWhileOkCommands(serialportid: number, command: string[], timeout: number): Promise<SerialCommand[]>;
+
+  public abstract getGCodeAsImage(serialportid: number, viewInput: PreviewGCode): Promise<Blob>;
 }

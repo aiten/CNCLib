@@ -14,34 +14,13 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-import { NgModule } from '@angular/core';
-import { MachineControlOverviewComponent } from './machinecontrol-overview/machinecontrol-overview.component';
-import { MachineControlConnectComponent } from './machinecontrol-connect/machinecontrol-connect.component';
-import { MachineControlDetailComponent } from './machinecontrol-detail/machinecontrol-detail.component';
-import { MachineControlComponent } from './machinecontrol.component';
-import { Routes, RouterModule } from '@angular/router';
-import { PreviewViewComponent } from "../preview/preview-view/preview-view.component";
+import { Injectable } from '@angular/core';
+import { PreviewGCode } from '../models/preview-input';
 
-export const machinecontrolURL = '/machinecontrol';
+@Injectable()
+export class PreviewGlobal {
 
-export const machineControlRoutes =
-[
-  {
-    path: 'machinecontrol',
-    component: MachineControlComponent,
-    children:
-    [
-      { path: '', component: MachineControlOverviewComponent },
-      { path: ':id', component: MachineControlDetailComponent },
-      { path: ':id/preview', component: PreviewViewComponent },
-    ]
-  }
-];
+  isShowParam: boolean = false;
 
-export const machineControlComponents =
-[
-  MachineControlComponent,
-  MachineControlOverviewComponent,
-  MachineControlDetailComponent,
-  MachineControlConnectComponent
-];
+  previewOpt = new PreviewGCode();
+}

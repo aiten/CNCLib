@@ -20,6 +20,7 @@ import { SerialServerService } from './serialserver.service';
 import { SerialCommand } from "../models/serial.command";
 import { SerialPortDefinition } from '../models/serial.port.definition';
 import { QueueSendCommand } from '../models/queue.send.command';
+import { PreviewGCode } from '../models/preview-input';
 
 @Injectable()
 export class LocalSerialServerService implements SerialServerService {
@@ -108,6 +109,14 @@ export class LocalSerialServerService implements SerialServerService {
     return this.http.post<SerialCommand[]>(this.baseUrl + 'api/SerialPort/' + serialportid + '/sendWhileOk', cmd)
       .toPromise()
       .catch(this.handleErrorPromise);
+  }
+
+  getGCodeAsImage(serialportid: number, viewInput: PreviewGCode): Promise<Blob> {
+    const m = this.http
+      .put<Blob>(`${this.baseUrl}api/SerialPort/${serialportid}/render`, viewInput, { responseType: 'blob' as 'json' })
+      .toPromise()
+      .catch(this.handleErrorPromise);
+    return m;
   }
 
   private handleErrorPromise(error: Response | any) {

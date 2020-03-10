@@ -15,33 +15,14 @@
 */
 
 import { NgModule } from '@angular/core';
-import { MachineControlOverviewComponent } from './machinecontrol-overview/machinecontrol-overview.component';
-import { MachineControlConnectComponent } from './machinecontrol-connect/machinecontrol-connect.component';
-import { MachineControlDetailComponent } from './machinecontrol-detail/machinecontrol-detail.component';
-import { MachineControlComponent } from './machinecontrol.component';
+import { PreviewComponent } from './preview.component';
 import { Routes, RouterModule } from '@angular/router';
-import { PreviewViewComponent } from "../preview/preview-view/preview-view.component";
+import { PreviewViewComponent } from './preview-view/preview-view.component';
+import { PreviewInputComponent } from './preview-input/preview-input.component';
 
-export const machinecontrolURL = '/machinecontrol';
-
-export const machineControlRoutes =
+export const previewComponents =
 [
-  {
-    path: 'machinecontrol',
-    component: MachineControlComponent,
-    children:
-    [
-      { path: '', component: MachineControlOverviewComponent },
-      { path: ':id', component: MachineControlDetailComponent },
-      { path: ':id/preview', component: PreviewViewComponent },
-    ]
-  }
-];
-
-export const machineControlComponents =
-[
-  MachineControlComponent,
-  MachineControlOverviewComponent,
-  MachineControlDetailComponent,
-  MachineControlConnectComponent
+  PreviewComponent,
+  PreviewViewComponent,
+  PreviewInputComponent,
 ];

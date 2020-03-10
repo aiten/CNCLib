@@ -35,6 +35,9 @@ import { LocalCNCLibLoggedinService } from './services/local-CNCLib-loggedin.ser
 import { SerialPortHistoryComponent } from './serialporthistory/serialporthistory.component';
 import { machineControlRoutes, machineControlComponents } from './machinecontrol/machinecontrol.routing';
 
+import { PreviewGlobal } from "./preview/preview.global";
+import { previewComponents } from './preview/preview.routing';
+
 import { SerialServerService } from './services/serialserver.service';
 import { LocalSerialServerService } from './services/local-serialserver.service';
 
@@ -51,6 +54,7 @@ import { faHome, faSync, faPlug } from '@fortawesome/free-solid-svg-icons';
     LoginComponent,
     SerialPortHistoryComponent,
     ...machineControlComponents,
+    ...previewComponents,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -71,7 +75,8 @@ import { faHome, faSync, faPlug } from '@fortawesome/free-solid-svg-icons';
     { provide: CNCLibInfoService, useClass: LocalCNCLibInfoService },
     { provide: CNCLibLoggedinService, useClass: LocalCNCLibLoggedinService },
     { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    PreviewGlobal,
   ],
   bootstrap: [AppComponent]
 })

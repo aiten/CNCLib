@@ -16,14 +16,22 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
+using CNCLib.GCode.Draw;
+using CNCLib.GCode.Load;
 using CNCLib.Serial.Shared;
 using CNCLib.Serial.WebAPI.Hubs;
+using CNCLib.Serial.WebAPI.Models;
 using CNCLib.Serial.WebAPI.SerialPort;
 
 using Framework.Arduino.SerialCommunication;
+using Framework.Drawing;
+using Framework.WebAPI.Controller;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -304,6 +312,53 @@ namespace CNCLib.Serial.WebAPI.Controllers
             return Ok(cmdList);
         }
 
+        #endregion
+
+        #region Render
+
+        [HttpPut( "{id:int}/render")]
+        public async Task<IActionResult> Render(int id, [FromBody] PreviewGCode opt)
+        {
+            var port = await SerialPortList.GetPortAndRescan(id);
+            if (port == null)
+            {
+                return NotFound();
+            }
+
+            var gCodeDraw = new GCodeBitmapDraw()
+            {
+                SizeX      = opt.SizeX,
+                SizeY      = opt.SizeY,
+                SizeZ      = opt.SizeZ,
+                RenderSize = new Size(opt.RenderSizeX, opt.RenderSizeY),
+                OffsetX    = opt.OffsetX,
+                OffsetY    = opt.OffsetY,
+                OffsetZ    = opt.OffsetZ,
+
+                Zoom       = opt.Zoom,
+                CutterSize = opt.CutterSize,
+                LaserSize  = opt.LaserSize,
+                KeepRatio  = opt.KeepRatio
+            };
+
+            if (opt.Rotate3DVect != null && opt.Rotate3DVect.Count() == 3)
+            {
+                gCodeDraw.Rotate = new Rotate3D(opt.Rotate3DAngle, opt.Rotate3DVect.ToArray());
+            }
+
+            var hisCommands = port.Serial.CommandHistoryCopy.OrderBy(x => x.SeqId).Select(c => c.CommandText);
+
+            var load = new LoadGCode();
+            load.Load(hisCommands.ToArray());
+            var commands = load.Commands;
+            var bitmap   = gCodeDraw.DrawToBitmap(commands);
+
+            var memoryStream = new MemoryStream();
+            bitmap.Save(memoryStream, ImageFormat.Png);
+            memoryStream.Position = 0;
+            var fileName = "preview.png";
+            return File(memoryStream, this.GetContentType(fileName), fileName);
+        }
         #endregion
     }
 }
