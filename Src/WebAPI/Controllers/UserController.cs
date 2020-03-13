@@ -76,6 +76,13 @@ namespace CNCLib.WebAPI.Controllers
             return Ok(await Task.FromResult(_userContext.UserName));
         }
 
+        [AllowAnonymous]
+        [HttpGet("passwordHash")]
+        public async Task<ActionResult<string>> PasswordHash(string password)
+        {
+            return Ok(await _manager.CreatePasswordHash(password));
+        }
+
         #region default REST
 
         [HttpGet("{id:int}")]

@@ -28,6 +28,7 @@ using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Dependency;
 using Framework.Logic.Abstraction;
 using Framework.Tools;
+using Framework.Tools.Password;
 using Framework.WebAPI.Filter;
 
 using Microsoft.AspNetCore.Authentication;
@@ -94,6 +95,7 @@ namespace CNCLib.Serial.Server
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>(AuthenticationScheme, null);
 
             services.AddScoped<IAuthenticationManager, UserManager>();
+            services.AddTransient<IPasswordProvider, Pbkdf2PasswordProvider>();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });

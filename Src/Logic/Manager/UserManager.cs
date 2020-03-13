@@ -26,6 +26,7 @@ using CNCLib.Repository.Abstraction;
 using Framework.Logic;
 using Framework.Repository.Abstraction;
 using Framework.Tools;
+using Framework.Tools.Password;
 
 using UserEntity = CNCLib.Repository.Abstraction.Entities.User;
 
@@ -33,15 +34,17 @@ namespace CNCLib.Logic.Manager
 {
     public class UserManager : CrudManager<User, int, UserEntity>, IUserManager
     {
-        private readonly IUnitOfWork     _unitOfWork;
-        private readonly IUserRepository _repository;
-        private readonly IMapper         _mapper;
+        private readonly IUnitOfWork       _unitOfWork;
+        private readonly IUserRepository   _repository;
+        private readonly IMapper           _mapper;
+        private readonly IPasswordProvider _passwordProvider;
 
-        public UserManager(IUnitOfWork unitOfWork, IUserRepository repository, IMapper mapper) : base(unitOfWork, repository, mapper)
+        public UserManager(IUnitOfWork unitOfWork, IUserRepository repository, IMapper mapper, IPasswordProvider passwordProvider) : base(unitOfWork, repository, mapper)
         {
-            _unitOfWork = unitOfWork;
-            _repository = repository;
-            _mapper     = mapper;
+            _unitOfWork       = unitOfWork;
+            _repository       = repository;
+            _mapper           = mapper;
+            _passwordProvider = passwordProvider;
         }
 
         protected override int GetKey(UserEntity entity)
@@ -49,22 +52,12 @@ namespace CNCLib.Logic.Manager
             return entity.UserId;
         }
 
-        public static string DecodePassword(string encodedPassword)
-        {
-            return Base64Helper.StringFromBase64(encodedPassword);
-        }
-
-        public static string EncodePassword(string password)
-        {
-            return Base64Helper.StringToBase64(password);
-        }
-
         protected override void AddEntity(UserEntity entity)
         {
             base.AddEntity(entity);
             if (string.IsNullOrEmpty(entity.Password))
             {
-                entity.Password = EncodePassword(entity.Name);
+                entity.Password = _passwordProvider.GetPasswordHash(entity.Name);
             }
         }
 
@@ -77,7 +70,7 @@ namespace CNCLib.Logic.Manager
         {
             var userEntity = await _repository.GetByName(userName);
 
-            if (userEntity != null && ComparePassword(password, DecodePassword(userEntity.Password)))
+            if (userEntity != null && _passwordProvider.ValidatePassword(password, userEntity.Password))
             {
                 var claims = new[]
                 {
@@ -93,9 +86,10 @@ namespace CNCLib.Logic.Manager
             return null;
         }
 
-        private bool ComparePassword(string pwd1, string pwd2)
+        public async Task<string> CreatePasswordHash(string password)
         {
-            return pwd1 == pwd2 || (string.IsNullOrEmpty(pwd1) && string.IsNullOrEmpty(pwd2));
+            await Task.Delay(100);
+            return await Task.FromResult(_passwordProvider.GetPasswordHash(password));
         }
     }
 }

@@ -23,5 +23,7 @@ namespace CNCLib.Logic.Abstraction
     public interface IUserManager : ICrudManager<DTO.User, int>, IAuthenticationManager
     {
         Task<DTO.User> GetByName(string username);
+
+        Task<string> CreatePasswordHash(string password);
     }
 }

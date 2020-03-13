@@ -21,27 +21,21 @@ using System.Threading.Tasks;
 using Framework.Logic.Abstraction;
 using Framework.Pattern;
 using Framework.Tools;
+using Framework.Tools.Password;
+
 using Microsoft.Extensions.Configuration;
 
 namespace CNCLib.Serial.WebAPI.Manager
 {
     public class UserManager : IAuthenticationManager
     {
-        private IConfiguration _configuration;
+        private IConfiguration    _configuration;
+        private IPasswordProvider _passwordProvider;
 
-        public UserManager(IConfiguration configuration)
+        public UserManager(IConfiguration configuration, IPasswordProvider passwordProvider)
         {
-            _configuration = configuration;
-        }
-
-        public static string DecodePassword(string encodedPassword)
-        {
-            return Base64Helper.StringFromBase64(encodedPassword);
-        }
-
-        public static string EncodePassword(string password)
-        {
-            return Base64Helper.StringToBase64(password);
+            _configuration    = configuration;
+            _passwordProvider = passwordProvider;
         }
 
         public async Task<ClaimsPrincipal> Authenticate(string userName, string password)
@@ -52,20 +46,17 @@ namespace CNCLib.Serial.WebAPI.Manager
 
                 if (users != null)
                 {
-                    var passwordEncrypded = users.GetValue<string>(userName);
-                    if (passwordEncrypded != null)
+                    var passwordHash = users.GetValue<string>(userName);
+                    if (passwordHash != null)
                     {
-                        var passwordInConfig = DecodePassword(passwordEncrypded);
-
-                        // password is stored with username as prefix
-                        if (ComparePassword(passwordInConfig, $"{userName}:{password}"))
+                        if (_passwordProvider.ValidatePassword(password, passwordHash))
                         {
                             var claims = new[]
                             {
                                 new Claim(ClaimTypes.NameIdentifier, 1.ToString()),
                                 new Claim(ClaimTypes.Name,           userName),
                             };
-                            var identity = new ClaimsIdentity(claims, "BasicAuthentication");
+                            var identity  = new ClaimsIdentity(claims, "BasicAuthentication");
                             var principal = new ClaimsPrincipal(identity);
 
                             return principal;
@@ -75,11 +66,6 @@ namespace CNCLib.Serial.WebAPI.Manager
             }
 
             return await Task.FromResult<ClaimsPrincipal>(null);
-        }
-
-        private bool ComparePassword(string pwd1, string pwd2)
-        {
-            return pwd1 == pwd2 || (string.IsNullOrEmpty(pwd1) && string.IsNullOrEmpty(pwd2));
         }
     }
 }

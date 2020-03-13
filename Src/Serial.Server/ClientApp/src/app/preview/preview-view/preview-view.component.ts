@@ -14,11 +14,12 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Inject, Input, SimpleChanges } from '@angular/core';
 
 import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
 
 import { SerialServerService } from '../../services/serialserver.service';
+import { HubConnection, HubConnectionBuilder, HttpTransportType, LogLevel } from '@aspnet/signalr';
 
 import { PreviewGlobal } from '../preview.global';
 import { PreviewGCode } from '../../models/preview-input';
@@ -32,11 +33,13 @@ import { PreviewGCode } from '../../models/preview-input';
 export class PreviewViewComponent implements OnInit {
   public previewOpt: PreviewGCode;
   public serialId: number = -1;
+  private _hubConnection: HubConnection;
 
   constructor(
     private route: ActivatedRoute,
     private serialServerService: SerialServerService,
-    public previewGlobal: PreviewGlobal
+    public previewGlobal: PreviewGlobal,
+    @Inject('WEBAPI_URL') public baseUrl: string,
   ) {
     this.previewOpt = previewGlobal.previewOpt;
   }
@@ -74,6 +77,34 @@ export class PreviewViewComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.serialId = params['id'];
       this.refreshImage();
+
+      console.log('SignalR to ' + this.baseUrl + 'serialSignalR');
+
+      this._hubConnection = new HubConnectionBuilder()
+        .configureLogging(LogLevel.Debug)
+        .withUrl(this.baseUrl + 'serialSignalR/')
+        .build();
+
+      this._hubConnection.on('QueueChanged',
+        (portid: number) => {
+          if (portid == this.serialId) {
+            this.refreshImage();
+          }
+        });
+      this._hubConnection.on('HeartBeat',
+        () => {
+          console.log('SignalR received: HeartBeat');
+        });
+
+      console.log("hub Starting:");
+
+      this._hubConnection.start()
+        .then(() => {
+          console.log('Hub connection started');
+        })
+        .catch(err => {
+          console.log('Error while establishing connection');
+        });
     });
   }
 }
