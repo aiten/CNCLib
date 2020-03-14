@@ -37,9 +37,9 @@ namespace CNCLib.Logic.Manager
         private readonly IUnitOfWork       _unitOfWork;
         private readonly IUserRepository   _repository;
         private readonly IMapper           _mapper;
-        private readonly IPasswordProvider _passwordProvider;
+        private readonly IOneWayPasswordProvider _passwordProvider;
 
-        public UserManager(IUnitOfWork unitOfWork, IUserRepository repository, IMapper mapper, IPasswordProvider passwordProvider) : base(unitOfWork, repository, mapper)
+        public UserManager(IUnitOfWork unitOfWork, IUserRepository repository, IMapper mapper, IOneWayPasswordProvider passwordProvider) : base(unitOfWork, repository, mapper)
         {
             _unitOfWork       = unitOfWork;
             _repository       = repository;

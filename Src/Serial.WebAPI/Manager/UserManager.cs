@@ -30,9 +30,9 @@ namespace CNCLib.Serial.WebAPI.Manager
     public class UserManager : IAuthenticationManager
     {
         private IConfiguration    _configuration;
-        private IPasswordProvider _passwordProvider;
+        private IOneWayPasswordProvider _passwordProvider;
 
-        public UserManager(IConfiguration configuration, IPasswordProvider passwordProvider)
+        public UserManager(IConfiguration configuration, IOneWayPasswordProvider passwordProvider)
         {
             _configuration    = configuration;
             _passwordProvider = passwordProvider;

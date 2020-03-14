@@ -95,7 +95,7 @@ namespace CNCLib.Serial.Server
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>(AuthenticationScheme, null);
 
             services.AddScoped<IAuthenticationManager, UserManager>();
-            services.AddTransient<IPasswordProvider, Pbkdf2PasswordProvider>();
+            services.AddTransient<IOneWayPasswordProvider, Pbkdf2PasswordProvider>();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
