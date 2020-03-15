@@ -18,6 +18,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { LoadOptions, EHoleType, ELoadType, PenType, SmoothTypeEnum, ConvertTypeEnum, DitherFilter } from '../../models/load-options';
 import { FormGroup, FormArray, FormControl, FormBuilder, Validators } from '@angular/forms';
 
+import { UserFile } from "../../models/userFile";
+import { CNCLibUserFileService } from '../../services/CNCLib-userFile.service';
+
 import { SerialServerConnection } from '../../serialServer/serialServerConnection';
 
 @Component(
@@ -33,6 +36,7 @@ export class GcodeRunInputComponent implements OnInit {
 
   constructor(
     public serialServer: SerialServerConnection,
+    public userFileService: CNCLibUserFileService,
     private fb: FormBuilder
   ) {
 
@@ -51,6 +55,23 @@ export class GcodeRunInputComponent implements OnInit {
       value) => {
       Object.assign(this.entry, value);
     });
+  }
+
+  uploadFile(event) {
+    let files = event.target.files;
+    if (files.length > 0) {
+      let tmpFileName = "$$$";
+      const file = event.target.files[0];
+      let userFile = new UserFile();
+      userFile.image = file;
+      userFile.fileName = tmpFileName;
+      this.userFileService.update(tmpFileName, userFile);
+      this.gCodeForm.get('fileName').setValue(this.entry.fileName = 'db:' + tmpFileName);
+    }
+  }
+
+  isDBFile(): boolean {
+    return this.entry.fileName.startsWith("db:");
   }
 
   isHpgl() {

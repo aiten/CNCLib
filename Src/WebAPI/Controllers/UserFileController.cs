@@ -98,8 +98,16 @@ namespace CNCLib.WebAPI.Controllers
             if (userFileDto != null)
             {
                 var fileIdFromUri   = await _manager.GetFileId(fileName);
-                var fileIdFromValue = await _manager.GetFileId(value.FileName);
-                await this.Update(_manager, fileIdFromUri, fileIdFromValue, userFileDto);
+                if (fileIdFromUri > 0)
+                {
+                    userFileDto.UserFileId = fileIdFromUri;
+                    var fileIdFromValue = await _manager.GetFileId(value.FileName);
+                    await this.Update(_manager, fileIdFromUri, fileIdFromValue, userFileDto);
+                }
+                else
+                {
+                    await this.Add(_manager, userFileDto);
+                }
                 return Ok(value.FileName);
             }
 
@@ -110,7 +118,12 @@ namespace CNCLib.WebAPI.Controllers
         public async Task<ActionResult> Delete(string fileName)
         {
             var fileIdFromUri = await _manager.GetFileId(fileName);
-            return await this.Delete(_manager, fileIdFromUri);
+            if (fileIdFromUri > 0)
+            {
+                return await this.Delete(_manager, fileIdFromUri);
+            }
+
+            return NotFound();
         }
 
         #endregion

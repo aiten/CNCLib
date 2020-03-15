@@ -52,7 +52,7 @@ namespace CNCLib.Serial.Server
                     localAppData = Environment.GetEnvironmentVariable("ProgramData");
                 }
 
-                logDir = $"{localAppData}/ CNCLib.Serial.Server/logs";
+                logDir = $"{localAppData}/CNCLib.Serial.Server/logs";
             }
 
             GlobalDiagnosticsContext.Set("logDir", logDir);

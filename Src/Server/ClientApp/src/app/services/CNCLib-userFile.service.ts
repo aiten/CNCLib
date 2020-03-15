@@ -1,4 +1,4 @@
-﻿/*
+/*
   This file is part of CNCLib - A library for stepper motors.
 
   Copyright (c) Herbert Aitenbichler
@@ -14,16 +14,10 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Logic.Abstraction.DTO
-{
-    public class UserFile
-    {
-        public int UserFileId { get; set; }
+import { UserFile } from '../models/userFile'
 
-        public int UserId { get; set; }
-
-        public string FileName { get; set; }
-
-        public byte[] Content { get; set; }
-    }
+export abstract class CNCLibUserFileService {
+  public abstract add(userFile: UserFile): Promise<any>;
+  public abstract update(filename: string, userFile: UserFile): Promise<any>;
+  public abstract delete(filename: string): Promise<any>;
 }

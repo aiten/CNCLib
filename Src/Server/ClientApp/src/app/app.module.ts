@@ -48,6 +48,9 @@ import { LocalCNCLibLoggedinService } from './services/local-CNCLib-loggedin.ser
 import { CNCLibGCodeService } from './services/CNCLib-gcode.service';
 import { LocalCNCLibGCodeService } from './services/local-CNCLib-gcode.service';
 
+import { CNCLibUserFileService } from './services/CNCLib-userFile.service';
+import { LocalCNCLibUserFileService } from './services/local-CNCLib-userFile.service';
+
 import { SerialPortHistoryComponent } from './serialporthistory/serialporthistory.component';
 import { machineControlRoutes, machineControlComponents } from './machinecontrol/machinecontrol.routing';
 
@@ -109,6 +112,7 @@ import { PreviewGlobal } from './preview/preview.global';
     { provide: CNCLibLoadOptionService, useClass: LocalCNCLibLoadOptionService },
     { provide: CNCLibLoggedinService, useClass: LocalCNCLibLoggedinService },
     { provide: CNCLibGCodeService, useClass: LocalCNCLibGCodeService },
+    { provide: CNCLibUserFileService, useClass: LocalCNCLibUserFileService },
     { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     SerialServerConnection,
