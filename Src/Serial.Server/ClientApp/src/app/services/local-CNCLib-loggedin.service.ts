@@ -15,7 +15,10 @@
 */
 
 import { Injectable, Inject } from '@angular/core';
+import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+
 import { CNCLibServerInfo } from '../models/CNCLib.Server.Info';
 import { CNCLibLoggedinService } from './CNCLib-loggedin.service';
 
@@ -45,4 +48,10 @@ export class LocalCNCLibLoggedinService implements CNCLibLoggedinService {
     return currentuser;
   }
 
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    return this.isUserLoggedIn();
+  }
 }

@@ -65,7 +65,7 @@ import { faHome, faSync, faPlug } from '@fortawesome/free-solid-svg-icons';
     ReactiveFormsModule,
     MaterialModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       ...machineControlRoutes,
     ])

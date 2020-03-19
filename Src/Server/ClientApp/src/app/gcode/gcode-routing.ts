@@ -21,12 +21,14 @@ import { GcodeOverviewComponent } from './gcode-overview/gcode-overview.componen
 import { GcodeDetailComponent } from './gcode-detail/gcode-detail.component';
 import { GcodeRunComponent } from './gcode-run/gcode-run.component';
 import { GcodeRunInputComponent } from './gcode-run-input/gcode-run-input.component';
+import { CNCLibLoggedinService } from "../services/CNCLib-loggedin.service";
 
 export const gcodeRoutes =
 [
   {
     path: 'gcode',
     component: GcodeComponent,
+    canActivate: [CNCLibLoggedinService],
     children:
     [
       { path: '', component: GcodeOverviewComponent },

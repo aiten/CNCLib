@@ -21,6 +21,7 @@ import { MachineControlDetailComponent } from './machinecontrol-detail/machineco
 import { MachineControlComponent } from './machinecontrol.component';
 import { Routes, RouterModule } from '@angular/router';
 import { PreviewViewComponent } from "../preview/preview-view/preview-view.component";
+import { CNCLibLoggedinService } from "../services/CNCLib-loggedin.service";
 
 export const machinecontrolURL = '/machinecontrol';
 
@@ -29,6 +30,7 @@ export const machineControlRoutes =
   {
     path: 'machinecontrol',
     component: MachineControlComponent,
+    canActivate: [CNCLibLoggedinService],
     children:
     [
       { path: '', component: MachineControlOverviewComponent },

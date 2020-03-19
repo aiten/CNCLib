@@ -14,11 +14,16 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-export abstract class CNCLibLoggedinService {
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from "@angular/router";
+import { Observable } from "rxjs";
+
+export abstract class CNCLibLoggedinService implements CanActivate {
 
   public abstract username(): string;
 
   public abstract isUserLoggedIn(): boolean;
 
   public abstract logout(): void;
+
+  public abstract canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree;
 }

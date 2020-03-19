@@ -17,7 +17,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LoadOptions } from "../../models/load-options";
 import { CNCLibLoadOptionService } from '../../services/CNCLib-load-option.service';
-import { CNCLibLoggedinService } from '../../services/CNCLib-loggedin.service';
 
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
@@ -43,7 +42,6 @@ export class GcodeOverviewComponent implements OnInit {
   constructor(
     private router: Router,
     private loadOptionService: CNCLibLoadOptionService,
-    public cncLibloggedinService: CNCLibLoggedinService,
     private dialog: MatDialog
   ) {
   }

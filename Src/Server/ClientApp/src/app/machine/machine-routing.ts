@@ -22,11 +22,14 @@ import { MachineFormComponent } from './machine-form/machine-form.component';
 import { MachineComponent } from './machine.component';
 import { Routes, RouterModule } from '@angular/router';
 
+import { CNCLibLoggedinService } from '../services/CNCLib-loggedin.service';
+
 export const machineRoutes =
 [
   {
     path: 'machine',
     component: MachineComponent,
+    canActivate: [CNCLibLoggedinService],
     children:
     [
       { path: '', component: MachineOverviewComponent },

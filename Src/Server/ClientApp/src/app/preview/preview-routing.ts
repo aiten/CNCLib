@@ -20,12 +20,14 @@ import { Routes, RouterModule } from '@angular/router';
 import { PreviewViewComponent } from './preview-view/preview-view.component';
 import { PreviewInputComponent } from './preview-input/preview-input.component';
 import { PreviewGCodeComponent } from './preview-gcode/preview-gcode.component';
+import { CNCLibLoggedinService } from "../services/CNCLib-loggedin.service";
 
 export const previewRoutes =
 [
   {
     path: 'preview',
     component: PreviewComponent,
+    canActivate: [CNCLibLoggedinService],
     children:
     [
       { path: '', component: PreviewViewComponent },
