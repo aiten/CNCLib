@@ -91,6 +91,76 @@ export class PreviewViewComponent implements OnInit {
     }
   }
 
+  async mouseWheelUpFunc() {
+    console.log('mouse wheel up');
+    this.previewOpt.zoom = this.previewOpt.zoom * 1.1;
+    await this.refreshImage();
+  }
+
+  async mouseWheelDownFunc() {
+    console.log('mouse wheel down');
+    this.previewOpt.zoom = this.previewOpt.zoom / 1.1;
+    await this.refreshImage();
+  }
+
+  private mouseCaptured: boolean = false;
+
+  private shiftX: number;
+  private shiftY: number;
+  private ofsX: number;
+  private ofsY: number;
+  private scaleX: number;
+  private scaleY: number;
+  private mousebutton: number;
+
+  onMouseDown(event) {
+    console.log(`onMouseDown`);
+    event.preventDefault();
+    this.mouseCaptured = true;
+    this.shiftX = event.clientX;
+    this.shiftY = event.clientY;
+    this.ofsX = this.previewOpt.offsetX;
+    this.ofsY = this.previewOpt.offsetY;
+    this.scaleX = this.previewOpt.sizeX / this.previewOpt.renderSizeX / this.previewOpt.zoom;
+    this.scaleY = this.previewOpt.sizeY / this.previewOpt.renderSizeY / this.previewOpt.zoom;
+    this.mousebutton = event.button;
+  }
+
+  async onMouseMove(event) {
+    if (this.mouseCaptured) {
+      event.preventDefault();
+      let diffX = this.shiftX - event.clientX;
+      let diffY = this.shiftY - event.clientY;
+
+      if (this.mousebutton == 0) {
+        this.previewOpt.offsetX = this.ofsX + diffX * this.scaleX;
+        this.previewOpt.offsetY = this.ofsX + diffY * this.scaleY;
+      } else if (this.mousebutton == 2) {
+        let maxDiffX = this.previewOpt.renderSizeX;
+        let maxDiffY = this.previewOpt.renderSizeY;
+
+        let rotateX = diffX / maxDiffX;
+        let rotateY = diffY / maxDiffY;
+
+        this.previewOpt.rotate3DAngle = 2.0 * Math.PI * (Math.abs(rotateX) > Math.abs(rotateY) ? rotateX : rotateY);
+
+        this.previewOpt.rotate3DVectY = diffX;
+        this.previewOpt.rotate3DVectX = -diffY;
+      }
+
+      await this.refreshImage();
+    }
+  }
+
+  onMouseUp(event) {
+    if (this.mouseCaptured) {
+      console.log(`onMouseUp`);
+      this.mouseCaptured = false;
+      event.preventDefault();
+    }
+  }
+
+
   async ngOnInit() {
 
     await this.refreshImage();

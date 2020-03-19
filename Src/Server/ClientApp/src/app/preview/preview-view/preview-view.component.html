@@ -10,7 +10,10 @@
         <button mat-stroked-button class="btn btn-default" (click)='refreshImage()'>Refresh</button>
       </div>
       <div class="col">
-        <img [src]="imageBlobUrl"/>
+        <img id="ball" mouseWheel [src]="imageBlobUrl" (mouseWheelUp)="mouseWheelUpFunc()" (mouseWheelDown)="mouseWheelDownFunc()"
+             (mousedown)="onMouseDown($event)"
+             (mouseup)="onMouseUp($event)"
+             (mousemove)="onMouseMove($event)"/>
       </div>
       <mat-slider class="hmyslider" min="-200" max="200" step="1" [value]="previewOpt.offsetX" (valueChange)="this.previewOpt.offsetX= $event; this.refreshImage()"></mat-slider>
       <mat-slider class="vmyslider" vertical min="-200" max="200" step="1" [value]="previewOpt.offsetY" (valueChange)="this.previewOpt.offsetY= $event; this.refreshImage()"></mat-slider>

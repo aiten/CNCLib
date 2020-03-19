@@ -64,6 +64,7 @@ import { gcodeRoutes, gcodeComponents } from './gcode/gcode-routing';
 import { previewRoutes, previewComponents } from './preview/preview-routing';
 
 import { BasicAuthInterceptor, ErrorInterceptor } from './_helpers';
+import { MouseWheelDirective } from './_helpers/mousewheel.directive';
 
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faHome, faSync, faPlug, faCalculator, faToolbox, faCogs, faEllipsisV, faArrowDown, faChevronDown, faDrawPolygon } from '@fortawesome/free-solid-svg-icons';
@@ -80,6 +81,7 @@ import { PreviewGlobal } from './preview/preview.global';
     LoginComponent,
     SerialPortHistoryComponent,
     MessageBoxComponent,
+    MouseWheelDirective,
     ...machineComponents,
     ...machineControlComponents,
     ...previewComponents,
