@@ -1,9 +1,14 @@
-.previewinput {
-  -ms-flex: 0 0 200px;
-  flex: 0 0 200px;
+.inputshow {
+  max-width: 300px;
+  min-width: 300px;
 }
 
-.reloadbuttons { float: right }
+.inputhide {
+  max-width: 100px;
+  min-width: 100px;
+}
+
+.hidebuttons { width: 80px; }
 
 .hmyslider { width: 200px; }
 

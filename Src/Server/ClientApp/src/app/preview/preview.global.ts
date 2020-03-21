@@ -30,7 +30,7 @@ export class PreviewGlobal {
 
   previewOpt = new PreviewGCode();
 
- setFromMachine(machine: Machine) {
+  setFromMachine(machine: Machine) {
     this.previewOpt.sizeX = machine.sizeX;
     this.previewOpt.sizeY = machine.sizeY;
     this.previewOpt.sizeZ = machine.sizeZ;

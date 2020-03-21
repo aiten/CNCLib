@@ -18,6 +18,8 @@ import { UserFile } from '../models/userFile'
 
 export abstract class CNCLibUserFileService {
   public abstract add(userFile: UserFile): Promise<any>;
+
   public abstract update(filename: string, userFile: UserFile): Promise<any>;
+
   public abstract delete(filename: string): Promise<any>;
 }

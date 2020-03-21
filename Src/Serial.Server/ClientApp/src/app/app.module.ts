@@ -42,6 +42,7 @@ import { SerialServerService } from './services/serialserver.service';
 import { LocalSerialServerService } from './services/local-serialserver.service';
 
 import { BasicAuthInterceptor, ErrorInterceptor } from './_helpers';
+import { MouseWheelDirective } from './_helpers/mousewheel.directive';
 
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faHome, faSync, faPlug } from '@fortawesome/free-solid-svg-icons';
@@ -53,6 +54,7 @@ import { faHome, faSync, faPlug } from '@fortawesome/free-solid-svg-icons';
     HomeComponent,
     LoginComponent,
     SerialPortHistoryComponent,
+    MouseWheelDirective,
     ...machineControlComponents,
     ...previewComponents,
   ],

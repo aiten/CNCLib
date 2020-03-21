@@ -67,4 +67,10 @@ export class PreviewGCode {
   renderSizeX: number = 800;
 
   renderSizeY: number = 800;
+
+  setVector(vect: number[]) {
+    this.rotate3DVectX = vect[0];
+    this.rotate3DVectY = vect[1];
+    this.rotate3DVectZ = vect[2];
+  }
 }

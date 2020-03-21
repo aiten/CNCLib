@@ -71,17 +71,6 @@ export class PreviewInputComponent implements OnInit {
     });
   }
 
-  rotate1() {
-    this.previewOptForm.patchValue({
-      rotate3DAngle: -1.0407742907225024,
-      rotate3DVectX: 101,
-      rotate3DVectY: -13,
-      rotate3DVectZ: 1,
-      offsetX: -10,
-      offsetY: 10,
-    });
-  }
-
   async savegCode(value: any): Promise<void> {
   }
 

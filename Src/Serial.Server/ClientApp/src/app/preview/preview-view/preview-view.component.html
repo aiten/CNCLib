@@ -1,22 +1,29 @@
 <div class="container-fluid">
-
-  <div class="col previewinput">
-    <div class="row">
-      <div *ngIf="previewGlobal.isShowParam">
-        <preview-input [previewOpt]="previewOpt"> </preview-input>
-        <button mat-stroked-button class="btn btn-default" (click)='refreshImage()'>Refresh</button>
+  <div class="row">
+    <div class="col inputhide" *ngIf="!previewGlobal.isShowParam">
+      <div class="container-fluid">
+        <button mat-stroked-button class="hidebuttons" (click)="previewGlobal.isShowParam = true">Show</button>
+        <button mat-stroked-button class="hidebuttons" (click)='refreshImage()'>Refresh</button>
+        <button mat-stroked-button class="hidebuttons" (click)='setXY()'>XY</button>
+        <button mat-stroked-button class="hidebuttons" (click)='setXZ()'>XZ</button>
+        <button mat-stroked-button class="hidebuttons" (click)='setYZ()'>YZ</button>
       </div>
-      <div class="col">
-        <img [src]="imageBlobUrl"/>
-      </div>
-      <mat-slider class="hmyslider" min="-200" max="200" step="1" [value]="previewOpt.offsetX" (valueChange)="this.previewOpt.offsetX= $event; this.refreshImage()"></mat-slider>
-      <mat-slider class="vmyslider" vertical min="-200" max="200" step="1" [value]="previewOpt.offsetY" (valueChange)="this.previewOpt.offsetY= $event; this.refreshImage()"></mat-slider>
-      <mat-slider class="hmyslider" min="0.1" max="10" step="0-1" [value]="previewOpt.zoom" (valueChange)="this.previewOpt.zoom= $event; this.refreshImage()"></mat-slider>
     </div>
+    <div class="col inputshow" *ngIf="previewGlobal.isShowParam">
+      <button mat-stroked-button (click)="previewGlobal.isShowParam = false">Hide</button>
+      <button mat-stroked-button (click)='refreshImage()'>Refresh</button>
+      <preview-input [previewOpt]="previewOpt"> </preview-input>
+    </div>
+    <div class="col">
+      <img mouseWheel [src]="imageBlobUrl"
+           (mouseWheelUp)="mouseWheelUpFunc()"
+           (mouseWheelDown)="mouseWheelDownFunc()"
+           (mousedown)="onMouseDown($event)"
+           (mouseup)="onMouseUp($event)"
+           (mousemove)="onMouseMove($event)"/>
+    </div>
+    <mat-slider class="hmyslider" min="-200" max="200" step="1" [value]="previewOpt.offsetX" (valueChange)="this.previewOpt.offsetX= $event; this.refreshImage()"></mat-slider>
+    <mat-slider class="vmyslider" vertical min="-200" max="200" step="1" [value]="previewOpt.offsetY" (valueChange)="this.previewOpt.offsetY= $event; this.refreshImage()"></mat-slider>
+    <mat-slider class="hmyslider" min="0.1" max="10" step="0-1" [value]="previewOpt.zoom" (valueChange)="this.previewOpt.zoom= $event; this.refreshImage()"></mat-slider>
   </div>
-
-  <span class="reloadbuttons">
-    <button mat-stroked-button (click)="previewGlobal.isShowParam = !previewGlobal.isShowParam">Show/Hide</button>
-  </span>
-
 </div>

@@ -23,7 +23,6 @@ import { CNCLibLoggedinService } from '../services/CNCLib-loggedin.service';
   templateUrl: './nav-menu.component.html',
   styleUrls: ['./nav-menu.component.css']
 })
-
 export class NavMenuComponent {
 
   constructor(

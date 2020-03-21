@@ -25,6 +25,9 @@ import { SerialServerService } from '../../services/serialserver.service';
 
 import { PreviewGlobal } from '../preview.global';
 
+import { interval, Observable } from 'rxjs';
+import { takeWhile } from 'rxjs/operators';
+
 @Component(
   {
     selector: 'preview-detail',
@@ -45,6 +48,7 @@ export class PreviewViewComponent implements OnInit {
   }
 
   async refreshImage() {
+    this.needRedraw = false;
     await this.getThumbnail();
   }
 
@@ -75,6 +79,10 @@ export class PreviewViewComponent implements OnInit {
     }
   }
 
+  async ngOnInit() {
+    await this.refreshImage();
+  }
+
   canSendToMachine(): boolean {
     return this.serialServer.getMachine() != null;
   }
@@ -90,6 +98,35 @@ export class PreviewViewComponent implements OnInit {
 
     }
   }
+  
+  async setXY() {
+    this.previewOpt.offsetX = 0;
+    this.previewOpt.offsetY = 0;
+    this.previewOpt.rotate3DAngle = 0;
+    await this.refreshImage();
+  }
+
+  async setXZ() {
+    this.previewOpt.zoom = 1;
+
+    // set Zoom first, set Zoom adjusts OffsetX/Y
+    this.previewOpt.offsetX = 0;
+    this.previewOpt.offsetY = 0;
+    this.previewOpt.setVector([1, 1, 1]);
+    this.previewOpt.rotate3DAngle = Math.PI * 4.0 / 3.0;
+    await this.refreshImage();
+  }
+
+  async setYZ() {
+    this.previewOpt.zoom = 1;
+
+    // set Zoom first, set Zoom adjusts OffsetX/Y
+    this.previewOpt.offsetX = 0;
+    this.previewOpt.offsetY = 0;
+    this.previewOpt.setVector([1, 0, 0]);
+    this.previewOpt.rotate3DAngle = -Math.PI / 2.0;
+    await this.refreshImage();
+  }
 
   async mouseWheelUpFunc() {
     console.log('mouse wheel up');
@@ -104,6 +141,7 @@ export class PreviewViewComponent implements OnInit {
   }
 
   private mouseCaptured: boolean = false;
+  private needRedraw: boolean = false;
 
   private shiftX: number;
   private shiftY: number;
@@ -124,6 +162,15 @@ export class PreviewViewComponent implements OnInit {
     this.scaleX = this.previewOpt.sizeX / this.previewOpt.renderSizeX / this.previewOpt.zoom;
     this.scaleY = this.previewOpt.sizeY / this.previewOpt.renderSizeY / this.previewOpt.zoom;
     this.mousebutton = event.button;
+
+    interval(250)
+      .pipe(
+        takeWhile(() => this.mouseCaptured))
+      .subscribe(
+        (value) => { if (this.needRedraw) this.refreshImage() },
+        (error) => console.error(error),
+        () => console.log('Interval completed')
+      );
   }
 
   async onMouseMove(event) {
@@ -132,9 +179,12 @@ export class PreviewViewComponent implements OnInit {
       let diffX = this.shiftX - event.clientX;
       let diffY = this.shiftY - event.clientY;
 
+      // console.log(`ofsX:${this.ofsX}:${this.ofsX + diffX * this.scaleX}, ofsY:${this.ofsY}:${this.ofsY + diffY * this.scaleY}`);
+
       if (this.mousebutton == 0) {
         this.previewOpt.offsetX = this.ofsX + diffX * this.scaleX;
-        this.previewOpt.offsetY = this.ofsX + diffY * this.scaleY;
+        this.previewOpt.offsetY = this.ofsY + diffY * this.scaleY;
+        console.log(`ofsX:${this.ofsX}:${this.previewOpt.offsetX}, ofsY:${this.ofsY}:${this.previewOpt.offsetY}`);
       } else if (this.mousebutton == 2) {
         let maxDiffX = this.previewOpt.renderSizeX;
         let maxDiffY = this.previewOpt.renderSizeY;
@@ -148,7 +198,7 @@ export class PreviewViewComponent implements OnInit {
         this.previewOpt.rotate3DVectX = -diffY;
       }
 
-      await this.refreshImage();
+      this.needRedraw = true;
     }
   }
 
@@ -158,11 +208,5 @@ export class PreviewViewComponent implements OnInit {
       this.mouseCaptured = false;
       event.preventDefault();
     }
-  }
-
-
-  async ngOnInit() {
-
-    await this.refreshImage();
   }
 }

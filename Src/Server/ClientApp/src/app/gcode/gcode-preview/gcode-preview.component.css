@@ -3,12 +3,8 @@
   flex: 0 0 200px;
 }
 
-.reloadbuttons {
-  float: right
-}
+.reloadbuttons { float: right }
 
-.hmyslider {
-  width: 200px;
-}
-.vyslider {
-}
+.hmyslider { width: 200px; }
+
+.vyslider { }
