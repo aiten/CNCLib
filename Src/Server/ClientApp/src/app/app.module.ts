@@ -51,7 +51,7 @@ import { LocalCNCLibGCodeService } from './services/local-CNCLib-gcode.service';
 import { CNCLibUserFileService } from './services/CNCLib-userFile.service';
 import { LocalCNCLibUserFileService } from './services/local-CNCLib-userFile.service';
 
-import { SerialPortHistoryComponent } from './serialporthistory/serialporthistory.component';
+import { serialPortHistoryRoutes, serialPortHistoryComponents } from './serialporthistory/serialporthistory.routing';
 import { machineControlRoutes, machineControlComponents } from './machinecontrol/machinecontrol.routing';
 
 import { SerialServerService } from './services/serialserver.service';
@@ -61,7 +61,7 @@ import { eepromConfigRoutes, eepromConfigComponents } from './eeprom-config/eepr
 import { machineRoutes, machineComponents } from './machine/machine-routing';
 
 import { gcodeRoutes, gcodeComponents } from './gcode/gcode-routing';
-import { previewRoutes, previewComponents } from './preview/preview-routing';
+import { previewRoutes, previewComponents } from './preview/preview.routing';
 
 import { BasicAuthInterceptor, ErrorInterceptor } from './_helpers';
 import { MouseWheelDirective } from './_helpers/mousewheel.directive';
@@ -72,6 +72,7 @@ import { faHome, faSync, faPlug, faCalculator, faToolbox, faCogs, faEllipsisV, f
 import { SerialServerConnection } from './serialServer/serialServerConnection';
 import { MachineControlGlobal } from './machinecontrol/machinecontrol.global';
 import { PreviewGlobal } from './preview/preview.global';
+import { SerialPortHistoryPreviewGlobal } from "./serialporthistory/models/serialporthistory.global";
 
 @NgModule({
   declarations: [
@@ -79,7 +80,6 @@ import { PreviewGlobal } from './preview/preview.global';
     NavMenuComponent,
     HomeComponent,
     LoginComponent,
-    SerialPortHistoryComponent,
     MessageBoxComponent,
     MouseWheelDirective,
     ...machineComponents,
@@ -87,6 +87,7 @@ import { PreviewGlobal } from './preview/preview.global';
     ...previewComponents,
     ...gcodeComponents,
     ...eepromConfigComponents,
+    ...serialPortHistoryComponents,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -104,6 +105,7 @@ import { PreviewGlobal } from './preview/preview.global';
       ...machineControlRoutes,
       ...gcodeRoutes,
       ...previewRoutes,
+      ...serialPortHistoryRoutes,
     ]),
   ],
   providers: [
@@ -120,6 +122,7 @@ import { PreviewGlobal } from './preview/preview.global';
     SerialServerConnection,
     MachineControlGlobal,
     PreviewGlobal,
+    SerialPortHistoryPreviewGlobal,
   ],
   bootstrap: [AppComponent],
   entryComponents: [MessageBoxComponent]

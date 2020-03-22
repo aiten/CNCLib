@@ -14,11 +14,54 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-import { Component } from '@angular/core';
+import { Component, Injectable, Inject, OnInit } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
+import { SerialPortDefinition } from '../models/serial.port.definition';
+import { SerialServerService } from '../services/serialserver.service';
 
-@Component(
-  {
-    templateUrl: 'machinecontrol.component.html',
-  })
+import { SerialServerConnection } from '../serialServer/serialServerConnection';
+import { MachineControlGlobal } from './machinecontrol.global';
+
+
+@Component({
+  selector: 'machinecontrol',
+  templateUrl: './machinecontrol.component.html',
+  styleUrls: ['./machinecontrol.component.css'],
+})
 export class MachineControlComponent {
+
+  serialport!: SerialPortDefinition;
+  isLoading: boolean = true;
+  isConnected: boolean = false;
+
+  constructor(
+    private serialServerService: SerialServerService,
+    public serialServer: SerialServerConnection,
+    public machineControlGlobal: MachineControlGlobal
+  ) {
+  }
+
+  async ngOnInit(): Promise<void> {
+    await this.load();
+  }
+
+  async load(): Promise<void> {
+
+    if (this.serialServer.getMachine() != null) {
+      this.serialServerService.setBaseUrl(this.serialServer.getSerialServerUrl(), this.serialServer.getSerialServerAuth());
+      var id = this.serialServer.getSerialServerPortId();
+
+      this.serialport = await this.serialServerService.getPort(id);
+      this.isConnected = this.serialport.isConnected != 0;
+    }
+    this.isLoading = false;
+  }
+
+  async postcommand(command: string): Promise<void> {
+    await this.serialServerService.queueCommands(this.serialport.id, [command], 1000);
+  }
+
+  async sendWhileOkcommands(commands: string[]): Promise<void> {
+    await this.serialServerService.sendWhileOkCommands(this.serialport.id, commands, 10000);
+  }
 }

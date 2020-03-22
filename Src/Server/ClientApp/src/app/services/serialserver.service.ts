@@ -16,7 +16,9 @@
 
 import { SerialCommand } from "../models/serial.command";
 import { SerialPortDefinition } from '../models/serial.port.definition';
+
 import { CNCLibServerInfo } from '../models/CNCLib.Server.Info'
+import { SerialPortHistoryInput } from "../serialporthistory/models/serialporthistory.input";
 
 export abstract class SerialServerService {
 
@@ -53,4 +55,6 @@ export abstract class SerialServerService {
   public abstract getParameter(serialportid: number, parameterNo: number): Promise<number>;
 
   public abstract getPosition(serialportid: number): Promise<number[][]>;
+
+  public abstract getGCodeAsImage(serialportid: number, viewInput: SerialPortHistoryInput): Promise<Blob>;
 }

@@ -1,0 +1,55 @@
+<p *ngIf="!serialcommands">
+  <em>Loading...</em>
+</p>
+
+<span class="reloadbuttons">
+  <button mat-stroked-button (click)='preview()'>Preview</button>
+  <button mat-stroked-button (click)='refresh()'>Refresh</button>
+  <button mat-stroked-button (click)='clear()'>Clear</button>
+</span>
+<p>
+  Command history: {{forserialportid}}
+</p>
+
+<div *ngIf="serialcommands" class="mat-elevation-z8">
+
+  <table mat-table [dataSource]="serialcommandsDataSource">
+
+    <ng-container matColumnDef="seqId">
+      <th mat-header-cell *matHeaderCellDef> Seq </th>
+      <td mat-cell *matCellDef="let element"> {{element.seqId}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="sentTime">
+      <th mat-header-cell *matHeaderCellDef> Sent </th>
+      <td mat-cell *matCellDef="let element"> {{element.sentTime | date:'HH:mm:ss'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="commandText">
+      <th mat-header-cell *matHeaderCellDef> Command </th>
+      <td mat-cell *matCellDef="let element"> {{element.commandText}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="replyType">
+      <th mat-header-cell *matHeaderCellDef> Reply </th>
+      <td mat-cell *matCellDef="let element"> {{element.replyType}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="resultText">
+      <th mat-header-cell *matHeaderCellDef> Result </th>
+      <td mat-cell *matCellDef="let element"> {{element.resultText}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="replyReceivedTime">
+      <th mat-header-cell *matHeaderCellDef> ReplyTime </th>
+      <td mat-cell *matCellDef="let element"> {{element.replyReceivedTime | date:'HH:mm:ss'}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[10, 50, 100]" showFirstLastButtons></mat-paginator>
+
+</div>

@@ -1,0 +1,15 @@
+.inputshow {
+  max-width: 300px;
+  min-width: 300px;
+}
+
+.inputhide {
+  max-width: 100px;
+  min-width: 100px;
+}
+
+.hidebuttons { width: 80px; }
+
+.hmyslider { width: 200px; }
+
+.vyslider { }

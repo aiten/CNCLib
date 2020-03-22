@@ -1,0 +1,18 @@
+table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.mat-column-seqId { width: 70px; }
+
+.mat-column-sentTime { width: 90px; }
+
+.mat-column-commandText { flex: 0 0 20% !important; }
+
+.mat-column-replyType { width: 50px; }
+
+.mat-column-resultText { flex: 0 0 35% !important; }
+
+.mat-column-replyReceivedTime { width: 90px; }
+
+.reloadbuttons { float: right }

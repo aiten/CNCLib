@@ -15,7 +15,6 @@
 */
 
 import { NgModule } from '@angular/core';
-import { MachineControlDetailComponent } from './machinecontrol-detail/machinecontrol-detail.component';
 import { MachineControlMoveComponent } from './machinecontrol-move/machinecontrol-move.component';
 import { MachineControlWorkOffsetComponent } from './machinecontrol-workoffset/machinecontrol-workoffset.component';
 import { MachineControlOffsetComponent } from './machinecontrol-offset/machinecontrol-offset.component';
@@ -44,7 +43,6 @@ export const machineControlRoutes =
     canActivate: [CNCLibLoggedinService],
     children:
     [
-      { path: '', component: MachineControlDetailComponent },
     ]
   }
 ];
@@ -52,7 +50,6 @@ export const machineControlRoutes =
 export const machineControlComponents =
 [
   MachineControlComponent,
-  MachineControlDetailComponent,
   MachineControlMoveComponent,
   MachineControlOffsetComponent,
   MachineControlWorkOffsetComponent,

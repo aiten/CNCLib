@@ -14,25 +14,63 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import { Component, Inject, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+export class SerialPortHistoryInput {
 
-import { SerialServerConnection } from '../serialServer/serialServerConnection';
-import { SerialPortHistoryPreviewGlobal } from "./models/serialporthistory.global";
+  sizeX: number = 200;
 
-@Component({
-  selector: 'serialporthistory',
-  templateUrl: './serialporthistory.component.html',
-  styleUrls: ['./serialporthistory.component.css']
-})
-export class SerialPortHistoryComponent {
+  sizeY: number = 200;
 
-  @Input()
-  autoreloadonempty: boolean = false;
+  sizeZ: number = 200;
 
-  constructor(
-    public serialServer: SerialServerConnection,
-    public previewGlobal: SerialPortHistoryPreviewGlobal,
+  keepRatio: boolean = true;
 
-  ) {
+  zoom: number = 1;
+
+  offsetX: number = 0;
+
+  offsetY: number = 0;
+
+  offsetZ: number = 0;
+
+  cutterSize: number = 0.254;
+
+  laserSize: number = 0;
+
+  machineColor: number;
+
+  laserOnColor: number;
+
+  laserOffColor: number;
+
+  cutColor: number;
+
+  cutDotColor: number;
+
+  cutEllipseColor: number;
+
+  cutArcColor: number;
+
+  fastMoveColor: number;
+
+  helpLineColor: number;
+
+// public Rotate3D Rotate
+
+  rotate3DAngle: number = 0;
+
+  rotate3DVectX: number = 0;
+  rotate3DVectY: number = 0;
+  rotate3DVectZ: number = 1.0;
+
+  rotate3DVect: number[] = [this.rotate3DVectX, this.rotate3DVectY, this.rotate3DVectZ];
+
+  renderSizeX: number = 800;
+
+  renderSizeY: number = 800;
+
+  setVector(vect: number[]) {
+    this.rotate3DVectX = vect[0];
+    this.rotate3DVectY = vect[1];
+    this.rotate3DVectZ = vect[2];
   }
 }

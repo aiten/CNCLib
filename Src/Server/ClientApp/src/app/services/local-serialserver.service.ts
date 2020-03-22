@@ -21,6 +21,7 @@ import { SerialCommand } from "../models/serial.command";
 import { SerialPortDefinition } from '../models/serial.port.definition';
 import { CNCLibServerInfo } from '../models/CNCLib.Server.Info';
 import { QueueSendCommand } from '../models/queue.send.command';
+import { SerialPortHistoryInput } from "../serialporthistory/models/serialporthistory.input";
 
 @Injectable()
 export class LocalSerialServerService implements SerialServerService {
@@ -146,6 +147,14 @@ export class LocalSerialServerService implements SerialServerService {
 
     return this.http.post<number[][]>(this.baseUrl + 'api/GCode/' + serialportid + '/getPosition', "x", { headers: this.getHeaders() }).toPromise()
       .catch(this.handleErrorPromise);
+  }
+
+  getGCodeAsImage(serialportid: number, viewInput: SerialPortHistoryInput): Promise<Blob> {
+    const m = this.http
+      .put<Blob>(`${this.baseUrl}api/SerialPort/${serialportid}/render`, viewInput, { headers: this.getHeaders(), responseType: 'blob' as 'json' })
+      .toPromise()
+      .catch(this.handleErrorPromise);
+    return m;
   }
 
   private handleErrorPromise(error: Response | any) {

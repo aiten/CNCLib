@@ -14,25 +14,21 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import { Component, Inject, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { NgModule } from '@angular/core';
 
-import { SerialServerConnection } from '../serialServer/serialServerConnection';
-import { SerialPortHistoryPreviewGlobal } from "./models/serialporthistory.global";
+import { SerialPortHistoryComponent } from './serialporthistory.component';
+import { SerialPortHistoryGCodeComponent } from "./serialporthistory-gcode.component/serialporthistory-gcode.component";
+import { SerialPortHistoryPreviewViewComponent } from './serialporthistory-preview-view/serialporthistory-preview-view.component';
 
-@Component({
-  selector: 'serialporthistory',
-  templateUrl: './serialporthistory.component.html',
-  styleUrls: ['./serialporthistory.component.css']
-})
-export class SerialPortHistoryComponent {
+import { CNCLibLoggedinService } from "../services/CNCLib-loggedin.service";
 
-  @Input()
-  autoreloadonempty: boolean = false;
+export const serialPortHistoryRoutes =
+[
+];
 
-  constructor(
-    public serialServer: SerialServerConnection,
-    public previewGlobal: SerialPortHistoryPreviewGlobal,
-
-  ) {
-  }
-}
+export const serialPortHistoryComponents =
+[
+  SerialPortHistoryComponent,
+  SerialPortHistoryGCodeComponent,
+  SerialPortHistoryPreviewViewComponent,
+];

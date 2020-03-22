@@ -25,6 +25,7 @@ import { MachineControlGlobal } from '../machinecontrol/machinecontrol.global';
 import { PreviewGlobal } from '../preview/preview.global';
 
 import { Machine } from '../models/machine';
+import { SerialPortHistoryPreviewGlobal } from "../serialporthistory/models/serialporthistory.global";
 
 @Injectable()
 export class SerialServerConnection {
@@ -32,6 +33,7 @@ export class SerialServerConnection {
   constructor(
     private serialServerService: SerialServerService,
     public machineControlGlobal: MachineControlGlobal,
+    public serialPortHistoryPreviewGlobal: SerialPortHistoryPreviewGlobal,
     public previewGlobal: PreviewGlobal
   ) {
   }
@@ -67,6 +69,7 @@ export class SerialServerConnection {
 
     this.machineControlGlobal.setFromMachine(machine);
     this.previewGlobal.setFromMachine(machine);
+    this.serialPortHistoryPreviewGlobal.setFromMachine(machine);
 
     return url;
   }
