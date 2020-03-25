@@ -48,4 +48,6 @@ export abstract class SerialServerService {
   public abstract sendWhileOkCommands(serialportid: number, command: string[], timeout: number): Promise<SerialCommand[]>;
 
   public abstract getGCodeAsImage(serialportid: number, viewInput: PreviewGCode): Promise<Blob>;
+
+  public abstract getDefault(serialportid: number): Promise<PreviewGCode>;
 }

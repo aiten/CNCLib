@@ -57,4 +57,6 @@ export abstract class SerialServerService {
   public abstract getPosition(serialportid: number): Promise<number[][]>;
 
   public abstract getGCodeAsImage(serialportid: number, viewInput: SerialPortHistoryInput): Promise<Blob>;
+
+  public abstract getDefault(serialportid: number): Promise<SerialPortHistoryInput>;
 }

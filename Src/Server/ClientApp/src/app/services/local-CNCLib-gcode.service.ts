@@ -15,8 +15,8 @@
 */
 
 import { HttpClient } from '@angular/common/http';
-
 import { Injectable, Inject, Pipe } from '@angular/core';
+import { map } from 'rxjs/operators';
 
 import { LoadOptions } from "../models/load-options";
 import { PreviewGCode } from '../models/gcode-view-input';
@@ -42,6 +42,19 @@ export class LocalCNCLibGCodeService implements CNCLibGCodeService {
   getGCodeAsImage(viewInput: PreviewGCode): Promise<Blob> {
     const m = this.http
       .put<Blob>(`${this.baseUrl}api/GCode/render`, viewInput, { responseType: 'blob' as 'json' })
+      .toPromise()
+      .catch(this.handleErrorPromise);
+    return m;
+  }
+
+  getDefault(): Promise<PreviewGCode> {
+    const m = this.http
+      .get<PreviewGCode>(`${this.baseUrl}api/GCode/render`)
+      .pipe(map(x => {
+        let y = new PreviewGCode();
+        Object.assign(y, x);
+        return y;
+      }))
       .toPromise()
       .catch(this.handleErrorPromise);
     return m;

@@ -80,6 +80,16 @@ export class PreviewViewComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.route.params.subscribe(params => {
       this.serialId = params['id'];
+
+      if (this.previewGlobal.forSerialId != this.serialId) {
+        this.serialServerService.getDefault(this.serialId).then(opt => {
+            this.previewGlobal.previewOpt = opt;
+            this.previewOpt = opt;
+            this.previewGlobal.forSerialId = this.serialId;
+          }
+        );
+      }
+
       this.refreshImage();
 
       console.log('SignalR to ' + this.baseUrl + 'serialSignalR');

@@ -346,6 +346,16 @@ namespace CNCLib.Serial.WebAPI.Controllers
                 gCodeDraw.Rotate = new Rotate3D(opt.Rotate3DAngle, opt.Rotate3DVect.ToArray());
             }
 
+            if (!string.IsNullOrEmpty(opt.MachineColor)) gCodeDraw.MachineColor       = System.Drawing.ColorTranslator.FromHtml(opt.MachineColor);
+            if (!string.IsNullOrEmpty(opt.LaserOnColor)) gCodeDraw.LaserOnColor       = System.Drawing.ColorTranslator.FromHtml(opt.LaserOnColor);
+            if (!string.IsNullOrEmpty(opt.LaserOffColor)) gCodeDraw.LaserOffColor     = System.Drawing.ColorTranslator.FromHtml(opt.LaserOffColor);
+            if (!string.IsNullOrEmpty(opt.CutColor)) gCodeDraw.CutColor               = System.Drawing.ColorTranslator.FromHtml(opt.CutColor);
+            if (!string.IsNullOrEmpty(opt.CutDotColor)) gCodeDraw.CutDotColor         = System.Drawing.ColorTranslator.FromHtml(opt.CutDotColor);
+            if (!string.IsNullOrEmpty(opt.CutEllipseColor)) gCodeDraw.CutEllipseColor = System.Drawing.ColorTranslator.FromHtml(opt.CutEllipseColor);
+            if (!string.IsNullOrEmpty(opt.CutArcColor)) gCodeDraw.CutArcColor         = System.Drawing.ColorTranslator.FromHtml(opt.CutArcColor);
+            if (!string.IsNullOrEmpty(opt.FastMoveColor)) gCodeDraw.FastMoveColor     = System.Drawing.ColorTranslator.FromHtml(opt.FastMoveColor);
+            if (!string.IsNullOrEmpty(opt.HelpLineColor)) gCodeDraw.HelpLineColor     = System.Drawing.ColorTranslator.FromHtml(opt.HelpLineColor);
+
             var hisCommands = port.Serial.CommandHistoryCopy.OrderBy(x => x.SeqId).Select(c => c.CommandText);
 
             var load = new LoadGCode();
@@ -359,6 +369,41 @@ namespace CNCLib.Serial.WebAPI.Controllers
             var fileName = "preview.png";
             return File(memoryStream, this.GetContentType(fileName), fileName);
         }
+
+        [HttpGet("{id:int}/render")]
+        public async Task<ActionResult<PreviewGCode>> RenderDefault(int id)
+        {
+            var gCodeDraw = new GCodeBitmapDraw();
+            var opt = new PreviewGCode()
+            {
+                SizeX           = 200,
+                SizeY           = 200,
+                SizeZ           = 200,
+                KeepRatio       = true,
+                Zoom            = 1.0,
+                OffsetX         = 0,
+                OffsetY         = 0,
+                OffsetZ         = 0,
+                CutterSize      = gCodeDraw.CutterSize,
+                LaserSize       = gCodeDraw.LaserSize,
+                MachineColor    = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.MachineColor),
+                LaserOnColor    = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.LaserOnColor),
+                LaserOffColor   = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.LaserOffColor),
+                CutColor        = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.CutColor),
+                CutDotColor     = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.CutDotColor),
+                CutEllipseColor = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.CutEllipseColor),
+                CutArcColor     = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.CutArcColor),
+                FastMoveColor   = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.FastMoveColor),
+                HelpLineColor   = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.HelpLineColor),
+                Rotate3DAngle = 0,
+                Rotate3DVect    = new List<double> { 0.0, 0.0, 1.0 },
+                RenderSizeX     = 800,
+                RenderSizeY     = 800
+            };
+
+            return Ok(opt);
+        }
+
         #endregion
     }
 }

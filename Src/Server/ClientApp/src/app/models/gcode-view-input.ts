@@ -33,27 +33,27 @@ export class PreviewGCode {
 
   offsetZ: number = 0;
 
-  cutterSize: number = 0.254;
+  cutterSize: number = 0;
 
-  laserSize: number = 0;
+  laserSize: number = 0.254;
 
-  machineColor: number;
+  machineColor: string;
 
-  laserOnColor: number;
+  laserOnColor: string;
 
-  laserOffColor: number;
+  laserOffColor: string;
 
-  cutColor: number;
+  cutColor: string;
 
-  cutDotColor: number;
+  cutDotColor: string;
 
-  cutEllipseColor: number;
+  cutEllipseColor: string;
 
-  cutArcColor: number;
+  cutArcColor: string;
 
-  fastMoveColor: number;
+  fastMoveColor: string;
 
-  helpLineColor: number;
+  helpLineColor: string;
 
 // public Rotate3D Rotate
 

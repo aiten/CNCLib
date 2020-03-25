@@ -22,5 +22,7 @@ export class PreviewGlobal {
 
   isShowParam: boolean = false;
 
+  forSerialId: number = -1;
+
   previewOpt = new PreviewGCode();
 }

@@ -18,6 +18,7 @@ import { NgModule } from '@angular/core';
 
 import { SerialPortHistoryComponent } from './serialporthistory.component';
 import { SerialPortHistoryGCodeComponent } from "./serialporthistory-gcode.component/serialporthistory-gcode.component";
+import { SerialPortHistoryPreviewInputComponent } from './serialporthistory-preview-input/serialporthistory-preview-input.component';
 import { SerialPortHistoryPreviewViewComponent } from './serialporthistory-preview-view/serialporthistory-preview-view.component';
 
 import { CNCLibLoggedinService } from "../services/CNCLib-loggedin.service";
@@ -31,4 +32,5 @@ export const serialPortHistoryComponents =
   SerialPortHistoryComponent,
   SerialPortHistoryGCodeComponent,
   SerialPortHistoryPreviewViewComponent,
+  SerialPortHistoryPreviewInputComponent,
 ];

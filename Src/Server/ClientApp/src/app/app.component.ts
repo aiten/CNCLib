@@ -16,11 +16,26 @@
 
 import { Component } from '@angular/core';
 
+import { PreviewGlobal } from "./preview/preview.global";
+import { CNCLibGCodeService } from "./services/CNCLib-gcode.service";
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
+  constructor(
+    private previewGlobal: PreviewGlobal,
+    private gCodeService: CNCLibGCodeService
+  ) {
+  }
+  
   title = 'app';
+
+  async ngOnInit() {
+    let default1 = await this.gCodeService.getDefault();
+    this.previewGlobal.previewOpt = default1;
+  }
 }

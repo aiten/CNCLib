@@ -35,6 +35,7 @@
     "core-js": "^3.6.4",
     "jquery": "^3.4.1",
     "moment": "^2.22.2",
+    "ngx-color-picker": "^9.0.0",
     "popper.js": "^1.16.1",
     "rxjs": "^6.5.4",
     "tslib": "^1.11.1",

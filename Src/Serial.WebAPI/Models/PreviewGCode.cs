@@ -41,23 +41,23 @@ namespace CNCLib.Serial.WebAPI.Models
 
         public double LaserSize { get; set; }
 
-        public int MachineColor { get; set; }
+        public string MachineColor { get; set; }
 
-        public int LaserOnColor { get; set; }
+        public string LaserOnColor { get; set; }
 
-        public int LaserOffColor { get; set; }
+        public string LaserOffColor { get; set; }
 
-        public int CutColor { get; set; }
+        public string CutColor { get; set; }
 
-        public int CutDotColor { get; set; }
+        public string CutDotColor { get; set; }
 
-        public int CutEllipseColor { get; set; }
+        public string CutEllipseColor { get; set; }
 
-        public int CutArcColor { get; set; }
+        public string CutArcColor { get; set; }
 
-        public int FastMoveColor { get; set; }
+        public string FastMoveColor { get; set; }
 
-        public int HelpLineColor { get; set; }
+        public string HelpLineColor { get; set; }
 
         // public Rotate3D Rotate { get; set; }
 

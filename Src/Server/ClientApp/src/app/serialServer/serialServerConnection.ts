@@ -69,6 +69,8 @@ export class SerialServerConnection {
 
     this.machineControlGlobal.setFromMachine(machine);
     this.previewGlobal.setFromMachine(machine);
+
+    this.serialPortHistoryPreviewGlobal.previewOpt = await this.serialServerService.getDefault(this.serialServerPortId);
     this.serialPortHistoryPreviewGlobal.setFromMachine(machine);
 
     return url;

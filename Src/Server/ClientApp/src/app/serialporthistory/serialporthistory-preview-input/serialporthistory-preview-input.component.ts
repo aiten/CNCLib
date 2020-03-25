@@ -21,13 +21,15 @@ import { SerialPortHistoryInput } from '../models/serialporthistory.input';
 @Component(
   {
     selector: 'serialporthistory-preview-input',
-    templateUrl: './serialporthistroy-preview-input.component.html',
-    styleUrls: ['./serialporthistroy-preview-input.component.css']
+    templateUrl: './serialporthistory-preview-input.component.html',
+    styleUrls: ['./serialporthistory-preview-input.component.css']
   })
-export class PreviewInputComponent implements OnInit {
+export class SerialPortHistoryPreviewInputComponent implements OnInit {
   @Input()
   previewOpt: SerialPortHistoryInput;
   previewOptForm: FormGroup;
+
+  public isMore: boolean = false;
 
   constructor(
     private fb: FormBuilder
@@ -45,15 +47,15 @@ export class PreviewInputComponent implements OnInit {
         offsetZ: [0.0, [Validators.required]],
         cutterSize: [0.0, [Validators.required]],
         laserSize: [0.0, [Validators.required]],
-        machineColor: [0, [Validators.required]],
-        laserOnColor: [0, [Validators.required]],
-        laserOffColor: [0, [Validators.required]],
-        cutColor: [0, [Validators.required]],
-        cutDotColor: [0, [Validators.required]],
-        cutEllipseColor: [0, [Validators.required]],
-        cutArcColor: [0, [Validators.required]],
-        fastMoveColor: [0, [Validators.required]],
-        helpLineColor: [0, [Validators.required]],
+        machineColor: [""],
+        laserOnColor: [""],
+        laserOffColor: [""],
+        cutColor: [""],
+        cutDotColor: [""],
+        cutEllipseColor: [""],
+        cutArcColor: [""],
+        fastMoveColor: [""],
+        helpLineColor: [""],
 
         rotate3DAngle: [0.0, [Validators.required]],
 

@@ -13,7 +13,7 @@
     <div class="col inputshow" *ngIf="previewGlobal.isShowParam">
       <button mat-stroked-button (click)="previewGlobal.isShowParam = false">Hide</button>
       <button mat-stroked-button (click)='refreshImage()'>Refresh</button>
-      <preview-input [previewOpt]="previewOpt"> </preview-input>
+      <serialporthistory-preview-input [previewOpt]="previewGlobal.previewOpt"> </serialporthistory-preview-input>
     </div>
     <div class="col">
       <img mouseWheel [src]="imageBlobUrl"

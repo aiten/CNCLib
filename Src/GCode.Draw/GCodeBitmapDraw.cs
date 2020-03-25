@@ -289,11 +289,10 @@ namespace CNCLib.GCode.Draw
         Color _machineColor    = Color.Black;
         Color _laserOnColor    = Color.Red;
         Color _laserOffColor   = Color.Orange;
-        Color _cutColor        = Color.White;
+        Color _cutColor        = Color.LightGray;
         Color _cutDotColor     = Color.Blue;
         Color _cutEllipseColor = Color.Cyan;
         Color _cutArcColor     = Color.Beige;
-        Color _noMoveColor     = Color.Blue;
         Color _fastColor       = Color.Green;
         Color _helpLineColor   = Color.LightGray;
 

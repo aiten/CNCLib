@@ -16,6 +16,8 @@
 
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+
 import { SerialServerService } from './serialserver.service';
 import { SerialCommand } from "../models/serial.command";
 import { SerialPortDefinition } from '../models/serial.port.definition';
@@ -157,6 +159,19 @@ export class LocalSerialServerService implements SerialServerService {
     return m;
   }
 
+  getDefault(serialportid: number): Promise<SerialPortHistoryInput> {
+    const m = this.http
+      .get<SerialPortHistoryInput>(`${this.baseUrl}api/SerialPort/${serialportid}/render`, { headers: this.getHeaders() })
+      .pipe(map(x => {
+        let y = new SerialPortHistoryInput();
+        Object.assign(y, x);
+        return y;
+      }))
+      .toPromise()
+      .catch(this.handleErrorPromise);
+    return m;
+  }
+  
   private handleErrorPromise(error: Response | any) {
     console.error(error.message || error);
     return Promise.reject(error.message || error);

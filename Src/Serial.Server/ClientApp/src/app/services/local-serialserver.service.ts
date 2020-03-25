@@ -16,6 +16,8 @@
 
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+
 import { SerialServerService } from './serialserver.service';
 import { SerialCommand } from "../models/serial.command";
 import { SerialPortDefinition } from '../models/serial.port.definition';
@@ -114,6 +116,19 @@ export class LocalSerialServerService implements SerialServerService {
   getGCodeAsImage(serialportid: number, viewInput: PreviewGCode): Promise<Blob> {
     const m = this.http
       .put<Blob>(`${this.baseUrl}api/SerialPort/${serialportid}/render`, viewInput, { responseType: 'blob' as 'json' })
+      .toPromise()
+      .catch(this.handleErrorPromise);
+    return m;
+  }
+
+  getDefault(serialportid: number): Promise<PreviewGCode> {
+    const m = this.http
+      .get<PreviewGCode>(`${this.baseUrl}api/SerialPort/${serialportid}/render`)
+      .pipe(map(x => {
+        let y = new PreviewGCode();
+        Object.assign(y, x);
+        return y;
+      }))
       .toPromise()
       .catch(this.handleErrorPromise);
     return m;

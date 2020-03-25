@@ -1,82 +1,209 @@
 <form novalidate [formGroup]="previewOptForm" (ngSubmit)="savegCode(previewOptForm.value)">
 
-  <div class="form-group input-group">
-    <span class="input-group-addon">RenderSizeX</span>
-    <input matInput class="form-control" type="number" min="10" max="2500" step="10" formControlName="renderSizeX"/>
-  </div>
+<div class="form-group input-group">
+  <span class="input-group-addon">RenderSizeX</span>
+  <input matInput class="form-control" type="number" min="10" max="2500" step="10" formControlName="renderSizeX"/>
+</div>
 
-  <div class="form-group input-group">
-    <span class="input-group-addon">RenderSizeY</span>
-    <input matInput class="form-control" type="number" min="10" max="2500" step="10" formControlName="renderSizeY"/>
-  </div>
+<div class="form-group input-group">
+  <span class="input-group-addon">RenderSizeY</span>
+  <input matInput class="form-control" type="number" min="10" max="2500" step="10" formControlName="renderSizeY"/>
+</div>
 
-  <div class="form-group input-group">
-    <span class="input-group-addon">SizeX</span>
-    <input matInput class="form-control" type="number" min="10" max="2500" step="10" formControlName="sizeX"/>
-  </div>
+<div class="form-group input-group">
+  <span class="input-group-addon">SizeX</span>
+  <input matInput class="form-control" type="number" min="10" max="2500" step="10" formControlName="sizeX"/>
+</div>
 
-  <div class="form-group input-group">
-    <span class="input-group-addon">SizeY</span>
-    <input matInput class="form-control" type="number" min="10" max="2500" step="10" formControlName="sizeY"/>
-  </div>
-  <div class="form-group input-group">
-    <span class="input-group-addon">SizeZ</span>
-    <input matInput class="form-control" type="number" min="10" max="2500" step="10" formControlName="sizeZ"/>
-  </div>
+<div class="form-group input-group">
+  <span class="input-group-addon">SizeY</span>
+  <input matInput class="form-control" type="number" min="10" max="2500" step="10" formControlName="sizeY"/>
+</div>
+<div class="form-group input-group">
+  <span class="input-group-addon">SizeZ</span>
+  <input matInput class="form-control" type="number" min="10" max="2500" step="10" formControlName="sizeZ"/>
+</div>
 
-  <div class="form-group input-group">
-    <span class="input-group-addon">OffsetX</span>
-    <input matInput class="form-control" type="number" min="-2500" max="2500" step="10" formControlName="offsetX"/>
-  </div>
 
-  <div class="form-group input-group">
-    <span class="input-group-addon">OffsetY</span>
-    <input matInput class="form-control" type="number" min="-2500" max="2500" step="10" formControlName="offsetY"/>
-  </div>
+<div class="form-group input-group">
+  <span class="input-group-addon">CutterSize</span>
+  <input matInput class="form-control" formControlName="cutterSize"/>
+</div>
 
-  <div class="form-group input-group">
-    <span class="input-group-addon">OffsetZ</span>
-    <input matInput class="form-control" type="number" min="-2500" max="2500" step="10" formControlName="offsetZ"/>
-  </div>
+<div class="form-group input-group">
+  <span class="input-group-addon">LaserSize</span>
+  <input matInput class="form-control" formControlName="laserSize"/>
+</div>
 
-  <div class="form-group input-group">
-    <span class="input-group-addon">Rotate Angle</span>
-    <input matInput class="form-control" type="number" min="-10" max="+10" step="0.1" formControlName="rotate3DAngle"/>
-  </div>
+<div class="form-group input-group">
+  <span class="input-group-addon">MachineColor</span>
+  <input matInput
+         [colorPicker]="previewOptForm.get('machineColor').value"
+         [value]="previewOptForm.get('machineColor').value"
+         [style.background]="previewOptForm.get('machineColor').value"
+         [cpPresetColors]="['#00FFFF','#000000','#0000FF','#FF00FF','#808080','#008000','#00FF00','#800000','#000080','#808000','#800080','#FF0000','#C0C0C0','#008080','#FFFFFF','#FFFF00', '#D08080', '#003000']"
+         [cpPosition]="'top-right'"
+         [cpOutputFormat]="'hex'"
+         [cpAlphaChannel]="'disabled'"
+         (colorPickerChange)="previewOptForm.get('machineColor').setValue($event)"
+         class="colorPicker form-control"
+         formControlName="machineColor"/>
+</div>
 
-  <div class="form-group input-group">
-    <span class="input-group-addon">Rotate Vect X</span>
-    <input matInput class="form-control" type="number" min="-10" max="+10" step="0.1" formControlName="rotate3DVectX"/>
-  </div>
+<div class="form-group input-group">
+  <span class="input-group-addon">LaserOnColor</span>
+  <input matInput [colorPicker]="previewOptForm.get('laserOnColor').value"
+         [value]="previewOptForm.get('laserOnColor').value"
+         [style.background]="previewOptForm.get('laserOnColor').value"
+         [cpPresetColors]="['#00FFFF','#000000','#0000FF','#FF00FF','#808080','#008000','#00FF00','#800000','#000080','#808000','#800080','#FF0000','#C0C0C0','#008080','#FFFFFF','#FFFF00', '#D08080', '#003000']"
+         [cpPosition]="'top-right'"
+         [cpOutputFormat]="'hex'"
+         [cpAlphaChannel]="'disabled'"
+         (colorPickerChange)="previewOptForm.get('laserOnColor').setValue($event)"
+         class="colorPicker form-control"
+         formControlName="laserOnColor"/>
+</div>
 
-  <div class="form-group input-group">
-    <span class="input-group-addon">Rotate Vect Y</span>
-    <input matInput class="form-control" type="number" min="-10" max="+10" step="0.1" formControlName="rotate3DVectY"/>
-  </div>
+<div class="form-group input-group">
+  <span class="input-group-addon">LaserOffColor</span>
+  <input matInput [colorPicker]="previewOptForm.get('laserOffColor').value"
+         [value]="previewOptForm.get('laserOffColor').value"
+         [style.background]="previewOptForm.get('laserOffColor').value"
+         [cpPresetColors]="['#00FFFF','#000000','#0000FF','#FF00FF','#808080','#008000','#00FF00','#800000','#000080','#808000','#800080','#FF0000','#C0C0C0','#008080','#FFFFFF','#FFFF00', '#D08080', '#003000']"
+         [cpPosition]="'top-right'"
+         [cpOutputFormat]="'hex'"
+         [cpAlphaChannel]="'disabled'"
+         (colorPickerChange)="previewOptForm.get('laserOffColor').setValue($event)"
+         class="colorPicker form-control"
+         formControlName="laserOffColor"/>
+</div>
+<div class="form-group input-group">
+  <span class="input-group-addon">CutColor</span>
+  <input matInput [colorPicker]="previewOptForm.get('cutColor').value"
+         [value]="previewOptForm.get('cutColor').value"
+         [style.background]="previewOptForm.get('cutColor').value"
+         [cpPresetColors]="['#00FFFF','#000000','#0000FF','#FF00FF','#808080','#008000','#00FF00','#800000','#000080','#808000','#800080','#FF0000','#C0C0C0','#008080','#FFFFFF','#FFFF00', '#D08080', '#003000']"
+         [cpPosition]="'top-right'"
+         [cpOutputFormat]="'hex'"
+         [cpAlphaChannel]="'disabled'"
+         (colorPickerChange)="previewOptForm.get('cutColor').setValue($event)"
+         class="colorPicker form-control"
+         formControlName="cutColor"/>
+</div>
+<div class="form-group input-group">
+  <span class="input-group-addon">CutDotColor</span>
+  <input matInput [colorPicker]="previewOptForm.get('cutDotColor').value"
+         [value]="previewOptForm.get('cutDotColor').value"
+         [style.background]="previewOptForm.get('cutDotColor').value"
+         [cpPresetColors]="['#00FFFF','#000000','#0000FF','#FF00FF','#808080','#008000','#00FF00','#800000','#000080','#808000','#800080','#FF0000','#C0C0C0','#008080','#FFFFFF','#FFFF00', '#D08080', '#003000']"
+         [cpPosition]="'top-right'"
+         [cpOutputFormat]="'hex'"
+         [cpAlphaChannel]="'disabled'"
+         (colorPickerChange)="previewOptForm.get('cutDotColor').setValue($event)"
+         class="colorPicker form-control"
+         formControlName="cutDotColor"/>
+</div>
+<div class="form-group input-group">
+  <span class="input-group-addon">CutEllipseColor</span>
+  <input matInput [colorPicker]="previewOptForm.get('cutEllipseColor').value"
+         [value]="previewOptForm.get('cutEllipseColor').value"
+         [style.background]="previewOptForm.get('cutEllipseColor').value"
+         [cpPresetColors]="['#00FFFF','#000000','#0000FF','#FF00FF','#808080','#008000','#00FF00','#800000','#000080','#808000','#800080','#FF0000','#C0C0C0','#008080','#FFFFFF','#FFFF00', '#D08080', '#003000']"
+         [cpPosition]="'top-right'"
+         [cpOutputFormat]="'hex'"
+         [cpAlphaChannel]="'disabled'"
+         (colorPickerChange)="previewOptForm.get('cutEllipseColor').setValue($event)"
+         class="colorPicker form-control"
+         formControlName="cutEllipseColor"/>
+</div>
 
-  <div class="form-group input-group">
-    <span class="input-group-addon">Rotate Vect Z</span>
-    <input matInput class="form-control" type="number" min="-10" max="+10" step="0.1" formControlName="rotate3DVectZ"/>
-  </div>
+<div class="form-group input-group">
+  <span class="input-group-addon">CutArcColor</span>
+  <input matInput [colorPicker]="previewOptForm.get('cutArcColor').value"
+         [value]="previewOptForm.get('cutArcColor').value"
+         [style.background]="previewOptForm.get('cutArcColor').value"
+         [cpPresetColors]="['#00FFFF','#000000','#0000FF','#FF00FF','#808080','#008000','#00FF00','#800000','#000080','#808000','#800080','#FF0000','#C0C0C0','#008080','#FFFFFF','#FFFF00', '#D08080', '#003000']"
+         [cpPosition]="'top-right'"
+         [cpOutputFormat]="'hex'"
+         [cpAlphaChannel]="'disabled'"
+         (colorPickerChange)="previewOptForm.get('cutArcColor').setValue($event)"
+         class="colorPicker form-control"
+         formControlName="cutArcColor"/>
+</div>
+<div class="form-group input-group">
+  <span class="input-group-addon">FastMoveColor</span>
+  <input matInput [colorPicker]="previewOptForm.get('fastMoveColor').value"
+         [value]="previewOptForm.get('fastMoveColor').value"
+         [style.background]="previewOptForm.get('fastMoveColor').value"
+         [cpPresetColors]="['#00FFFF','#000000','#0000FF','#FF00FF','#808080','#008000','#00FF00','#800000','#000080','#808000','#800080','#FF0000','#C0C0C0','#008080','#FFFFFF','#FFFF00', '#D08080', '#003000']"
+         [cpPosition]="'top-right'"
+         [cpOutputFormat]="'hex'"
+         [cpAlphaChannel]="'disabled'"
+         (colorPickerChange)="previewOptForm.get('fastMoveColor').setValue($event)"
+         class="colorPicker form-control"
+         formControlName="fastMoveColor"/>
+</div>
+<div class="form-group input-group">
+  <span class="input-group-addon">HelpLineColor</span>
+  <input matInput [colorPicker]="previewOptForm.get('helpLineColor').value"
+         [value]="previewOptForm.get('helpLineColor').value"
+         [style.background]="previewOptForm.get('helpLineColor').value"
+         [cpPresetColors]="['#00FFFF','#000000','#0000FF','#FF00FF','#808080','#008000','#00FF00','#800000','#000080','#808000','#800080','#FF0000','#C0C0C0','#008080','#FFFFFF','#FFFF00', '#D08080', '#003000']"
+         [cpPosition]="'top-right'"
+         [cpOutputFormat]="'hex'"
+         [cpAlphaChannel]="'disabled'"
+         (colorPickerChange)="previewOptForm.get('helpLineColor').setValue($event)"
+         class="colorPicker form-control"
+         formControlName="helpLineColor"/>
+</div>
 
-  <div class="form-group input-group">
-    <span class="input-group-addon">KeepRatio</span>
-    <mat-checkbox class="form-control" formControlName="keepRatio"></mat-checkbox>
-  </div>
+<div *ngIf="isMore" class="form-group input-group">
+  <span class="input-group-addon">OffsetX</span>
+  <input matInput class="form-control" type="number" min="-2500" max="2500" step="10" formControlName="offsetX"/>
+</div>
 
-  <div class="form-group input-group">
-    <span class="input-group-addon">Zoom</span>
-    <input matInput class="form-control" type="number" min="0.1" step="0.1" formControlName="zoom"/>
-  </div>
+<div *ngIf="isMore" class="form-group input-group">
+  <span class="input-group-addon">OffsetY</span>
+  <input matInput class="form-control" type="number" min="-2500" max="2500" step="10" formControlName="offsetY"/>
+</div>
 
-  <div class="form-group input-group">
-    <span class="input-group-addon">CutterSize</span>
-    <input matInput class="form-control" formControlName="cutterSize"/>
-  </div>
+<div *ngIf="isMore" class="form-group input-group">
+  <span class="input-group-addon">OffsetZ</span>
+  <input matInput class="form-control" type="number" min="-2500" max="2500" step="10" formControlName="offsetZ"/>
+</div>
 
-  <div class="form-group input-group">
-    <span class="input-group-addon">LaserSize</span>
-    <input matInput class="form-control" formControlName="laserSize"/>
-  </div>
+<div *ngIf="isMore" class="form-group input-group">
+  <span class="input-group-addon">Rotate Angle</span>
+  <input matInput class="form-control" type="number" min="-10" max="+10" step="0.1" formControlName="rotate3DAngle"/>
+</div>
 
+<div *ngIf="isMore" class="form-group input-group">
+  <span class="input-group-addon">Rotate Vect X</span>
+  <input matInput class="form-control" type="number" min="-10" max="+10" step="0.1" formControlName="rotate3DVectX"/>
+</div>
+
+<div *ngIf="isMore" class="form-group input-group">
+  <span class="input-group-addon">Rotate Vect Y</span>
+  <input matInput class="form-control" type="number" min="-10" max="+10" step="0.1" formControlName="rotate3DVectY"/>
+</div>
+
+<div *ngIf="isMore" class="form-group input-group">
+  <span class="input-group-addon">Rotate Vect Z</span>
+  <input matInput class="form-control" type="number" min="-10" max="+10" step="0.1" formControlName="rotate3DVectZ"/>
+</div>
+
+<div *ngIf="isMore" class="form-group input-group">
+  <span class="input-group-addon">KeepRatio</span>
+  <mat-checkbox class="form-control" formControlName="keepRatio"></mat-checkbox>
+</div>
+
+<div *ngIf="isMore" class="form-group input-group">
+  <span class="input-group-addon">Zoom</span>
+  <input matInput class="form-control" type="number" min="0.1" step="0.1" formControlName="zoom"/>
+</div>
+
+<div class="form-group input-group">
+  <button *ngIf="isMore" mat-stroked-button (click)="isMore = !isMore">Less</button>
+  <button *ngIf="!isMore" mat-stroked-button (click)="isMore = !isMore">More</button>
+</div>
 </form>

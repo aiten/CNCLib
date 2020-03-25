@@ -27,7 +27,9 @@ import { PreviewGCode } from '../../models/preview-input';
 export class PreviewInputComponent implements OnInit {
   @Input()
   previewOpt: PreviewGCode;
-  previewOptForm: FormGroup;
+  public previewOptForm: FormGroup;
+
+  public isMore: boolean = false;
 
   constructor(
     private fb: FormBuilder
@@ -45,15 +47,15 @@ export class PreviewInputComponent implements OnInit {
         offsetZ: [0.0, [Validators.required]],
         cutterSize: [0.0, [Validators.required]],
         laserSize: [0.0, [Validators.required]],
-        machineColor: [0, [Validators.required]],
-        laserOnColor: [0, [Validators.required]],
-        laserOffColor: [0, [Validators.required]],
-        cutColor: [0, [Validators.required]],
-        cutDotColor: [0, [Validators.required]],
-        cutEllipseColor: [0, [Validators.required]],
-        cutArcColor: [0, [Validators.required]],
-        fastMoveColor: [0, [Validators.required]],
-        helpLineColor: [0, [Validators.required]],
+        machineColor: [""],
+        laserOnColor: [""],
+        laserOffColor: [""],
+        cutColor: [""],
+        cutDotColor: [""],
+        cutEllipseColor: [""],
+        cutArcColor: [""],
+        fastMoveColor: [""],
+        helpLineColor: [""],
 
         rotate3DAngle: [0.0, [Validators.required]],
 
@@ -75,6 +77,7 @@ export class PreviewInputComponent implements OnInit {
   }
 
   async ngOnInit() {
+    console.log("nginit Input");
     this.previewOptForm.patchValue(this.previewOpt);
   }
 }

@@ -22,4 +22,6 @@ export abstract class CNCLibGCodeService {
   public abstract createGCode(loadOption: LoadOptions): Promise<string[]>;
 
   public abstract getGCodeAsImage(viewInput: GCodeViewInput): Promise<Blob>;
+
+  public abstract getDefault(): Promise<GCodeViewInput>;
 }
