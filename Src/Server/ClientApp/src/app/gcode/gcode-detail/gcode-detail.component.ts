@@ -29,6 +29,7 @@ import Hpgl = ELoadType.Hpgl;
 import ZMove = PenType.ZMove;
 import ImageHole = ELoadType.ImageHole;
 import ImageHole1 = ELoadType.ImageHole;
+import InvertLineSequence = ConvertTypeEnum.InvertLineSequence;
 
 @Component(
   {
@@ -128,6 +129,8 @@ export class GcodeDetailComponent implements OnInit {
         smoothMinAngle: [0.0],
         smoothMinLineLength: [0.0],
         smoothMaxError: [0.0],
+
+        cutterSize: [1.0],
 
         imageWriteToFileName: ['', [Validators.maxLength(512)]],
         grayThreshold: [0.0],
@@ -232,12 +235,24 @@ export class GcodeDetailComponent implements OnInit {
     return this.isHpgl() && this.entry.smoothType != SmoothTypeEnum.NoSmooth;
   }
 
+  isInvertLineOrder() {
+    return this.isHpgl() && this.entry.convertType == ConvertTypeEnum.InvertLineSequence;
+  }
+
   isLaser() {
     return (this.isHpgl() && this.entry.penMoveType == PenType.CommandString) || this.isImageOrImageHole();
   }
 
   isEngrave() {
     return this.isHpgl() && this.entry.penMoveType == PenType.ZMove;
+  }
+
+  isNewspaperDither() {
+    return this.isHpglorImageOrImageHole() && this.entry.dither == DitherFilter.NewspaperDither;
+  }
+
+  isHoleHeart() {
+    return this.isImageHole() && this.entry.holeType == EHoleType.Heart;
   }
 
   async ngOnInit() {

@@ -119,9 +119,9 @@ namespace CNCLib.GCode.Load
                     {
                         var linesOnLevel = closedLines.Where(l => l.Level == level);
 
-                        if (LoadOptions.LaserSize != 0)
+                        if (LoadOptions.CutterSize != 0)
                         {
-                            linesOnLevel = OffsetLines(_scale / 2.0 * (double)LoadOptions.LaserSize * ((level % 2 == 0) ? 1.0 : -1.0), linesOnLevel);
+                            linesOnLevel = OffsetLines(_scale / 2.0 * (double)LoadOptions.CutterSize * ((level % 2 == 0) ? 1.0 : -1.0), linesOnLevel);
                         }
 
                         orderedList.AddRange(OptimizeDistance(linesOnLevel));

@@ -29,7 +29,6 @@ export enum PenType {
 export enum SmoothTypeEnum {
   NoSmooth = 0,
   SplitLine = 1,
-  SplineLine = 2
 }
 
 export enum ConvertTypeEnum {
@@ -111,6 +110,8 @@ export class LoadOptions {
   smoothType: SmoothTypeEnum;
 
   convertType: ConvertTypeEnum;
+
+  cutterSize: number | null;
 
   smoothMinAngle: number | null;
   smoothMinLineLength: number | null;

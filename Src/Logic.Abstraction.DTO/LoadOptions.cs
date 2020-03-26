@@ -81,6 +81,7 @@ namespace CNCLib.Logic.Abstraction.DTO
 
         public decimal? MoveSpeed        { get; set; } = 500m;
         public decimal? EngraveDownSpeed { get; set; }
+        public decimal  CutterSize       { get; set; } = 1.5m;
 
         public string LaserFirstOnCommand { get; set; } = "M106 S255";
         public string LaserOnCommand      { get; set; } = "M106";
@@ -94,7 +95,6 @@ namespace CNCLib.Logic.Abstraction.DTO
         {
             NoSmooth   = 0,
             SplitLine  = 1,
-            SplineLine = 2
         }
 
         public SmoothTypeEnum SmoothType { get; set; } = SmoothTypeEnum.NoSmooth;

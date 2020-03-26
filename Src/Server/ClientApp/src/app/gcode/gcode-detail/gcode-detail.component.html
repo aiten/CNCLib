@@ -27,20 +27,19 @@
     </div>
 
     <div class="form-group input-group">
-      <span class="input-group-addon">Setting-Name</span>
+      <span class="input-group-addon">Setting Name</span>
       <input matInput class="form-control" formControlName="settingName"/>
     </div>
 
     <div class="form-group input-group">
-      <span class="input-group-addon">Load-Type</span>
+      <span class="input-group-addon">Source</span>
       <mat-select formControlName="loadType" class="form-control" [compareWith]="compareWithEnum">
-        >
         <mat-option *ngFor="let key of keysELoadType" [value]="key">{{ELoadType[key]}}</mat-option>
       </mat-select>
     </div>
 
     <div class="form-group input-group">
-      <span class="input-group-addon">File-Name</span>
+      <span class="input-group-addon">File Name</span>
       <input matInput class="form-control" formControlName="fileName"/>
     </div>
 
@@ -88,7 +87,7 @@
 
   <div *ngIf="isEngrave()">
 
-    <h3>Engrave</h3>
+    <h3>Engrave/Cut</h3>
 
     <div class="form-group input-group">
       <span class="input-group-addon">Position In G-Parameter</span>
@@ -145,14 +144,18 @@
       <input matInput class="form-control" formControlName="laserLastOffCommand"/>
     </div>
 
-    <div class="form-group input-group">
-      <span class="input-group-addon">Laser Size (mm)</span>
-      <input matInput class="form-control" formControlName="laserSize"/>
+    <div *ngIf="isImageOrImageHole()">
+      <div class="form-group input-group">
+        <span class="input-group-addon">Laser Size (mm)</span>
+        <input matInput class="form-control" formControlName="laserSize"/>
+      </div>
     </div>
 
-    <div class="form-group input-group">
-      <span class="input-group-addon">Laser Acc Dist (mm)</span>
-      <input matInput class="form-control" formControlName="laserAccDist"/>
+    <div *ngIf="isImage()">
+      <div class="form-group input-group">
+        <span class="input-group-addon">Laser Acc Dist (mm)</span>
+        <input matInput class="form-control" formControlName="laserAccDist"/>
+      </div>
     </div>
 
   </div>
@@ -165,29 +168,34 @@
     <h2>Hpgl</h2>
 
     <div class="form-group input-group">
-      <span class="input-group-addon">PenMoveType</span>
+      <span class="input-group-addon">Pen Up/Down</span>
       <mat-select formControlName="penMoveType" class="form-control" [compareWith]="compareWithEnum">
         <mat-option *ngFor="let key of keysPenType" [value]="key">{{PenType[key]}}</mat-option>
       </mat-select>
     </div>
 
     <div class="form-group input-group">
-      <span class="input-group-addon">Swap XY</span>
-      <mat-checkbox class="form-control" formControlName="swapXY"></mat-checkbox>
-    </div>
-
-    <div class="form-group input-group">
-      <span class="input-group-addon">Smooth Type</span>
+      <span class="input-group-addon">Smooth</span>
       <mat-select formControlName="smoothType" class="form-control" [compareWith]="compareWithEnum">
         <mat-option *ngFor="let key of keysSmoothTypeEnum" [value]="key">{{SmoothTypeEnum[key]}}</mat-option>
       </mat-select>
     </div>
 
     <div class="form-group input-group">
-      <span class="input-group-addon">Convert Type</span>
+      <span class="input-group-addon">Convert</span>
       <mat-select formControlName="convertType" class="form-control" [compareWith]="compareWithEnum">
         <mat-option *ngFor="let key of keysConvertTypeEnum" [value]="key">{{ConvertTypeEnum[key]}}</mat-option>
       </mat-select>
+    </div>
+
+    <div *ngIf="isInvertLineOrder()" class="form-group input-group">
+      <span class="input-group-addon">Cutter Size (mm)</span>
+      <input matInput class="form-control" formControlName="cutterSize"/>
+    </div>
+
+    <div class="form-group input-group">
+      <span class="input-group-addon">Swap XY</span>
+      <mat-checkbox class="form-control" formControlName="swapXY"></mat-checkbox>
     </div>
 
     <div class="form-group input-group">
@@ -202,7 +210,7 @@
     <h3>Auto-Scale</h3>
 
     <div class="form-group input-group">
-      <span class="input-group-addon">KeepRatio</span>
+      <span class="input-group-addon">Keep Ratio</span>
       <mat-checkbox class="form-control" formControlName="autoScaleKeepRatio"></mat-checkbox>
     </div>
 
@@ -271,7 +279,7 @@
       </div>
 
       <div class="form-group input-group">
-        <span class="input-group-addon">ImageWriteToFileName</span>
+        <span class="input-group-addon">Image Write To</span>
         <input matInput class="form-control" formControlName="imageWriteToFileName"/>
       </div>
 
@@ -281,17 +289,17 @@
       </div>
 
       <div class="form-group input-group">
-        <span class="input-group-addon">ImageDPI X</span>
+        <span class="input-group-addon">Image DPI X</span>
         <input matInput class="form-control" formControlName="imageDPIX"/>
       </div>
 
       <div class="form-group input-group">
-        <span class="input-group-addon">ImageDPI Y</span>
+        <span class="input-group-addon">Image DPI Y</span>
         <input matInput class="form-control" formControlName="imageDPIY"/>
       </div>
 
       <div class="form-group input-group">
-        <span class="input-group-addon">Image Invert</span>
+        <span class="input-group-addon">Invert Image</span>
         <mat-checkbox class="form-control" formControlName="imageInvert"></mat-checkbox>
       </div>
 
@@ -302,8 +310,8 @@
         </mat-select>
       </div>
 
-      <div class="form-group input-group">
-        <span class="input-group-addon">Newspaper DitherSize</span>
+      <div *ngIf="isNewspaperDither()" class="form-group input-group">
+        <span class="input-group-addon">Newspaper Dither Size</span>
         <input matInput class="form-control" formControlName="newspaperDitherSize"/>
       </div>
 
@@ -342,11 +350,11 @@
     </div>
 
     <div class="form-group input-group">
-      <span class="input-group-addon">Hole Type</span>
-      <input matInput class="form-control" formControlName="holeType"/>
+      <span class="input-group-addon">Y Shift</span>
+      <mat-checkbox class="form-control" formControlName="useYShift"></mat-checkbox>
     </div>
 
-    <div class="form-group input-group">
+    <div *ngIf="isHoleHeart()" class="form-group input-group">
       <span class="input-group-addon">RotateHeart</span>
       <mat-checkbox class="form-control" formControlName="rotateHeart"></mat-checkbox>
     </div>

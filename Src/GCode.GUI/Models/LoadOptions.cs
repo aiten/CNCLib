@@ -106,6 +106,7 @@ namespace CNCLib.GCode.GUI.Models
         public bool    EngravePosInParameter { get; set; } = true;
         public decimal EngravePosUp          { get; set; } = 1m;
         public decimal EngravePosDown        { get; set; } = -0.5m;
+        public decimal CutterSize            { get; set; } = 1.5m;
 
         public decimal? MoveSpeed        { get; set; } = 500m;
         public decimal? EngraveDownSpeed { get; set; }
