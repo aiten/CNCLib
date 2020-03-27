@@ -205,7 +205,7 @@ namespace CNCLib.UnitTest.Load
                 AutoScale   = false,
                 PenMoveType = LoadOptions.PenType.CommandString,
                 MoveSpeed   = 499,
-                LaserSize   = 0,
+                CutterSize  = 0,
                 ConvertType = LoadOptions.ConvertTypeEnum.InvertLineSequence,
                 FileContent = Encoding.ASCII.GetBytes(
                     "IN;" + "PU0,0;PD0,400,400,400,400,0,0,0;" + "PU50,50;PD350,50,350,350,50,350,50,50;" + "PU100,100;PD300,100,300,300,100,300,100,100;" +
