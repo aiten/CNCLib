@@ -14,7 +14,22 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+export enum MessageBoxResult {
+  Ok = 0,
+  Yes = 1,
+  No = 2,
+  Cancel = 3
+}
+
 export interface MessageBoxData {
   title: string;
   message: string;
+
+  haveYes: boolean;
+  haveNo: boolean;
+  haveCancel: boolean;
+  haveOk: boolean;
+
+  result: MessageBoxResult;
+
 }

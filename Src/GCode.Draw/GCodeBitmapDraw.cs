@@ -535,7 +535,7 @@ namespace CNCLib.GCode.Draw
 
         #endregion
 
-        #region IOutput 
+        #region IOutput
 
         private class PenSet
         {

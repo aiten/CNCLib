@@ -34,9 +34,9 @@ namespace CNCLib.Logic.Manager
 {
     public class UserManager : CrudManager<User, int, UserEntity>, IUserManager
     {
-        private readonly IUnitOfWork       _unitOfWork;
-        private readonly IUserRepository   _repository;
-        private readonly IMapper           _mapper;
+        private readonly IUnitOfWork             _unitOfWork;
+        private readonly IUserRepository         _repository;
+        private readonly IMapper                 _mapper;
         private readonly IOneWayPasswordProvider _passwordProvider;
 
         public UserManager(IUnitOfWork unitOfWork, IUserRepository repository, IMapper mapper, IOneWayPasswordProvider passwordProvider) : base(unitOfWork, repository, mapper)

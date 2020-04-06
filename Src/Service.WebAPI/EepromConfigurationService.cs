@@ -32,9 +32,10 @@ namespace CNCLib.Service.WebAPI
 
         public EepromConfigurationService(HttpClient httpClient)
         {
-            BaseApi = @"api/EepromConfiguration";
+            BaseApi     = @"api/EepromConfiguration";
             _httpClient = httpClient;
         }
+
         protected override IScope<HttpClient> CreateScope()
         {
             return new ScopeInstance<HttpClient>(_httpClient);
@@ -44,7 +45,6 @@ namespace CNCLib.Service.WebAPI
         {
             using (var scope = CreateScope())
             {
-
                 var paramUri = new UriQueryBuilder();
                 paramUri.Add("teeth", param.Teeth)
                     .Add("toothSizeInMm",          param.ToothSizeInMm)

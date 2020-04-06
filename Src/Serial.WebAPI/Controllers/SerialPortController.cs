@@ -129,9 +129,9 @@ namespace CNCLib.Serial.WebAPI.Controllers
             port.Serial.BaudRate       = baudRateN0;
             port.Serial.DtrIsReset     = dtrIsResetN0;
             port.Serial.ResetOnConnect = resetOnConnectN0;
-            port.GCodeCommandPrefix    = commandPrefix??"";
+            port.GCodeCommandPrefix    = commandPrefix ?? "";
 
-            await port.Serial.ConnectAsync(port.PortName,null, null, null);
+            await port.Serial.ConnectAsync(port.PortName, null, null, null);
 
             await _hubContext.Clients.All.Connected(id);
 
@@ -304,7 +304,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
 
             var cmdList = port.Serial.CommandHistoryCopy;
 
-            if (sortDesc??true)
+            if (sortDesc ?? true)
             {
                 cmdList = cmdList.OrderByDescending(h => h.SeqId).ToList();
             }
@@ -316,7 +316,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
 
         #region Render
 
-        [HttpPut( "{id:int}/render")]
+        [HttpPut("{id:int}/render")]
         public async Task<IActionResult> Render(int id, [FromBody] PreviewGCode opt)
         {
             var port = await SerialPortList.GetPortAndRescan(id);
@@ -395,7 +395,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
                 CutArcColor     = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.CutArcColor),
                 FastMoveColor   = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.FastMoveColor),
                 HelpLineColor   = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.HelpLineColor),
-                Rotate3DAngle = 0,
+                Rotate3DAngle   = 0,
                 Rotate3DVect    = new List<double> { 0.0, 0.0, 1.0 },
                 RenderSizeX     = 800,
                 RenderSizeY     = 800

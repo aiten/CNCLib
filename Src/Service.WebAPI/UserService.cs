@@ -33,9 +33,10 @@ namespace CNCLib.Service.WebAPI
 
         public UserService(HttpClient httpClient)
         {
-            BaseApi = @"api/user";
+            BaseApi     = @"api/user";
             _httpClient = httpClient;
         }
+
         protected override IScope<HttpClient> CreateScope()
         {
             return new ScopeInstance<HttpClient>(_httpClient);

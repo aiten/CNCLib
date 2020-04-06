@@ -16,7 +16,7 @@
 
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MessageBoxData } from '../message-box-data';
+import { MessageBoxData, MessageBoxResult } from '../message-box-data';
 
 @Component({
   selector: 'app-modal',
@@ -28,6 +28,27 @@ export class MessageBoxComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<MessageBoxComponent>,
     @Inject(MAT_DIALOG_DATA) public data: MessageBoxData) {
+  }
+
+  onCloseOk() {
+    this.onClose(MessageBoxResult.Ok);
+  }
+
+  onCloseYes() {
+    this.onClose(MessageBoxResult.Yes);
+  }
+
+  onCloseNo() {
+    this.onClose(MessageBoxResult.No);
+  }
+
+  onCloseCancel() {
+    this.onClose(MessageBoxResult.Cancel);
+  }
+
+  onClose(result: MessageBoxResult) {
+    this.data.result = result;
+    this.dialogRef.close(this.data);
   }
 
   onNoClick(): void {

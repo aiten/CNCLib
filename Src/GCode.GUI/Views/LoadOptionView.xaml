@@ -281,11 +281,11 @@
                         <StackPanel>
                             <CheckBox Content="Reorder closed lines"
                                       IsChecked="{Binding LoadOptionsValue.ConvertEnabled}" Margin="10,10,0,0" />
-                            <StackPanel Orientation="Horizontal" >
+                            <StackPanel Orientation="Horizontal">
                                 <Label Content="Cutter Size" Width="120" />
                                 <TextBox Text="{Binding LoadOptionsValue.CutterSize}"
                                          VerticalContentAlignment="Center" Width="60" />
-                                <Label Content="inner/outer offset"/>
+                                <Label Content="inner/outer offset" />
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>

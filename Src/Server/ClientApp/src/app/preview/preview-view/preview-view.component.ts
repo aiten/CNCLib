@@ -98,7 +98,7 @@ export class PreviewViewComponent implements OnInit {
 
     }
   }
-  
+
   async setXY() {
     this.previewOpt.offsetX = 0;
     this.previewOpt.offsetY = 0;

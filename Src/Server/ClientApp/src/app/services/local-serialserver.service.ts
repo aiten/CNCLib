@@ -171,7 +171,7 @@ export class LocalSerialServerService implements SerialServerService {
       .catch(this.handleErrorPromise);
     return m;
   }
-  
+
   private handleErrorPromise(error: Response | any) {
     console.error(error.message || error);
     return Promise.reject(error.message || error);

@@ -32,7 +32,6 @@ export class SerialPortHistoryComponent {
   constructor(
     public serialServer: SerialServerConnection,
     public previewGlobal: SerialPortHistoryPreviewGlobal,
-
   ) {
   }
 }

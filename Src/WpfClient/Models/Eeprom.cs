@@ -318,7 +318,7 @@ namespace CNCLib.WpfClient.Models
         [Description("Capability of macine commands")]
         public CommandSyntax CommandSyntax
         {
-            get => (CommandSyntax) EepromV1.GetCommandSyntax(Info1);
+            get => (CommandSyntax)EepromV1.GetCommandSyntax(Info1);
             set { }
         }
 

@@ -23,7 +23,7 @@ import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { gcodeURL } from '../../app.global';
 
 import { MessageBoxComponent } from "../../modal/message-box/message-box.component";
-import { MessageBoxData } from "../../modal/message-box-data";
+import { MessageBoxData, MessageBoxResult } from "../../modal/message-box-data";
 
 
 @Component(
@@ -46,7 +46,7 @@ export class GcodeOverviewComponent implements OnInit {
   ) {
   }
 
-  newLoadOption() {
+  TestnewLoadOption() {
 
     const dialogRef = this.dialog.open(MessageBoxComponent,
       {
@@ -58,6 +58,10 @@ export class GcodeOverviewComponent implements OnInit {
       //      this.animal = result;
     });
 
+  }
+
+  newLoadOption() {
+    this.router.navigate([gcodeURL, 'detail', 'new']);
   }
 
   detailLoadOption(id: number) {

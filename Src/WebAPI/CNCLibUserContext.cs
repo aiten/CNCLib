@@ -39,6 +39,7 @@ namespace CNCLib.WebAPI
             {
                 UserId = int.Parse(userIdString);
             }
+
             UserName = controller.User.FindFirst(ClaimTypes.Name)?.Value;
         }
     }

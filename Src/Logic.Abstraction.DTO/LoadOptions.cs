@@ -35,7 +35,7 @@ namespace CNCLib.Logic.Abstraction.DTO
         public string FileName    { get; set; }
         public byte[] FileContent { get; set; }
 
-        public string SettingName { get; set; }
+        public string SettingName { get; set; } = @"new";
 
         public string GCodeWriteToFileName { get; set; } = @"%USERPROFILE%\Documents\test.gcode";
 
@@ -93,8 +93,8 @@ namespace CNCLib.Logic.Abstraction.DTO
 
         public enum SmoothTypeEnum
         {
-            NoSmooth   = 0,
-            SplitLine  = 1,
+            NoSmooth  = 0,
+            SplitLine = 1,
         }
 
         public SmoothTypeEnum SmoothType { get; set; } = SmoothTypeEnum.NoSmooth;

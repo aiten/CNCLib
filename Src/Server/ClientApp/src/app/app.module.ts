@@ -100,15 +100,20 @@ import { SerialPortHistoryPreviewGlobal } from "./serialporthistory/models/seria
     ReactiveFormsModule,
     MaterialModule,
     RouterModule.forRoot([
-      { path: '', redirectTo: 'home', pathMatch: 'full' },
-      { path: 'home', component: HomeComponent },
-      ...eepromConfigRoutes,
-      ...machineRoutes,
-      ...machineControlRoutes,
-      ...gcodeRoutes,
-      ...previewRoutes,
-      ...serialPortHistoryRoutes,
-    ]),
+        { path: '', redirectTo: 'home', pathMatch: 'full' },
+        { path: 'home', component: HomeComponent },
+        ...eepromConfigRoutes,
+        ...machineRoutes,
+        ...machineControlRoutes,
+        ...gcodeRoutes,
+        ...previewRoutes,
+        ...serialPortHistoryRoutes,
+      ],
+      {
+        // onSameUrlNavigation: 'ignore',
+        // onSameUrlNavigation: 'reload'
+      
+      })
   ],
   providers: [
     { provide: SerialServerService, useClass: LocalSerialServerService },

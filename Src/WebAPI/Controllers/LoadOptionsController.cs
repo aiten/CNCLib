@@ -50,6 +50,12 @@ namespace CNCLib.WebAPI.Controllers
             return await this.GetAll(_manager);
         }
 
+        [HttpGet("default")]
+        public ActionResult<LoadOptions> GetNewDefault()
+        {
+            return new LoadOptions();
+        }
+
         [HttpGet("{id:int}")]
         public async Task<ActionResult<LoadOptions>> Get(int id)
         {

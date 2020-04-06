@@ -35,7 +35,7 @@ namespace CNCLib.WpfClient.Controls
             _dist.Text = MoveDist.ToString();
         }
 
-        #region INPC 
+        #region INPC
 
         public virtual event PropertyChangedEventHandler PropertyChanged;
 

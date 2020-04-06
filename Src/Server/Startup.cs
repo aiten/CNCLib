@@ -82,8 +82,8 @@ namespace CNCLib.Server
             GlobalDiagnosticsContext.Set("username",         Environment.UserName);
         }
 
-        public        IConfiguration         Configuration { get; }
-        public static IServiceProvider       Services      { get; private set; }
+        public        IConfiguration                           Configuration { get; }
+        public static IServiceProvider                         Services      { get; private set; }
         public static IHubContext<CNCLibHub, ICNCLibHubClient> Hub           => Services.GetService<IHubContext<CNCLibHub, ICNCLibHubClient>>();
 
         public void ConfigureServices(IServiceCollection services)

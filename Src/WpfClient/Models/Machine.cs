@@ -176,7 +176,7 @@ namespace CNCLib.WpfClient.Models
         [Category(CATEGORY_FEATURES)]
         [DisplayName("WorkOffsets")]
         [Description("Count off work offsets")]
-        public int WorkOffsets{ get; set; }
+        public int WorkOffsets { get; set; }
 
         [Category(CATEGORY_FEATURES)]
         [DisplayName("CommandSyntax")]

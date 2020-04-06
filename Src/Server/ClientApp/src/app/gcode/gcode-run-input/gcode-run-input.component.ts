@@ -78,7 +78,7 @@ export class GcodeRunInputComponent implements OnInit {
     return this.entry.loadType == ELoadType.Hpgl;
   }
 
-  isHpglorImageOrImageHole() {
+  isHpglOrImageOrImageHole() {
     return this.isHpgl() || this.isImageOrImageHole();
   }
 
@@ -95,11 +95,11 @@ export class GcodeRunInputComponent implements OnInit {
   }
 
   isAutoScale() {
-    return this.isHpglorImageOrImageHole() && this.entry.autoScale;
+    return this.isHpglOrImageOrImageHole() && this.entry.autoScale;
   }
 
   isScale() {
-    return this.isHpglorImageOrImageHole() && this.entry.autoScale == false;
+    return this.isHpglOrImageOrImageHole() && this.entry.autoScale == false;
   }
 
   isSmooth() {

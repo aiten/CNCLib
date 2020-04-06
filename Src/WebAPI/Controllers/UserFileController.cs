@@ -97,7 +97,7 @@ namespace CNCLib.WebAPI.Controllers
 
             if (userFileDto != null)
             {
-                var fileIdFromUri   = await _manager.GetFileId(fileName);
+                var fileIdFromUri = await _manager.GetFileId(fileName);
                 if (fileIdFromUri > 0)
                 {
                     userFileDto.UserFileId = fileIdFromUri;
@@ -108,6 +108,7 @@ namespace CNCLib.WebAPI.Controllers
                 {
                     await this.Add(_manager, userFileDto);
                 }
+
                 return Ok(value.FileName);
             }
 

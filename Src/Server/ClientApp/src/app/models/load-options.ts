@@ -146,7 +146,7 @@ export class LoadOptions {
     return this.loadType == ELoadType.Hpgl;
   }
 
-  isHpglorImageOrImageHole() {
+  isHpglOrImageOrImageHole() {
     return this.isHpgl() || this.isImageOrImageHole();
   }
 
@@ -163,11 +163,11 @@ export class LoadOptions {
   }
 
   isAutoScale() {
-    return this.isHpglorImageOrImageHole() && this.autoScale;
+    return this.isHpglOrImageOrImageHole() && this.autoScale;
   }
 
   isScale() {
-    return this.isHpglorImageOrImageHole() && this.autoScale == false;
+    return this.isHpglOrImageOrImageHole() && this.autoScale == false;
   }
 
   isSmooth() {

@@ -45,6 +45,14 @@ export class LocalCNCLibLoadOptionService implements CNCLibLoadOptionService {
     return loadOption;
   }
 
+  newDefault(): Promise<LoadOptions> {
+    const loadOption = this.http
+      .get<LoadOptions>(`${this.baseUrl}api/LoadOptions/default`)
+      .toPromise()
+      .catch(this.handleErrorPromise);
+    return loadOption;
+  }
+
   addLoadOption(loadOption: LoadOptions): Promise<LoadOptions> {
     const m = this.http
       .post<LoadOptions>(`${this.baseUrl}api/LoadOptions`, loadOption)

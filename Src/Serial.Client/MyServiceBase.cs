@@ -27,10 +27,10 @@ namespace CNCLib.Serial.Client
     public class MyServiceBase : ServiceBase
     {
         protected string WebServerUri { get; set; } = @"http://localhost:5000";
-        protected string UserName { get; set; }
-        protected string Password { get; set; }
+        protected string UserName     { get; set; }
+        protected string Password     { get; set; }
 
-        public MyServiceBase() 
+        public MyServiceBase()
         {
         }
 
@@ -43,8 +43,8 @@ namespace CNCLib.Serial.Client
         {
             var httpClientHandler = new HttpClientHandler();
             httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
-            
-            var client = new HttpClient (httpClientHandler) { BaseAddress = new Uri(WebServerUri) };
+
+            var client = new HttpClient(httpClientHandler) { BaseAddress = new Uri(WebServerUri) };
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 

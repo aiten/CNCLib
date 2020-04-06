@@ -31,7 +31,7 @@ export class AppComponent {
     private gCodeService: CNCLibGCodeService
   ) {
   }
-  
+
   title = 'app';
 
   async ngOnInit() {

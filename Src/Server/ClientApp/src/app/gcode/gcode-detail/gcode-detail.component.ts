@@ -22,7 +22,7 @@ import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
 import { MessageBoxComponent } from "../../modal/message-box/message-box.component";
-import { MessageBoxData } from "../../modal/message-box-data";
+import { MessageBoxData, MessageBoxResult } from "../../modal/message-box-data";
 import { gcodeURL } from '../../app.global';
 
 import Hpgl = ELoadType.Hpgl;
@@ -50,23 +50,12 @@ export class GcodeDetailComponent implements OnInit {
   keysDitherFilter: any[];
   keysEHoleType: any[];
 
-  ELoadType: typeof
-    ELoadType = ELoadType;
-
-  PenType: typeof
-    PenType = PenType;
-
-  SmoothTypeEnum: typeof
-    SmoothTypeEnum = SmoothTypeEnum;
-
-  ConvertTypeEnum: typeof
-    ConvertTypeEnum = ConvertTypeEnum;
-
-  DitherFilter: typeof
-    DitherFilter = DitherFilter;
-
-  EHoleType: typeof
-    EHoleType = EHoleType;
+  ELoadType: typeof ELoadType = ELoadType;
+  PenType: typeof PenType = PenType;
+  SmoothTypeEnum: typeof SmoothTypeEnum = SmoothTypeEnum;
+  ConvertTypeEnum: typeof ConvertTypeEnum = ConvertTypeEnum;
+  DitherFilter: typeof DitherFilter = DitherFilter;
+  EHoleType: typeof EHoleType = EHoleType;
 
   constructor(
     private router: Router,
@@ -147,15 +136,12 @@ export class GcodeDetailComponent implements OnInit {
         dotSizeX: [0.0],
         dotSizeY: [0.0],
         rotateHeart: [0],
-
-
       });
 
     this.gCodeForm.valueChanges.subscribe((
       value) => {
       if (this.isLoaded)
-        Object.assign(this.entry,
-          value);
+        Object.assign(this.entry, value);
     });
   }
 
@@ -163,51 +149,88 @@ export class GcodeDetailComponent implements OnInit {
     return lt1 == lt2;
   }
 
-  newLoadOption() {
+  async deletegCode() {
 
+    this.isLoaded = false;
     const dialogRef = this.dialog.open(MessageBoxComponent,
       {
         width: '250px',
-        data: { title: "Error", message: "Not implemented yet" }
+        data: { title: "Warning", message: "Delete GCode", haveYes: true, haveCancel: true }
       });
 
-    dialogRef.afterClosed().subscribe(result => {
-      //      this.animal = result;
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result.result == MessageBoxResult.Yes) {
+        await this.loadOptionService.deleteLoadOptionById(this.entry.id);
+        this.router.navigate([gcodeURL]);
+      } else {
+        this.isLoaded = true;
+      }
     });
+  }
 
+  async clonegCode() {
+    this.isLoaded = false;
+    this.entry.settingName = this.entry.settingName + "(clone)";
+    this.entry.id = 0;
+    let newentry = await this.loadOptionService.addLoadOption(this.entry);
+    await this.router.navigate([gcodeURL]);
+    await this.router.navigate([gcodeURL, 'detail', String(newentry.id)]);
   }
 
   async savegCode(value: any): Promise<void> {
-    Object.assign(this.entry, value);
-    await this.loadOptionService.updateLoadOption(this.entry);
-    window.location.reload();
-// this.router.navigate([gcodeURL, 'detail', this.entry.Id]);
+    if (this.isLoaded) {
+      Object.assign(this.entry, value);
+
+      if (this.entry.id == 0) {
+        let newEntry = await this.loadOptionService.addLoadOption(this.entry);
+        await this.router.navigate([gcodeURL]);
+        await this.router.navigate([gcodeURL, 'detail', String(newEntry.id)]);
+      } else {
+        await this.loadOptionService.updateLoadOption(this.entry);
+        await this.loadValues(this.entry.id);
+      }
+    }
   }
 
-  detailLoadOption(id:
-    number) {
-
-    const dialogRef = this.dialog.open(MessageBoxComponent,
-      {
-        width: '250px',
-        data: { title: "Info", message: "Hallo" }
-      });
-
-    dialogRef.afterClosed().subscribe(result => {
-//      this.animal = result;
-    });
-
-  }
-
-  run() {
+  rungCode() {
     this.router.navigate([gcodeURL, 'run', this.entry.id]);
+  }
+
+  async loadValues(id: number) {
+    this.entry = await this.loadOptionService.getById(id);
+    console.log(this.entry);
+    this.gCodeForm.patchValue(this.entry);
+  }
+
+  async newDefaultValues() {
+    this.entry = await this.loadOptionService.newDefault();
+    this.gCodeForm.patchValue(this.entry);
+  }
+
+  async loadFromUrl() {
+
+    let id = this.route.snapshot.paramMap.get('id');
+
+    if (id == "new") {
+      await this.newDefaultValues();
+    } else {
+      await this.loadValues(+id);
+    }
+
+    this.isLoaded = true;
+  }
+
+  async ngOnInit() {
+    console.log("ngOnInit");
+    await this.loadFromUrl();
+    console.log("ngOnInit done");
   }
 
   isHpgl() {
     return this.entry.loadType == ELoadType.Hpgl;
   }
 
-  isHpglorImageOrImageHole() {
+  isHpglOrImageOrImageHole() {
     return this.isHpgl() || this.isImageOrImageHole();
   }
 
@@ -224,11 +247,11 @@ export class GcodeDetailComponent implements OnInit {
   }
 
   isAutoScale() {
-    return this.isHpglorImageOrImageHole() && this.entry.autoScale;
+    return this.isHpglOrImageOrImageHole() && this.entry.autoScale;
   }
 
   isScale() {
-    return this.isHpglorImageOrImageHole() && this.entry.autoScale == false;
+    return this.isHpglOrImageOrImageHole() && this.entry.autoScale == false;
   }
 
   isSmooth() {
@@ -239,8 +262,8 @@ export class GcodeDetailComponent implements OnInit {
     return this.isHpgl() && this.entry.convertType == ConvertTypeEnum.InvertLineSequence;
   }
 
-  isLaser() {
-    return (this.isHpgl() && this.entry.penMoveType == PenType.CommandString) || this.isImageOrImageHole();
+  isHpglCommandString() {
+    return (this.isHpgl() && this.entry.penMoveType == PenType.CommandString);
   }
 
   isEngrave() {
@@ -248,17 +271,10 @@ export class GcodeDetailComponent implements OnInit {
   }
 
   isNewspaperDither() {
-    return this.isHpglorImageOrImageHole() && this.entry.dither == DitherFilter.NewspaperDither;
+    return this.isHpglOrImageOrImageHole() && this.entry.dither == DitherFilter.NewspaperDither;
   }
 
   isHoleHeart() {
     return this.isImageHole() && this.entry.holeType == EHoleType.Heart;
-  }
-
-  async ngOnInit() {
-    let id = this.route.snapshot.paramMap.get('id');
-    this.entry = await this.loadOptionService.getById(+id);
-    this.gCodeForm.patchValue(this.entry);
-    this.isLoaded = true;
   }
 }
