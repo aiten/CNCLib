@@ -14,7 +14,7 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { LoadOptions } from "../../models/load-options";
 import { CNCLibLoadOptionService } from '../../services/CNCLib-load-option.service';
 
@@ -38,6 +38,9 @@ export class GcodeOverviewComponent implements OnInit {
   isLoading: boolean = true;
 
   displayedColumns: string[] = [/* 'id', */ 'settingName', 'detail', 'run'];
+
+  @ViewChild("fileUpload", { static: false })
+  fileUpload: ElementRef;
 
   constructor(
     private router: Router,
@@ -66,6 +69,33 @@ export class GcodeOverviewComponent implements OnInit {
 
   detailLoadOption(id: number) {
     this.router.navigate([gcodeURL, 'detail', String(id)]);
+  }
+
+  async importgCode() {
+    this.fileUpload.nativeElement.click();
+  }
+
+  uploadgCode(event) {
+    let files = event.target.files;
+    if (files.length > 0) {
+      console.log("Load");
+      const selectedFile = event.target.files[0];
+      const fileReader = new FileReader();
+      fileReader.readAsText(selectedFile, "UTF-8");
+      fileReader.onload = async () => {
+        const content = JSON.parse(fileReader.result);
+        console.log(content);
+        let formattedDt = new Date().toLocaleString();
+        content.settingName = content.settingName + `(import:${formattedDt})`;
+        content.id = 0;
+        let newentry = await this.loadOptionService.addLoadOption(content);
+        await this.router.navigate([gcodeURL]);
+        await this.router.navigate([gcodeURL, 'detail', String(newentry.id)]);
+      }
+      fileReader.onerror = (error) => {
+        console.log(error);
+      }
+    }
   }
 
   runLoadOption(id: number) {

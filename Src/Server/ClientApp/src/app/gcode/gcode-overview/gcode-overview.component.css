@@ -9,3 +9,10 @@
 .mat-column-detail { width: 90px; }
 
 .mat-column-run { width: 90px; }
+
+
+.fileinput {
+  opacity: 0;
+  width: 1px;
+  display: none;
+}

@@ -21,6 +21,8 @@ import { CNCLibLoadOptionService } from '../../services/CNCLib-load-option.servi
 import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
+import { saveAs } from 'file-saver';
+
 import { MessageBoxComponent } from "../../modal/message-box/message-box.component";
 import { MessageBoxData, MessageBoxResult } from "../../modal/message-box-data";
 import { gcodeURL } from '../../app.global';
@@ -49,6 +51,8 @@ export class GcodeDetailComponent implements OnInit {
   keysConvertTypeEnum: any[];
   keysDitherFilter: any[];
   keysEHoleType: any[];
+
+  isMore: boolean = false;
 
   ELoadType: typeof ELoadType = ELoadType;
   PenType: typeof PenType = PenType;
@@ -175,6 +179,15 @@ export class GcodeDetailComponent implements OnInit {
     let newentry = await this.loadOptionService.addLoadOption(this.entry);
     await this.router.navigate([gcodeURL]);
     await this.router.navigate([gcodeURL, 'detail', String(newentry.id)]);
+  }
+
+  async exportgCode() {
+
+    const data = JSON.stringify(this.entry);
+    const blob = new Blob([data], { type: 'application/octet-stream' });
+    const file = new File([blob], this.entry.settingName + '_gcode.json', { type: 'application/octet-stream' });
+
+    saveAs(file);
   }
 
   async savegCode(value: any): Promise<void> {

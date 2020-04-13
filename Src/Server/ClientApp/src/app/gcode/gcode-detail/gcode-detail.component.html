@@ -9,9 +9,16 @@
   <h1 *ngIf="isLoaded">
     G-Code: {{ entry.settingName }}
     <span class='right'>
-      <button mat-stroked-button (click)='deletegCode()' [disabled]="!gCodeForm.valid">Delete</button>
+      <button *ngIf="isMore" mat-button class="menuHide-button" (click)='isMore = false'>
+        <fa-icon icon="chevron-right"></fa-icon>
+      </button>
+      <button *ngIf="!isMore" mat-button class="menuHide-button" (click)='isMore = true'>
+        <fa-icon icon="chevron-left"></fa-icon>
+      </button>
+      <button *ngIf="isMore" mat-stroked-button (click)='exportgCode()' [disabled]="!gCodeForm.valid">Export</button>
+      <button *ngIf="isMore" mat-stroked-button (click)='deletegCode()' [disabled]="!gCodeForm.valid">Delete</button>
+      <button *ngIf="isMore" mat-stroked-button (click)='clonegCode()' [disabled]="!gCodeForm.valid">Clone</button>
       <button mat-stroked-button (click)='rungCode()' [disabled]="!gCodeForm.valid">Run</button>
-      <button mat-stroked-button (click)='clonegCode()' [disabled]="!gCodeForm.valid">Clone</button>
       <button mat-stroked-button type="submit" class="btn btn-default" [disabled]="!gCodeForm.valid">Save</button>
     </span>
   </h1>
@@ -27,7 +34,7 @@
 
           <div class="form-group input-group">
             <span class="input-group-addon">Setting Name</span>
-            <input matInput class="form-control" formControlName="settingName"/>
+            <input matInput class="form-control" formControlName="settingName" />
           </div>
 
           <div class="form-group input-group">
@@ -39,17 +46,17 @@
 
           <div class="form-group input-group">
             <span class="input-group-addon">File Name</span>
-            <input matInput class="form-control" formControlName="fileName"/>
+            <input matInput class="form-control" formControlName="fileName" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">Startup Commands</span>
-            <input matInput class="form-control" formControlName="startupCommands"/>
+            <input matInput class="form-control" formControlName="startupCommands" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">Shutdown Commands</span>
-            <input matInput class="form-control" formControlName="shutdownCommands"/>
+            <input matInput class="form-control" formControlName="shutdownCommands" />
           </div>
 
           <div class="form-group input-group">
@@ -112,22 +119,22 @@
 
           <div class="form-group input-group">
             <span class="input-group-addon">Image Write To</span>
-            <input matInput class="form-control" formControlName="imageWriteToFileName"/>
+            <input matInput class="form-control" formControlName="imageWriteToFileName" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">Gray Threshold</span>
-            <input matInput class="form-control" formControlName="grayThreshold"/>
+            <input matInput class="form-control" formControlName="grayThreshold" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">Image DPI X</span>
-            <input matInput class="form-control" formControlName="imageDPIX"/>
+            <input matInput class="form-control" formControlName="imageDPIX" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">Image DPI Y</span>
-            <input matInput class="form-control" formControlName="imageDPIY"/>
+            <input matInput class="form-control" formControlName="imageDPIY" />
           </div>
 
           <div class="form-group input-group">
@@ -144,7 +151,7 @@
 
           <div *ngIf="isNewspaperDither()" class="form-group input-group">
             <span class="input-group-addon">Newspaper Dither Size</span>
-            <input matInput class="form-control" formControlName="newspaperDitherSize"/>
+            <input matInput class="form-control" formControlName="newspaperDitherSize" />
           </div>
 
         </div>
@@ -159,38 +166,38 @@
 
           <div class="form-group input-group">
             <span class="input-group-addon">Move Speed (mm/min)</span>
-            <input matInput class="form-control" formControlName="moveSpeed"/>
+            <input matInput class="form-control" formControlName="moveSpeed" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">Laser First On Command</span>
-            <input matInput class="form-control" formControlName="laserFirstOnCommand"/>
+            <input matInput class="form-control" formControlName="laserFirstOnCommand" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">Laser On Command</span>
-            <input matInput class="form-control" formControlName="laserOnCommand"/>
+            <input matInput class="form-control" formControlName="laserOnCommand" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">Laser Off Command</span>
-            <input matInput class="form-control" formControlName="laserOffCommand"/>
+            <input matInput class="form-control" formControlName="laserOffCommand" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">Laser Last Off Command</span>
-            <input matInput class="form-control" formControlName="laserLastOffCommand"/>
+            <input matInput class="form-control" formControlName="laserLastOffCommand" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">Laser Size (mm)</span>
-            <input matInput class="form-control" formControlName="laserSize"/>
+            <input matInput class="form-control" formControlName="laserSize" />
           </div>
 
           <div *ngIf="isImage()">
             <div class="form-group input-group">
               <span class="input-group-addon">Laser Acc Dist (mm)</span>
-              <input matInput class="form-control" formControlName="laserAccDist"/>
+              <input matInput class="form-control" formControlName="laserAccDist" />
             </div>
           </div>
 
@@ -202,27 +209,27 @@
 
           <div class="form-group input-group">
             <span class="input-group-addon">Move Speed (mm/min)</span>
-            <input matInput class="form-control" formControlName="moveSpeed"/>
+            <input matInput class="form-control" formControlName="moveSpeed" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">First Pen Down Command</span>
-            <input matInput class="form-control" formControlName="laserFirstOnCommand"/>
+            <input matInput class="form-control" formControlName="laserFirstOnCommand" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">Pen Down Command</span>
-            <input matInput class="form-control" formControlName="laserOnCommand"/>
+            <input matInput class="form-control" formControlName="laserOnCommand" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">Pen Up Command</span>
-            <input matInput class="form-control" formControlName="laserOffCommand"/>
+            <input matInput class="form-control" formControlName="laserOffCommand" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">Last Pen Down Command</span>
-            <input matInput class="form-control" formControlName="laserLastOffCommand"/>
+            <input matInput class="form-control" formControlName="laserLastOffCommand" />
           </div>
 
         </div>
@@ -233,12 +240,12 @@
 
           <div class="form-group input-group">
             <span class="input-group-addon">Move Speed (mm/min)</span>
-            <input matInput class="form-control" formControlName="moveSpeed"/>
+            <input matInput class="form-control" formControlName="moveSpeed" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">Z-Down Speed (mm/min)</span>
-            <input matInput class="form-control" formControlName="engraveDownSpeed"/>
+            <input matInput class="form-control" formControlName="engraveDownSpeed" />
           </div>
 
           <div class="form-group input-group">
@@ -248,12 +255,12 @@
 
           <div class="form-group input-group">
             <span class="input-group-addon">Z-Position Up</span>
-            <input matInput class="form-control" formControlName="engravePosUp"/>
+            <input matInput class="form-control" formControlName="engravePosUp" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">Z-Position Down</span>
-            <input matInput class="form-control" formControlName="engravePosDown"/>
+            <input matInput class="form-control" formControlName="engravePosDown" />
           </div>
 
         </div>
@@ -274,22 +281,22 @@
 
           <div class="form-group input-group">
             <span class="input-group-addon">Size X (mm)</span>
-            <input matInput class="form-control" formControlName="autoScaleSizeX"/>
+            <input matInput class="form-control" formControlName="autoScaleSizeX" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">Size Y (mm)</span>
-            <input matInput class="form-control" formControlName="autoScaleSizeY"/>
+            <input matInput class="form-control" formControlName="autoScaleSizeY" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">Margin X (mm)</span>
-            <input matInput class="form-control" formControlName="autoScaleBorderDistX"/>
+            <input matInput class="form-control" formControlName="autoScaleBorderDistX" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">Margin Y (mm)</span>
-            <input matInput class="form-control" formControlName="autoScaleBorderDistY"/>
+            <input matInput class="form-control" formControlName="autoScaleBorderDistY" />
           </div>
 
         </div>
@@ -300,22 +307,22 @@
 
           <div class="form-group input-group">
             <span class="input-group-addon">Scale X</span>
-            <input matInput class="form-control" formControlName="scaleX"/>
+            <input matInput class="form-control" formControlName="scaleX" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">Scale Y</span>
-            <input matInput class="form-control" formControlName="scaleY"/>
+            <input matInput class="form-control" formControlName="scaleY" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">Offset X</span>
-            <input matInput class="form-control" formControlName="ofsX"/>
+            <input matInput class="form-control" formControlName="ofsX" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">Offset Y</span>
-            <input matInput class="form-control" formControlName="ofsY"/>
+            <input matInput class="form-control" formControlName="ofsY" />
           </div>
 
         </div>
@@ -326,17 +333,17 @@
 
           <div class="form-group input-group">
             <span class="input-group-addon">Min Angle (rad)</span>
-            <input matInput class="form-control" formControlName="smoothMinAngle"/>
+            <input matInput class="form-control" formControlName="smoothMinAngle" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">Min Line Length (mm)</span>
-            <input matInput class="form-control" formControlName="smoothMinLineLength"/>
+            <input matInput class="form-control" formControlName="smoothMinLineLength" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">Max Error (mm)</span>
-            <input matInput class="form-control" formControlName="smoothMaxError"/>
+            <input matInput class="form-control" formControlName="smoothMaxError" />
           </div>
 
         </div>
@@ -347,7 +354,7 @@
 
           <div class="form-group input-group">
             <span class="input-group-addon">Cutter Size (mm)</span>
-            <input matInput class="form-control" formControlName="cutterSize"/>
+            <input matInput class="form-control" formControlName="cutterSize" />
           </div>
 
         </div>
@@ -365,22 +372,22 @@
 
           <div class="form-group input-group">
             <span class="input-group-addon">DotDist X</span>
-            <input matInput class="form-control" formControlName="dotDistX"/>
+            <input matInput class="form-control" formControlName="dotDistX" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">DotDist Y</span>
-            <input matInput class="form-control" formControlName="dotDistY"/>
+            <input matInput class="form-control" formControlName="dotDistY" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">DotSize X</span>
-            <input matInput class="form-control" formControlName="dotSizeX"/>
+            <input matInput class="form-control" formControlName="dotSizeX" />
           </div>
 
           <div class="form-group input-group">
             <span class="input-group-addon">DotSize Y</span>
-            <input matInput class="form-control" formControlName="dotSizeY"/>
+            <input matInput class="form-control" formControlName="dotSizeY" />
           </div>
 
           <div class="form-group input-group">

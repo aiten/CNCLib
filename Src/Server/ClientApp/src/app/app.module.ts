@@ -68,7 +68,7 @@ import { BasicAuthInterceptor, ErrorInterceptor } from './_helpers';
 import { MouseWheelDirective } from './_helpers/mousewheel.directive';
 
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { faHome, faSync, faPlug, faCalculator, faToolbox, faCogs, faEllipsisV, faArrowDown, faChevronDown, faDrawPolygon } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faSync, faPlug, faCalculator, faToolbox, faCogs, faEllipsisV, faArrowDown, faChevronDown, faChevronUp, faChevronLeft, faChevronRight, faDrawPolygon } from '@fortawesome/free-solid-svg-icons';
 
 import { SerialServerConnection } from './serialServer/serialServerConnection';
 import { MachineControlGlobal } from './machinecontrol/machinecontrol.global';
@@ -137,6 +137,18 @@ import { SerialPortHistoryPreviewGlobal } from "./serialporthistory/models/seria
 export class AppModule {
   constructor(library: FaIconLibrary) {
 
-    library.addIcons(faHome, faSync, faPlug, faCalculator, faToolbox, faCogs, faEllipsisV, faArrowDown, faChevronDown, faDrawPolygon);
+    library.addIcons(faHome,
+      faSync,
+      faPlug,
+      faCalculator,
+      faToolbox,
+      faCogs,
+      faEllipsisV,
+      faArrowDown,
+      faChevronDown,
+      faChevronUp,
+      faChevronLeft,
+      faChevronRight,
+      faDrawPolygon);
   }
 }
