@@ -83,7 +83,7 @@ export class GcodeOverviewComponent implements OnInit {
       const fileReader = new FileReader();
       fileReader.readAsText(selectedFile, "UTF-8");
       fileReader.onload = async () => {
-        const content = JSON.parse(fileReader.result);
+        const content = JSON.parse(fileReader.result as string);
         console.log(content);
         let formattedDt = new Date().toLocaleString();
         content.settingName = content.settingName + `(import:${formattedDt})`;
