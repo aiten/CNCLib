@@ -458,6 +458,45 @@ namespace CNCLib.GCode.Draw
             set._laserFastPen = new Pen(colorConverter(LaserOffColor), (float)(fastSize / 2.0));
         }
 
+        Tuple<Point3D, Point3D> CalcMinMax(CommandList commands)
+        {
+            var pointMin = new Point3D(SizeX, SizeY, SizeZ);
+            var pointMax = new Point3D();
+
+            foreach (var cmd in commands)
+            {
+                var calcEndPos = cmd.CalculatedEndPosition;
+
+                if ((calcEndPos.X0) > pointMax.X0)
+                {
+                    pointMax.X = calcEndPos.X0;
+                }
+                if ((calcEndPos.Y0) > pointMax.Y0)
+                {
+                    pointMax.Y = calcEndPos.Y0;
+                }
+                if ((calcEndPos.X0) > pointMax.X0)
+                {
+                    pointMax.Z = calcEndPos.Z0;
+                }
+
+                if ((calcEndPos.X0) < pointMin.X0)
+                {
+                    pointMin.X = calcEndPos.X0;
+                }
+                if ((calcEndPos.Y0) < pointMin.Y0)
+                {
+                    pointMin.Y = calcEndPos.Y0;
+                }
+                if ((calcEndPos.X0) < pointMin.X0)
+                {
+                    pointMin.Z = calcEndPos.Z0;
+                }
+            }
+
+            return new Tuple<Point3D, Point3D>(pointMin,pointMax);
+        }
+
         public Bitmap DrawToBitmap(CommandList commands)
         {
             InitPen();
@@ -470,6 +509,15 @@ namespace CNCLib.GCode.Draw
             g1.PixelOffsetMode    = PixelOffsetMode.None;
             g1.CompositingQuality = CompositingQuality.HighSpeed;
             g1.TextRenderingHint  = System.Drawing.Text.TextRenderingHint.SingleBitPerPixel;
+
+            if (SizeX == 0.0 || SizeY == 0.0 || SizeZ == 0.0)
+            {
+                var minMax = CalcMinMax(commands);
+
+                SizeX = minMax.Item2.X ?? SizeX;
+                SizeY = minMax.Item2.Y ?? SizeY;
+                SizeZ = minMax.Item2.Z ?? SizeZ;
+            }
 
             // var ee = new PaintEventArgs(g1, new Rectangle());
 

@@ -376,9 +376,9 @@ namespace CNCLib.Serial.WebAPI.Controllers
             var gCodeDraw = new GCodeBitmapDraw();
             var opt = new PreviewGCode()
             {
-                SizeX           = 200,
-                SizeY           = 200,
-                SizeZ           = 200,
+                SizeX           = 0,
+                SizeY           = 0,
+                SizeZ           = 0,
                 KeepRatio       = true,
                 Zoom            = 1.0,
                 OffsetX         = 0,

@@ -3,15 +3,15 @@
     <div class="col inputhide" *ngIf="!previewGlobal.isShowParam">
       <div class="container-fluid">
         <button mat-stroked-button class="hidebuttons" (click)="previewGlobal.isGCode = true">GCode</button>
-        <button mat-stroked-button class="hidebuttons" (click)="previewGlobal.isShowParam = true">Show</button>
         <button mat-stroked-button class="hidebuttons" (click)='refreshImage()'>Refresh</button>
         <button mat-stroked-button class="hidebuttons" (click)='setXY()'>XY</button>
         <button mat-stroked-button class="hidebuttons" (click)='setXZ()'>XZ</button>
         <button mat-stroked-button class="hidebuttons" (click)='setYZ()'>YZ</button>
+        <button mat-stroked-button class="hidebuttons" (click)="previewGlobal.isShowParam = true"><fa-icon icon="chevron-down"></fa-icon></button>
       </div>
     </div>
     <div class="col inputshow" *ngIf="previewGlobal.isShowParam">
-      <button mat-stroked-button (click)="previewGlobal.isShowParam = false">Hide</button>
+      <button mat-stroked-button (click)="previewGlobal.isShowParam = false"><fa-icon icon="chevron-up"></fa-icon></button>
       <button mat-stroked-button (click)='refreshImage()'>Refresh</button>
       <serialporthistory-preview-input [previewOpt]="previewGlobal.previewOpt"> </serialporthistory-preview-input>
     </div>

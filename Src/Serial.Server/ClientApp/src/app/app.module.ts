@@ -46,7 +46,8 @@ import { BasicAuthInterceptor, ErrorInterceptor } from './_helpers';
 import { MouseWheelDirective } from './_helpers/mousewheel.directive';
 
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { faHome, faSync, faPlug } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faSync, faPlug, faCalculator, faToolbox, faCogs, faEllipsisV, faArrowDown, faChevronDown, faChevronUp, faChevronLeft, faChevronRight, faDrawPolygon } from '@fortawesome/free-solid-svg-icons';
+
 
 @NgModule({
   declarations: [
@@ -87,6 +88,18 @@ import { faHome, faSync, faPlug } from '@fortawesome/free-solid-svg-icons';
 export class AppModule {
   constructor(library: FaIconLibrary) {
 
-    library.addIcons(faHome, faSync, faPlug);
+    library.addIcons(faHome,
+      faSync,
+      faPlug,
+      faCalculator,
+      faToolbox,
+      faCogs,
+      faEllipsisV,
+      faArrowDown,
+      faChevronDown,
+      faChevronUp,
+      faChevronLeft,
+      faChevronRight,
+      faDrawPolygon);
   }
 }

@@ -10,17 +10,17 @@
   <div class="row" *ngIf="!previewGlobal.isShowGCode">
     <div class="col inputhide" *ngIf="!previewGlobal.isShowParam">
       <div class="container-fluid">
-        <button mat-stroked-button class="hidebuttons" (click)="previewGlobal.isShowParam = true">Show</button>
+        <button mat-stroked-button class="hidebuttons" (click)="previewGlobal.isShowGCode = true">GCode</button>
         <button mat-stroked-button class="hidebuttons" (click)='refreshImage()'>Refresh</button>
         <button mat-stroked-button class="hidebuttons" (click)='setXY()'>XY</button>
         <button mat-stroked-button class="hidebuttons" (click)='setXZ()'>XZ</button>
         <button mat-stroked-button class="hidebuttons" (click)='setYZ()'>YZ</button>
-        <button mat-stroked-button class="hidebuttons" (click)="previewGlobal.isShowGCode = true">GCode</button>
         <button mat-stroked-button class="hidebuttons" *ngIf="canSendToMachine()" (click)="sendToMachine()">Send to machine</button>
+        <button mat-stroked-button class="hidebuttons" (click)="previewGlobal.isShowParam = true"><fa-icon icon="chevron-down"></fa-icon></button>
       </div>
     </div>
     <div class="col inputshow" *ngIf="previewGlobal.isShowParam">
-      <button mat-stroked-button (click)="previewGlobal.isShowParam = false">Hide</button>
+      <button mat-stroked-button (click)="previewGlobal.isShowParam = false"><fa-icon icon="chevron-up"></fa-icon></button>
       <button mat-stroked-button (click)='refreshImage()'>Refresh</button>
       <preview-input [previewOpt]="previewOpt"> </preview-input>
     </div>
