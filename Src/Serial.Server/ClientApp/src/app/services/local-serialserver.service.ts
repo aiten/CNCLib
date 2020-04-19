@@ -89,6 +89,11 @@ export class LocalSerialServerService implements SerialServerService {
       .catch(this.handleErrorPromise);
   }
 
+  getPending(serialportid: number): Promise<SerialCommand[]> {
+    return this.http.get<SerialCommand[]>(this.baseUrl + 'api/SerialPort/' + serialportid + '/pending').toPromise()
+      .catch(this.handleErrorPromise);
+  }
+
   clearHistory(serialportid: number): Promise<void> {
     return this.http.post<void>(this.baseUrl + 'api/SerialPort/' + serialportid + '/history/clear', "x").toPromise()
       .catch(this.handleErrorPromise);

@@ -30,6 +30,7 @@ const machinecontrolURL = '/machinecontrol';
 export class MachineControlOverviewComponent {
   serialports!: SerialPortDefinition[];
   public historyportid: number = -1;
+  public pendingportid: number = -1;
 
   displayedColumns: string[] = ['id', 'portName', 'isConnected', 'isAborted', 'isSingleStep', 'commandsInQueue', 'task'];
 
@@ -56,6 +57,12 @@ export class MachineControlOverviewComponent {
 
   showHistory(serialPortId: number) {
     this.historyportid = serialPortId;
+    this.pendingportid = -1;
+  }
+
+  showPending(serialPortId: number) {
+    this.historyportid = -1;
+    this.pendingportid = serialPortId;
   }
 
   machineControl(serialPortId: number) {

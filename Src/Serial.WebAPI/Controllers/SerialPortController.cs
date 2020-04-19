@@ -278,6 +278,29 @@ namespace CNCLib.Serial.WebAPI.Controllers
 
         #endregion
 
+        #region pending
+
+        [HttpGet("{id:int}/pending")]
+        public async Task<ActionResult<IEnumerable<SerialCommand>>> GetCommandPending(int id, bool? sortDesc = null)
+        {
+            var port = await SerialPortList.GetPortAndRescan(id);
+            if (port == null)
+            {
+                return NotFound();
+            }
+
+            var cmdList = port.Serial.PendingCommands;
+
+            if (sortDesc ?? false)
+            {
+                cmdList = cmdList.OrderByDescending(h => h.SeqId).ToList();
+            }
+
+            return Ok(cmdList);
+        }
+
+        #endregion
+
         #region History
 
         [HttpPost("{id:int}/history/clear")]

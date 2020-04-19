@@ -39,6 +39,8 @@ export abstract class SerialServerService {
 
   public abstract resume(serialportid: number): Promise<void>;
 
+  public abstract getPending(serialportid: number): Promise<SerialCommand[]>;
+
   public abstract getHistory(serialportid: number): Promise<SerialCommand[]>;
 
   public abstract clearHistory(serialportid: number): Promise<void>;

@@ -57,6 +57,7 @@
       <td mat-cell *matCellDef="let element">
         <button mat-stroked-button class="taskbutton" (click)='machineControl(element.id)'>Use</button>
         <button mat-stroked-button class="taskbutton" (click)='showHistory(element.id)'>History</button>
+        <button mat-stroked-button class="taskbutton" (click)='showPending(element.id)'>Pending</button>
         <button mat-stroked-button class="taskbutton" *ngIf="element.isConnected" (click)='clearQueue(element.id)'>Clear Queue</button>
         <button mat-stroked-button class="taskbutton" *ngIf="element.isConnected" (click)='disconnect(element.id)'>Disconnect</button>
       </td>
@@ -70,4 +71,8 @@
 
 <div class="div-alporthistory " *ngIf="historyportid >= 0">
   <serialporthistory [forserialportid]=historyportid>Loading...</serialporthistory>
+</div>
+
+<div class="div-alporthistory " *ngIf="pendingportid >= 0">
+  <serialportpending [forserialportid]=pendingportid>Loading...</serialportpending>
 </div>

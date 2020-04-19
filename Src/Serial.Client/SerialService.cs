@@ -291,11 +291,30 @@ namespace CNCLib.Serial.Client
                     }
                 }
 
-                throw new Exception("ClearCommandHistory to SerialPort failed");
+                throw new Exception("CommandHistory failed");
             }
         }
 
-        public IEnumerable<SerialCommand> PendingCommands => throw new NotImplementedException();
+        public IEnumerable<SerialCommand> PendingCommands
+        {
+            get
+            {
+                if (PortId >= 0)
+                {
+                    using (var scope = CreateScope())
+                    {
+                        HttpResponseMessage response = scope.Instance.GetAsync($@"{_api}/{PortId}/pending").ConfigureAwait(false).GetAwaiter().GetResult();
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var value = response.Content.ReadAsAsync<List<SerialCommand>>().Result;
+                            return value;
+                        }
+                    }
+                }
+
+                throw new Exception("PendingCommands failed");
+            }
+        }
 
         public void ClearCommandHistory()
         {
