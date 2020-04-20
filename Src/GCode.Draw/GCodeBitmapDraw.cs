@@ -471,11 +471,13 @@ namespace CNCLib.GCode.Draw
                 {
                     pointMax.X = calcEndPos.X0;
                 }
+
                 if ((calcEndPos.Y0) > pointMax.Y0)
                 {
                     pointMax.Y = calcEndPos.Y0;
                 }
-                if ((calcEndPos.X0) > pointMax.X0)
+
+                if ((calcEndPos.Z0) > pointMax.Z0)
                 {
                     pointMax.Z = calcEndPos.Z0;
                 }
@@ -484,17 +486,19 @@ namespace CNCLib.GCode.Draw
                 {
                     pointMin.X = calcEndPos.X0;
                 }
+
                 if ((calcEndPos.Y0) < pointMin.Y0)
                 {
                     pointMin.Y = calcEndPos.Y0;
                 }
-                if ((calcEndPos.X0) < pointMin.X0)
+
+                if ((calcEndPos.Z0) < pointMin.Z0)
                 {
                     pointMin.Z = calcEndPos.Z0;
                 }
             }
 
-            return new Tuple<Point3D, Point3D>(pointMin,pointMax);
+            return new Tuple<Point3D, Point3D>(pointMin, pointMax);
         }
 
         public Bitmap DrawToBitmap(CommandList commands)

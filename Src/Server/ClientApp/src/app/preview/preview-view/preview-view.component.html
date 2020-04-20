@@ -16,11 +16,15 @@
         <button mat-stroked-button class="hidebuttons" (click)='setXZ()'>XZ</button>
         <button mat-stroked-button class="hidebuttons" (click)='setYZ()'>YZ</button>
         <button mat-stroked-button class="hidebuttons" *ngIf="canSendToMachine()" (click)="sendToMachine()">Send to machine</button>
-        <button mat-stroked-button class="hidebuttons" (click)="previewGlobal.isShowParam = true"><fa-icon icon="chevron-down"></fa-icon></button>
+        <button mat-stroked-button class="hidebuttons" (click)="previewGlobal.isShowParam = true">
+          <fa-icon icon="chevron-down"></fa-icon>
+        </button>
       </div>
     </div>
     <div class="col inputshow" *ngIf="previewGlobal.isShowParam">
-      <button mat-stroked-button (click)="previewGlobal.isShowParam = false"><fa-icon icon="chevron-up"></fa-icon></button>
+      <button mat-stroked-button (click)="previewGlobal.isShowParam = false">
+        <fa-icon icon="chevron-up"></fa-icon>
+      </button>
       <button mat-stroked-button (click)='refreshImage()'>Refresh</button>
       <preview-input [previewOpt]="previewOpt"> </preview-input>
     </div>

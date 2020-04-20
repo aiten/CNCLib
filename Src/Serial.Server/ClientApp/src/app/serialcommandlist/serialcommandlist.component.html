@@ -1,0 +1,2 @@
+<serialportpending *ngIf="!_isHistory" (update)="_isHistory = true" [forserialportid]=forserialportid [autoreloadonempty]=autoreloadonempty>Loading...</serialportpending>
+<serialporthistory *ngIf="_isHistory" (update)="_isHistory = false" [forserialportid]=forserialportid [autoreloadonempty]=autoreloadonempty>Loading...</serialporthistory>

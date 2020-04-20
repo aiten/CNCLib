@@ -15,7 +15,7 @@
 */
 
 import { Router } from '@angular/router';
-import { Component, Inject, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, Input, Output, OnChanges, OnInit, ViewChild, EventEmitter } from '@angular/core';
 import { SerialCommand } from '../models/serial.command';
 import { SerialPortDefinition } from '../models/serial.port.definition';
 import { SerialServerService } from '../services/serialserver.service';
@@ -29,10 +29,15 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./serialportpending.component.css']
 })
 export class SerialPortPendingComponent implements OnChanges {
+
   @Input()
   forserialportid!: number;
+
   @Input()
   autoreloadonempty: boolean = false;
+
+  @Output('update')
+  change: EventEmitter<number> = new EventEmitter<number>();
 
   serialcommands: SerialCommand[] = [];
   serialcommandsDataSource = new MatTableDataSource<SerialCommand>(this.serialcommands);
@@ -91,6 +96,10 @@ export class SerialPortPendingComponent implements OnChanges {
 
   async ngOnChanges(): Promise<void> {
     await this.refresh();
+  }
+
+  history() {
+    this.change.emit(1);
   }
 
   async refresh(): Promise<void> {

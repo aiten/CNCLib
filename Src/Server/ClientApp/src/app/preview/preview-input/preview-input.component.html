@@ -203,7 +203,11 @@
   </div>
 
   <div class="form-group input-group">
-    <button *ngIf="isMore" mat-stroked-button (click)="isMore = !isMore"><fa-icon icon="chevron-left"></fa-icon></button>
-    <button *ngIf="!isMore" mat-stroked-button (click)="isMore = !isMore"><fa-icon icon="chevron-right"></fa-icon></button>
+    <button *ngIf="isMore" mat-stroked-button (click)="isMore = !isMore">
+      <fa-icon icon="chevron-left"></fa-icon>
+    </button>
+    <button *ngIf="!isMore" mat-stroked-button (click)="isMore = !isMore">
+      <fa-icon icon="chevron-right"></fa-icon>
+    </button>
   </div>
 </form>

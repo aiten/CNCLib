@@ -3,11 +3,12 @@
 </p>
 
 <span class="reloadbuttons">
+  <button mat-stroked-button (click)='history()'>History</button>
   <button mat-stroked-button (click)='preview()'>Preview</button>
   <button mat-stroked-button (click)='refresh()'>Refresh</button>
 </span>
 <p>
-  Command history: {{forserialportid}}
+  Pending commands: {{forserialportid}}
 </p>
 
 <div *ngIf="serialcommands" class="mat-elevation-z8">

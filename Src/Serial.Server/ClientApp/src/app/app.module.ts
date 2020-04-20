@@ -35,6 +35,7 @@ import { LocalCNCLibLoggedinService } from './services/local-CNCLib-loggedin.ser
 
 import { SerialPortHistoryComponent } from './serialporthistory/serialporthistory.component';
 import { SerialPortPendingComponent } from './serialportpending/serialportpending.component';
+import { SerialCommandListComponent } from './serialcommandlist/serialcommandlist.component';
 import { machineControlRoutes, machineControlComponents } from './machinecontrol/machinecontrol.routing';
 
 import { PreviewGlobal } from "./preview/preview.global";
@@ -58,6 +59,7 @@ import { faHome, faSync, faPlug, faCalculator, faToolbox, faCogs, faEllipsisV, f
     LoginComponent,
     SerialPortHistoryComponent,
     SerialPortPendingComponent,
+    SerialCommandListComponent,
     MouseWheelDirective,
     ...machineControlComponents,
     ...previewComponents,
