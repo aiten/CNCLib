@@ -2,8 +2,10 @@
 
   <div class="form-group input-group">
     <span class="input-group-addon">Filename</span>
-    <input matInput class="form-control" formControlName="fileName"/>
-    <input (change)="uploadFile($event)" type="file" accept=".nc,.plt,.png,.jpg,.jpeg,.hpgl">
+    <input matInput class="form-control" formControlName="fileName" />
+    <span class="btn mat-stroked-button btn-file">
+      Browse <input (change)="uploadFile($event)" type="file" accept=".nc,.plt,.png,.jpg,.jpeg,.hpgl">
+    </span>
   </div>
 
   <div *ngIf="isAutoScale()" class="input-container">

@@ -14,12 +14,12 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import { Component, OnInit, Inject, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Inject, Input, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 
 import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
 
 import { SerialServerService } from '../../services/serialserver.service';
-import { HubConnection, HubConnectionBuilder, HttpTransportType, LogLevel } from '@aspnet/signalr';
+import { HubConnection, HubConnectionBuilder, LogLevel } from '@aspnet/signalr';
 
 import { PreviewGlobal } from '../preview.global';
 import { PreviewGCode } from '../../models/preview-input';
@@ -33,10 +33,13 @@ import { takeWhile } from 'rxjs/operators';
     templateUrl: './preview-view.component.html',
     styleUrls: ['./preview-view.component.css']
   })
-export class PreviewViewComponent implements OnInit {
+export class PreviewViewComponent implements OnInit, AfterViewInit {
   public previewOpt: PreviewGCode;
   public serialId: number = -1;
   private _hubConnection: HubConnection;
+
+  @ViewChild('imagediv')
+  imagediv: ElementRef;
 
   constructor(
     private route: ActivatedRoute,
@@ -52,7 +55,20 @@ export class PreviewViewComponent implements OnInit {
     await this.getThumbnail();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  async toggleShowParam(enable: boolean) {
+    this.previewGlobal.isShowParam = enable;
+    this.refreshImage();
+  }
+
+  setRenderSizeFromDiv() {
+    if (this.imagediv !== null && this.imagediv.nativeElement !== null) {
+      this.previewOpt.renderSizeX = this.imagediv.nativeElement.clientWidth - 40;
+    }
+  }
+
+  ngAfterViewInit() {
+    this.setRenderSizeFromDiv();
+    this.refreshImage();
   }
 
   imageBlobUrl: string;
@@ -61,7 +77,7 @@ export class PreviewViewComponent implements OnInit {
     if (this.serialId >= 0) {
       this.previewOpt.rotate3DVect = [this.previewOpt.rotate3DVectX, this.previewOpt.rotate3DVectY, this.previewOpt.rotate3DVectZ];
       let blob = await this.serialServerService.getGCodeAsImage(this.serialId, this.previewOpt);
-      let ok = await this.createImageFromBlob(blob);
+      await this.createImageFromBlob(blob);
     }
   }
 
@@ -86,6 +102,7 @@ export class PreviewViewComponent implements OnInit {
             this.previewGlobal.previewOpt = opt;
             this.previewOpt = opt;
             this.previewGlobal.forSerialId = this.serialId;
+            this.setRenderSizeFromDiv();
           }
         );
       }
@@ -122,43 +139,38 @@ export class PreviewViewComponent implements OnInit {
     });
   }
 
-  async setXY() {
+  setDefaultPreview() {
+    this.previewOpt.zoom = 1;
     this.previewOpt.offsetX = 0;
     this.previewOpt.offsetY = 0;
+  }
+
+  async setXY() {
+    this.setDefaultPreview();
     this.previewOpt.rotate3DAngle = 0;
     await this.refreshImage();
   }
 
   async setXZ() {
-    this.previewOpt.zoom = 1;
-
-    // set Zoom first, set Zoom adjusts OffsetX/Y
-    this.previewOpt.offsetX = 0;
-    this.previewOpt.offsetY = 0;
+    this.setDefaultPreview();
     this.previewOpt.setVector([1, 1, 1]);
     this.previewOpt.rotate3DAngle = Math.PI * 4.0 / 3.0;
     await this.refreshImage();
   }
 
   async setYZ() {
-    this.previewOpt.zoom = 1;
-
-    // set Zoom first, set Zoom adjusts OffsetX/Y
-    this.previewOpt.offsetX = 0;
-    this.previewOpt.offsetY = 0;
+    this.setDefaultPreview();
     this.previewOpt.setVector([1, 0, 0]);
     this.previewOpt.rotate3DAngle = -Math.PI / 2.0;
     await this.refreshImage();
   }
 
   async mouseWheelUpFunc() {
-    console.log('mouse wheel up');
     this.previewOpt.zoom = this.previewOpt.zoom * 1.1;
     await this.refreshImage();
   }
 
   async mouseWheelDownFunc() {
-    console.log('mouse wheel down');
     this.previewOpt.zoom = this.previewOpt.zoom / 1.1;
     await this.refreshImage();
   }
@@ -175,7 +187,6 @@ export class PreviewViewComponent implements OnInit {
   private mousebutton: number;
 
   onMouseDown(event) {
-    console.log(`onMouseDown`);
     event.preventDefault();
     this.mouseCaptured = true;
     this.shiftX = event.clientX;
@@ -184,6 +195,8 @@ export class PreviewViewComponent implements OnInit {
     this.ofsY = this.previewOpt.offsetY;
     this.scaleX = this.previewOpt.sizeX / this.previewOpt.renderSizeX / this.previewOpt.zoom;
     this.scaleY = this.previewOpt.sizeY / this.previewOpt.renderSizeY / this.previewOpt.zoom;
+    if (this.scaleX === 0) this.scaleX = 200 / this.previewOpt.renderSizeX / this.previewOpt.zoom;
+    if (this.scaleY === 0) this.scaleY = 200 / this.previewOpt.renderSizeY / this.previewOpt.zoom;
     this.mousebutton = event.button;
 
     interval(250)
@@ -207,7 +220,8 @@ export class PreviewViewComponent implements OnInit {
       if (this.mousebutton == 0) {
         this.previewOpt.offsetX = this.ofsX + diffX * this.scaleX;
         this.previewOpt.offsetY = this.ofsY + diffY * this.scaleY;
-        console.log(`ofsX:${this.ofsX}:${this.previewOpt.offsetX}, ofsY:${this.ofsY}:${this.previewOpt.offsetY}`);
+        // console.log(`ofsX:${this.ofsX}:${this.previewOpt.offsetX}, ofsY:${this.ofsY}:${this.previewOpt.offsetY}`);
+
       } else if (this.mousebutton == 2) {
         let maxDiffX = this.previewOpt.renderSizeX;
         let maxDiffY = this.previewOpt.renderSizeY;
@@ -227,7 +241,6 @@ export class PreviewViewComponent implements OnInit {
 
   onMouseUp(event) {
     if (this.mouseCaptured) {
-      console.log(`onMouseUp`);
       this.mouseCaptured = false;
       event.preventDefault();
     }
