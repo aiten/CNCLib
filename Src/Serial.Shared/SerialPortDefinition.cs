@@ -21,6 +21,7 @@ namespace CNCLib.Serial.Shared
         public int    Id              { get; set; }
         public string PortName        { get; set; }
         public bool   IsConnected     { get; set; }
+        public bool   IsJoystick      { get; set; }
         public bool   IsAborted       { get; set; }
         public bool   IsSingleStep    { get; set; }
         public int    CommandsInQueue { get; set; }

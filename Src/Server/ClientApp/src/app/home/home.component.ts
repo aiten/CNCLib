@@ -14,7 +14,7 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { CNCLibServerInfo } from '../models/CNCLib.Server.Info'
 import { CNCLibInfoService } from '../services/CNCLib-Info.service';
 
@@ -27,13 +27,13 @@ import { HubConnectionBuilder } from '@aspnet/signalr';
   selector: 'home',
   templateUrl: './home.component.html'
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   appName: string = '';
   appVersion: string = '';
   appCopyright: string = '';
   appVersionInfo: CNCLibServerInfo = new CNCLibServerInfo();
 
-  private _hubConnection!: HubConnection;
+  private hubConnection!: HubConnection;
 
   constructor(
     private cncLibInfoService: CNCLibInfoService,
@@ -56,20 +56,26 @@ export class HomeComponent implements OnInit {
 
     console.log('SignalR to ' + this.baseUrl + 'cncLibSignalR');
 
-    this._hubConnection = new HubConnectionBuilder().withUrl(this.baseUrl + 'cncLibSignalR/').build();
+    this.hubConnection = new HubConnectionBuilder().withUrl(this.baseUrl + 'cncLibSignalR/').build();
 
-    this._hubConnection.on('HeartBeat',
+    this.hubConnection.on('HeartBeat',
       () => {
         this.incrementCounter();
         console.log('SignalR received: HeartBeat');
       });
 
-    this._hubConnection.start()
+    this.hubConnection.start()
       .then(() => {
         console.log('Hub connection started');
       })
       .catch(err => {
         console.log('Error while establishing connection');
       });
+  }
+
+  async ngOnDestroy(): Promise<void> {
+    if (this.hubConnection != null) {
+      await this.hubConnection.stop();
+    }
   }
 }

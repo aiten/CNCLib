@@ -18,7 +18,7 @@ import { Component, OnInit, Inject, Input, AfterViewInit, ViewChild, ElementRef 
 
 import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
 
-import { SerialServerService } from '../../services/serialserver.service';
+import { SerialServerService } from '../../services/serial-server.service';
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@aspnet/signalr';
 
 import { PreviewGlobal } from '../preview.global';
@@ -36,7 +36,7 @@ import { takeWhile } from 'rxjs/operators';
 export class PreviewViewComponent implements OnInit, AfterViewInit {
   public previewOpt: PreviewGCode;
   public serialId: number = -1;
-  private _hubConnection: HubConnection;
+  private hubConnection: HubConnection;
 
   @ViewChild('imagediv')
   imagediv: ElementRef;
@@ -111,25 +111,25 @@ export class PreviewViewComponent implements OnInit, AfterViewInit {
 
       console.log('SignalR to ' + this.baseUrl + 'serialSignalR');
 
-      this._hubConnection = new HubConnectionBuilder()
+      this.hubConnection = new HubConnectionBuilder()
         .configureLogging(LogLevel.Debug)
         .withUrl(this.baseUrl + 'serialSignalR/')
         .build();
 
-      this._hubConnection.on('QueueChanged',
+      this.hubConnection.on('QueueChanged',
         (portid: number) => {
           if (portid == this.serialId) {
             this.refreshImage();
           }
         });
-      this._hubConnection.on('HeartBeat',
+      this.hubConnection.on('HeartBeat',
         () => {
           console.log('SignalR received: HeartBeat');
         });
 
       console.log("hub Starting:");
 
-      this._hubConnection.start()
+      this.hubConnection.start()
         .then(() => {
           console.log('Hub connection started');
         })

@@ -41,8 +41,8 @@ import { machineControlRoutes, machineControlComponents } from './machinecontrol
 import { PreviewGlobal } from "./preview/preview.global";
 import { previewComponents } from './preview/preview.routing';
 
-import { SerialServerService } from './services/serialserver.service';
-import { LocalSerialServerService } from './services/local-serialserver.service';
+import { SerialServerService } from './services/serial-server.service';
+import { LocalSerialServerService } from './services/local-serial-server.service';
 
 import { BasicAuthInterceptor, ErrorInterceptor } from './_helpers';
 import { MouseWheelDirective } from './_helpers/mousewheel.directive';

@@ -1,0 +1,22 @@
+<div class="container-fluid">
+  <div class="row">
+    <button mat-stroked-button class="select-button" (click)="machineControlState.selectWOfs(offsetId)">Select: {{offsetId+1}}</button>
+  </div>
+  <div class="row ofsRow">
+    <span class="lable-axis">X:</span>
+    <input class="ofsValue" type="number" [value]="machineControlState.machineControlGlobal.workOfsX[offsetId]" (input)="machineControlState.machineControlGlobal.workOfsX[offsetId]=$event.target.value"/>
+  </div>
+  <div class="row ofsRow">
+    <span class="lable-axis">Y:</span>
+    <input class="ofsValue" type="number" [value]="machineControlState.machineControlGlobal.workOfsY[offsetId]" (input)="machineControlState.machineControlGlobal.workOfsY[offsetId]=$event.target.value"/>
+  </div>
+  <div class="row ofsRow">
+    <span class="lable-axis">Z:</span>
+    <input class="ofsValue" type="number" [value]="machineControlState.machineControlGlobal.workOfsZ[offsetId]" (input)="machineControlState.machineControlGlobal.workOfsZ[offsetId]=$event.target.value"/>
+  </div>
+  <div class="row">
+    <button mat-stroked-button class="setget-button" (click)='machineControlState.getWOfs(offsetId)'>get</button>
+    <button mat-stroked-button class="setget-button" (click)='machineControlState.setWOfs(offsetId)'>set</button>
+    <button mat-stroked-button class="setget-button" (click)='machineControlState.relWOfs(offsetId)'>rel</button>
+  </div>
+</div>

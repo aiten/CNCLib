@@ -15,10 +15,10 @@
 */
 
 import { Router } from '@angular/router';
-import { Component, Inject, Input, Output, OnChanges, OnInit, ViewChild, EventEmitter } from '@angular/core';
+import { Component, Inject, Input, Output, OnChanges, OnInit, OnDestroy, ViewChild, EventEmitter } from '@angular/core';
 import { SerialCommand } from '../models/serial.command';
 import { SerialPortDefinition } from '../models/serial.port.definition';
-import { SerialServerService } from '../services/serialserver.service';
+import { SerialServerService } from '../services/serial-server.service';
 import { HubConnection, HubConnectionBuilder, HttpTransportType, LogLevel } from '@aspnet/signalr';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -28,7 +28,7 @@ import { MatTableDataSource } from '@angular/material/table';
   templateUrl: './serialportpending.component.html',
   styleUrls: ['./serialportpending.component.css']
 })
-export class SerialPortPendingComponent implements OnChanges {
+export class SerialPortPendingComponent implements OnChanges, OnInit, OnDestroy {
 
   @Input()
   forserialportid!: number;
@@ -47,7 +47,7 @@ export class SerialPortPendingComponent implements OnChanges {
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
 
-  private _hubConnection: HubConnection;
+  private hubConnection: HubConnection;
   private _initDone: boolean = false;
 
   constructor(
@@ -62,25 +62,25 @@ export class SerialPortPendingComponent implements OnChanges {
     if (this.autoreloadonempty) {
       console.log('SignalR to ' + this.baseUrl + 'serialSignalR');
 
-      this._hubConnection = new HubConnectionBuilder()
+      this.hubConnection = new HubConnectionBuilder()
         .configureLogging(LogLevel.Debug)
         .withUrl(this.baseUrl + 'serialSignalR/')
         .build();
 
-      this._hubConnection.on('QueueEmpty',
+      this.hubConnection.on('QueueEmpty',
         (portid: number) => {
           if (portid == this.forserialportid) {
             this.refresh();
           }
         });
-      this._hubConnection.on('HeartBeat',
+      this.hubConnection.on('HeartBeat',
         () => {
           console.log('SignalR received: HeartBeat');
         });
 
       console.log("hub Starting:");
 
-      await this._hubConnection.start()
+      await this.hubConnection.start()
         .then(() => {
           console.log('Hub connection started');
         })
@@ -92,6 +92,12 @@ export class SerialPortPendingComponent implements OnChanges {
     this._initDone = true;
 
     await this.refresh();
+  }
+
+  async ngOnDestroy(): Promise<void> {
+    if (this.hubConnection != null) {
+      await this.hubConnection.stop();
+    }
   }
 
   async ngOnChanges(): Promise<void> {

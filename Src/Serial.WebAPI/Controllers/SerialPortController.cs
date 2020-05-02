@@ -59,6 +59,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
                 Id              = port.Id,
                 PortName        = port.PortName,
                 IsConnected     = port.IsConnected,
+                IsJoystick      = port.IsJoystick,
                 IsAborted       = port.IsAborted,
                 IsSingleStep    = port.IsSingleStep,
                 CommandsInQueue = port.CommandsInQueue
@@ -118,7 +119,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
 
             if (port.IsConnected)
             {
-                if (port.Serial.BaudRate == baudRateN0 && resetOnConnectN0 == false)
+                if (port.Serial.BaudRate == baudRateN0 && resetOnConnectN0 == false && !port.IsJoystick)
                 {
                     return Ok(GetDefinition(port));
                 }
@@ -126,10 +127,45 @@ namespace CNCLib.Serial.WebAPI.Controllers
                 await port.Serial.DisconnectAsync();
             }
 
+            port.IsJoystick            = false;
             port.Serial.BaudRate       = baudRateN0;
             port.Serial.DtrIsReset     = dtrIsResetN0;
             port.Serial.ResetOnConnect = resetOnConnectN0;
             port.GCodeCommandPrefix    = commandPrefix ?? "";
+
+            await port.Serial.ConnectAsync(port.PortName, null, null, null);
+
+            await _hubContext.Clients.All.Connected(id);
+
+            return Ok(GetDefinition(port));
+        }
+
+        [HttpPost("{id:int}/connectJoystick")]
+        public async Task<ActionResult<SerialPortDefinition>> ConnectJoystick(int id, int? baudRate = null)
+        {
+            int baudRateN0 = baudRate ?? 250000;
+
+            var port = await SerialPortList.GetPortAndRescan(id);
+            if (port == null)
+            {
+                return NotFound();
+            }
+
+            if (port.IsConnected)
+            {
+                if (port.Serial.BaudRate == baudRateN0)
+                {
+                    return Ok(GetDefinition(port));
+                }
+
+                await port.Serial.DisconnectAsync();
+            }
+
+            port.IsJoystick            = true;
+            port.Serial.BaudRate       = baudRateN0;
+            port.Serial.DtrIsReset     = true;
+            port.Serial.ResetOnConnect = false;
+            port.GCodeCommandPrefix    = "";
 
             await port.Serial.ConnectAsync(port.PortName, null, null, null);
 

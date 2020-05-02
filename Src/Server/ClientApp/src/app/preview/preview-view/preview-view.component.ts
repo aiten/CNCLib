@@ -20,8 +20,8 @@ import { CNCLibGCodeService } from '../../services/CNCLib-gcode.service';
 import { PreviewGCode } from '../../models/gcode-view-input';
 import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
 
-import { SerialServerConnection } from "../../serialServer/serialServerConnection";
-import { SerialServerService } from '../../services/serialserver.service';
+import { SerialServerConnection } from "../../serial-server/serial-server-connection";
+import { SerialServerService } from '../../services/serial-server.service';
 
 import { PreviewGlobal } from '../preview.global';
 

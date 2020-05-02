@@ -1,0 +1,10 @@
+<div class="container-fluid">
+  <div class="row ofsRow">
+    <input class="fileName" [value]="machineControlState.machineControlGlobal.sdFileName" (input)="machineControlState.machineControlGlobal.sdFileName=$event.target.value"/>
+    <button mat-stroked-button class="sd-button" (click)='machineControlState.postcommand("m23 ");machineControlState.postcommand("m24 " + machineControlState.machineControlGlobal.sdFileName)'>M24 - Start</button>
+    <button mat-stroked-button class="sd-button" (click)='machineControlState.postcommand("")'>M28 - Copy(File)</button>
+    <button mat-stroked-button class="sd-button" (click)='machineControlState.postcommand("m28 " + machineControlState.machineControlGlobal.sdFileName)'>M28 - Copy(Preview)</button>
+    <button mat-stroked-button class="sd-button" (click)='machineControlState.postcommand("m30 " + machineControlState.machineControlGlobal.sdFileName)'>M30 - Del</button>
+    <button mat-stroked-button class="sd-button" (click)='machineControlState.postcommand("m20")'>M20 - Dir</button>
+  </div>
+</div>

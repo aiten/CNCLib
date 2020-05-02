@@ -21,7 +21,7 @@ import { FormGroup, FormArray, FormControl, FormBuilder, Validators } from '@ang
 import { UserFile } from "../../models/userFile";
 import { CNCLibUserFileService } from '../../services/CNCLib-userFile.service';
 
-import { SerialServerConnection } from '../../serialServer/serialServerConnection';
+import { SerialServerConnection } from '../../serial-server/serial-server-connection';
 
 @Component(
   {

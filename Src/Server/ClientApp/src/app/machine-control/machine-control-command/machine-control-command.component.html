@@ -1,0 +1,8 @@
+<div class="container-fluid">
+  <div class="row ofsRow">
+    <label>G-Command:</label><input class="inputGCode" #gCode (keyup.enter)="sendcommand(gCode.value); gCode.value=''"/>
+    <div *ngFor="let cmd of machineControlState.machineControlGlobal.lastCommands">
+      <button mat-stroked-button class="resend-button" (click)='machineControlState.postcommand(cmd)'>{{cmd}}</button>
+    </div>
+  </div>
+</div>

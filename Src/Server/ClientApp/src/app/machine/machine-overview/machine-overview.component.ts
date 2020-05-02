@@ -19,7 +19,7 @@ import { Machine } from '../../models/machine';
 import { CNCLibMachineService } from '../../services/CNCLib-machine.service';
 import { CNCLibLoggedinService } from '../../services/CNCLib-loggedin.service';
 
-import { SerialServerConnection } from '../../serialServer/serialServerConnection';
+import { SerialServerConnection } from '../../serial-server/serial-server-connection';
 
 import { machineURL, machineControlURL } from '../../app.global';
 import { Router } from '@angular/router';

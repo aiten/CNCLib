@@ -1,0 +1,13 @@
+<div class="container-fluid">
+  <div class="row ofsRow" *ngIf="!machineControlState.isJoystickConnect">
+    <span class="lable-axis">Server:</span>
+    <input class="ofsValue" [value]="machineControlState.joystickServerName" (input)="machineControlState.joystickServerName=$event.target.value" />
+    <input class="ofsValue" [value]="machineControlState.joystickPort" (input)="machineControlState.joystickPort=$event.target.value" />
+    <input class="ofsValue" [value]="machineControlState.joystickUser" (input)="machineControlState.joystickUser=$event.target.value" />
+    <input class="ofsValue" type='password' [value]="machineControlState.joystickPassword" (input)="machineControlState.joystickPassword=$event.target.value" />
+    <button mat-stroked-button class="joystick-button" (click)='machineControlState.joystickConnect()'>Connect</button>
+  </div>
+  <div class="row ofsRow" *ngIf="machineControlState.isJoystickConnect">
+    <button mat-stroked-button class="joystick-button" (click)='machineControlState.joystickDisconnect()'>Disconnect</button>
+  </div>
+</div>

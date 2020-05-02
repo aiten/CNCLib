@@ -17,7 +17,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SerialPortDefinition } from '../../models/serial.port.definition';
-import { SerialServerService } from '../../services/serialserver.service';
+import { SerialServerService } from '../../services/serial-server.service';
 
 //import { machinecontrolURL } from '../machinecontrol.routing';
 const machinecontrolURL = '/machinecontrol';

@@ -1,0 +1,12 @@
+<div class="container-fluid">
+  <div *ngFor="let item of [].constructor(machineControlState.serialServer.getMachine().axis); let i = index">
+    <div class="row ofsRow">
+      <span class="lable-axis">{{machineControlState.toAxisName(i)}}:</span>
+      <input class="ofsValue" type="number" [value]="machineControlState.machineControlGlobal.position[i]"/>
+      <input class="ofsValue" type="number" [value]="machineControlState.machineControlGlobal.positionAbs[i]"/>
+    </div>
+  </div>
+  <div class="row">
+    <button mat-stroked-button class="setget-button" (click)='machineControlState.getPosition()'>get</button>
+  </div>
+</div>

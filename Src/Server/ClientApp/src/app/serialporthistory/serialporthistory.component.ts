@@ -16,7 +16,7 @@
 
 import { Component, Inject, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 
-import { SerialServerConnection } from '../serialServer/serialServerConnection';
+import { SerialServerConnection } from '../serial-server/serial-server-connection';
 import { SerialPortHistoryPreviewGlobal } from "./models/serialporthistory.global";
 
 @Component({

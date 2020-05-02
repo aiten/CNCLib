@@ -14,15 +14,15 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import { Component, Input, OnChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { SerialCommand } from '../../models/serial.command';
-import { SerialServerService } from '../../services/serialserver.service';
+import { SerialServerService } from '../../services/serial-server.service';
 import { HubConnection } from '@aspnet/signalr';
 import { HubConnectionBuilder } from '@aspnet/signalr';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { SerialServerConnection } from '../../serialServer/serialServerConnection';
+import { SerialServerConnection } from '../../serial-server/serial-server-connection';
 import { SerialPortHistoryInput } from "../models/serialporthistory.input";
 import { SerialPortHistoryPreviewGlobal } from "../models/serialporthistory.global";
 
@@ -31,7 +31,7 @@ import { SerialPortHistoryPreviewGlobal } from "../models/serialporthistory.glob
   templateUrl: './serialporthistory-gcode.component.html',
   styleUrls: ['./serialporthistory-gcode.component.css']
 })
-export class SerialPortHistoryGCodeComponent implements OnChanges {
+export class SerialPortHistoryGCodeComponent implements OnChanges, OnInit, OnDestroy {
 
   forserialportid: number = -1;
 
@@ -46,7 +46,7 @@ export class SerialPortHistoryGCodeComponent implements OnChanges {
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
 
-  private _hubConnection: HubConnection;
+  private hubConnection: HubConnection;
   private _initDone: boolean = false;
 
   constructor(
@@ -63,22 +63,22 @@ export class SerialPortHistoryGCodeComponent implements OnChanges {
     if (this.autoreloadonempty) {
       console.log('SignalR to ' + this.serialServer.getSerialServerUrl() + 'serialSignalR');
 
-      this._hubConnection = new HubConnectionBuilder().withUrl(this.serialServer.getSerialServerUrl() + 'serialSignalR/').build();
+      this.hubConnection = new HubConnectionBuilder().withUrl(this.serialServer.getSerialServerUrl() + 'serialSignalR/').build();
 
-      this._hubConnection.on('QueueEmpty',
+      this.hubConnection.on('QueueEmpty',
         (portid: number) => {
           if (portid == this.forserialportid) {
             this.refresh();
           }
         });
-      this._hubConnection.on('HeartBeat',
+      this.hubConnection.on('HeartBeat',
         () => {
           console.log('SignalR received: HeartBeat');
         });
 
       console.log("hub Starting:");
 
-      await this._hubConnection.start()
+      await this.hubConnection.start()
         .then(() => {
           console.log('Hub connection started');
         })
@@ -90,6 +90,12 @@ export class SerialPortHistoryGCodeComponent implements OnChanges {
     this._initDone = true;
 
     await this.refresh();
+  }
+
+  async ngOnDestroy(): Promise<void> {
+    if (this.hubConnection != null) {
+      await this.hubConnection.stop();
+    }
   }
 
   async ngOnChanges(): Promise<void> {

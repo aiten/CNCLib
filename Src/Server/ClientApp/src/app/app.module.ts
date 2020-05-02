@@ -53,10 +53,13 @@ import { CNCLibUserFileService } from './services/CNCLib-userFile.service';
 import { LocalCNCLibUserFileService } from './services/local-CNCLib-userFile.service';
 
 import { serialPortHistoryRoutes, serialPortHistoryComponents } from './serialporthistory/serialporthistory.routing';
-import { machineControlRoutes, machineControlComponents } from './machinecontrol/machinecontrol.routing';
+import { machineControlRoutes, machineControlComponents } from './machine-control/machine-control.routing';
 
-import { SerialServerService } from './services/serialserver.service';
-import { LocalSerialServerService } from './services/local-serialserver.service';
+import { SerialServerService } from './services/serial-server.service';
+import { LocalSerialServerService } from './services/local-serial-server.service';
+
+import { JoystickServerService } from './services/joystick-server.service';
+import { LocalJoystickServerService } from './services/local-joystick-server.service';
 
 import { eepromConfigRoutes, eepromConfigComponents } from './eeprom-config/eeprom-config-routing';
 import { machineRoutes, machineComponents } from './machine/machine-routing';
@@ -70,8 +73,10 @@ import { MouseWheelDirective } from './_helpers/mousewheel.directive';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faHome, faSync, faPlug, faCalculator, faToolbox, faCogs, faEllipsisV, faArrowDown, faChevronDown, faChevronUp, faChevronLeft, faChevronRight, faDrawPolygon } from '@fortawesome/free-solid-svg-icons';
 
-import { SerialServerConnection } from './serialServer/serialServerConnection';
-import { MachineControlGlobal } from './machinecontrol/machinecontrol.global';
+import { SerialServerConnection } from './serial-server/serial-server-connection';
+import { JoystickServerConnection } from './serial-server/joystick-server-connection';
+import { MachineControlGlobal } from './machine-control/machine-control.global';
+import { MachineControlState } from './machine-control/machine-control-state';
 import { PreviewGlobal } from './preview/preview.global';
 import { SerialPortHistoryPreviewGlobal } from "./serialporthistory/models/serialporthistory.global";
 
@@ -117,6 +122,7 @@ import { SerialPortHistoryPreviewGlobal } from "./serialporthistory/models/seria
   ],
   providers: [
     { provide: SerialServerService, useClass: LocalSerialServerService },
+    { provide: JoystickServerService, useClass: LocalJoystickServerService },
     { provide: CNCLibInfoService, useClass: LocalCNCLibInfoService },
     { provide: CNCLibEepromConfigService, useClass: LocalCNCLibEepromConfigService },
     { provide: CNCLibMachineService, useClass: LocalCNCLibMachineService },
@@ -124,9 +130,11 @@ import { SerialPortHistoryPreviewGlobal } from "./serialporthistory/models/seria
     { provide: CNCLibLoggedinService, useClass: LocalCNCLibLoggedinService },
     { provide: CNCLibGCodeService, useClass: LocalCNCLibGCodeService },
     { provide: CNCLibUserFileService, useClass: LocalCNCLibUserFileService },
+    { provide: MachineControlState },
     { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     SerialServerConnection,
+    JoystickServerConnection,
     MachineControlGlobal,
     PreviewGlobal,
     SerialPortHistoryPreviewGlobal,

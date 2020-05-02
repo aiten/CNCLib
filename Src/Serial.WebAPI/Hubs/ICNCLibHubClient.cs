@@ -31,6 +31,8 @@ namespace CNCLib.Serial.WebAPI.Hubs
 
         Task SendingCommand(int id, int seqId);
 
+        Task Received(int id, string command);
+
         Task Connected(int id);
 
         Task Disconnected(int id);

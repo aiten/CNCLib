@@ -14,11 +14,11 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import { Component, OnInit, Inject, Input, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, Input, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 
 import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
 
-import { SerialServerService } from '../../services/serialserver.service';
+import { SerialServerService } from '../../services/serial-server.service';
 import { HubConnection, HubConnectionBuilder, HttpTransportType, LogLevel } from '@aspnet/signalr';
 
 import { SerialPortHistoryPreviewGlobal } from '../models/serialporthistory.global';
@@ -26,7 +26,7 @@ import { SerialPortHistoryInput } from '../models/serialporthistory.input';
 
 import { interval, Observable } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
-import { SerialServerConnection } from "../../serialServer/serialServerConnection";
+import { SerialServerConnection } from "../../serial-server/serial-server-connection";
 
 @Component(
   {
@@ -34,10 +34,10 @@ import { SerialServerConnection } from "../../serialServer/serialServerConnectio
     templateUrl: './serialporthistory-preview-view.component.html',
     styleUrls: ['./serialporthistory-preview-view.component.css']
   })
-export class SerialPortHistoryPreviewViewComponent implements OnInit, AfterViewInit {
+export class SerialPortHistoryPreviewViewComponent implements OnInit, OnDestroy, AfterViewInit {
   public previewOpt: SerialPortHistoryInput;
   public serialId: number = -1;
-  private _hubConnection: HubConnection;
+  private hubConnection: HubConnection;
 
   @ViewChild('imagediv')
   imagediv: ElementRef;
@@ -102,25 +102,25 @@ export class SerialPortHistoryPreviewViewComponent implements OnInit, AfterViewI
 
     console.log('SignalR to ' + this.serialServer.getSerialServerUrl() + 'serialSignalR');
 
-    this._hubConnection = new HubConnectionBuilder()
+    this.hubConnection = new HubConnectionBuilder()
       .configureLogging(LogLevel.Debug)
       .withUrl(this.serialServer.getSerialServerUrl() + 'serialSignalR/')
       .build();
 
-    this._hubConnection.on('QueueChanged',
+    this.hubConnection.on('QueueChanged',
       (portid: number) => {
         if (portid == this.serialId) {
           this.refreshImage();
         }
       });
-    this._hubConnection.on('HeartBeat',
+    this.hubConnection.on('HeartBeat',
       () => {
         console.log('SignalR received: HeartBeat');
       });
 
     console.log("hub Starting:");
 
-    this._hubConnection.start()
+    this.hubConnection.start()
       .then(() => {
         console.log('Hub connection started');
       })
@@ -128,6 +128,13 @@ export class SerialPortHistoryPreviewViewComponent implements OnInit, AfterViewI
         console.log('Error while establishing connection');
       });
   }
+
+  async ngOnDestroy(): Promise<void> {
+    if (this.hubConnection != null) {
+      await this.hubConnection.stop();
+    }
+  }
+
   setDefaultPreview() {
     this.previewOpt.zoom = 1;
     this.previewOpt.offsetX = 0;

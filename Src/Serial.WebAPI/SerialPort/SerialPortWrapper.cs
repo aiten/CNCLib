@@ -53,6 +53,13 @@ namespace CNCLib.Serial.WebAPI.SerialPort
                         () => _pendingSendingCommandSeqId = e.SeqId,
                         () => { OnCreateHub().Clients.All.SendingCommand(Id, _pendingSendingCommandSeqId); });
                 };
+                Serial.ReplyReceived += async (sender, e) =>
+                {
+                    if (IsConnected && IsJoystick)
+                    {
+                        await OnCreateHub().Clients.All.Received(Id, e.Info);
+                    }
+                };
             }
         }
 
@@ -71,6 +78,8 @@ namespace CNCLib.Serial.WebAPI.SerialPort
         public string PortName { get; set; }
 
         public ISerial Serial { get; set; }
+
+        public bool IsJoystick { get; set; }
 
         public bool IsConnected => Serial?.IsConnected ?? false;
 

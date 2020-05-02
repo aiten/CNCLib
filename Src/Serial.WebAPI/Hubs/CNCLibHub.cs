@@ -48,6 +48,11 @@ namespace CNCLib.Serial.WebAPI.Hubs
             await Clients.All.SendingCommand(id, seqId);
         }
 
+        public async Task Received(int id, string info)
+        {
+            await Clients.All.Received(id, info);
+        }
+
         public async Task Connected(int id)
         {
             await Clients.All.Connected(id);

@@ -18,7 +18,7 @@ import { Component, Injectable, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
 import { SerialPortDefinition } from '../../models/serial.port.definition';
-import { SerialServerService } from '../../services/serialserver.service';
+import { SerialServerService } from '../../services/serial-server.service';
 
 @Component({
   selector: 'machinecontroldetail',

@@ -19,7 +19,7 @@ import { FormGroup, FormArray, FormControl, FormBuilder, Validators } from '@ang
 import { Router } from '@angular/router';
 import { SerialPortDefinition } from '../../models/serial.port.definition';
 import { SerialConnect } from '../../models/serial.connect';
-import { SerialServerService } from '../../services/serialserver.service';
+import { SerialServerService } from '../../services/serial-server.service';
 
 @Component(
   {
