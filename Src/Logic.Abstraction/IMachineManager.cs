@@ -22,8 +22,12 @@ namespace CNCLib.Logic.Abstraction
 {
     public interface IMachineManager : ICrudManager<DTO.Machine, int>
     {
-        Task<DTO.Machine> DefaultMachine();
-        Task<int>         GetDefaultMachine();
-        Task              SetDefaultMachine(int defaultMachineId);
+        Task<DTO.Machine> Default();
+        Task<int>         GetDefault();
+        Task              SetDefault(int defaultMachineId);
+
+        Task<string> TranslateJoystickMessage(int machineId, string joystickMessage);
+
+        string TranslateJoystickMessage(DTO.Machine machine, string joystickMessage);
     }
 }

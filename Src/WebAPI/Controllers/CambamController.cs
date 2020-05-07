@@ -14,7 +14,6 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -56,7 +55,7 @@ namespace CNCLib.WebAPI.Controllers
         [HttpPut]
         public async Task<string> Put([FromBody] CreateGCode input)
         {
-            LoadOptions opt = await _loadOptionsManager.Get(input.LoadOptionsId);
+            var opt = await _loadOptionsManager.Get(input.LoadOptionsId);
             opt.FileName    = input.FileName;
             opt.FileContent = input.FileContent;
             var load = GCodeLoadHelper.CallLoad(opt);

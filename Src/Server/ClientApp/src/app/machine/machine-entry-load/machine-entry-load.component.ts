@@ -42,16 +42,16 @@ export class MachineEntryLoadComponent implements OnInit {
   }
 
   async deleteMachine(id: number) {
-    await this.machineService.deleteMachineById(id);
+    await this.machineService.deleteById(id);
     this.router.navigate([machineURL]);
   }
 
-  updateMachine(id: number) {
+  update(id: number) {
     //  this.router.navigate([machineURL + '/detail',this.entry.id,'edit'])
     this.router.navigate([machineURL, 'detail', String(this.entry.id), 'edit']);
   }
 /*
-  testUpdateMachine(id: number)
+  testupdate(id: number)
   {
     this.machineService
       .getById(id)
@@ -74,7 +74,7 @@ export class MachineEntryLoadComponent implements OnInit {
         p.initCommands.push(mi);
 
         this.machineService
-          .updateMachine(p)
+          .update(p)
           .subscribe(
           newp => 
           {

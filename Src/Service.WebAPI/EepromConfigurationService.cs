@@ -54,14 +54,10 @@ namespace CNCLib.Service.WebAPI
                     .Add("timeToAcc",              param.TimeToAcc)
                     .Add("timeToDec",              param.TimeToDec);
 
-                HttpResponseMessage response = await scope.Instance.GetAsync(CreatePathBuilder().AddQuery(paramUri).Build());
-                if (response.IsSuccessStatusCode)
-                {
-                    EepromConfiguration value = await response.Content.ReadAsAsync<EepromConfiguration>();
-                    return value;
-                }
+                var response = await scope.Instance.GetAsync(CreatePathBuilder().AddQuery(paramUri).Build());
+                response.EnsureSuccessStatusCode();
 
-                return null;
+                return await response.Content.ReadAsAsync<EepromConfiguration>();
             }
         }
     }

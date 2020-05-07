@@ -43,51 +43,52 @@ namespace CNCLib.Service.WebAPI
 
         protected override int GetKey(Machine m) => m.MachineId;
 
-        public async Task<Machine> DefaultMachine()
+        public async Task<Machine> Default()
         {
             using (var scope = CreateScope())
             {
-                HttpResponseMessage response = await scope.Instance.GetAsync(CreatePathBuilder().AddPath("default").Build());
-                if (response.IsSuccessStatusCode)
-                {
-                    var value = await response.Content.ReadAsAsync<Machine>();
-
-                    return value;
-                }
-
-                return null;
+                var response =  await scope.Instance.GetAsync(CreatePathBuilder().AddPath("default").Build());
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsAsync<Machine>();
             }
         }
 
-        public async Task<int> GetDefaultMachine()
+        public async Task<int> GetDefault()
         {
             using (var scope = CreateScope())
             {
-                HttpResponseMessage response = await scope.Instance.GetAsync(CreatePathBuilder().AddPath("defaultmachine").Build());
-                if (response.IsSuccessStatusCode)
-                {
-                    int value = await response.Content.ReadAsAsync<int>();
-
-                    return value;
-                }
-
-                return -1;
+                var response = await scope.Instance.GetAsync(CreatePathBuilder().AddPath("defaultmachine").Build());
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsAsync<int>();
             }
         }
 
-        public async Task SetDefaultMachine(int id)
+        public async Task SetDefault(int id)
         {
             using (var scope = CreateScope())
             {
                 var paramUri = new UriQueryBuilder();
                 paramUri.Add("id", id);
-                HttpResponseMessage response = await scope.Instance.PutAsJsonAsync(CreatePathBuilder().AddPath("defaultmachine").AddQuery(paramUri).Build(), "dummy");
+                var response = await scope.Instance.PutAsJsonAsync(CreatePathBuilder().AddPath("defaultmachine").AddQuery(paramUri).Build(), "dummy");
 
-                if (response.IsSuccessStatusCode)
-                {
-                    return;
-                }
+                response.EnsureSuccessStatusCode();
             }
+        }
+
+        public async Task<string> TranslateJoystickMessage(int machineId, string joystickMessage)
+        {
+            using (var scope = CreateScope())
+            {
+                var response = await scope.Instance.GetAsync(CreatePathBuilder().AddPath(machineId).AddPath("joystick").Build());
+
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsAsync<string>();
+            }
+        }
+
+        public string TranslateJoystickMessage(Machine machine, string joystickMessage)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

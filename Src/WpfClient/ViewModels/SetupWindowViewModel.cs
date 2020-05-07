@@ -28,7 +28,6 @@ using AutoMapper;
 using CNCLib.Service.Abstraction;
 using CNCLib.Shared;
 using CNCLib.WpfClient.Models;
-using CNCLib.WpfClient.Services;
 
 using Framework.Pattern;
 using Framework.Tools;
@@ -86,7 +85,7 @@ namespace CNCLib.WpfClient.ViewModels
                     machines.Add(Converter.Convert(m, _mapper));
                 }
 
-                defaultM = await service.GetDefaultMachine();
+                defaultM = await service.GetDefault();
             }
 
             Machines = machines;
@@ -105,7 +104,7 @@ namespace CNCLib.WpfClient.ViewModels
         {
             using (var scope = _joystickService.Create())
             {
-                Joystick = (await scope.Instance.Load()).Item1;
+                Joystick = _mapper.Map<Joystick>((await scope.Instance.GetAll()).FirstOrDefault());
 
                 _global.Joystick = Joystick;
             }
@@ -313,7 +312,7 @@ namespace CNCLib.WpfClient.ViewModels
             {
                 using (var scope = _machineService.Create())
                 {
-                    await scope.Instance.SetDefaultMachine(Machine.MachineId);
+                    await scope.Instance.SetDefault(Machine.MachineId);
                 }
             }
         }

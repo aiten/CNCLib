@@ -36,7 +36,7 @@ import { LocalCNCLibLoggedinService } from './services/local-CNCLib-loggedin.ser
 import { SerialPortHistoryComponent } from './serialporthistory/serialporthistory.component';
 import { SerialPortPendingComponent } from './serialportpending/serialportpending.component';
 import { SerialCommandListComponent } from './serialcommandlist/serialcommandlist.component';
-import { machineControlRoutes, machineControlComponents } from './machinecontrol/machinecontrol.routing';
+import { machineControlRoutes, machineControlComponents } from './machine-control/machine-control.routing';
 
 import { PreviewGlobal } from "./preview/preview.global";
 import { previewComponents } from './preview/preview.routing';

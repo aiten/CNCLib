@@ -19,8 +19,6 @@ using System.IO;
 using CNCLib.GCode.Load;
 using CNCLib.Logic.Abstraction.DTO;
 
-using Microsoft.Extensions.Logging;
-
 namespace CNCLib.WebAPI.Controllers
 {
     public class GCodeLoadHelper
@@ -37,7 +35,7 @@ namespace CNCLib.WebAPI.Controllers
 
         private static LoadBase CallLoadWithFileName(LoadOptions opt)
         {
-            LoadBase load = LoadBase.Create(opt);
+            var load = LoadBase.Create(opt);
 
             if (load == null)
             {

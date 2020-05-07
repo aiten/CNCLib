@@ -26,7 +26,6 @@ using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Dependency;
 using Framework.Pattern;
 
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;

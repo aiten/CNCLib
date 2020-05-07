@@ -95,7 +95,7 @@ namespace CNCLib.WpfClient.Test.ViewModels
             rep.Get(1).Returns(machine1);
 
             Machine machineDef = CreateMachine(0);
-            rep.DefaultMachine().Returns(machineDef);
+            rep.Default().Returns(machineDef);
 
             var mv = new MachineViewModel(new FactoryInstance<IMachineService>(rep), Mapper, new Global());
             mv.LoadMachine(-1);

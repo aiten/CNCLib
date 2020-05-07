@@ -16,7 +16,6 @@
 
 using CNCLib.Repository.Context;
 using CNCLib.Repository.SqLite;
-using CNCLib.Repository.SqlServer;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

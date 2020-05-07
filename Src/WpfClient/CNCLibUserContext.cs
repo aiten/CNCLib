@@ -23,7 +23,6 @@ using CNCLib.Service.Abstraction;
 using CNCLib.Shared;
 
 using Framework.Dependency;
-using Framework.Pattern;
 using Framework.Tools;
 
 using Microsoft.Extensions.DependencyInjection;

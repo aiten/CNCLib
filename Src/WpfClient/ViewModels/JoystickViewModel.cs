@@ -14,11 +14,14 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-using CNCLib.WpfClient.Services;
+using AutoMapper;
+
+using CNCLib.Service.Abstraction;
+using CNCLib.WpfClient.Models;
 
 using Framework.Pattern;
 using Framework.Wpf.Helpers;
@@ -29,12 +32,14 @@ namespace CNCLib.WpfClient.ViewModels
     public class JoystickViewModel : BaseViewModel
     {
         private readonly IFactory<IJoystickService> _joystickService;
+        private readonly IMapper                    _mapper;
 
         #region crt
 
-        public JoystickViewModel(IFactory<IJoystickService> joystickService)
+        public JoystickViewModel(IFactory<IJoystickService> joystickService, IMapper mapper)
         {
             _joystickService = joystickService;
+            _mapper          = mapper;
         }
 
         public override async Task Loaded()
@@ -64,9 +69,16 @@ namespace CNCLib.WpfClient.ViewModels
         {
             using (var scope = _joystickService.Create())
             {
-                var joystick = await scope.Instance.Load();
-                _id      = joystick.Item2;
-                Joystick = joystick.Item1;
+                var joystick = _mapper.Map<Joystick>((await scope.Instance.GetAll()).FirstOrDefault());
+                if (joystick == null)
+                {
+                    joystick = new Joystick() { Id = 0, BaudRate = 250000, ComPort = @"com7" };
+                    _id      = 0;
+                }
+
+                Joystick = joystick;
+                _id      = Joystick.Id;
+
 
                 RaisePropertyChanged(nameof(Joystick));
             }
@@ -76,7 +88,15 @@ namespace CNCLib.WpfClient.ViewModels
         {
             using (var scope = _joystickService.Create())
             {
-                _id = await scope.Instance.Save(_currentJoystick, _id);
+                var joystick = _mapper.Map<Logic.Abstraction.DTO.Joystick>(Joystick);
+                if (_id == 0)
+                {
+                    await scope.Instance.Add(joystick);
+                }
+                else
+                {
+                    await scope.Instance.Update(joystick);
+                }
                 CloseAction();
             }
         }

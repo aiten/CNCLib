@@ -15,19 +15,17 @@
 */
 
 using System;
-using System.Net;
 using System.Net.Http;
 
 using CNCLib.Service.Abstraction;
 
-using Framework.Dependency;
 using Framework.Service.WebAPI;
 
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CNCLib.Service.WebAPI
 {
-    public static class LiveServicCollectionExtensions
+    public static class LiveServiceCollectionExtensions
     {
         public static IServiceCollection AddServiceAsWebAPI(this IServiceCollection services, Action<HttpClient> configureHttpClient)
         {
@@ -36,6 +34,7 @@ namespace CNCLib.Service.WebAPI
             services.AddHttpClient<IItemService, ItemService>(configureHttpClient).AddConfigureClientBuilder();
             services.AddHttpClient<ILoadOptionsService, LoadOptionsService>(configureHttpClient).AddConfigureClientBuilder();
             services.AddHttpClient<IUserService, UserService>(configureHttpClient).AddConfigureClientBuilder();
+            services.AddHttpClient<IJoystickService, JoystickService>(configureHttpClient).AddConfigureClientBuilder();
 
             return services;
         }

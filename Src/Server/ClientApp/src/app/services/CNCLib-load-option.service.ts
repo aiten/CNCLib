@@ -23,9 +23,9 @@ export abstract class CNCLibLoadOptionService {
 
   public abstract newDefault(): Promise<LoadOptions>;
 
-  public abstract addLoadOption(loadOption: LoadOptions): Promise<LoadOptions>;
+  public abstract add(loadOption: LoadOptions): Promise<LoadOptions>;
 
-  public abstract updateLoadOption(loadOption: LoadOptions): Promise<void>;
+  public abstract update(loadOption: LoadOptions): Promise<void>;
 
-  public abstract deleteLoadOptionById(id: number): Promise<void>;
+  public abstract deleteById(id: number): Promise<void>;
 }

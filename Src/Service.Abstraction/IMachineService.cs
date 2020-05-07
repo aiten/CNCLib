@@ -25,8 +25,12 @@ namespace CNCLib.Service.Abstraction
 {
     public interface IMachineService : IDisposable, ICrudService<Machine, int>
     {
-        Task<Machine> DefaultMachine();
-        Task<int>     GetDefaultMachine();
-        Task          SetDefaultMachine(int defaultMachineId);
+        Task<Machine> Default();
+        Task<int>     GetDefault();
+        Task          SetDefault(int defaultMachineId);
+
+        Task<string> TranslateJoystickMessage(int machineId, string joystickMessage);
+
+        string TranslateJoystickMessage(Machine machine, string joystickMessage);
     }
 }

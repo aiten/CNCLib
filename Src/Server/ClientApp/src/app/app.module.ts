@@ -40,6 +40,9 @@ import { LocalCNCLibEepromConfigService } from './services/local-CNCLib-eeprom-c
 import { CNCLibMachineService } from './services/CNCLib-machine.service';
 import { LocalCNCLibMachineService } from './services/local-CNCLib-machine.service';
 
+import { CNCLibJoystickService } from './services/CNCLib-joystick.service';
+import { LocalCNCLibJoystickService } from './services/local-CNCLib-joystick.service';
+
 import { CNCLibLoadOptionService } from './services/CNCLib-load-option.service';
 import { LocalCNCLibLoadOptionService } from './services/local-CNCLib-load-option.service';
 
@@ -126,6 +129,7 @@ import { SerialPortHistoryPreviewGlobal } from "./serialporthistory/models/seria
     { provide: CNCLibInfoService, useClass: LocalCNCLibInfoService },
     { provide: CNCLibEepromConfigService, useClass: LocalCNCLibEepromConfigService },
     { provide: CNCLibMachineService, useClass: LocalCNCLibMachineService },
+    { provide: CNCLibJoystickService, useClass: LocalCNCLibJoystickService },
     { provide: CNCLibLoadOptionService, useClass: LocalCNCLibLoadOptionService },
     { provide: CNCLibLoggedinService, useClass: LocalCNCLibLoggedinService },
     { provide: CNCLibGCodeService, useClass: LocalCNCLibGCodeService },

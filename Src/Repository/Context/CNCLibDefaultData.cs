@@ -15,14 +15,10 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 
 using CNCLib.Repository.Abstraction.Entities;
-
-using Framework.Repository.Tools;
 
 namespace CNCLib.Repository.Context
 {

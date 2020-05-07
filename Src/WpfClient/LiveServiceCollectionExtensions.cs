@@ -15,7 +15,6 @@
 */
 
 using CNCLib.Service.Abstraction;
-using CNCLib.WpfClient.Services;
 
 using Framework.Dependency;
 using Framework.Pattern;
@@ -24,12 +23,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CNCLib.WpfClient
 {
-    public static class LiveServicCollectionExtensions
+    public static class LiveServiceCollectionExtensions
     {
         public static IServiceCollection AddCNCLibWpf(this IServiceCollection services)
         {
             services.AddSingleton<Global>()
-                .AddTransient<IJoystickService, JoystickService>()
+                .AddTransient<IFactory<IJoystickService>, FactoryResolve<IJoystickService>>()
                 .AddTransient<IFactory<IMachineService>, FactoryResolve<IMachineService>>()
                 .AddTransient<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>()
                 .AddTransient<IFactory<IJoystickService>, FactoryResolve<IJoystickService>>()

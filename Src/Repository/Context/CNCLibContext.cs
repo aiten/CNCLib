@@ -24,7 +24,6 @@ using Framework.Repository.Abstraction.Entities;
 using Framework.Repository.Mappings;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CNCLib.Repository.Context

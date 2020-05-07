@@ -18,7 +18,6 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-using CNCLib.GCode;
 using CNCLib.GCode.Serial;
 using CNCLib.Logic.Abstraction.DTO;
 

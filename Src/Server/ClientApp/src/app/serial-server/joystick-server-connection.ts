@@ -49,20 +49,6 @@ export class JoystickServerConnection {
     return this.serialServerAuth;
   }
 
-  /*
-  async connectTo(machine: Machine): Promise<string> {
-
-    var url =
-      await this.getInfoX(machine.serialServer, machine.serialServerUser, machine.serialServerPassword, machine.comPort);
-
-    this.machine = machine;
-
-    this.machineControlGlobal.setFromMachine(machine);
-
-    return url;
-  }
-  */
-
   async getInfoX(serialServer: string, username: string, password: string, comPort: string): Promise<string> {
 
     var uri = serialServer + '/';

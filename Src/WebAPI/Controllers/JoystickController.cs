@@ -1,0 +1,85 @@
+﻿/*
+  This file is part of CNCLib - A library for stepper motors.
+
+  Copyright (c) Herbert Aitenbichler
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+*/
+
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Shared;
+
+using Framework.WebAPI.Controller;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace CNCLib.WebAPI.Controllers
+{
+    [Authorize]
+    [Route("api/[controller]")]
+    public class JoystickController : Controller
+    {
+        private readonly IJoystickManager   _manager;
+        private readonly ICNCLibUserContext _userContext;
+
+        public JoystickController(IJoystickManager manager, ICNCLibUserContext userContext)
+        {
+            _manager     = manager;
+            _userContext = userContext;
+        }
+
+        #region default REST
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Joystick>>> Get()
+        {
+            return await this.GetAll(_manager);
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<Joystick>> Get(int id)
+        {
+            return await this.Get<Joystick, int>(_manager, id);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Joystick>> Add([FromBody] Joystick value)
+        {
+            return await this.Add<Joystick, int>(_manager, value);
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Update(int id, [FromBody] Joystick value)
+        {
+            return await this.Update<Joystick, int>(_manager, id, value.Id, value);
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            return await this.Delete<Joystick, int>(_manager, id);
+        }
+
+        [HttpGet("default")]
+        public async Task<ActionResult<Joystick>> Default()
+        {
+            var joystick = await _manager.Default();
+            return await this.NotFoundOrOk(joystick);
+        }
+
+        #endregion
+    }
+}

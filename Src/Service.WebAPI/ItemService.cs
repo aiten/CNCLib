@@ -56,7 +56,7 @@ namespace CNCLib.Service.WebAPI
                 var paramUri = new UriQueryBuilder();
                 paramUri.Add("classname", classname);
 
-                HttpResponseMessage response = await scope.Instance.GetAsync(CreatePathBuilder().AddQuery(paramUri).Build());
+                var response =  await scope.Instance.GetAsync(CreatePathBuilder().AddQuery(paramUri).Build());
                 response.EnsureSuccessStatusCode();
                 return await response.Content.ReadAsAsync<IEnumerable<Item>>();
             }

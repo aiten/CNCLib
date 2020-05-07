@@ -23,11 +23,11 @@ export abstract class CNCLibMachineService {
 
   public abstract getAll(): Promise<Machine[]>;
 
-  public abstract addMachine(machine: Machine): Promise<Machine>;
+  public abstract add(machine: Machine): Promise<Machine>;
 
-  public abstract updateMachine(machine: Machine): Promise<void>;
+  public abstract update(machine: Machine): Promise<void>;
 
-  public abstract deleteMachineById(id: number): Promise<void>;
+  public abstract deleteById(id: number): Promise<void>;
 
   public abstract getDefault(): Promise<Machine>;
 

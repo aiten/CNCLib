@@ -21,8 +21,6 @@ using Framework.Wpf.ViewModels;
 
 using MahApps.Metro.Controls;
 
-using Microsoft.Extensions.DependencyInjection;
-
 namespace CNCLib.WpfClient.Views
 {
     /// <summary>

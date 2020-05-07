@@ -88,7 +88,7 @@ export class GcodeOverviewComponent implements OnInit {
         let formattedDt = new Date().toLocaleString();
         content.settingName = content.settingName + `(import:${formattedDt})`;
         content.id = 0;
-        let newentry = await this.loadOptionService.addLoadOption(content);
+        let newentry = await this.loadOptionService.add(content);
         await this.router.navigate([gcodeURL]);
         await this.router.navigate([gcodeURL, 'detail', String(newentry.id)]);
       }

@@ -21,8 +21,6 @@ using CNCLib.WpfClient.Models;
 using Framework.Dependency;
 using Framework.Wpf.Views;
 
-using Microsoft.Extensions.DependencyInjection;
-
 using Xceed.Wpf.Toolkit.PropertyGrid;
 
 namespace CNCLib.WpfClient.Views

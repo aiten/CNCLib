@@ -14,7 +14,6 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -46,13 +45,13 @@ namespace CNCLib.WebAPI.Controllers
         {
             if (!string.IsNullOrEmpty(userName))
             {
-                var m = await _manager.GetByName(userName);
-                if (m == null)
+                var user = await _manager.GetByName(userName);
+                if (user == null)
                 {
                     return Ok(new List<User>());
                 }
 
-                return Ok(new List<User>() { m });
+                return Ok(new List<User>() { user });
             }
 
             return await this.GetAll(_manager);

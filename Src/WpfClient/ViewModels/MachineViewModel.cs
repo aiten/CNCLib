@@ -88,7 +88,7 @@ namespace CNCLib.WpfClient.ViewModels
             AddNewMachine = machineId <= 0;
             if (AddNewMachine)
             {
-                dto = await scope.Instance.DefaultMachine();
+                dto = await scope.Instance.Default();
             }
             else
             {

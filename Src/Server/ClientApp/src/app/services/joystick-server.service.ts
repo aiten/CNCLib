@@ -33,9 +33,9 @@ export abstract class JoystickServerService {
 
   public abstract refresh(): Promise<SerialPortDefinition[]>;
 
-  public abstract connect(serialportid: number): Promise<void>;
+  public abstract connect(id: number): Promise<void>;
 
-  public abstract disconnect(serialportid: number): Promise<void>;
+  public abstract disconnect(id: number): Promise<void>;
 
-  public abstract sendCommand(serialportid: number, command: string[], timeout: number): Promise<SerialCommand[]>;
+  public abstract sendCommand(id: number, command: string[], timeout: number): Promise<SerialCommand[]>;
 }

@@ -14,13 +14,10 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 using Framework.Logic.Abstraction;
-using Framework.Pattern;
-using Framework.Tools;
 using Framework.Tools.Password;
 
 using Microsoft.Extensions.Configuration;

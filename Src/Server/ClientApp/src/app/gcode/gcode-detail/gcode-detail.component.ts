@@ -164,7 +164,7 @@ export class GcodeDetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(async result => {
       if (result.result == MessageBoxResult.Yes) {
-        await this.loadOptionService.deleteLoadOptionById(this.entry.id);
+        await this.loadOptionService.deleteById(this.entry.id);
         this.router.navigate([gcodeURL]);
       } else {
         this.isLoaded = true;
@@ -176,7 +176,7 @@ export class GcodeDetailComponent implements OnInit {
     this.isLoaded = false;
     this.entry.settingName = this.entry.settingName + "(clone)";
     this.entry.id = 0;
-    let newentry = await this.loadOptionService.addLoadOption(this.entry);
+    let newentry = await this.loadOptionService.add(this.entry);
     await this.router.navigate([gcodeURL]);
     await this.router.navigate([gcodeURL, 'detail', String(newentry.id)]);
   }
@@ -195,11 +195,11 @@ export class GcodeDetailComponent implements OnInit {
       Object.assign(this.entry, value);
 
       if (this.entry.id == 0) {
-        let newEntry = await this.loadOptionService.addLoadOption(this.entry);
+        let newEntry = await this.loadOptionService.add(this.entry);
         await this.router.navigate([gcodeURL]);
         await this.router.navigate([gcodeURL, 'detail', String(newEntry.id)]);
       } else {
-        await this.loadOptionService.updateLoadOption(this.entry);
+        await this.loadOptionService.update(this.entry);
         await this.loadValues(this.entry.id);
       }
     }

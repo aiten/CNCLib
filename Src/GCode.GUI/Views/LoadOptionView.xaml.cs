@@ -21,8 +21,6 @@ using CNCLib.GCode.GUI.ViewModels;
 using Framework.Dependency;
 using Framework.Wpf.Views;
 
-using Microsoft.Extensions.DependencyInjection;
-
 namespace CNCLib.GCode.GUI.Views
 {
     /// <summary>

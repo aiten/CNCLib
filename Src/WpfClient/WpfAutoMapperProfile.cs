@@ -16,6 +16,7 @@
 
 using AutoMapper;
 
+using JoystickDto = CNCLib.Logic.Abstraction.DTO.Joystick;
 using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;
 using MachineInitCommandDto = CNCLib.Logic.Abstraction.DTO.MachineInitCommand;
 using MachineCommandDto = CNCLib.Logic.Abstraction.DTO.MachineCommand;
@@ -26,6 +27,7 @@ namespace CNCLib.WpfClient
     {
         public WpfAutoMapperProfile()
         {
+            CreateMap<Models.Joystick, JoystickDto>().ReverseMap();
             CreateMap<Models.Machine, MachineDto>().ReverseMap();
             CreateMap<Models.MachineInitCommand, MachineInitCommandDto>().ReverseMap();
             CreateMap<Models.MachineCommand, MachineCommandDto>().ReverseMap();

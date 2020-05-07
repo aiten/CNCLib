@@ -58,7 +58,7 @@ export class LocalCNCLibMachineService implements CNCLibMachineService {
     return m;
   }
 
-  addMachine(machine: Machine): Promise<Machine> {
+  add(machine: Machine): Promise<Machine> {
 
     const m = this.http
       .post(`${this.baseUrl}api/machine`, fromMachine(machine))
@@ -68,7 +68,7 @@ export class LocalCNCLibMachineService implements CNCLibMachineService {
     return m;
   }
 
-  updateMachine(machine: Machine): Promise<void> {
+  update(machine: Machine): Promise<void> {
     const m = this.http
       .put<void>(`${this.baseUrl}api/machine/${machine.id}`, fromMachine(machine))
       .toPromise()
@@ -76,7 +76,7 @@ export class LocalCNCLibMachineService implements CNCLibMachineService {
     return m;
   }
 
-  deleteMachineById(id: number): Promise<void> {
+  deleteById(id: number): Promise<void> {
     const m = this.http
       .delete<void>(`${this.baseUrl}api/machine/${id}`)
       .toPromise()

@@ -14,7 +14,6 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -40,9 +39,9 @@ namespace CNCLib.Logic.Manager
             var list = new List<LoadOptions>();
             foreach (DynItem item in await _dynItemController.GetAll(typeof(LoadOptions)))
             {
-                var li = (LoadOptions)await _dynItemController.Create(item.ItemId);
-                li.Id = item.ItemId;
-                list.Add(li);
+                var loadOption = (LoadOptions)await _dynItemController.Create(item.ItemId);
+                loadOption.Id = item.ItemId;
+                list.Add(loadOption);
             }
 
             return list;
@@ -53,17 +52,17 @@ namespace CNCLib.Logic.Manager
             object obj = await _dynItemController.Create(id);
             if (obj != null)
             {
-                var li = (LoadOptions)obj;
-                li.Id = id;
-                return (LoadOptions)obj;
+                var loadOption = (LoadOptions)obj;
+                loadOption.Id = id;
+                return loadOption;
             }
 
             return null;
         }
 
-        public async Task Delete(LoadOptions m)
+        public async Task Delete(LoadOptions loadOption)
         {
-            await _dynItemController.Delete(m.Id);
+            await _dynItemController.Delete(loadOption.Id);
         }
 
         public async Task Delete(int key)
@@ -71,14 +70,14 @@ namespace CNCLib.Logic.Manager
             await _dynItemController.Delete(key);
         }
 
-        public async Task<int> Add(LoadOptions m)
+        public async Task<int> Add(LoadOptions loadOption)
         {
-            return await _dynItemController.Add(m.SettingName, m);
+            return await _dynItemController.Add(loadOption.SettingName, loadOption);
         }
 
-        public async Task Update(LoadOptions m)
+        public async Task Update(LoadOptions loadOption)
         {
-            await _dynItemController.Save(m.Id, m.SettingName, m);
+            await _dynItemController.Save(loadOption.Id, loadOption.SettingName, loadOption);
         }
 
         public Task<IEnumerable<int>> Add(IEnumerable<LoadOptions> values)
@@ -105,11 +104,5 @@ namespace CNCLib.Logic.Manager
         {
             throw new System.NotImplementedException();
         }
-
-        #region IDisposable Support
-
-        // see ManagerBase
-
-        #endregion
     }
 }

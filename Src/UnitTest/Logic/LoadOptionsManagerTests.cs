@@ -51,13 +51,15 @@ namespace CNCLib.UnitTest.Logic
                 });
             rep.Create(1).Returns(new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" });
 
-            var all = await ctrl.GetAll();
+            var all = (await ctrl.GetAll()).ToList();
 
-            all.Count().Should().Be(1);
-            all.FirstOrDefault().Id.Should().Be(1);
+            all.Should().HaveCount(1);
 
-            all.FirstOrDefault().SettingName.Should().Be("Entry1");
-            all.FirstOrDefault().FileName.Should().Be("HA");
+            var first = all.First();
+
+            first.Id.Should().Be(1);
+            first.SettingName.Should().Be("Entry1");
+            first.FileName.Should().Be("HA");
         }
 
         [Fact]

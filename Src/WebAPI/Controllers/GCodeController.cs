@@ -14,7 +14,6 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -22,7 +21,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-using CNCLib.GCode.Commands;
 using CNCLib.GCode.Draw;
 using CNCLib.GCode.Load;
 using CNCLib.Logic.Abstraction;
@@ -35,8 +33,6 @@ using CNCLib.WebAPI.Models;
 
 using Framework.Drawing;
 using Framework.WebAPI.Controller;
-
-using Microsoft.AspNetCore.Authorization;
 
 namespace CNCLib.WebAPI.Controllers
 {
@@ -70,7 +66,7 @@ namespace CNCLib.WebAPI.Controllers
         [HttpPut]
         public async Task<IEnumerable<string>> Put([FromBody] CreateGCode input)
         {
-            LoadOptions opt = await _loadOptionsManager.Get(input.LoadOptionsId);
+            var opt = await _loadOptionsManager.Get(input.LoadOptionsId);
             opt.FileName    = input.FileName;
             opt.FileContent = input.FileContent;
 

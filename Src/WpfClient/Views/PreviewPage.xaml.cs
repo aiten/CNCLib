@@ -26,8 +26,6 @@ using Framework.Dependency;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.Views;
 
-using Microsoft.Extensions.DependencyInjection;
-
 namespace CNCLib.WpfClient.Views
 {
     /// <summary>

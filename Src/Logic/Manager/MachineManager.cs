@@ -14,8 +14,8 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -79,7 +79,7 @@ namespace CNCLib.Logic.Manager
 
         #region Default machine
 
-        public async Task<Machine> DefaultMachine()
+        public async Task<Machine> Default()
         {
             var dto = new Machine
             {
@@ -111,7 +111,7 @@ namespace CNCLib.Logic.Manager
             return await Task.FromResult(dto);
         }
 
-        public async Task<int> GetDefaultMachine()
+        public async Task<int> GetDefault()
         {
             var config = await _repositoryConfig.Get(_userContext.UserId, "Environment", "DefaultMachineId");
 
@@ -123,7 +123,7 @@ namespace CNCLib.Logic.Manager
             return int.Parse(config.Value);
         }
 
-        public async Task SetDefaultMachine(int defaultMachineId)
+        public async Task SetDefault(int defaultMachineId)
         {
             await _repositoryConfig.Store(
                 new ConfigurationEntity
@@ -138,5 +138,63 @@ namespace CNCLib.Logic.Manager
         }
 
         #endregion
+
+        public async Task<string> TranslateJoystickMessage(int machineId, string joystickMessage)
+        {
+            var m = await Get(machineId);
+            return TranslateJoystickMessage(m, joystickMessage);
+        }
+
+        public string TranslateJoystickMessage(Machine machine, string joystickMessage)
+        {
+            // ;btn5		=> look for ;btn5
+            // ;btn5:x		=> x is pressCount - always incremented, look for max x in setting => modulo 
+
+            int idx;
+
+            if ((idx = joystickMessage.IndexOf(':')) < 0)
+            {
+                var mc = machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == joystickMessage);
+                if (mc != null)
+                {
+                    joystickMessage = mc.CommandString;
+                }
+            }
+            else
+            {
+                var btn             = joystickMessage.Substring(0, idx + 1);
+                var machineCommands = machine.MachineCommands.Where(m => m.JoystickMessage?.Length > idx && m.JoystickMessage.Substring(0, idx + 1) == btn).ToList();
+
+                uint max = 0;
+                foreach (var m in machineCommands)
+                {
+                    uint val;
+                    if (uint.TryParse(m.JoystickMessage.Substring(idx + 1), out val))
+                    {
+                        if (val > max)
+                        {
+                            max = val;
+                        }
+                    }
+                }
+
+                var findCmd = $"{btn}{uint.Parse(joystickMessage.Substring(idx + 1)) % (max + 1)}";
+
+                var mc = machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == findCmd);
+                if (mc == null)
+                {
+                    // try to find ;btn3 (without :)  
+                    findCmd = joystickMessage.Substring(0, idx);
+                    mc      = machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == findCmd);
+                }
+
+                if (mc != null)
+                {
+                    joystickMessage = mc.CommandString;
+                }
+            }
+
+            return joystickMessage;
+        }
     }
 }

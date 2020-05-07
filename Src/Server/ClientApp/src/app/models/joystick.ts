@@ -15,8 +15,12 @@
 */
 
 export class Joystick {
+  id: number;
   serialServer: string;
   serialServerUser: string;
   serialServerPassword: string;
   comPort: string;
+  baudRate: number;
+  initCommands: string;
+
 }

@@ -14,18 +14,14 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using CNCLib.Repository.Abstraction;
 using CNCLib.Repository.Abstraction.Entities;
 using CNCLib.Repository.Context;
-using CNCLib.Shared;
 
 using Framework.Repository;
-using Framework.Repository.Linq;
 
 using Microsoft.EntityFrameworkCore;
 

@@ -14,7 +14,6 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
 using System.Threading.Tasks;
 
 using CNCLib.Logic.Abstraction;
@@ -34,19 +33,29 @@ namespace CNCLib.Service.Logic
             _manager = manager;
         }
 
-        public async Task<Machine> DefaultMachine()
+        public async Task<Machine> Default()
         {
-            return await _manager.DefaultMachine();
+            return await _manager.Default();
         }
 
-        public async Task<int> GetDefaultMachine()
+        public async Task<int> GetDefault()
         {
-            return await _manager.GetDefaultMachine();
+            return await _manager.GetDefault();
         }
 
-        public async Task SetDefaultMachine(int defaultMachineId)
+        public async Task SetDefault(int defaultMachineId)
         {
-            await _manager.SetDefaultMachine(defaultMachineId);
+            await _manager.SetDefault(defaultMachineId);
+        }
+
+        public async Task<string> TranslateJoystickMessage(int machineId, string joystickMessage)
+        {
+            return await _manager.TranslateJoystickMessage(machineId, joystickMessage);
+        }
+
+        public string TranslateJoystickMessage(Machine machine, string joystickMessage)
+        {
+            return _manager.TranslateJoystickMessage(machine, joystickMessage);
         }
     }
 }

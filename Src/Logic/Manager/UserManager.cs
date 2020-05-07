@@ -25,7 +25,6 @@ using CNCLib.Repository.Abstraction;
 
 using Framework.Logic;
 using Framework.Repository.Abstraction;
-using Framework.Tools;
 using Framework.Tools.Password;
 
 using UserEntity = CNCLib.Repository.Abstraction.Entities.User;

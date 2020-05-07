@@ -21,8 +21,6 @@ using Framework.UnitTest.Repository;
 
 using Microsoft.EntityFrameworkCore;
 
-using Xunit;
-
 namespace CNCLib.UnitTest.Repository
 {
     public class RepositoryTestFixture : RepositoryTestFixtureBase<CNCLibContext>

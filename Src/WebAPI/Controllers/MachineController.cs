@@ -14,7 +14,6 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -101,25 +100,21 @@ namespace CNCLib.WebAPI.Controllers
         [HttpGet("default")]
         public async Task<ActionResult<Machine>> DefaultMachine()
         {
-            var m = await _manager.DefaultMachine();
+            var m = await _manager.Default();
             return await this.NotFoundOrOk(m);
         }
 
         [HttpGet("defaultmachine")]
-
-        //Always explicitly state the accepted HTTP method
         public async Task<ActionResult<int>> GetDefaultMachine()
         {
-            int id = await _manager.GetDefaultMachine();
+            int id = await _manager.GetDefault();
             return Ok(id);
         }
 
         [HttpPut("defaultmachine")]
-
-        //Always explicitly state the accepted HTTP method
         public async Task<ActionResult> SetDefaultMachine(int id)
         {
-            await _manager.SetDefaultMachine(id);
+            await _manager.SetDefault(id);
             return StatusCode(204);
         }
     }

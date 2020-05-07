@@ -177,7 +177,7 @@ export class MachineFormComponent implements OnInit {
 
   async saveMachine(value: any): Promise<void> {
     Object.assign(this.machine, value);
-    await this.machineService.updateMachine(this.machine);
+    await this.machineService.update(this.machine);
     this.router.navigate([machineURL, 'detail', this.machine.id]);
   }
 

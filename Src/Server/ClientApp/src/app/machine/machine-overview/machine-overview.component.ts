@@ -62,7 +62,7 @@ export class MachineOverviewComponent implements OnInit {
   async newMachine() {
 
     var newmachineDefault = await this.machineService.getDefault();
-    var newmachine = await this.machineService.addMachine(newmachineDefault);
+    var newmachine = await this.machineService.add(newmachineDefault);
     this.router.navigate([machineURL, 'detail', String(newmachine.id)]);
   }
 

@@ -20,8 +20,6 @@ using System.Windows.Controls;
 using Framework.Dependency;
 using Framework.Wpf.Views;
 
-using Microsoft.Extensions.DependencyInjection;
-
 namespace CNCLib.WpfClient.Views
 {
     public partial class LoginView : Window

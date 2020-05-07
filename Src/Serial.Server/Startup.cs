@@ -15,7 +15,6 @@
 */
 
 using System;
-using System.Runtime.InteropServices;
 using System.Threading;
 
 using CNCLib.Serial.WebAPI.Controllers;
@@ -24,7 +23,6 @@ using CNCLib.Serial.WebAPI.Manager;
 using CNCLib.Serial.WebAPI.SerialPort;
 
 using Framework.Arduino.SerialCommunication;
-using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Dependency;
 using Framework.Logic.Abstraction;
 using Framework.Tools;
@@ -35,7 +33,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
@@ -44,8 +41,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Serialization;
-
-using NLog;
 
 using Swashbuckle.AspNetCore.Filters;
 

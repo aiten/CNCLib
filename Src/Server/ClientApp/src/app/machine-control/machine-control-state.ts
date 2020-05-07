@@ -20,6 +20,8 @@ import { SerialPortDefinition } from '../models/serial.port.definition';
 import { SerialServerService } from '../services/serial-server.service';
 import { JoystickServerService } from "../services/joystick-server.service";
 
+import { CNCLibJoystickService } from "../services/CNCLib-joystick.service";
+
 import { HubConnection } from '@aspnet/signalr';
 import { HubConnectionBuilder } from '@aspnet/signalr';
 
@@ -27,6 +29,8 @@ import { SerialServerConnection } from '../serial-server/serial-server-connectio
 import { JoystickServerConnection } from '../serial-server/joystick-server-connection';
 
 import { MachineControlGlobal } from './machine-control.global';
+
+import { Joystick } from "../models/joystick";
 
 
 @Injectable()
@@ -39,6 +43,9 @@ export class MachineControlState {
   private joystickPortId: number;
 
   isJoystickConnect: boolean = false;
+  isJoystickLoaded: boolean = false;
+  joystick: Joystick;
+
   joystickServerName: string = 'https://localhost:5000';
   joystickPort: string = 'COM6';
   joystickUser: string = 'admin';
@@ -47,11 +54,37 @@ export class MachineControlState {
   constructor(
     private serialServerService: SerialServerService,
     private joystickServerService: JoystickServerService,
+    private joystickService: CNCLibJoystickService,
     public serialServer: SerialServerConnection,
     public joystickServer: JoystickServerConnection,
     public machineControlGlobal: MachineControlGlobal
   ) {
-    console.log("new MachineControlState");
+  }
+
+  async getJoystick() {
+    if (!this.isJoystickLoaded) {
+      this.joystick = (await this.joystickService.getAll())[0];
+      this.joystickServerName = this.joystick.serialServer;
+      this.joystickPort = this.joystick.comPort;
+      this.joystickUser = this.joystick.serialServerUser;
+      this.joystickPassword = this.joystick.serialServerPassword;
+      this.isJoystickLoaded = true;
+    }
+  }
+
+  async joystickSave() {
+    if (this.isJoystickLoaded) {
+      console.log(this.joystick);
+      this.joystick.serialServer = this.joystickServerName;
+      this.joystick.comPort = this.joystickPort;
+      this.joystick.serialServerUser = this.joystickUser;
+      this.joystick.serialServerPassword = this.joystickPassword;
+
+      await this.joystickService.update(this.joystick);
+
+      this.isJoystickLoaded = false;
+      await this.getJoystick();
+    }
   }
 
   async load(): Promise<void> {
@@ -66,6 +99,8 @@ export class MachineControlState {
   }
 
   async loadJoystick(forceConnect: boolean): Promise<boolean> {
+
+    await this.getJoystick();
 
     if (this.isConnected && (forceConnect || this.isJoystickConnect)) {
 

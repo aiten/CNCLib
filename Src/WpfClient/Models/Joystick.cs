@@ -24,6 +24,28 @@ namespace CNCLib.WpfClient.Models
         const string CATEGORY_GENERAL       = "General";
         const string CATEGORY_COMMUNICATION = "Communication";
 
+        [ReadOnly(false)]
+        [Browsable(false)]
+        [Category(CATEGORY_INTERNAL)]
+        [DisplayName("Joystick Id")]
+        [Description("Internal Id of joystick")]
+        public int    Id                   { get; set; }
+
+        [Category(CATEGORY_COMMUNICATION)]
+        [DisplayName("SerialServer")]
+        [Description("Name of the CNCLib.Serial.Server, e.g. IP-Address, localhost or url - if empty, local port is used, e.g: https://servername:5000/serial.server")]
+        public string SerialServer { get; set; }
+
+        [Category(CATEGORY_COMMUNICATION)]
+        [DisplayName("SerialServerUser")]
+        [Description("User to be used for to connect to the CNCLib.Serial.Server, default is empty")]
+        public string SerialServerUser { get; set; }
+
+        [Category(CATEGORY_COMMUNICATION)]
+        [DisplayName("SerialServerPassword")]
+        [Description("Password to be used for the CNCLib.Serial.Server, default is empty")]
+        public string SerialServerPassword { get; set; }
+
         [Category(CATEGORY_COMMUNICATION)]
         [DisplayName("ComPort")]
         [Description("Com of attached joystick")]

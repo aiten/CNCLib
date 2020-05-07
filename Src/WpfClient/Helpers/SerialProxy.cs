@@ -19,7 +19,6 @@ using Framework.Arduino.SerialCommunication.Abstraction;
 using Framework.Dependency;
 using Framework.Pattern;
 
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace CNCLib.WpfClient.Helpers
