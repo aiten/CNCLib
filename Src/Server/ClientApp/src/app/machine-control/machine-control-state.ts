@@ -64,6 +64,11 @@ export class MachineControlState {
   async getJoystick() {
     if (!this.isJoystickLoaded) {
       this.joystick = (await this.joystickService.getAll())[0];
+
+      if (this.joystick == null) {
+        this.joystick = (await this.joystickService.getDefault());
+      }
+
       this.joystickServerName = this.joystick.serialServer;
       this.joystickPort = this.joystick.comPort;
       this.joystickUser = this.joystick.serialServerUser;
@@ -80,7 +85,11 @@ export class MachineControlState {
       this.joystick.serialServerUser = this.joystickUser;
       this.joystick.serialServerPassword = this.joystickPassword;
 
-      await this.joystickService.update(this.joystick);
+      if (this.joystick.id == 0) {
+        await this.joystickService.add(this.joystick);
+      } else {
+        await this.joystickService.update(this.joystick);
+      }
 
       this.isJoystickLoaded = false;
       await this.getJoystick();
