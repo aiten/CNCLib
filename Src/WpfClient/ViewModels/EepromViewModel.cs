@@ -17,6 +17,8 @@
 using System.Windows;
 using System.Windows.Input;
 
+using CNCLib.GCode.Machine;
+using CNCLib.GCode.Serial;
 using CNCLib.WpfClient.Helpers;
 using CNCLib.WpfClient.Models;
 

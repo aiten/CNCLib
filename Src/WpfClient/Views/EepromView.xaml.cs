@@ -16,7 +16,7 @@
 
 using System.Windows;
 
-using CNCLib.WpfClient.Models;
+using CNCLib.GCode.Machine;
 
 using Framework.Dependency;
 using Framework.Wpf.Views;

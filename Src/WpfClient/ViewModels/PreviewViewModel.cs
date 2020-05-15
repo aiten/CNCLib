@@ -23,7 +23,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 
 using CNCLib.GCode;
-using CNCLib.GCode.Commands;
+using CNCLib.GCode.Generate;
+using CNCLib.GCode.Generate.Commands;
 using CNCLib.Logic.Abstraction.DTO;
 
 using Framework.Arduino.SerialCommunication;

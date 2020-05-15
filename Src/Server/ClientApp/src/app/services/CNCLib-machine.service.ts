@@ -31,4 +31,6 @@ export abstract class CNCLibMachineService {
 
   public abstract getDefault(): Promise<Machine>;
 
+  public abstract joystickMessage(id: number, message: string): Promise<string>;
+
 }

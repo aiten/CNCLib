@@ -21,8 +21,8 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
-using CNCLib.GCode.Commands;
 using CNCLib.GCode.Draw;
+using CNCLib.GCode.Generate.Commands;
 
 using Framework.Drawing;
 

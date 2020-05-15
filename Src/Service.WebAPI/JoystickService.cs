@@ -20,24 +20,15 @@ using System.Threading.Tasks;
 using CNCLib.Logic.Abstraction.DTO;
 using CNCLib.Service.Abstraction;
 
-using Framework.Pattern;
 using Framework.Service.WebAPI;
 
 namespace CNCLib.Service.WebAPI
 {
     public class JoystickService : CrudServiceBase<Joystick, int>, IJoystickService
     {
-        private HttpClient _httpClient;
-
-        public JoystickService(HttpClient httpClient)
+        public JoystickService(HttpClient httpClient) : base(httpClient)
         {
-            BaseApi     = @"api/Joystick";
-            _httpClient = httpClient;
-        }
-
-        protected override IScope<HttpClient> CreateScope()
-        {
-            return new ScopeInstance<HttpClient>(_httpClient);
+            BaseApi = @"api/Joystick";
         }
 
         protected override int GetKey(Joystick value) => value.Id;

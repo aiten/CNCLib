@@ -47,3 +47,4 @@ obj
 *.Cache
 /Src/Serial.Server/.config/dotnet-tools.json
 /Src/Server/.config/dotnet-tools.json
+/Src/Serial.WebAPI/CNCLib.Serial.WebAPI.xml

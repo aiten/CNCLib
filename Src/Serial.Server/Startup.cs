@@ -15,6 +15,7 @@
 */
 
 using System;
+using System.IO;
 using System.Threading;
 
 using CNCLib.Serial.WebAPI.Controllers;
@@ -121,6 +122,11 @@ namespace CNCLib.Serial.Server
                     }
                 });
                 c.OperationFilter<SecurityRequirementsOperationFilter>(true, "basic");
+
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = "CNCLib.Serial.WebAPI.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
 
 

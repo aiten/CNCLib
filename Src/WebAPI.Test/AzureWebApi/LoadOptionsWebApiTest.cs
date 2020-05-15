@@ -38,27 +38,27 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
         {
             var client = GetHttpClient();
 
-            HttpResponseMessage response = await client.GetAsync(api + "/1");
+            var response = await client.GetAsync(api + "/1");
 
             response.IsSuccessStatusCode.Should().BeTrue();
 
             if (response.IsSuccessStatusCode)
             {
-                LoadOptions l = await response.Content.ReadAsAsync<LoadOptions>();
+                var l = await response.Content.ReadAsAsync<LoadOptions>();
 
                 l.Should().NotBeNull();
             }
         }
 
-        private async Task Cleanup(string settingname)
+        private async Task Cleanup(string settingName)
         {
             var client = GetHttpClient();
 
-            HttpResponseMessage responseGet = await client.GetAsync(api);
+            var responseGet = await client.GetAsync(api);
 
             var all = await responseGet.Content.ReadAsAsync<IEnumerable<LoadOptions>>();
 
-            var setting = all.FirstOrDefault(s => s.SettingName == settingname);
+            var setting = all.FirstOrDefault(s => s.SettingName == settingName);
             if (setting != null)
             {
                 await client.DeleteAsync($"{api}/{setting.Id}");
@@ -75,20 +75,20 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
 
             var m = new LoadOptions { SettingName = "Settingname" };
 
-            HttpResponseMessage response = await client.PostAsJsonAsync(api, m);
+            var response = await client.PostAsJsonAsync(api, m);
             response.IsSuccessStatusCode.Should().BeTrue();
 
             if (response.IsSuccessStatusCode)
             {
-                Uri newUri = response.Headers.Location;
+                var newUri = response.Headers.Location;
 
                 // HTTPGET again
-                HttpResponseMessage responseGet = await client.GetAsync(newUri);
+                var responseGet = await client.GetAsync(newUri);
                 responseGet.IsSuccessStatusCode.Should().BeTrue();
 
                 if (responseGet.IsSuccessStatusCode)
                 {
-                    LoadOptions mget = await responseGet.Content.ReadAsAsync<LoadOptions>();
+                    var mget = await responseGet.Content.ReadAsAsync<LoadOptions>();
 
                     mget.SettingName.Should().Be("Settingname");
 
@@ -97,12 +97,12 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
                     var responsePut = await client.PutAsJsonAsync(newUri, mget);
 
                     // HTTPGET again2
-                    HttpResponseMessage responseGet2 = await client.GetAsync(newUri);
+                    var responseGet2 = await client.GetAsync(newUri);
                     responseGet2.IsSuccessStatusCode.Should().BeTrue();
 
                     if (responseGet2.IsSuccessStatusCode)
                     {
-                        LoadOptions mget2 = await responseGet2.Content.ReadAsAsync<LoadOptions>();
+                        var mget2 = await responseGet2.Content.ReadAsAsync<LoadOptions>();
 
                         mget2.SettingName.Should().Be("ComHA");
                     }
@@ -111,12 +111,12 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
                     response = await client.DeleteAsync(newUri);
 
                     // HTTPGET again3
-                    HttpResponseMessage responseGet3 = await client.GetAsync(newUri);
+                    var responseGet3 = await client.GetAsync(newUri);
                     responseGet3.StatusCode.Should().Be(HttpStatusCode.NotFound);
 
                     if (responseGet3.IsSuccessStatusCode)
                     {
-                        LoadOptions mget3 = await responseGet3.Content.ReadAsAsync<LoadOptions>();
+                        var mget3 = await responseGet3.Content.ReadAsAsync<LoadOptions>();
                         mget3.Should().BeNull();
                     }
                 }

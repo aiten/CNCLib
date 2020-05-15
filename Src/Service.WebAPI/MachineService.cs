@@ -20,7 +20,6 @@ using System.Threading.Tasks;
 using CNCLib.Logic.Abstraction.DTO;
 using CNCLib.Service.Abstraction;
 
-using Framework.Pattern;
 using Framework.Service.WebAPI;
 using Framework.Service.WebAPI.Uri;
 
@@ -28,17 +27,9 @@ namespace CNCLib.Service.WebAPI
 {
     public class MachineService : CrudServiceBase<Machine, int>, IMachineService
     {
-        private HttpClient _httpClient;
-
-        public MachineService(HttpClient httpClient)
+        public MachineService(HttpClient httpClient) : base(httpClient)
         {
-            BaseApi     = @"api/Machine";
-            _httpClient = httpClient;
-        }
-
-        protected override IScope<HttpClient> CreateScope()
-        {
-            return new ScopeInstance<HttpClient>(_httpClient);
+            BaseApi = @"api/Machine";
         }
 
         protected override int GetKey(Machine m) => m.MachineId;
@@ -47,7 +38,7 @@ namespace CNCLib.Service.WebAPI
         {
             using (var scope = CreateScope())
             {
-                var response =  await scope.Instance.GetAsync(CreatePathBuilder().AddPath("default").Build());
+                var response = await scope.Instance.GetAsync(CreatePathBuilder().AddPath("default").Build());
                 response.EnsureSuccessStatusCode();
                 return await response.Content.ReadAsAsync<Machine>();
             }
@@ -69,7 +60,8 @@ namespace CNCLib.Service.WebAPI
             {
                 var paramUri = new UriQueryBuilder();
                 paramUri.Add("id", id);
-                var response = await scope.Instance.PutAsJsonAsync(CreatePathBuilder().AddPath("defaultmachine").AddQuery(paramUri).Build(), "dummy");
+                var response = await scope.Instance.PutAsJsonAsync(
+                    CreatePathBuilder().AddPath("defaultmachine").AddQuery(paramUri).Build(), "dummy");
 
                 response.EnsureSuccessStatusCode();
             }
@@ -79,7 +71,10 @@ namespace CNCLib.Service.WebAPI
         {
             using (var scope = CreateScope())
             {
-                var response = await scope.Instance.GetAsync(CreatePathBuilder().AddPath(machineId).AddPath("joystick").Build());
+                var paramUri = new UriQueryBuilder();
+                paramUri.Add("message", joystickMessage);
+                var response = await scope.Instance.GetAsync(
+                    CreatePathBuilder().AddPath(machineId).AddPath("joystick").AddQuery(paramUri).Build());
 
                 response.EnsureSuccessStatusCode();
                 return await response.Content.ReadAsAsync<string>();

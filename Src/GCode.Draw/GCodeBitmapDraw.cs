@@ -18,7 +18,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-using CNCLib.GCode.Commands;
+using CNCLib.GCode.Generate.Commands;
 
 using Framework.Drawing;
 

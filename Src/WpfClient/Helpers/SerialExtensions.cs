@@ -23,7 +23,9 @@ using System.Media;
 using System.Threading.Tasks;
 
 using CNCLib.GCode;
+using CNCLib.GCode.Generate;
 using CNCLib.GCode.Serial;
+using CNCLib.GCode.Tools;
 using CNCLib.WpfClient.Models;
 
 using Framework.Arduino.SerialCommunication;
@@ -37,151 +39,14 @@ namespace CNCLib.WpfClient.Helpers
     {
         #region Probe
 
-        public const int DefaultProbeTimeout = 15000;
-
         public static async Task<bool> SendProbeCommandAsync(this ISerial serial, Machine machine, int axisIndex)
         {
-            string  axisName  = machine.GetAxisName(axisIndex);
-            decimal probeSize = machine.GetProbeSize(axisIndex);
-
-            string probDist   = machine.ProbeDist.ToString(CultureInfo.InvariantCulture);
-            string probDistUp = machine.ProbeDistUp.ToString(CultureInfo.InvariantCulture);
-            string probFeed   = machine.ProbeFeed.ToString(CultureInfo.InvariantCulture);
-
-            var result = await serial.SendCommandAsync("g91 g31 " + axisName + "-" + probDist + " F" + probFeed + " g90", DefaultProbeTimeout);
-            if (result?.LastOrDefault()?.ReplyType.HasFlag(EReplyType.ReplyError) == false)
-            {
-                serial.QueueCommand("g92 " + axisName + (-probeSize).ToString(CultureInfo.InvariantCulture));
-                serial.QueueCommand("g91 g0" + axisName + probDistUp + " g90");
-                return true;
-            }
-
-            return false;
-        }
-
-        #endregion
-
-        #region EEprom
-
-        public const int DefaultEpromTimeout = 3000;
-
-        public static async Task<uint[]> GetEpromValuesAsync(this ISerial serial, int waitForMilliseconds)
-        {
-            var cmd = (await serial.SendCommandAsync("$?", waitForMilliseconds)).FirstOrDefault();
-            if (cmd != null && string.IsNullOrEmpty(cmd.ResultText) == false)
-            {
-                string[] separators = { "\n", "\r" };
-                string[] lines      = cmd.ResultText.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-                var      intValues  = new Dictionary<int, uint>();
-                int      maxSlot    = -1;
-                foreach (var line in lines)
-                {
-                    // e.g. $1=65535(ffff)
-                    string[] assign = line.Split('=');
-
-                    int slot;
-                    if (assign.Length == 2 && assign[0].StartsWith("$") && int.TryParse(assign[0].TrimStart('$'), out slot))
-                    {
-                        uint   slotValue;
-                        string valueStr = assign[1];
-                        int    idx1     = valueStr.IndexOf('(');
-                        if (idx1 > 0)
-                        {
-                            valueStr = valueStr.Substring(0, idx1);
-                        }
-
-                        if (uint.TryParse(valueStr, out slotValue))
-                        {
-                            intValues[slot] = slotValue;
-                            if (maxSlot < slot)
-                            {
-                                maxSlot = slot;
-                            }
-                        }
-                    }
-                }
-
-                if (maxSlot > 0)
-                {
-                    var ret = new uint[maxSlot + 1];
-                    for (int i = 0; i <= maxSlot; i++)
-                    {
-                        if (intValues.ContainsKey(i))
-                        {
-                            ret[i] = intValues[i];
-                        }
-                    }
-
-                    return ret;
-                }
-            }
-
-            return null;
-        }
-
-        public static async Task WriteEepromValuesAsync(this ISerial serial, EepromV1 ee)
-        {
-            await serial.SendCommandAsync(@"$!", DefaultEpromTimeout);
-            await serial.SendCommandsAsync(ee.ToGCode(), DefaultEpromTimeout);
-        }
-
-        public static async Task EraseEepromValuesAsync(this ISerial serial)
-        {
-            await serial.SendCommandAsync(@"$!",   DefaultEpromTimeout);
-            await serial.SendCommandAsync(@"$0=0", DefaultEpromTimeout);
-        }
-
-        public static async Task<Eeprom> ReadEepromAsync(this ISerial serial)
-        {
-            uint[] values = await serial.GetEpromValuesAsync(SerialExtension.DefaultEpromTimeout);
-            if (values != null)
-            {
-                var ee = new EepromV1 { Values = values };
-
-                if (ee.IsValid)
-                {
-                    File.WriteAllLines(Environment.ExpandEnvironmentVariables(@"%TEMP%\EepromRead.nc"), ee.ToGCode());
-                    byte numAxis = ee[EepromV1.EValueOffsets8.NumAxis];
-
-                    var eeprom = Eeprom.Create(ee[EepromV1.EValueOffsets32.Signature], numAxis);
-                    eeprom.Values = values;
-                    eeprom.ReadFrom(ee);
-
-                    return eeprom;
-                }
-            }
-
-            return null;
-        }
-
-        public static async Task<bool> WriteEepromAsync(this ISerial serial, Eeprom eepromValue)
-        {
-            var ee = new EepromV1 { Values = eepromValue.Values };
-
-            if (ee.IsValid)
-            {
-                eepromValue.WriteTo(ee);
-
-                File.WriteAllLines(Environment.ExpandEnvironmentVariables(@"%TEMP%\EepromWrite.nc"), ee.ToGCode());
-
-                await serial.WriteEepromValuesAsync(ee);
-                return true;
-            }
-
-            return false;
-        }
-
-        public static async Task<bool> EraseEepromAsync(this ISerial serial)
-        {
-            await serial.EraseEepromValuesAsync();
-            return true;
+            return await serial.SendProbeCommandAsync(machine.GetAxisName(axisIndex), machine.GetProbeSize(axisIndex),  machine.ProbeDist, machine.ProbeDistUp, machine.ProbeFeed);
         }
 
         #endregion
 
         #region send/queue
-
-        public const int DefaultTimeout = 120 * 1000;
 
         public static void PrepareAndQueueCommand(this ISerial serial, Machine machine, string commandString)
         {
@@ -212,7 +77,7 @@ namespace CNCLib.WpfClient.Helpers
                 {
                     if (s.TrimEnd().EndsWith("?"))
                     {
-                        var result = await serial.SendCommandAsync(s.TrimEnd().TrimEnd('?'), DefaultTimeout);
+                        var result = await serial.SendCommandAsync(s.TrimEnd().TrimEnd('?'), GCodeSerial.DefaultTimeout);
                         if (result?.LastOrDefault()?.ReplyType.HasFlag(EReplyType.ReplyError) == false)
                         {
                             return;
@@ -220,7 +85,7 @@ namespace CNCLib.WpfClient.Helpers
                     }
                     else
                     {
-                        await serial.SendCommandAsync(s, DefaultTimeout);
+                        await serial.SendCommandAsync(s, GCodeSerial.DefaultTimeout);
                     }
                 }
             }

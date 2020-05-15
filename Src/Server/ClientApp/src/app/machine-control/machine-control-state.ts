@@ -21,6 +21,7 @@ import { SerialServerService } from '../services/serial-server.service';
 import { JoystickServerService } from "../services/joystick-server.service";
 
 import { CNCLibJoystickService } from "../services/CNCLib-joystick.service";
+import { CNCLibMachineService } from '../services/CNCLib-machine.service';
 
 import { HubConnection } from '@aspnet/signalr';
 import { HubConnectionBuilder } from '@aspnet/signalr';
@@ -55,6 +56,7 @@ export class MachineControlState {
     private serialServerService: SerialServerService,
     private joystickServerService: JoystickServerService,
     private joystickService: CNCLibJoystickService,
+    private machineService: CNCLibMachineService,
     public serialServer: SerialServerConnection,
     public joystickServer: JoystickServerConnection,
     public machineControlGlobal: MachineControlGlobal
@@ -123,10 +125,13 @@ export class MachineControlState {
       this.hubConnection = new HubConnectionBuilder().withUrl(this.joystickServer.getSerialServerUrl() + 'serialSignalR/').build();
 
       this.hubConnection.on('Received',
-        (portid: number, info: string) => {
+        async (portid: number, info: string) => {
           if (portid == this.joystickPortId) {
             console.log("Joystick received:" + info);
-            if (!info.startsWith(";")) {
+            if (info.startsWith(";")) {
+              let g = await this.machineService.joystickMessage(this.serialServer.getMachine().id, info);
+              this.postcommand(g);
+            } else {
               this.postcommand(info);
             }
           }

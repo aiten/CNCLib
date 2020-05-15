@@ -21,7 +21,6 @@ using System.Threading.Tasks;
 using CNCLib.Logic.Abstraction.DTO;
 using CNCLib.Service.Abstraction;
 
-using Framework.Pattern;
 using Framework.Service.WebAPI;
 using Framework.Service.WebAPI.Uri;
 
@@ -29,24 +28,11 @@ namespace CNCLib.Service.WebAPI
 {
     public class ItemService : CrudServiceBase<Item, int>, IItemService
     {
-        private HttpClient _httpClient;
-
         protected override int GetKey(Item i) => i.ItemId;
 
-        public ItemService(HttpClient httpClient)
+        public ItemService(HttpClient httpClient) : base(httpClient)
         {
-            BaseApi     = @"api/Item";
-            _httpClient = httpClient;
-        }
-
-        protected override IScope<HttpClient> CreateScope()
-        {
-            return new ScopeInstance<HttpClient>(_httpClient);
-        }
-
-        public async Task<Item> DefaultItem()
-        {
-            return await Get(-1);
+            BaseApi = @"api/Item";
         }
 
         public async Task<IEnumerable<Item>> GetByClassName(string classname)
@@ -56,7 +42,7 @@ namespace CNCLib.Service.WebAPI
                 var paramUri = new UriQueryBuilder();
                 paramUri.Add("classname", classname);
 
-                var response =  await scope.Instance.GetAsync(CreatePathBuilder().AddQuery(paramUri).Build());
+                var response = await scope.Instance.GetAsync(CreatePathBuilder().AddQuery(paramUri).Build());
                 response.EnsureSuccessStatusCode();
                 return await response.Content.ReadAsAsync<IEnumerable<Item>>();
             }

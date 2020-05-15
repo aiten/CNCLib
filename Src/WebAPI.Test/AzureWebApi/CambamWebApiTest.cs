@@ -39,16 +39,16 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
 
             var info = new LoadOptions { LoadType = LoadOptions.ELoadType.Hpgl };
 
-            Assembly ass     = Assembly.GetExecutingAssembly();
-            string   assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
+            var ass     = Assembly.GetExecutingAssembly();
+            var   assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
 
             info.FileName    = assPath + @"\TestData\heikes-mietzi.hpgl";
             info.FileContent = File.ReadAllBytes(info.FileName);
 
-            HttpResponseMessage response = await client.PostAsJsonAsync(api, info);
+            var response = await client.PostAsJsonAsync(api, info);
             response.EnsureSuccessStatusCode();
 
-            string cambam = await response.Content.ReadAsAsync<string>();
+            var cambam = await response.Content.ReadAsAsync<string>();
 
             cambam.Should().NotBeNull();
         }

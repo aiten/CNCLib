@@ -21,7 +21,6 @@ using System.Threading.Tasks;
 using CNCLib.Logic.Abstraction.DTO;
 using CNCLib.Service.Abstraction;
 
-using Framework.Pattern;
 using Framework.Service.WebAPI;
 using Framework.Service.WebAPI.Uri;
 
@@ -29,17 +28,9 @@ namespace CNCLib.Service.WebAPI
 {
     public class UserService : CrudServiceBase<User, int>, IUserService
     {
-        private HttpClient _httpClient;
-
-        public UserService(HttpClient httpClient)
+        public UserService(HttpClient httpClient) : base(httpClient)
         {
-            BaseApi     = @"api/user";
-            _httpClient = httpClient;
-        }
-
-        protected override IScope<HttpClient> CreateScope()
-        {
-            return new ScopeInstance<HttpClient>(_httpClient);
+            BaseApi = @"api/user";
         }
 
         protected override int GetKey(User u) => u.UserId;

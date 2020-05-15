@@ -10,6 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Framework\Drawing\Drawing.csproj" />
-    <ProjectReference Include="..\GCode\GCode.csproj" />
+    <ProjectReference Include="..\GCode.Generate\GCode.Generate.csproj" />
   </ItemGroup>
 </Project>

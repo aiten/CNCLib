@@ -4,5 +4,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Framework\Arduino\Arduino.csproj" />
+    <ProjectReference Include="..\GCode.Machine\GCode.Machine.csproj" />
   </ItemGroup>
 </Project>

@@ -17,7 +17,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-using CNCLib.GCode.Commands;
+using CNCLib.GCode.Generate.Commands;
 using CNCLib.WpfClient.Helpers;
 using CNCLib.WpfClient.Models;
 

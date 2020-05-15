@@ -22,6 +22,8 @@ using System.Windows.Input;
 
 using AutoMapper;
 
+using CNCLib.GCode.Serial;
+using CNCLib.Logic.Abstraction.DTO;
 using CNCLib.Service.Abstraction;
 using CNCLib.WpfClient.Helpers;
 using CNCLib.WpfClient.Models;
@@ -31,7 +33,10 @@ using Framework.Pattern;
 using Framework.Wpf.Helpers;
 using Framework.Wpf.ViewModels;
 
+using Machine = CNCLib.WpfClient.Models.Machine;
+using MachineCommand = CNCLib.WpfClient.Models.MachineCommand;
 using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;
+using MachineInitCommand = CNCLib.WpfClient.Models.MachineInitCommand;
 
 namespace CNCLib.WpfClient.ViewModels
 {
@@ -192,7 +197,7 @@ namespace CNCLib.WpfClient.ViewModels
                         Machine.SizeA = eeprom.GetAxis(3).Size / 1000m;
 
                         Machine.WorkOffsets   = (int)eeprom.WorkOffsetCount;
-                        Machine.CommandSyntax = eeprom.CommandSyntax;
+                        Machine.CommandSyntax = (CommandSyntax) eeprom.CommandSyntax;
 
                         var orig = Machine;
                         Machine = null;

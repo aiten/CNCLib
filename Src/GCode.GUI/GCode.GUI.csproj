@@ -16,7 +16,7 @@
     <ProjectReference Include="..\Framework\Wpf\Wpf.csproj" />
     <ProjectReference Include="..\Framework\Arduino\Arduino.csproj" />
     <ProjectReference Include="..\GCode.Draw\GCode.Draw.csproj" />
-    <ProjectReference Include="..\GCode\GCode.csproj" />
+    <ProjectReference Include="..\GCode.Generate\GCode.Generate.csproj" />
     <ProjectReference Include="..\Logic.Client\Logic.Client.csproj" />
     <ProjectReference Include="..\Logic.Abstraction.DTO\Logic.Abstraction.DTO.csproj" />
     <ProjectReference Include="..\Serial.Client\Serial.Client.csproj" />

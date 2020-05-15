@@ -14,7 +14,7 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
 import { Injectable, Inject, Pipe } from '@angular/core';
 import { Machine } from '../models/machine';
@@ -89,6 +89,18 @@ export class LocalCNCLibMachineService implements CNCLibMachineService {
       .catch(this.handleError);
     return m;
 */
+  }
+
+  joystickMessage(id: number, message: string): Promise<string> {
+    let params = new HttpParams();
+    params = params.set('joystickMessage', message);
+    const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
+
+    const m = this.http
+      .get(`${this.baseUrl}api/machine/${id}/joystick?${params.toString()}`,{ headers, responseType: 'text' })
+      .toPromise()
+      .catch(this.handleErrorPromise);
+    return m;
   }
 
   private handleErrorPromise(error: Response | any) {

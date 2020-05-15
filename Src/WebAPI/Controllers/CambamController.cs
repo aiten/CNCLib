@@ -18,6 +18,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
+using CNCLib.GCode.Generate.CamBam;
 using CNCLib.Logic.Abstraction;
 using CNCLib.Logic.Abstraction.DTO;
 
@@ -48,7 +49,7 @@ namespace CNCLib.WebAPI.Controllers
         {
             var load = GCodeLoadHelper.CallLoad(input);
             var sw   = new StringWriter();
-            new XmlSerializer(typeof(GCode.CamBam.CamBam)).Serialize(sw, load.CamBam);
+            new XmlSerializer(typeof(CamBam)).Serialize(sw, load.CamBam);
             return sw.ToString();
         }
 
@@ -60,7 +61,7 @@ namespace CNCLib.WebAPI.Controllers
             opt.FileContent = input.FileContent;
             var load = GCodeLoadHelper.CallLoad(opt);
             var sw   = new StringWriter();
-            new XmlSerializer(typeof(GCode.CamBam.CamBam)).Serialize(sw, load.CamBam);
+            new XmlSerializer(typeof(CamBam)).Serialize(sw, load.CamBam);
             return sw.ToString();
         }
     }

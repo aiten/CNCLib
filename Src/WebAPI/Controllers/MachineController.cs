@@ -117,5 +117,11 @@ namespace CNCLib.WebAPI.Controllers
             await _manager.SetDefault(id);
             return StatusCode(204);
         }
+
+        [HttpGet("{id:int}/joystick")]
+        public async Task<ActionResult<string>> TranslateJoystickMessage(int id, string joystickMessage)
+        {
+            return Ok(await _manager.TranslateJoystickMessage(id,joystickMessage));
+        }
     }
 }

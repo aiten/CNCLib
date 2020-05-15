@@ -43,9 +43,9 @@ namespace CNCLib.Service.Logic
             return await _manager.GetDefault();
         }
 
-        public async Task SetDefault(int defaultMachineId)
+        public async Task SetDefault(int machineId)
         {
-            await _manager.SetDefault(defaultMachineId);
+            await _manager.SetDefault(machineId);
         }
 
         public async Task<string> TranslateJoystickMessage(int machineId, string joystickMessage)

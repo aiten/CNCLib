@@ -104,6 +104,10 @@ namespace CNCLib.Serial.Client
 
             if (!string.IsNullOrEmpty(portName))
             {
+                if (!serverName.EndsWith('/'))
+                {
+                    serverName += '/';
+                }
                 WebServerUri = serverName;
                 UserName     = userName;
                 Password     = password;

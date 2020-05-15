@@ -22,7 +22,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using CNCLib.GCode.Draw;
-using CNCLib.GCode.Load;
+using CNCLib.GCode.Generate.Load;
 using CNCLib.Logic.Abstraction;
 using CNCLib.Logic.Abstraction.DTO;
 

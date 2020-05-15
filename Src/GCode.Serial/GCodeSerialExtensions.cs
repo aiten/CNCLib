@@ -26,6 +26,8 @@ namespace CNCLib.GCode.Serial
 {
     public static class GCodeSerialExtension
     {
+        public const int DefaultTimeout = 120 * 1000;
+
         public static async Task<decimal?> GetParameterValueAsync(this ISerial serial, int parameter, string commandPrefix)
         {
             string message = await serial.SendCommandAndReadOKReplyAsync($"{commandPrefix}(print, #{parameter})", 10 * 1000);

@@ -16,6 +16,11 @@
 
         <xctk:PropertyGrid DataContext="{Binding EepromValue}" SelectedObject="{Binding}"
                            PreparePropertyItem="PropertyGrid_PreparePropertyItem"
-                           IsPropertyBrowsable="PropertyGrid_IsPropertyBrowseable" Name="_grid" />
+                           IsPropertyBrowsable="PropertyGrid_IsPropertyBrowseable" Name="_grid"
+                           AutoGenerateProperties="True">
+            <xctk:PropertyGrid.PropertyDefinitions>
+                <xctk:PropertyDefinition TargetProperties="AxisX,AxisY,AxisZ,AxisA,AxisB,AxisC" IsExpandable="True" />
+            </xctk:PropertyGrid.PropertyDefinitions>
+        </xctk:PropertyGrid>
     </DockPanel>
 </Window>

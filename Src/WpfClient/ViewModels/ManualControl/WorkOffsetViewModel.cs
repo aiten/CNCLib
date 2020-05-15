@@ -19,7 +19,9 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 
 using CNCLib.GCode;
+using CNCLib.GCode.Generate;
 using CNCLib.GCode.Serial;
+using CNCLib.GCode.Tools;
 using CNCLib.WpfClient.Helpers;
 
 using Framework.Arduino.SerialCommunication;

@@ -18,8 +18,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using CNCLib.GCode.Commands;
-using CNCLib.GCode.Load;
+using CNCLib.GCode.Generate.Commands;
+using CNCLib.GCode.Generate.Load;
 using CNCLib.Logic.Abstraction.DTO;
 
 using FluentAssertions;

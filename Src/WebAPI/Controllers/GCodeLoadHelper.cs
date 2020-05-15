@@ -16,7 +16,7 @@
 
 using System.IO;
 
-using CNCLib.GCode.Load;
+using CNCLib.GCode.Generate.Load;
 using CNCLib.Logic.Abstraction.DTO;
 
 namespace CNCLib.WebAPI.Controllers

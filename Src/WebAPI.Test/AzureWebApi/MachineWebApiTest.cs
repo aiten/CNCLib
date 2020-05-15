@@ -36,14 +36,13 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
         {
             var client = GetHttpClient();
 
-            HttpResponseMessage response = await client.GetAsync(api + "/1");
+            var response = await client.GetAsync(api + "/1");
 
             response.IsSuccessStatusCode.Should().BeTrue();
 
             if (response.IsSuccessStatusCode)
             {
-                Machine m = await response.Content.ReadAsAsync<Machine>();
-
+                var m = await response.Content.ReadAsAsync<Machine>();
                 m.MachineId.Should().Be(1);
             }
         }
@@ -61,20 +60,20 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
                 MachineInitCommands = new MachineInitCommand[0]
             };
 
-            HttpResponseMessage response = await client.PostAsJsonAsync(api, m);
+            var response = await client.PostAsJsonAsync(api, m);
             response.IsSuccessStatusCode.Should().BeTrue();
 
             if (response.IsSuccessStatusCode)
             {
-                Uri newMachineUri = response.Headers.Location;
+                var newMachineUri = response.Headers.Location;
 
                 // HTTPGET again
-                HttpResponseMessage responseGet = await client.GetAsync(newMachineUri);
+                var responseGet = await client.GetAsync(newMachineUri);
                 responseGet.IsSuccessStatusCode.Should().BeTrue();
 
                 if (responseGet.IsSuccessStatusCode)
                 {
-                    Machine mget = await responseGet.Content.ReadAsAsync<Machine>();
+                    var mget = await responseGet.Content.ReadAsAsync<Machine>();
 
                     mget.Name.Should().Be("MyUnitTest");
 
@@ -83,12 +82,12 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
                     var responsePut = await client.PutAsJsonAsync(newMachineUri, mget);
 
                     // HTTPGET again2
-                    HttpResponseMessage responseGet2 = await client.GetAsync(newMachineUri);
+                    var responseGet2 = await client.GetAsync(newMachineUri);
                     responseGet2.IsSuccessStatusCode.Should().BeTrue();
 
                     if (responseGet2.IsSuccessStatusCode)
                     {
-                        Machine mget2 = await responseGet2.Content.ReadAsAsync<Machine>();
+                        var mget2 = await responseGet2.Content.ReadAsAsync<Machine>();
 
                         mget2.ComPort.Should().Be("ComHA");
                     }
@@ -97,12 +96,12 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
                     response = await client.DeleteAsync(newMachineUri);
 
                     // HTTPGET again3
-                    HttpResponseMessage responseGet3 = await client.GetAsync(newMachineUri);
+                    var responseGet3 = await client.GetAsync(newMachineUri);
                     responseGet3.StatusCode.Should().Be(HttpStatusCode.NotFound);
 
                     if (responseGet3.IsSuccessStatusCode)
                     {
-                        Machine mget3 = await responseGet3.Content.ReadAsAsync<Machine>();
+                        var mget3 = await responseGet3.Content.ReadAsAsync<Machine>();
                         mget3.Should().BeNull();
                     }
                 }

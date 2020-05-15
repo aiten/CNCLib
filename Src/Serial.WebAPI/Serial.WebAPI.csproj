@@ -9,6 +9,10 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <DocumentationFile>CNCLib.Serial.WebAPI.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Ben.Demystifier" Version="0.1.6" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="3.1.0" />
@@ -22,6 +26,12 @@
     <ProjectReference Include="..\GCode.Draw\GCode.Draw.csproj" />
     <ProjectReference Include="..\GCode.Serial\GCode.Serial.csproj" />
     <ProjectReference Include="..\Serial.Shared\Serial.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="CNCLib.Serial.WebAPI.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>$(TargetFrameworkForProjects)</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Framework\Arduino\Arduino.csproj" />
+    <ProjectReference Include="..\GCode.Tools\GCode.Tools.csproj" />
+  </ItemGroup>
+</Project>
