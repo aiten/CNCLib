@@ -155,6 +155,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
             }
 
             var eeprom = await port.Serial.ReadEepromAsync();
+            eeprom.Values = null;
 
             return Ok(eeprom);
         }
