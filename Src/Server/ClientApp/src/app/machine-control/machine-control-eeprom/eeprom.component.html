@@ -1,0 +1,259 @@
+<head>
+  <style>
+    .right { float: right; }
+  </style>
+</head>
+
+<p *ngIf="isLoading">
+  <em>Loading()...</em>
+</p>
+
+
+<div *ngIf="!isLoading">
+
+  <div *ngIf="!isConnected()">
+    <p>NOT Connected...</p>
+  </div>
+
+  <div *ngIf="isConnected()" class="mytoolbar">
+
+    Machine: {{ serialServer.getMachine().description }}
+
+    <span class='right'>
+      <button *ngIf="isMore" mat-button class="menuHide-button" (click)='isMore = false'>
+        <fa-icon icon="chevron-right"></fa-icon>
+      </button>
+      <button *ngIf="!isMore" mat-button class="menuHide-button" (click)='isMore = true'>
+        <fa-icon icon="chevron-left"></fa-icon>
+      </button>
+      <!--
+      <button *ngIf="isMore" mat-stroked-button (click)='exportgCode()' [disabled]="!gCodeForm.valid">Export</button>
+      <button *ngIf="isMore" mat-stroked-button (click)='deletegCode()' [disabled]="!gCodeForm.valid">Delete</button>
+      <button *ngIf="isMore" mat-stroked-button (click)='clonegCode()' [disabled]="!gCodeForm.valid">Clone</button>
+      -->
+      <button *ngIf="isMore" mat-stroked-button (click)='eraseEeprom()'>Erase Eeprom</button>
+      <button mat-stroked-button type="submit" form="ngForm" class="btn btn-default" [disabled]="!isEepromLoaded || !eepromForm.valid">Write to machine</button>
+      <button mat-stroked-button class="loadbutton" (click)='loadEeprom()'>Read Eeprom from machine</button>
+    </span>
+
+  </div>
+</div>
+
+<form novalidate *ngIf="isEepromLoaded" [formGroup]="eepromForm" (ngSubmit)="storeEeprom()" id="ngForm">
+
+  <div class="container-fluid">
+
+    <div class="row">
+
+      <mat-card class="input-col">
+
+        <mat-card-title>Info (read only)</mat-card-title>
+
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Supported Axis">Number of Axis</mat-label>
+          <input readonly matInput class="form-control" formControlName="numAxis"/>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Useabel axis">Use Axis</mat-label>
+          <input readonly matInput class="form-control" formControlName="useAxis"/>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Capability of machine commands">Command Syntax</mat-label>
+          <mat-select readonly formControlName="commandSyntax" class="form-control" [compareWith]="compareWithEnum">
+            <mat-option *ngFor="let key of keysECommandSyntax" [value]="key">{{ECommandSyntax[key]}}</mat-option>
+          </mat-select>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Count of work offsets (G54-??)">WorkOffset Count</mat-label>
+          <input readonly matInput class="form-control" formControlName="workOffsetCount"/>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Maschine has a spindle, can use m3/m5">Has Spindle</mat-label>
+          <mat-checkbox readonly class="form-control" formControlName="hasSpindle"></mat-checkbox>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Can set the speed of the spindle with e.g.  m3 s1000">Has Analog Spindle</mat-label>
+          <mat-checkbox readonly class="form-control" formControlName="hasAnalogSpindle"></mat-checkbox>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Can set spindle direction, mse m3/m4">Has Spindle Direction</mat-label>
+          <mat-checkbox readonly class="form-control" formControlName="hasSpindleDirection"></mat-checkbox>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Machine has coolant (use m7/m9)">Has Coolant</mat-label>
+          <mat-checkbox readonly class="form-control" formControlName="hasCoolant"></mat-checkbox>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Machine has probe input (use g31)">Has Probe</mat-label>
+          <mat-checkbox readonly class="form-control" formControlName="hasProbe"></mat-checkbox>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Machine has a SD card">Has SD</mat-label>
+          <mat-checkbox readonly class="form-control" formControlName="hasSD"></mat-checkbox>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Configuration can be written to eeprom">hasEeprom</mat-label>
+          <mat-checkbox readonly class="form-control" formControlName="hasEeprom"></mat-checkbox>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Machine can rotate coordinate system (g68/g69)">Can Rotate</mat-label>
+          <mat-checkbox readonly class="form-control" formControlName="canRotate"></mat-checkbox>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Machine has a hold input">Has Hold</mat-label>
+          <mat-checkbox readonly class="form-control" formControlName="hasHold"></mat-checkbox>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Machine has a resume input">Has Resume</mat-label>
+          <mat-checkbox readonly class="form-control" formControlName="hasResume"></mat-checkbox>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Machine has a hold/resume input">Has Hold/Resume</mat-label>
+          <mat-checkbox readonly class="form-control" formControlName="hasHoldResume"></mat-checkbox>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Machine has a kill input">Has Kill</mat-label>
+          <mat-checkbox readonly class="form-control" formControlName="hasKill"></mat-checkbox>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Machine is a laser">Is Laser</mat-label>
+          <mat-checkbox readonly class="form-control" formControlName="isLaser"></mat-checkbox>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="For Arduino Uno, Mega, ... Dtr cause a reset when connecting. For a Arduino zero Dtr must be set/used to transfer data (no reset)">Dtr Is Reset</mat-label>
+          <mat-checkbox readonly class="form-control" formControlName="dtrIsReset"></mat-checkbox>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="EEprom Flush command must be executed to save to EEprom (Arduino zero)">Need EEprom Flush</mat-label>
+          <mat-checkbox readonly class="form-control" formControlName="needEEpromFlush"></mat-checkbox>
+        </div>
+
+      </mat-card>
+
+      <mat-card class="input-col">
+
+        <mat-card-title>General</mat-card-title>
+
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Maximum steprate in Hz (AVR 8bit max 16bit, e.g. 25000)">Max StepRate</mat-label>
+          <input matInput class="form-control" formControlName="maxStepRate"/>
+          <div *ngIf="f.maxStepRate && f.maxStepRate.invalid" class="alert alert-danger">Error</div>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Acceleration factor (e.g. 350)], must be > 61">Acc</mat-label>
+          <input matInput class="form-control" formControlName="acc"/>
+          <div *ngIf="f.acc && f.acc.invalid" class="alert alert-danger">
+            <div *ngIf="f.acc.errors.required">Number is required.</div>
+            <div *ngIf="f.acc.errors.min">Min.</div>
+          </div>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Deceleration factor (e.g. 400), must be > 61">Dec</mat-label>
+          <input matInput class="form-control" formControlName="dec"/>
+          <div *ngIf="f.dec && f.dec.invalid" class="alert alert-danger">Error</div>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Maximum Jerkspeed - speed difference without acceleration - in Hz (e.g. 1000)">Jerk Speed</mat-label>
+          <input matInput class="form-control" formControlName="jerkSpeed"/>
+          <div *ngIf="f.jerkSpeed && f.jerkSpeed.invalid" class="alert alert-danger">Error</div>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Steprate for reference-move (AVR 8bit max 16bit, less than 'MaxStepRate')">RefMove StepRate</mat-label>
+          <input matInput class="form-control" formControlName="refMoveStepRate"/>
+          <div *ngIf="f.refMoveStepRate && f.refMoveStepRate.invalid" class="alert alert-danger">Error</div>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Distance between refmove hit and 0 (in mm1000)">Move Away from Reference</mat-label>
+          <input matInput class="form-control" formControlName="moveAwayFromReference"/>
+          <div *ngIf="f.moveAwayFromReference && f.moveAwayFromReference.invalid" class="alert alert-danger">Error</div>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Steps for 1/1000mm => steps to go for 1/1000mm">Steps Per Mm1000</mat-label>
+          <input matInput class="form-control" formControlName="stepsPerMm1000"/>
+          <div *ngIf="f.stepsPerMm1000 && f.stepsPerMm1000.invalid" class="alert alert-danger">Error</div>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Max speed (rpm) of spindle or laser power (1-255)">Max Spindle Speed</mat-label>
+          <input matInput class="form-control" formControlName="maxSpindleSpeed"/>
+          <div *ngIf="f.maxSpindleSpeed && f.maxSpindleSpeed.invalid" class="alert alert-danger">Error</div>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Time in ms between incrementing the analog PWM output - e.g. 8ms will result in a 2040ms time between stop an max">Spindle Fade Time</mat-label>
+          <input matInput class="form-control" formControlName="spindleFadeTime"/>
+          <div *ngIf="f.spindleFadeTime && f.spindleFadeTime.invalid" class="alert alert-danger">Error</div>
+        </div>
+
+        <div *ngFor="let item of [].constructor(eeprom.numAxis); let i = index">
+          <div class="form-group input-group">
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Axis for reference-sequence (255=>disabled)">Ref-Sequence:{{i+1}}</mat-label>
+            <mat-select formControlName="refSequence{{i+1}}" class="form-control" [compareWith]="compareWithEnum">
+              <mat-option *ngFor="let key of keysEReverenceSequence" [value]="key">{{EReverenceSequence[key]}}</mat-option>
+            </mat-select>
+          </div>
+        </div>
+      </mat-card>
+
+      <mat-card *ngFor="let item of [].constructor(eeprom.numAxis); let i = index" class="input-col" formArrayName="axis">
+
+        <div [formGroupName]="i">
+
+          <mat-card-title class="lable-axis">{{machineControlState.toAxisName(i)}}:</mat-card-title>
+
+          <div class="form-group input-group">
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Maximum size in mm/1000">Size</mat-label>
+            <input matInput class="form-control" formControlName="size"/>
+            <div *ngIf="ff(i).size && ff(i).size.invalid" class="alert alert-danger">Error</div>
+          </div>
+          <div class="form-group input-group">
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Reference-Move for axis">Ref Move Type</mat-label>
+            <mat-select formControlName="refMove" class="form-control" [compareWith]="compareWithEnum">
+              <mat-option *ngFor="let key of keysEReverenceType" [value]="key">{{EReverenceType[key]}}</mat-option>
+            </mat-select>
+          </div>
+          <div class="form-group input-group">
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Invert the rotation direction of the stepper">Stepper Direction</mat-label>
+            <mat-checkbox readonly class="form-control" formControlName="stepperDirection"></mat-checkbox>
+          </div>
+          <div class="form-group input-group">
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Value of IO if reference is hit - usual 0, optical 1, 255 disabled">Ref Hit Value (Min)</mat-label>
+            <input matInput class="form-control" formControlName="refHitValueMin"/>
+          </div>
+          <div class="form-group input-group">
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Value of IO if reference is hit - usual 0, optical 1, 255 disabled">Ref Hit Value (Max)</mat-label>
+            <input matInput class="form-control" formControlName="refHitValueMax"/>
+          </div>
+          <div *ngIf="isAxisExtended" class="form-group input-group">
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Maximum steprate in Hz (AVR 8bit max 16bit, e.g. 25000), 0 for machine default">Max StepRate</mat-label>
+            <input matInput class="form-control" formControlName="maxStepRate"/>
+          </div>
+          <div *ngIf="isAxisExtended" class="form-group input-group">
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Acceleration factor (e.g. 350)], must be > 61, 0 for machine default">Acc</mat-label>
+            <input matInput class="form-control" formControlName="acc"/>
+          </div>
+          <div *ngIf="isAxisExtended" class="form-group input-group">
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Deceleration factor (e.g. 400), must be > 61, 0 for machine default">Dec</mat-label>
+            <input matInput class="form-control" formControlName="dec"/>
+          </div>
+          <div *ngIf="isAxisExtended" class="form-group input-group">
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Steps for 1/1000mm => steps to go for 1/1000mm, 0 for machine default">Steps Per Mm1000</mat-label>
+            <input matInput class="form-control" formControlName="stepsPerMm1000"/>
+          </div>
+          <div *ngIf="isAxisExtended" class="form-group input-group">
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Steprate for reference-move (AVR 8bit max 16bit, less than 'MaxStepRate'), 0 for machine default">RefMove StepRate</mat-label>
+            <input matInput class="form-control" formControlName="refMoveStepRate"/>
+          </div>
+          <div class="form-group input-group">
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Position (in mm/1000) while startup. The reference move will overwrite this position">Init Position</mat-label>
+            <input matInput class="form-control" formControlName="initPosition"/>
+          </div>
+          <div *ngIf="isAxisExtended" class="form-group input-group">
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Default probe size in mm/1000 (used in Lcd)">Probe Size</mat-label>
+            <input matInput class="form-control" formControlName="probeSize"/>
+          </div>
+
+        </div>
+      </mat-card>
+
+    </div>
+  </div>
+</form>

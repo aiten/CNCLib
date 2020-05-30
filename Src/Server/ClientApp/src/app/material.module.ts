@@ -33,13 +33,12 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatSortModule } from "@angular/material/sort";
 import { MatTableModule } from "@angular/material/table";
 import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMomentDateModule } from "@angular/material-moment-adapter";
 import { MatSliderModule } from '@angular/material/slider';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
-
-import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
 @NgModule({
   exports: [
@@ -65,6 +64,7 @@ import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
     FormsModule,
     MatFormFieldModule,
     MatSliderModule,
+    MatTooltipModule,
   ]
 })
 export class MaterialModule {

@@ -19,6 +19,7 @@ import { Component } from '@angular/core';
 @Component(
   {
     templateUrl: 'machine.component.html',
+    styleUrls: ['./machine.component.css'],
   })
 export class MachineComponent {
 }

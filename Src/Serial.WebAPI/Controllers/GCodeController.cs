@@ -134,28 +134,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
                 return NotFound();
             }
 
-            var eeprom = await port.Serial.GetEpromValuesAsync(GCodeSerial.DefaultEpromTimeout);
-
-            return Ok(eeprom);
-        }
-
-        /// <summary>
-        /// Read the content of the eeprom from the machine.
-        /// </summary>
-        /// <param name="id">Id of the serial port.</param>
-        /// <returns>Eeprom as object.</returns>
-        [HttpPost("{id:int}/eepromInfo")]
-        public async Task<ActionResult<Eeprom>> GetEepromInfo(int id)
-        {
-            var port = await SerialPortList.GetPortAndRescan(id);
-
-            if (port == null)
-            {
-                return NotFound();
-            }
-
-            var eeprom = await port.Serial.ReadEepromAsync();
-            eeprom.Values = null;
+            var eeprom = await port.Serial.GetEpromValues(GCodeSerial.DefaultEpromTimeout);
 
             return Ok(eeprom);
         }
@@ -180,7 +159,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
 
             if (ee.IsValid)
             {
-                await port.Serial.WriteEepromValuesAsync(ee);
+                await port.Serial.WriteEepromValues(ee);
             }
 
             return Ok();
@@ -202,9 +181,38 @@ namespace CNCLib.Serial.WebAPI.Controllers
                 return NotFound();
             }
 
-            var eeprom = await port.Serial.EraseEepromAsync();
+            var eeprom = await port.Serial.EraseEeprom();
 
             return Ok(eeprom);
+        }
+
+        #endregion
+
+        #region eeprom info
+
+        /// <summary>
+        /// Convert the eeprom to a readable class.
+        /// </summary>
+        /// <param name="eepromValue">eeprom values from machine.</param>
+        /// <returns>Eeprom as object.</returns>
+        [HttpPost("toEeprom")]
+        public ActionResult<Eeprom> GetEepromInfo([FromBody] UInt32[] eepromValue)
+        {
+            var eeprom = EepromExtensions.ConvertEeprom(eepromValue);
+            return Ok(eeprom);
+        }
+
+        /// <summary>
+        /// Convert the eeprom-object to uint32.
+        /// </summary>
+        /// <param name="eepromValue">eeprom values from machine.</param>
+        /// <returns>uint32 to be sent to the machine.</returns>
+        [HttpPost("fromEeprom")]
+        public ActionResult<UInt32[]> GetEepromInfo([FromBody] Eeprom eeprom)
+        {
+            var eePromV1 = new EepromV1() { Values = eeprom.Values };
+            eeprom.WriteTo(eePromV1);
+            return Ok(eeprom.Values);
         }
 
         #endregion

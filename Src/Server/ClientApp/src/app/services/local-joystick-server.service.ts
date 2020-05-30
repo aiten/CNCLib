@@ -16,14 +16,12 @@
 
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { map } from 'rxjs/operators';
 
 import { JoystickServerService } from './joystick-server.service';
 import { SerialCommand } from "../models/serial.command";
 import { SerialPortDefinition } from '../models/serial.port.definition';
 import { CNCLibServerInfo } from '../models/CNCLib.Server.Info';
 import { QueueSendCommand } from '../models/queue.send.command';
-import { SerialPortHistoryInput } from "../serialporthistory/models/serialporthistory.input";
 
 @Injectable()
 export class LocalJoystickServerService implements JoystickServerService {

@@ -20,84 +20,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CNCLib.GCode.Machine
 {
-    public enum CommandSyntax
+     public class Eeprom
     {
-        GCodeBasic = 0,
-        GCode      = 1,
-        Grbl       = 2,
-        Hpgl       = 7 // max 3 bit
-    }
-
-    public class Eeprom
-    {
-
-        public static Eeprom Create(uint signature, int numAxis)
-        {
-            if (signature == EepromV1.SIGNATUREPLOTTER)
-            {
-                return new EepromPlotter();
-            }
-
-            return new Eeprom();
-        }
-
-        public bool? IsPropertyBrowsable(PropertyDescriptor property)
-        {
-            string propertyName = property.Name;
-            bool   isAxis       = property.ComponentType.Name == nameof(SAxis);
-
-            if (isAxis)
-            {
-                if (GetAxis(0).DWEESizeOf <= EepromV1.SIZEOFAXIS_EX)
-                {
-                    switch (propertyName)
-                    {
-                        case nameof(SAxis.Acc):
-                        case nameof(SAxis.Dec):
-                        case nameof(SAxis.MaxStepRate):
-                        case nameof(SAxis.StepsPerMm1000):
-                        case nameof(SAxis.ProbeSize):
-                        case nameof(SAxis.RefMoveStepRate):
-                            return false;
-                    }
-                }
-            }
-            else
-            {
-                if (propertyName == "Values")
-                {
-                    return false;
-                }
-
-                if (propertyName == nameof(AxisY) || propertyName == nameof(RefSequence2))
-                {
-                    return NumAxis >= 2;
-                }
-
-                if (propertyName == nameof(AxisZ) || propertyName == nameof(RefSequence3))
-                {
-                    return NumAxis >= 3;
-                }
-
-                if (propertyName == nameof(AxisA) || propertyName == nameof(RefSequence4))
-                {
-                    return NumAxis >= 4;
-                }
-
-                if (propertyName == nameof(AxisB) || propertyName == nameof(RefSequence5))
-                {
-                    return NumAxis >= 5;
-                }
-
-                if (propertyName == nameof(AxisC) || propertyName == nameof(RefSequence6))
-                {
-                    return NumAxis >= 6;
-                }
-            }
-
-            return null;
-        }
-
         protected const string CATEGORY_INTERNAL = "Internal";
         protected const string CATEGORY_SIZE     = "Size";
         protected const string CATEGORY_FEATURES = "Features";
@@ -106,6 +30,14 @@ namespace CNCLib.GCode.Machine
         protected const string CATEGORY_INFO     = "Info";
 
         protected const int EEPROM_NUM_AXIS = 6;
+
+        public enum ECommandSyntax
+        {
+            GCodeBasic = 0,
+            GCode      = 1,
+            Grbl       = 2,
+            Hpgl       = 7 // max 3 bit
+        }
 
         public enum EReverenceType
         {
@@ -318,10 +250,10 @@ namespace CNCLib.GCode.Machine
 
         [Category(CATEGORY_INFO)]
         [DisplayName("CommandSyntax")]
-        [Description("Capability of macine commands")]
-        public CommandSyntax CommandSyntax
+        [Description("Capability of machine commands")]
+        public ECommandSyntax CommandSyntax
         {
-            get => (CommandSyntax)EepromV1.GetCommandSyntax(Info1);
+            get => (ECommandSyntax)EepromV1.GetCommandSyntax(Info1);
             set { }
         }
 

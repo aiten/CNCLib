@@ -14,17 +14,17 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import { Component, OnInit, OnDestroy, Inject, Input, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 
-import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { SerialServerService } from '../../services/serial-server.service';
-import { HubConnection, HubConnectionBuilder, HttpTransportType, LogLevel } from '@aspnet/signalr';
+import { HubConnection, HubConnectionBuilder, LogLevel } from '@aspnet/signalr';
 
 import { SerialPortHistoryPreviewGlobal } from '../models/serialporthistory.global';
 import { SerialPortHistoryInput } from '../models/serialporthistory.input';
 
-import { interval, Observable } from 'rxjs';
+import { interval } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 import { SerialServerConnection } from "../../serial-server/serial-server-connection";
 
@@ -193,8 +193,7 @@ export class SerialPortHistoryPreviewViewComponent implements OnInit, OnDestroy,
     if (this.previewOpt.keepRatio) {
       if (this.scaleX < this.scaleY) {
         this.scaleX = this.scaleY;
-      }
-      else if (this.scaleX > this.scaleY) {
+      } else if (this.scaleX > this.scaleY) {
         this.scaleY = this.scaleX;
       }
       //console.log(`sX:${this.scaleX}:Y:${this.scaleY}`);

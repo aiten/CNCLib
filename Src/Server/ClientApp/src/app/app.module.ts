@@ -29,7 +29,6 @@ import { MaterialModule } from './material.module';
 import { LoginComponent } from "./login/login.component"
 
 import { MessageBoxComponent } from './modal/message-box/message-box.component';
-import { EepromConfigComponent } from "./eeprom-config/eeprom-config.component";
 
 import { CNCLibInfoService } from './services/CNCLib-Info.service';
 import { LocalCNCLibInfoService } from './services/local-CNCLib-Info.service';

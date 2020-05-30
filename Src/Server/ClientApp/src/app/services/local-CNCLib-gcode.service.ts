@@ -15,7 +15,7 @@
 */
 
 import { HttpClient } from '@angular/common/http';
-import { Injectable, Inject, Pipe } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { map } from 'rxjs/operators';
 
 import { LoadOptions } from "../models/load-options";

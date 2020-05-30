@@ -32,6 +32,7 @@ import { JoystickServerConnection } from '../serial-server/joystick-server-conne
 import { MachineControlGlobal } from './machine-control.global';
 
 import { Joystick } from "../models/joystick";
+import { Eeprom } from "../models/eeprom";
 
 
 @Injectable()
@@ -167,21 +168,16 @@ export class MachineControlState {
     }
   }
 
-  async joystickDisconnect():
-    Promise<void> {
+  async joystickDisconnect(): Promise<void> {
     this.isJoystickConnect = false;
     await this.close();
   }
 
-  async postcommand(command:
-      string):
-    Promise<void> {
+  async postcommand(command: string): Promise<void> {
     await this.serialServerService.queueCommands(this.serialServer.getSerialServerPortId(), [command], 1000);
   }
 
-  async sendWhileOkcommands(commands:
-      string[]):
-    Promise<void> {
+  async sendWhileOkcommands(commands: string[]): Promise<void> {
     await this.serialServerService.sendWhileOkCommands(this.serialServer.getSerialServerPortId(), commands, 10000);
   }
 
@@ -252,5 +248,20 @@ export class MachineControlState {
   async relWOfs(offsetId: number): Promise<void> {
     var cmd = "g10 l2 g91 p" + (offsetId + 1).toString() + " x0y0";
     await this.postcommand(cmd);
+  }
+
+  async readEeprom(): Promise<Eeprom> {
+    let values = await this.serialServerService.readEeprom(this.serialServer.getSerialServerPortId());
+    return await this.serialServerService.convertToEeprom(values);
+  }
+
+  async writeEeprom(eeprom: Eeprom): Promise<void> {
+    var values = await this.serialServerService.convertFromEeprom(eeprom);
+    await this.serialServerService.writeEeprom(this.serialServer.getSerialServerPortId(), values);
+    console.log(values);
+  }
+
+  async deleteEeprom(): Promise<void> {
+    await this.serialServerService.deleteEeprom(this.serialServer.getSerialServerPortId());
   }
 }

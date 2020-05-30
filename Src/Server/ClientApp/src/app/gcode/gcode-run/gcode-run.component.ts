@@ -15,10 +15,10 @@
 */
 
 import { Component, OnInit } from '@angular/core';
-import { LoadOptions, EHoleType, ELoadType, PenType, SmoothTypeEnum, ConvertTypeEnum, DitherFilter } from "../../models/load-options";
+import { LoadOptions } from "../../models/load-options";
 import { CNCLibLoadOptionService } from '../../services/CNCLib-load-option.service';
 import { CNCLibGCodeService } from '../../services/CNCLib-gcode.service';
-import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { PreviewGlobal } from '../../preview/preview.global';
 import { previewURL } from '../../app.global';
 

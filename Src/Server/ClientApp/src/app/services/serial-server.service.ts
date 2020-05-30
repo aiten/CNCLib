@@ -16,6 +16,7 @@
 
 import { SerialCommand } from "../models/serial.command";
 import { SerialPortDefinition } from '../models/serial.port.definition';
+import { Eeprom } from "../models/eeprom";
 
 import { CNCLibServerInfo } from '../models/CNCLib.Server.Info'
 import { SerialPortHistoryInput } from "../serialporthistory/models/serialporthistory.input";
@@ -59,4 +60,15 @@ export abstract class SerialServerService {
   public abstract getGCodeAsImage(serialportid: number, viewInput: SerialPortHistoryInput): Promise<Blob>;
 
   public abstract getDefault(serialportid: number): Promise<SerialPortHistoryInput>;
+
+  public abstract readEeprom(serialportid: number): Promise<number[]>;
+
+  public abstract writeEeprom(serialportid: number, values: number[]): Promise<void>;
+
+  public abstract deleteEeprom(serialportid: number): Promise<void>;
+
+  public abstract convertToEeprom(values: number[]): Promise<Eeprom>;
+
+  public abstract convertFromEeprom(value: Eeprom): Promise<number[]>;
+
 }

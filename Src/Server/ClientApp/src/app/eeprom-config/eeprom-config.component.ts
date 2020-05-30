@@ -19,6 +19,8 @@ import { Component } from '@angular/core';
 @Component(
   {
     templateUrl: 'eeprom-config.component.html',
+    styleUrls: ['./eeprom-config.component.css'],
+
   })
 export class EepromConfigComponent {
 }

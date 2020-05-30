@@ -16,22 +16,16 @@
 
 import { Component, OnInit } from '@angular/core';
 import { LoadOptions, EHoleType, ELoadType, PenType, SmoothTypeEnum, ConvertTypeEnum, DitherFilter } from "../../models/load-options";
-import { FormGroup, FormArray, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CNCLibLoadOptionService } from '../../services/CNCLib-load-option.service';
-import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
-import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { Router, ActivatedRoute } from '@angular/router';
+import { MatDialog } from "@angular/material/dialog";
 
 import { saveAs } from 'file-saver';
 
 import { MessageBoxComponent } from "../../modal/message-box/message-box.component";
-import { MessageBoxData, MessageBoxResult } from "../../modal/message-box-data";
+import { MessageBoxResult } from "../../modal/message-box-data";
 import { gcodeURL } from '../../app.global';
-
-import Hpgl = ELoadType.Hpgl;
-import ZMove = PenType.ZMove;
-import ImageHole = ELoadType.ImageHole;
-import ImageHole1 = ELoadType.ImageHole;
-import InvertLineSequence = ConvertTypeEnum.InvertLineSequence;
 
 @Component(
   {

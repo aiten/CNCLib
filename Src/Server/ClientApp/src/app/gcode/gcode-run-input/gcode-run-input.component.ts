@@ -15,8 +15,8 @@
 */
 
 import { Component, OnInit, Input } from '@angular/core';
-import { LoadOptions, EHoleType, ELoadType, PenType, SmoothTypeEnum, ConvertTypeEnum, DitherFilter } from '../../models/load-options';
-import { FormGroup, FormArray, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { LoadOptions, ELoadType, PenType, SmoothTypeEnum } from '../../models/load-options';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { UserFile } from "../../models/userFile";
 import { CNCLibUserFileService } from '../../services/CNCLib-userFile.service';

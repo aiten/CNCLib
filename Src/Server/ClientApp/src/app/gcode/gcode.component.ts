@@ -19,6 +19,7 @@ import { Component } from '@angular/core';
 @Component(
   {
     templateUrl: 'gcode.component.html',
+    styleUrls: ['./gcode.component.css'],
   })
 export class GcodeComponent {
 }

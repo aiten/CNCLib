@@ -73,10 +73,10 @@ namespace CNCLib.Serial.Client
         private async Task<SerialPortDefinition> GetSerialPortDefinition(HttpClient client, string portName)
         {
             // first ge all ports
-            HttpResponseMessage responseAll = client.GetAsync($@"{_api}").GetAwaiter().GetResult();
+            var responseAll = await client.GetAsync($@"{_api}");
             if (responseAll.IsSuccessStatusCode)
             {
-                IEnumerable<SerialPortDefinition> allPorts = await responseAll.Content.ReadAsAsync<IEnumerable<SerialPortDefinition>>();
+                var allPorts = await responseAll.Content.ReadAsAsync<IEnumerable<SerialPortDefinition>>();
                 return allPorts.FirstOrDefault((p) => 0 == string.Compare(p.PortName, portName, StringComparison.OrdinalIgnoreCase));
             }
 
@@ -85,10 +85,10 @@ namespace CNCLib.Serial.Client
 
         private async Task<SerialPortDefinition> RefreshAndGetSerialPortDefinition(HttpClient client, string portName)
         {
-            HttpResponseMessage responseAll = client.PostAsJsonAsync($@"{_api}/refresh", "dummy").GetAwaiter().GetResult();
+            var responseAll = await client.PostAsJsonAsync($@"{_api}/refresh", "dummy");
             if (responseAll.IsSuccessStatusCode)
             {
-                IEnumerable<SerialPortDefinition> allPorts = await responseAll.Content.ReadAsAsync<IEnumerable<SerialPortDefinition>>();
+                var allPorts = await responseAll.Content.ReadAsAsync<IEnumerable<SerialPortDefinition>>();
                 return allPorts.FirstOrDefault((p) => 0 == string.Compare(p.PortName, portName, StringComparison.OrdinalIgnoreCase));
             }
 
@@ -108,16 +108,18 @@ namespace CNCLib.Serial.Client
                 {
                     serverName += '/';
                 }
+
                 WebServerUri = serverName;
                 UserName     = userName;
                 Password     = password;
+
                 using (var scope = CreateScope())
                 {
                     var port = await GetSerialPortDefinition(scope.Instance, portName) ?? await RefreshAndGetSerialPortDefinition(scope.Instance, portName);
 
                     if (port != null)
                     {
-                        HttpResponseMessage response = await scope.Instance.PostAsJsonAsync($@"{_api}/{port.Id}/connect?baudRate={BaudRate}&dtrIsReset={DtrIsReset}&resetOnConnect={ResetOnConnect}", "x");
+                        var response = await scope.Instance.PostAsJsonAsync($@"{_api}/{port.Id}/connect?baudRate={BaudRate}&dtrIsReset={DtrIsReset}&resetOnConnect={ResetOnConnect}", "x");
                         if (response.IsSuccessStatusCode)
                         {
                             var value = await response.Content.ReadAsAsync<SerialPortDefinition>();
@@ -140,7 +142,7 @@ namespace CNCLib.Serial.Client
             {
                 using (var scope = CreateScope())
                 {
-                    HttpResponseMessage response = await scope.Instance.PostAsJsonAsync($@"{_api}/{PortId}/disconnect", "x");
+                    var response = await scope.Instance.PostAsJsonAsync($@"{_api}/{PortId}/disconnect", "x");
                     if (response.IsSuccessStatusCode)
                     {
                         _serviceHub?.Stop();
@@ -161,7 +163,7 @@ namespace CNCLib.Serial.Client
             {
                 using (var scope = CreateScope())
                 {
-                    HttpResponseMessage response = scope.Instance.PostAsJsonAsync($@"{_api}/{PortId}/abort", "x").ConfigureAwait(false).GetAwaiter().GetResult();
+                    var response = scope.Instance.PostAsJsonAsync($@"{_api}/{PortId}/abort", "x").ConfigureAwait(false).GetAwaiter().GetResult();
                     if (response.IsSuccessStatusCode)
                     {
                         return;
@@ -178,7 +180,7 @@ namespace CNCLib.Serial.Client
             {
                 using (var scope = CreateScope())
                 {
-                    HttpResponseMessage response = scope.Instance.PostAsJsonAsync($@"{_api}/{PortId}/resume", "x").ConfigureAwait(false).GetAwaiter().GetResult();
+                    var response = scope.Instance.PostAsJsonAsync($@"{_api}/{PortId}/resume", "x").ConfigureAwait(false).GetAwaiter().GetResult();
                     if (response.IsSuccessStatusCode)
                     {
                         return;
@@ -195,8 +197,8 @@ namespace CNCLib.Serial.Client
             {
                 using (var scope = CreateScope())
                 {
-                    var                 cmds     = new SerialCommands() { Commands = lines.ToArray() };
-                    HttpResponseMessage response = scope.Instance.PostAsJsonAsync($@"{_api}/{PortId}/queue", cmds).Result;
+                    var cmds     = new SerialCommands() { Commands = lines.ToArray() };
+                    var response = scope.Instance.PostAsJsonAsync($@"{_api}/{PortId}/queue", cmds).Result;
                     if (response.IsSuccessStatusCode)
                     {
                         var value = await response.Content.ReadAsAsync<IEnumerable<SerialCommand>>();
@@ -215,8 +217,8 @@ namespace CNCLib.Serial.Client
                 using (var scope = CreateScope())
                 {
                     scope.Instance.Timeout = new TimeSpan(10000L * (((long)waitForMilliseconds) + 5000));
-                    var                 cmds     = new SerialCommands() { Commands = lines.ToArray(), TimeOut = waitForMilliseconds };
-                    HttpResponseMessage response = await scope.Instance.PostAsJsonAsync($@"{_api}/{PortId}/send", cmds);
+                    var cmds     = new SerialCommands() { Commands = lines.ToArray(), TimeOut = waitForMilliseconds };
+                    var response = await scope.Instance.PostAsJsonAsync($@"{_api}/{PortId}/send", cmds);
                     if (response.IsSuccessStatusCode)
                     {
                         var value = await response.Content.ReadAsAsync<IEnumerable<SerialCommand>>();
@@ -286,7 +288,7 @@ namespace CNCLib.Serial.Client
                 {
                     using (var scope = CreateScope())
                     {
-                        HttpResponseMessage response = scope.Instance.GetAsync($@"{_api}/{PortId}/history").ConfigureAwait(false).GetAwaiter().GetResult();
+                        var response = scope.Instance.GetAsync($@"{_api}/{PortId}/history").ConfigureAwait(false).GetAwaiter().GetResult();
                         if (response.IsSuccessStatusCode)
                         {
                             var value = response.Content.ReadAsAsync<List<SerialCommand>>().Result;
@@ -307,7 +309,7 @@ namespace CNCLib.Serial.Client
                 {
                     using (var scope = CreateScope())
                     {
-                        HttpResponseMessage response = scope.Instance.GetAsync($@"{_api}/{PortId}/pending").ConfigureAwait(false).GetAwaiter().GetResult();
+                        var response = scope.Instance.GetAsync($@"{_api}/{PortId}/pending").ConfigureAwait(false).GetAwaiter().GetResult();
                         if (response.IsSuccessStatusCode)
                         {
                             var value = response.Content.ReadAsAsync<List<SerialCommand>>().Result;
@@ -326,7 +328,7 @@ namespace CNCLib.Serial.Client
             {
                 using (var scope = CreateScope())
                 {
-                    HttpResponseMessage response = scope.Instance.PostAsJsonAsync($@"{_api}/{PortId}/history/clear", "x").ConfigureAwait(false).GetAwaiter().GetResult();
+                    var response = scope.Instance.PostAsJsonAsync($@"{_api}/{PortId}/history/clear", "x").ConfigureAwait(false).GetAwaiter().GetResult();
                     if (response.IsSuccessStatusCode)
                     {
                         return;

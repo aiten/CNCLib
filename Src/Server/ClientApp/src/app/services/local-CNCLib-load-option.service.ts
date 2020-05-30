@@ -16,7 +16,7 @@
 
 import { HttpClient } from '@angular/common/http';
 
-import { Injectable, Inject, Pipe } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { LoadOptions } from "../models/load-options";
 import { CNCLibLoadOptionService } from './CNCLib-load-option.service';
 

@@ -24,6 +24,7 @@ import { SerialPortDefinition } from '../models/serial.port.definition';
 import { CNCLibServerInfo } from '../models/CNCLib.Server.Info';
 import { QueueSendCommand } from '../models/queue.send.command';
 import { SerialPortHistoryInput } from "../serialporthistory/models/serialporthistory.input";
+import { Eeprom } from "../models/eeprom";
 
 @Injectable()
 export class LocalSerialServerService implements SerialServerService {
@@ -170,6 +171,36 @@ export class LocalSerialServerService implements SerialServerService {
       .toPromise()
       .catch(this.handleErrorPromise);
     return m;
+  }
+
+  readEeprom(serialportid: number): Promise<number[]> {
+    return this.http.post<number[]>(this.baseUrl + 'api/GCode/' + serialportid + '/eeprom', "x", { headers: this.getHeaders() })
+      .toPromise()
+      .catch(this.handleErrorPromise);
+  }
+
+  writeEeprom(serialportid: number, values: number[]): Promise<void> {
+    return this.http.put<void>(this.baseUrl + 'api/GCode/' + serialportid + '/eeprom', values, { headers: this.getHeaders() })
+      .toPromise()
+      .catch(this.handleErrorPromise);
+  }
+
+  deleteEeprom(serialportid: number): Promise<void> {
+    return this.http.delete<void>(this.baseUrl + 'api/GCode/' + serialportid + '/eeprom', { headers: this.getHeaders() })
+      .toPromise()
+      .catch(this.handleErrorPromise);
+  }
+
+  convertToEeprom(values: number[]): Promise<Eeprom> {
+    return this.http.post<Eeprom>(this.baseUrl + 'api/GCode/toEeprom', values, { headers: this.getHeaders() })
+      .toPromise()
+      .catch(this.handleErrorPromise);
+  }
+
+  convertFromEeprom(value: Eeprom): Promise<number[]> {
+    return this.http.post<number[]>(this.baseUrl + 'api/GCode/fromEeprom', value, { headers: this.getHeaders() })
+      .toPromise()
+      .catch(this.handleErrorPromise);
   }
 
   private handleErrorPromise(error: Response | any) {

@@ -17,7 +17,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Machine } from '../../models/machine';
 import { CNCLibMachineService } from '../../services/CNCLib-machine.service';
-import { CNCLibLoggedinService } from '../../services/CNCLib-loggedin.service';
 
 import { SerialServerConnection } from '../../serial-server/serial-server-connection';
 
@@ -36,7 +35,7 @@ export class MachineOverviewComponent implements OnInit {
   errorMessage: string = '';
   isLoading: boolean = true;
 
-  displayedColumns: string[] = ['Id', 'Description', 'SerialServer', 'ComPort', 'SizeX', 'SizeY', 'SizeZ', 'Detail', 'Connect'];
+  displayedColumns: string[] = [/* 'Id', */ 'Description', 'SerialServer', 'ComPort', 'SizeX', 'SizeY', 'SizeZ', 'Detail', 'Connect'];
 
   constructor(
     private router: Router,

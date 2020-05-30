@@ -179,7 +179,7 @@ namespace CNCLib.WpfClient.ViewModels
                     await _global.Com.Current.SendCommandAsync("?", 3000);
                     await Task.Delay(100);
 
-                    var eeprom = await _global.Com.Current.ReadEepromAsync();
+                    var eeprom = await _global.Com.Current.ReadEeprom();
                     if (eeprom != null)
                     {
                         Machine.Coolant   = eeprom.HasCoolant;

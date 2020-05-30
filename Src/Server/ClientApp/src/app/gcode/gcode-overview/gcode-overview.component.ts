@@ -19,11 +19,10 @@ import { LoadOptions } from "../../models/load-options";
 import { CNCLibLoadOptionService } from '../../services/CNCLib-load-option.service';
 
 import { Router } from '@angular/router';
-import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { MatDialog } from "@angular/material/dialog";
 import { gcodeURL } from '../../app.global';
 
 import { MessageBoxComponent } from "../../modal/message-box/message-box.component";
-import { MessageBoxData, MessageBoxResult } from "../../modal/message-box-data";
 
 
 @Component(

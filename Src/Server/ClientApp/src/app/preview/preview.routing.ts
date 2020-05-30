@@ -14,9 +14,7 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import { NgModule } from '@angular/core';
 import { PreviewComponent } from './preview.component';
-import { Routes, RouterModule } from '@angular/router';
 import { PreviewViewComponent } from './preview-view/preview-view.component';
 import { PreviewInputComponent } from './preview-input/preview-input.component';
 import { PreviewGCodeComponent } from './preview-gcode/preview-gcode.component';

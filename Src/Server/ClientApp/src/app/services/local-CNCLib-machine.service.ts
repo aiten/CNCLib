@@ -16,7 +16,7 @@
 
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
-import { Injectable, Inject, Pipe } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Machine } from '../models/machine';
 import { MachineCommand } from '../models/machine-command';
 import { MachineInitCommand } from '../models/machine-init-command';
@@ -97,7 +97,7 @@ export class LocalCNCLibMachineService implements CNCLibMachineService {
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
 
     const m = this.http
-      .get(`${this.baseUrl}api/machine/${id}/joystick?${params.toString()}`,{ headers, responseType: 'text' })
+      .get(`${this.baseUrl}api/machine/${id}/joystick?${params.toString()}`, { headers, responseType: 'text' })
       .toPromise()
       .catch(this.handleErrorPromise);
     return m;

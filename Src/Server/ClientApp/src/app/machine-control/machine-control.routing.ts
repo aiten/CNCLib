@@ -14,26 +14,26 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-import { NgModule } from '@angular/core';
-import { MachineControlMoveComponent } from './machine-control-move/machine-control-move.component';
-import { MachineControlWorkOffsetComponent } from './machine-control-workoffset/machine-control-workoffset.component';
-import { MachineControlOffsetComponent } from './machine-control-offset/machine-control-offset.component';
-import { MachineControlRotateComponent } from './machine-control-rotate/machine-control-rotate.component';
-import { MachineControlPositionComponent } from './machine-control-position/machine-control-position.component';
-import { MachineControlSdComponent } from './machine-control-sd/machine-control-sd.component';
-import { MachineControlRefMoveComponent } from './machine-control-refmove/machine-control-refmove.component';
-import { MachineControlLaserComponent } from './machine-control-laser/machine-control-laser.component';
-import { MachineControlSpindleComponent } from './machine-control-spindle/machine-control-spindle.component';
-import { MachineControlCoolantComponent } from './machine-control-coolant/machine-control-coolant.component';
-import { MachineControlCustomComponent } from './machine-control-custom/machine-control-custom.component';
-import { MachineControlCommandComponent } from './machine-control-command/machine-control-command.component';
-import { MachineControlInfoComponent } from './machine-control-info/machine-control-info.component';
-import { MachineControlJoystickComponent } from './machine-control-joystick/machine-control-joystick.component';
+import { MachineControlMainComponent } from "./machine-control-main/machine-control-main.component";
+import { MachineControlMoveComponent } from './machine-control-main/machine-control-move/machine-control-move.component';
+import { MachineControlWorkOffsetComponent } from './machine-control-main/machine-control-workoffset/machine-control-workoffset.component';
+import { MachineControlOffsetComponent } from './machine-control-main/machine-control-offset/machine-control-offset.component';
+import { MachineControlRotateComponent } from './machine-control-main/machine-control-rotate/machine-control-rotate.component';
+import { MachineControlPositionComponent } from './machine-control-main/machine-control-position/machine-control-position.component';
+import { MachineControlSdComponent } from './machine-control-main/machine-control-sd/machine-control-sd.component';
+import { MachineControlRefMoveComponent } from './machine-control-main/machine-control-refmove/machine-control-refmove.component';
+import { MachineControlLaserComponent } from './machine-control-main/machine-control-laser/machine-control-laser.component';
+import { MachineControlSpindleComponent } from './machine-control-main/machine-control-spindle/machine-control-spindle.component';
+import { MachineControlCoolantComponent } from './machine-control-main/machine-control-coolant/machine-control-coolant.component';
+import { MachineControlCustomComponent } from './machine-control-main/machine-control-custom/machine-control-custom.component';
+import { MachineControlCommandComponent } from './machine-control-main/machine-control-command/machine-control-command.component';
+import { MachineControlInfoComponent } from './machine-control-main/machine-control-info/machine-control-info.component';
+import { MachineControlJoystickComponent } from './machine-control-main/machine-control-joystick/machine-control-joystick.component';
 import { MachineControlComponent } from './machine-control.component';
-import { MachineControlState } from './machine-control-state';
-import { Routes, RouterModule } from '@angular/router';
-import { MachineControlGlobal } from './machine-control.global';
+
 import { CNCLibLoggedinService } from "../services/CNCLib-loggedin.service";
+
+import { EepromComponent } from "./machine-control-eeprom/eeprom.component";
 
 export const machinecontrolURL = '/machinecontrol';
 
@@ -45,6 +45,8 @@ export const machineControlRoutes =
     canActivate: [CNCLibLoggedinService],
     children:
     [
+      { path: '', component: MachineControlMainComponent },
+      { path: 'eeprom', component: EepromComponent },
     ]
   }
 ];
@@ -52,6 +54,7 @@ export const machineControlRoutes =
 export const machineControlComponents =
 [
   MachineControlComponent,
+  MachineControlMainComponent,
   MachineControlMoveComponent,
   MachineControlOffsetComponent,
   MachineControlWorkOffsetComponent,
@@ -65,5 +68,6 @@ export const machineControlComponents =
   MachineControlCustomComponent,
   MachineControlCommandComponent,
   MachineControlInfoComponent,
-  MachineControlJoystickComponent
+  MachineControlJoystickComponent,
+  EepromComponent
 ];

@@ -65,7 +65,7 @@ namespace CNCLib.WpfClient.ViewModels
         {
             if (MessageBox?.Invoke("Send 'Write EEprom commands' to machine?", "CNCLib", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
             {
-                if (await _global.Com.Current.WriteEepromAsync(EepromValue))
+                if (await _global.Com.Current.WriteEeprom(EepromValue))
                 {
                     MessageRestart();
                     CloseAction();
@@ -75,7 +75,7 @@ namespace CNCLib.WpfClient.ViewModels
 
         public async void ReadEeprom()
         {
-            var eeprom = await _global.Com.Current.ReadEepromAsync();
+            var eeprom = await _global.Com.Current.ReadEeprom();
             if (eeprom != null)
             {
                 _validReadEeprom = true;
@@ -83,7 +83,7 @@ namespace CNCLib.WpfClient.ViewModels
             }
             else
             {
-                EepromValue = Eeprom.Create(0, 0);
+                EepromValue = EepromExtensions.Create(0);
             }
         }
 
@@ -91,7 +91,7 @@ namespace CNCLib.WpfClient.ViewModels
         {
             if (MessageBox?.Invoke("Send 'Erase EEprom command' to machine?", "CNCLib", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
             {
-                if (await _global.Com.Current.EraseEepromAsync())
+                if (await _global.Com.Current.EraseEeprom())
                 {
                     MessageRestart();
                     CloseAction();

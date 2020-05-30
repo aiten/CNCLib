@@ -29,15 +29,15 @@ namespace CNCLib.GCode.Serial
 {
     public static class GCodeSerialEepromExtension
     {
-        public static async Task<uint[]> GetEpromValuesAsync(this ISerial serial, int waitForMilliseconds)
+        public static async Task<uint[]> GetEpromValues(this ISerial serial, int waitForMilliseconds)
         {
             var cmd = (await serial.SendCommandAsync("$?", waitForMilliseconds)).FirstOrDefault();
             if (cmd != null && string.IsNullOrEmpty(cmd.ResultText) == false)
             {
                 string[] separators = { "\n", "\r" };
-                string[] lines = cmd.ResultText.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-                var intValues = new Dictionary<int, uint>();
-                int maxSlot = -1;
+                string[] lines      = cmd.ResultText.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+                var      intValues  = new Dictionary<int, uint>();
+                int      maxSlot    = -1;
                 foreach (var line in lines)
                 {
                     // e.g. $1=65535(ffff)
@@ -46,9 +46,9 @@ namespace CNCLib.GCode.Serial
                     int slot;
                     if (assign.Length == 2 && assign[0].StartsWith("$") && int.TryParse(assign[0].TrimStart('$'), out slot))
                     {
-                        uint slotValue;
+                        uint   slotValue;
                         string valueStr = assign[1];
-                        int idx1 = valueStr.IndexOf('(');
+                        int    idx1     = valueStr.IndexOf('(');
                         if (idx1 > 0)
                         {
                             valueStr = valueStr.Substring(0, idx1);
@@ -83,42 +83,25 @@ namespace CNCLib.GCode.Serial
             return null;
         }
 
-        public static async Task WriteEepromValuesAsync(this ISerial serial, EepromV1 ee)
+        public static async Task WriteEepromValues(this ISerial serial, EepromV1 ee)
         {
             await serial.SendCommandAsync(@"$!", GCodeSerial.DefaultEpromTimeout);
             await serial.SendCommandsAsync(ee.ToGCode(), GCodeSerial.DefaultEpromTimeout);
         }
 
-        public static async Task EraseEepromValuesAsync(this ISerial serial)
+        public static async Task EraseEepromValues(this ISerial serial)
         {
-            await serial.SendCommandAsync(@"$!", GCodeSerial.DefaultEpromTimeout);
+            await serial.SendCommandAsync(@"$!",   GCodeSerial.DefaultEpromTimeout);
             await serial.SendCommandAsync(@"$0=0", GCodeSerial.DefaultEpromTimeout);
         }
 
-        public static async Task<Eeprom> ReadEepromAsync(this ISerial serial)
+        public static async Task<Eeprom> ReadEeprom(this ISerial serial)
         {
-            uint[] values = await serial.GetEpromValuesAsync(GCodeSerial.DefaultEpromTimeout);
-            if (values != null)
-            {
-                var ee = new EepromV1 { Values = values };
-
-                if (ee.IsValid)
-                {
-                    File.WriteAllLines(Environment.ExpandEnvironmentVariables(@"%TEMP%\EepromRead.nc"), ee.ToGCode());
-                    byte numAxis = ee[EepromV1.EValueOffsets8.NumAxis];
-
-                    var eeprom = Eeprom.Create(ee[EepromV1.EValueOffsets32.Signature], numAxis);
-                    eeprom.Values = values;
-                    eeprom.ReadFrom(ee);
-
-                    return eeprom;
-                }
-            }
-
-            return null;
+            uint[] values = await serial.GetEpromValues(GCodeSerial.DefaultEpromTimeout);
+            return EepromExtensions.ConvertEeprom(values);
         }
 
-        public static async Task<bool> WriteEepromAsync(this ISerial serial, Eeprom eepromValue)
+        public static async Task<bool> WriteEeprom(this ISerial serial, Eeprom eepromValue)
         {
             var ee = new EepromV1 { Values = eepromValue.Values };
 
@@ -128,17 +111,23 @@ namespace CNCLib.GCode.Serial
 
                 File.WriteAllLines(Environment.ExpandEnvironmentVariables(@"%TEMP%\EepromWrite.nc"), ee.ToGCode());
 
-                await serial.WriteEepromValuesAsync(ee);
+                await serial.WriteEepromValues(ee);
                 return true;
             }
 
             return false;
         }
 
-        public static async Task<bool> EraseEepromAsync(this ISerial serial)
+        public static async Task<bool> EraseEeprom(this ISerial serial)
         {
-            await serial.EraseEepromValuesAsync();
+            await serial.EraseEepromValues();
             return true;
         }
+
+        #region Convert
+
+ 
+
+        #endregion
     }
 }

@@ -1,0 +1,10 @@
+<div class="container-fluid">
+  <div class="row info-row">
+    <button mat-stroked-button class="info-button" (click)='machineControlState.postcommand("?")'>Info</button>
+    <button mat-stroked-button class="info-button" (click)='machineControlState.postcommand("&")'>Debug</button>
+    <button mat-stroked-button class="info-button" (click)='machineControlState.postcommand("@")'>Version</button>
+    <button mat-stroked-button class="info-button" (click)='machineControlState.postcommand("!")'>abort</button>
+    <button mat-stroked-button class="info-button" (click)='machineControlState.postcommand("!!!")'>resurrect</button>
+    <button mat-stroked-button class="info-button" (click)='showEeprom()'>Eeprom</button>
+  </div>
+</div>

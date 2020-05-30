@@ -14,13 +14,11 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import { NgModule } from '@angular/core';
 import { MachineEntryComponent } from './machine-entry/machine-entry.component';
 import { MachineOverviewComponent } from './machine-overview/machine-overview.component';
 import { MachineEntryLoadComponent } from './machine-entry-load/machine-entry-load.component';
 import { MachineFormComponent } from './machine-form/machine-form.component';
 import { MachineComponent } from './machine.component';
-import { Routes, RouterModule } from '@angular/router';
 
 import { CNCLibLoggedinService } from '../services/CNCLib-loggedin.service';
 

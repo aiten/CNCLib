@@ -16,7 +16,7 @@
 
 import { HttpClient } from '@angular/common/http';
 
-import { Injectable, Inject, Pipe } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Joystick } from '../models/joystick';
 import { CNCLibJoystickService } from './CNCLib-joystick.service';
 

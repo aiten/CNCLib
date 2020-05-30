@@ -1,0 +1,29 @@
+.mytoolbar {
+  height: 40px;
+}
+
+.loadbutton {
+  width: 200px;
+  padding: 0px;
+}
+
+.container {
+  width: 100px;
+}
+
+.input-col {
+  margin-left: 10px;
+  margin-bottom: 10px;
+  width: 280px;
+}
+
+.input-group {
+  width: 260px;
+  margin-top: 0px;
+  margin-bottom: 2px;
+}
+
+.input-group-addon {
+  width: 160px;
+  padding-top: 6px;
+}

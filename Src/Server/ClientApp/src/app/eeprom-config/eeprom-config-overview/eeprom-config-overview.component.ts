@@ -18,7 +18,6 @@ import { Component, OnInit } from '@angular/core';
 import { EepromConfig } from '../../models/eeprom-config';
 import { EepromConfigInput } from '../../models/eeprom-config-input';
 import { CNCLibEepromConfigService } from '../../services/CNCLib-eeprom-config.service';
-import { eepromConfigURL } from '../eeprom-config-routing';
 import { Router } from '@angular/router';
 
 @Component(

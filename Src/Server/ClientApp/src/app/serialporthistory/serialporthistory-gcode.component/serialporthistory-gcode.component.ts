@@ -23,7 +23,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { SerialServerConnection } from '../../serial-server/serial-server-connection';
-import { SerialPortHistoryInput } from "../models/serialporthistory.input";
 import { SerialPortHistoryPreviewGlobal } from "../models/serialporthistory.global";
 
 @Component({

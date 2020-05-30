@@ -20,7 +20,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CNCLib.Logic
 {
-    public static class LiveServicCollectionExtensions
+    public static class LiveServiceCollectionExtensions
     {
         public static IServiceCollection AddLogic(this IServiceCollection services)
         {

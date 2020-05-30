@@ -15,8 +15,6 @@
 */
 
 import { Machine } from '../models/machine';
-import { MachineCommand } from '../models/machine-command';
-import { MachineInitCommand } from '../models/machine-init-command';
 
 export abstract class CNCLibMachineService {
   public abstract getById(id: number): Promise<Machine>;

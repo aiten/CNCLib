@@ -14,18 +14,18 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import { Component, OnInit, Input, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 
 import { CNCLibGCodeService } from '../../services/CNCLib-gcode.service';
 import { PreviewGCode } from '../../models/gcode-view-input';
-import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { SerialServerConnection } from "../../serial-server/serial-server-connection";
 import { SerialServerService } from '../../services/serial-server.service';
 
 import { PreviewGlobal } from '../preview.global';
 
-import { interval, Observable } from 'rxjs';
+import { interval } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 
 @Component(
@@ -180,8 +180,7 @@ export class PreviewViewComponent implements OnInit, AfterViewInit {
     if (this.previewOpt.keepRatio) {
       if (this.scaleX < this.scaleY) {
         this.scaleX = this.scaleY;
-      }
-      else if (this.scaleX > this.scaleY) {
+      } else if (this.scaleX > this.scaleY) {
         this.scaleY = this.scaleX;
       }
       //console.log(`sX:${this.scaleX}:Y:${this.scaleY}`);

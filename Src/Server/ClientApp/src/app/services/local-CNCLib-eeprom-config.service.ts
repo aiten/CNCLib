@@ -14,10 +14,10 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import { Injectable, Inject, Pipe } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { EepromConfigInput } from '../models/eeprom-config-input';
 import { EepromConfig } from '../models/eeprom-config';
-import { HttpResponse, HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { CNCLibEepromConfigService } from './CNCLib-eeprom-config.service';
 
 @Injectable()
