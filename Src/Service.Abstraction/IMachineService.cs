@@ -31,6 +31,8 @@ namespace CNCLib.Service.Abstraction
 
         Task<string> TranslateJoystickMessage(int machineId, string joystickMessage);
 
-        string TranslateJoystickMessage(Machine machine, string joystickMessage);
+        Task<string> TranslateJoystickMessage(Machine machine, string joystickMessage);
+
+        Task<Machine> UpdateFromEeprom(Machine machine, uint[] eepromValues);
     }
 }

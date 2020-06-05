@@ -29,7 +29,7 @@ namespace CNCLib.GCode.Serial
 {
     public static class GCodeSerialEepromExtension
     {
-        public static async Task<uint[]> GetEpromValues(this ISerial serial, int waitForMilliseconds)
+        public static async Task<uint[]> GetEpromValues(this ISerial serial, int waitForMilliseconds = GCodeSerial.DefaultEpromTimeout)
         {
             var cmd = (await serial.SendCommandAsync("$?", waitForMilliseconds)).FirstOrDefault();
             if (cmd != null && string.IsNullOrEmpty(cmd.ResultText) == false)

@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using CNCLib.GCode.Machine;
 using CNCLib.Logic.Abstraction;
 using CNCLib.Logic.Abstraction.DTO;
 using CNCLib.Repository.Abstraction;
@@ -139,6 +140,8 @@ namespace CNCLib.Logic.Manager
 
         #endregion
 
+        #region joystick
+
         public async Task<string> TranslateJoystickMessage(int machineId, string joystickMessage)
         {
             var m = await Get(machineId);
@@ -196,5 +199,38 @@ namespace CNCLib.Logic.Manager
 
             return joystickMessage;
         }
+
+        #endregion
+
+        #region Eeprom
+
+        public Machine UpdateFromEeprom(Machine machine, uint[] eepromValues)
+        {
+            var eeprom = EepromExtensions.ConvertEeprom(eepromValues);
+
+            if (eeprom != null)
+            {
+                machine.Coolant   = eeprom.HasCoolant;
+                machine.Rotate    = eeprom.CanRotate;
+                machine.Spindle   = eeprom.HasSpindle;
+                machine.SDSupport = eeprom.HasSD;
+                machine.Rotate    = eeprom.CanRotate;
+                machine.Coolant   = eeprom.HasCoolant;
+                machine.Laser     = eeprom.IsLaser;
+                machine.Axis      = (int)eeprom.UseAxis;
+
+                machine.SizeX = eeprom.GetAxis(0).Size / 1000m;
+                machine.SizeY = eeprom.GetAxis(1).Size / 1000m;
+                machine.SizeZ = eeprom.GetAxis(2).Size / 1000m;
+                machine.SizeA = eeprom.GetAxis(3).Size / 1000m;
+
+                machine.WorkOffsets   = (int)eeprom.WorkOffsetCount;
+                machine.CommandSyntax = (CommandSyntax)eeprom.CommandSyntax;
+            }
+
+            return machine;
+        }
+
+        #endregion
     }
 }

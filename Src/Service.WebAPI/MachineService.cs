@@ -81,9 +81,36 @@ namespace CNCLib.Service.WebAPI
             }
         }
 
-        public string TranslateJoystickMessage(Machine machine, string joystickMessage)
+        public async Task<string> TranslateJoystickMessage(Machine machine, string joystickMessage)
         {
-            throw new System.NotImplementedException();
+            using (var scope = CreateScope())
+            {
+                var paramUri = new UriQueryBuilder();
+                paramUri.Add("joystickMessage", joystickMessage);
+                var response = await scope.Instance.GetAsync(
+                    CreatePathBuilder().AddPath(machine.MachineId).AddPath("joystick").AddQuery(paramUri).Build());
+
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsAsync<string>();
+            }
+        }
+
+        public async Task<Machine> UpdateFromEeprom(Machine machine, uint[] eepromValues)
+        {
+            using (var scope = CreateScope())
+            {
+                var paramUri = new UriQueryBuilder();
+                var response = await scope.Instance.PutAsJsonAsync(
+                    CreatePathBuilder()
+                        .AddPath("machine")
+                        .AddQuery(paramUri)
+                        .Build(),
+                    machine
+                );
+
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsAsync<Machine>();
+            }
         }
     }
 }

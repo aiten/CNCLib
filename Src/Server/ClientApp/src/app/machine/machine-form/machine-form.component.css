@@ -1,1 +1,40 @@
+.mytoolbar {
+  height: 40px;
+}
 
+.container {
+  width: 100px;
+}
+.input-col {
+  margin-left: 10px;
+  margin-bottom: 10px;
+  width: 280px;
+}
+
+.input-col-connect {
+  margin-left: 10px;
+  margin-bottom: 10px;
+  width: 500px;
+}
+
+.input-col-commands {
+  margin-left: 10px;
+  margin-bottom: 10px;
+  width: 700px;
+}
+
+.input-col-initcommands {
+  margin-left: 10px;
+  margin-bottom: 10px;
+  width: 400px;
+}
+
+.input-group {
+  margin-top: 0px;
+  margin-bottom: 2px;
+}
+
+.input-group-addon {
+  width: 160px;
+  padding-top: 6px;
+}

@@ -22,12 +22,13 @@ namespace CNCLib.GCode.Machine
 {
      public class Eeprom
     {
-        protected const string CATEGORY_INTERNAL = "Internal";
-        protected const string CATEGORY_SIZE     = "Size";
-        protected const string CATEGORY_FEATURES = "Features";
-        protected const string CATEGORY_PROBE    = "Probe";
-        protected const string CATEGORY_GENERAL  = "General";
-        protected const string CATEGORY_INFO     = "Info";
+        public const string CATEGORY_INTERNAL = "Internal";
+        public const string CATEGORY_SIZE     = "Size";
+        public const string CATEGORY_FEATURES = "Features";
+        public const string CATEGORY_PROBE    = "Probe";
+        public const string CATEGORY_GENERAL  = "General";
+        public const string CATEGORY_INFO     = "Info";
+        public const string CATEGORY_PLOTTER = "Plotter";
 
         protected const int EEPROM_NUM_AXIS = 6;
 
@@ -115,6 +116,11 @@ namespace CNCLib.GCode.Machine
         #endregion
 
         #region Info
+
+        [Category(CATEGORY_INFO)]
+        [DisplayName("Signature")]
+        [Description("Signature"), ReadOnly(true)]
+        public uint Signature { get; set; }
 
         [Category(CATEGORY_INFO)]
         [DisplayName("NumAxis")]
@@ -469,103 +475,87 @@ namespace CNCLib.GCode.Machine
 
         #endregion
 
-        #region overrides
+        #region Plotter
 
-        public virtual void ReadFrom(EepromV1 ee)
-        {
-            byte numAxis = ee[EepromV1.EValueOffsets8.NumAxis];
+        [Category(CATEGORY_PLOTTER)]
+        [DisplayName("PenDownFeedrate")]
+        [Description("Default drawing speed, in mm1000/min")]
+        public uint PenDownFeedrate { get; set; }
 
-            NumAxis = ee[EepromV1.EValueOffsets8.NumAxis];
-            UseAxis = ee[EepromV1.EValueOffsets8.UseAxis];
+        [Category(CATEGORY_PLOTTER)]
+        [DisplayName("PenUpFeedrate")]
+        [Description("Default traveling speed, in mm1000/min, reduced to maxsteprate")]
+        public uint PenUpFeedrate { get; set; }
 
-            Info1 = ee[EepromV1.EValueOffsets32.Info1];
-            Info2 = ee[EepromV1.EValueOffsets32.Info2];
+        [Category(CATEGORY_PLOTTER)]
+        [DisplayName("MovePenDownFeedrate")]
+        [Description("Z-axis speed to set pen, in mm1000/min, reduced to maxsteprate - if servo, delay in ms e.g. 200 for 0.2 sec")]
+        public uint MovePenDownFeedrate { get; set; }
 
-            for (int i = 0; i < numAxis; i++)
-            {
-                GetAxis(i).DWEESizeOf     = ee.DWSizeAxis;
-                GetAxis(i).Size           = ee[i, EepromV1.EAxisOffsets32.Size];
-                GetAxis(i).RefMove        = (EReverenceType)ee[i, EepromV1.EAxisOffsets8.EReverenceType];
-                GetAxis(i).RefHitValueMin = ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMin];
-                GetAxis(i).RefHitValueMax = ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMax];
+        [Category(CATEGORY_PLOTTER)]
+        [DisplayName("MovePenUpFeedrate")]
+        [Description("Z-axis speed to rise pen, in mm1000/min, reduced to maxsteprate - if servo, delay in ms e.g. 200 for 0.2 sec")]
+        public uint MovePenUpFeedrate { get; set; }
 
-                GetAxis(i).InitPosition = ee[i, EepromV1.EAxisOffsets32.InitPosition];
+        [Category(CATEGORY_PLOTTER)]
+        [DisplayName("MovePenChangeFeedrate")]
+        [Description("Z-axis speed while pen is changed, in mm1000/min, reduced to maxsteprate - if servo, delay in ms e.g. 200 for 0.2 sec")]
+        public uint MovePenChangeFeedrate { get; set; }
 
-                GetAxis(i).StepperDirection = (ee[EepromV1.EValueOffsets8.StepperDirection] & (1 << i)) != 0;
+        [Category(CATEGORY_PLOTTER)]
+        [DisplayName("PenDownPos")]
+        [Description("Z-axis position of pen down, in mm1000, adjusted to 0..zmax")]
+        public uint PenDownPos { get; set; }
 
-                this[i] = (EReverenceSequence)ee[i, EepromV1.EAxisOffsets8.EReverenceSequence];
+        [Category(CATEGORY_PLOTTER)]
+        [DisplayName("PenUpPos")]
+        [Description("Z-axis position of pen up, in mm1000, adjusted to 0..zmax")]
+        public uint PenUpPos { get; set; }
 
-                if (ee.DWSizeAxis > EepromV1.SIZEOFAXIS_EX)
-                {
-                    GetAxis(i).MaxStepRate     = ee[i, EepromV1.EAxisOffsets32.MaxStepRate];
-                    GetAxis(i).Acc             = ee[i, EepromV1.EAxisOffsets16.Acc];
-                    GetAxis(i).Dec             = ee[i, EepromV1.EAxisOffsets16.Dec];
-                    GetAxis(i).StepsPerMm1000  = BitConverter.ToSingle(BitConverter.GetBytes(ee[i, EepromV1.EAxisOffsets32.StepsPerMm1000]), 0);
-                    GetAxis(i).ProbeSize       = ee[i, EepromV1.EAxisOffsets32.ProbeSize];
-                    GetAxis(i).RefMoveStepRate = ee[i, EepromV1.EAxisOffsets32.RefMoveStepRate];
-                }
-            }
+        [Category(CATEGORY_PLOTTER)]
+        [DisplayName("PenChangePosX")]
+        [Description("X-axis position for pen change, in mm1000, adjusted to 0..xmax")]
+        public uint PenChangePos_x { get; set; }
 
-            MaxSpindleSpeed = ee[EepromV1.EValueOffsets16.MaxSpindleSpeed];
-            SpindleFadeTime = ee[EepromV1.EValueOffsets8.SpindleFadeTime];
+        [Category(CATEGORY_PLOTTER)]
+        [DisplayName("PenChangePosY")]
+        [Description("Y-axis position for pen change, in mm1000, adjusted to 0..ymax")]
+        public uint PenChangePos_y { get; set; }
 
-            RefMoveStepRate       = ee[EepromV1.EValueOffsets32.RefMoveStepRate];
-            MoveAwayFromReference = ee[EepromV1.EValueOffsets32.MoveAwayFromReference];
+        [Category(CATEGORY_PLOTTER)]
+        [DisplayName("PenChangePosZ")]
+        [Description("Z-axis position for pen change, in mm1000, adjusted to 0..zmax")]
+        public uint PenChangePos_z { get; set; }
 
-            MaxStepRate = ee[EepromV1.EValueOffsets32.MaxStepRate];
-            Acc         = ee[EepromV1.EValueOffsets16.Acc];
-            Dec         = ee[EepromV1.EValueOffsets16.Dec];
-            JerkSpeed   = ee[EepromV1.EValueOffsets16.JerkSpeed];
+        [Category(CATEGORY_PLOTTER)]
+        [DisplayName("PenChangePosX_Ofs")]
+        [Description("X-axis distance between pens in pen-stack, in mm1000")]
+        public uint PenChangePos_x_ofs { get; set; }
 
-            StepsPerMm1000 = BitConverter.ToSingle(BitConverter.GetBytes(ee[EepromV1.EValueOffsets32.StepsPerMm1000]), 0);
-        }
+        [Category(CATEGORY_PLOTTER)]
+        [DisplayName("PenChangePosY_Ofs")]
+        [Description("Y-axis distance between pens in pen-stack, in mm1000")]
+        public uint PenChangePos_y_ofs { get; set; }
 
-        public virtual void WriteTo(EepromV1 ee)
-        {
-            byte numAxis = ee[EepromV1.EValueOffsets8.NumAxis];
+        [Category(CATEGORY_PLOTTER)]
+        [DisplayName("ServoClampOpenPos")]
+        [Description("Clamp open servo pos, in micro seconds, values 1000..2000")]
+        public ushort ServoClampOpenPos { get; set; }
 
-            for (int i = 0; i < numAxis; i++)
-            {
-                ee[i, EepromV1.EAxisOffsets32.Size]                 = GetAxis(i).Size;
-                ee[i, EepromV1.EAxisOffsets8.EReverenceType]        = (byte)GetAxis(i).RefMove;
-                ee[i, EepromV1.EAxisOffsets8.EReverenceSequence]    = (byte)(EReverenceSequence)this[i];
-                ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMin] = GetAxis(i).RefHitValueMin;
-                ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMax] = GetAxis(i).RefHitValueMax;
+        [Category(CATEGORY_PLOTTER)]
+        [DisplayName("ServoClampClosePos")]
+        [Description("Clamp close servo pos, in micro seconds, values 1000..2000")]
+        public ushort ServoClampClosePos { get; set; }
 
-                int direction = ee[EepromV1.EValueOffsets8.StepperDirection] & (~(1 << i));
-                if (GetAxis(i).StepperDirection)
-                {
-                    direction += 1 << i;
-                }
+        [Category(CATEGORY_PLOTTER)]
+        [DisplayName("ServoClampOpenDelay")]
+        [Description("Delay to open clamp, in milli seconds, 1000 = 1sec)")]
+        public ushort ServoClampOpenDelay { get; set; }
 
-                ee[EepromV1.EValueOffsets8.StepperDirection] = (byte)direction;
-
-                ee[i, EepromV1.EAxisOffsets32.InitPosition] = GetAxis(i).InitPosition;
-
-                if (ee.DWSizeAxis > EepromV1.SIZEOFAXIS_EX)
-                {
-                    ee[i, EepromV1.EAxisOffsets32.MaxStepRate]     = GetAxis(i).MaxStepRate;
-                    ee[i, EepromV1.EAxisOffsets16.Acc]             = GetAxis(i).Acc;
-                    ee[i, EepromV1.EAxisOffsets16.Dec]             = GetAxis(i).Dec;
-                    ee[i, EepromV1.EAxisOffsets32.StepsPerMm1000]  = BitConverter.ToUInt32(BitConverter.GetBytes(GetAxis(i).StepsPerMm1000), 0);
-                    ee[i, EepromV1.EAxisOffsets32.ProbeSize]       = GetAxis(i).ProbeSize;
-                    ee[i, EepromV1.EAxisOffsets32.RefMoveStepRate] = GetAxis(i).RefMoveStepRate;
-                }
-            }
-
-            ee[EepromV1.EValueOffsets16.MaxSpindleSpeed] = MaxSpindleSpeed;
-            ee[EepromV1.EValueOffsets8.SpindleFadeTime]  = SpindleFadeTime;
-
-            ee[EepromV1.EValueOffsets32.RefMoveStepRate]       = RefMoveStepRate;
-            ee[EepromV1.EValueOffsets32.MoveAwayFromReference] = MoveAwayFromReference;
-
-            ee[EepromV1.EValueOffsets32.MaxStepRate] = MaxStepRate;
-            ee[EepromV1.EValueOffsets16.Acc]         = Acc;
-            ee[EepromV1.EValueOffsets16.Dec]         = Dec;
-            ee[EepromV1.EValueOffsets16.JerkSpeed]   = JerkSpeed;
-
-            ee[EepromV1.EValueOffsets32.StepsPerMm1000] = BitConverter.ToUInt32(BitConverter.GetBytes(StepsPerMm1000), 0);
-        }
+        [Category(CATEGORY_PLOTTER)]
+        [DisplayName("ServoClampCloseDelay")]
+        [Description("Delay to close clamp, in milli seconds, 1000 = 1sec)")]
+        public ushort ServoClampCloseDelay { get; set; }
 
         #endregion
     }

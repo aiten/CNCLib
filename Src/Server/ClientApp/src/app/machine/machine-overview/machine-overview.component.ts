@@ -45,7 +45,7 @@ export class MachineOverviewComponent implements OnInit {
   }
 
   detailMachine(id: number) {
-    this.router.navigate([machineURL, 'detail', String(id)]);
+    this.router.navigate([machineURL, String(id)]);
   }
 
   async connectToMachine(machine: Machine) {
@@ -62,7 +62,7 @@ export class MachineOverviewComponent implements OnInit {
 
     var newmachineDefault = await this.machineService.getDefault();
     var newmachine = await this.machineService.add(newmachineDefault);
-    this.router.navigate([machineURL, 'detail', String(newmachine.id)]);
+    this.router.navigate([machineURL, String(newmachine.id)]);
   }
 
   async ngOnInit() {

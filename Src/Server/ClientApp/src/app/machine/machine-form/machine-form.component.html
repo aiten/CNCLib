@@ -1,194 +1,245 @@
-<style type="text/css">
-  span { width: 200px; }
-</style>
-
 <head>
+  <style>
+    .right { float: right; }
+  </style>
 </head>
 
-<body>
+<form novalidate [formGroup]="machineForm" (ngSubmit)="saveMachine(machineForm.value)" id="ngForm">
 
-<h3 *ngIf="!machine.id">Neue Maschine anlegen</h3>
-<h3 *ngIf="machine.id">Maschine bearbeiten</h3>
-
-<form novalidate [formGroup]="machineForm" (ngSubmit)="saveMachine(machineForm.value)">
-
-  <div class="form-group input-group">
-    <span class="input-group-addon">Description</span>
-    <input matInput class="form-control" formControlName="description"/>
-  </div>
-  <div class="form-group input-group">
-    <span class="input-group-addon">ComPort</span>
-    <input class="form-control" formControlName="comPort"/>
-  </div>
-  <div class="form-group input-group">
-    <span class="input-group-addon">Serial Server</span>
-    <input class="form-control" formControlName="serialServer"/>
-  </div>
-  <div class="form-group input-group">
-    <span class="input-group-addon">Serial Server User</span>
-    <input class="form-control" formControlName="serialServerUser"/>
-  </div>
-  <div class="form-group input-group">
-    <span class="input-group-addon">Serial Server Password</span>
-    <input class="form-control" type='password' formControlName="serialServerPassword"/>
-  </div>
-  <div class="form-group input-group">
-    <span class="input-group-addon">Baud rate</span>
-    <input class="form-control" formControlName="baudRate"/>
-  </div>
-  <div class="form-group input-group">
-    <span class="input-group-addon">Axis</span>
-    <input class="form-control" formControlName="axis"/>
-  </div>
-  <div class="form-group input-group">
-    <span class="input-group-addon">Size-X</span>
-    <input class="form-control" formControlName="sizeX"/>
-  </div>
-  <div *ngIf="machine.axis > 1" class="form-group input-group">
-    <span class="input-group-addon">Size-Y</span>
-    <input class="form-control" formControlName="sizeY"/>
-  </div>
-  <div *ngIf="machine.axis > 2" class="form-group input-group">
-    <span class="input-group-addon">Size-Z</span>
-    <input class="form-control" formControlName="sizeZ"/>
-  </div>
-  <div *ngIf="machine.axis > 3" class="form-group input-group">
-    <span class="input-group-addon">Size-A</span>
-    <input class="form-control" formControlName="sizeA"/>
-  </div>
-  <div *ngIf="machine.axis > 4" class="form-group input-group">
-    <span class="input-group-addon">Size-B</span>
-    <input class="form-control" formControlName="sizeB"/>
-  </div>
-  <div *ngIf="machine.axis > 5" class="form-group input-group">
-    <span class="input-group-addon">Size-C</span>
-    <input class="form-control" formControlName="sizeC"/>
-  </div>
-
-  <div class="form-group input-group">
-    <span class="input-group-addon">Buffersize</span>
-    <input class="form-control" formControlName="bufferSize"/>
-  </div>
-
-  <div class="form-group input-group">
-    <span class="input-group-addon">Dtr is "Reset"</span>
-    <mat-checkbox class="form-control" formControlName="dtrIsReset"></mat-checkbox>
-  </div>
-
-  <div class="form-group input-group">
-    <span class="input-group-addon">Command to upper</span>
-    <mat-checkbox class="form-control" formControlName="commandToUpper"></mat-checkbox>
-  </div>
-
-  <div class="form-group input-group">
-    <span class="input-group-addon">Probesize X</span>
-    <input class="form-control" formControlName="probeSizeX"/>
-  </div>
-  <div class="form-group input-group">
-    <span class="input-group-addon">Probesize Y</span>
-    <input class="form-control" formControlName="probeSizeY"/>
-  </div>
-  <div class="form-group input-group">
-    <span class="input-group-addon">Probesize Z</span>
-    <input class="form-control" formControlName="probeSizeZ"/>
-  </div>
-
-  <div class="form-group input-group">
-    <span class="input-group-addon">ProbeDist-Up</span>
-    <input class="form-control" formControlName="probeDistUp"/>
-  </div>
-  <div class="form-group input-group">
-    <span class="input-group-addon">ProbeDist</span>
-    <input class="form-control" formControlName="probeDist"/>
-  </div>
-  <div class="form-group input-group">
-    <span class="input-group-addon">ProbeFeed</span>
-    <input class="form-control" formControlName="probeFeed"/>
-  </div>
-
-  <div class="form-group input-group">
-    <span class="input-group-addon">SDSupport</span>
-    <mat-checkbox class="form-control" formControlName="sdSupport"></mat-checkbox>
-  </div>
-  <div class="form-group input-group">
-    <span class="input-group-addon">Spindle</span>
-    <mat-checkbox class="form-control" formControlName="spindle"></mat-checkbox>
-  </div>
-  <div class="form-group input-group">
-    <span class="input-group-addon">Coolant</span>
-    <mat-checkbox class="form-control" formControlName="coolant"></mat-checkbox>
-  </div>
-  <div class="form-group input-group">
-    <span class="input-group-addon">Laser</span>
-    <mat-checkbox class="form-control" formControlName="laser"></mat-checkbox>
-  </div>
-  <div class="form-group input-group">
-    <span class="input-group-addon">Rotate</span>
-    <mat-checkbox class="form-control" formControlName="rotate"></mat-checkbox>
-  </div>
-  <div class="form-group input-group">
-    <span class="input-group-addon">WorkOffsets</span>
-    <input class="form-control" formControlName="workOffsets"/>
-  </div>
-  <div class="form-group input-group">
-    <span class="input-group-addon">Command syntax</span>
-    <select formControlName="commandSyntax" class="form-control">
-      <option [value]=0>GCodeBasic</option>
-      <option [value]=1>GCode</option>
-      <option [value]=2>Hpgl</option>
-    </select>
-  </div>
-
-  <h3>Commands</h3>
-  <div formArrayName="commands">
-    <div class="row">
-      <label class="col-2">Name</label>
-      <label class="col-4">Command</label>
-      <label class="col">X</label>
-      <label class="col">Y</label>
-      <label class="col-2">Joystick</label>
-      <label class="col"></label>
-    </div>
-    <div *ngFor="let command of commandsArray.controls; let i = index">
-      <div class="command-controls row" [formGroupName]="i">
-        <input class="form-control col-2" formControlName="commandName">
-        <input class="form-control col-4" formControlName="commandString">
-        <input class="form-control col" formControlName="posX">
-        <input class="form-control col" formControlName="posY">
-        <input class="form-control col-2" formControlName="joystickMessage">
-        <button class="btn btn-danger col-xm" (click)="removeCommand(i)">
-          delete
+  <div *ngIf="isLoaded" class="mytoolbar">
+    <div class="form-group input-group">
+      <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="xxx">Machine</mat-label>
+      <input matInput class="form-control" formControlName="description" />
+      <span class='right'>
+        <button *ngIf="isMore" mat-button class="menuHide-button" (click)='isMore = false'>
+          <fa-icon icon="chevron-right"></fa-icon>
         </button>
-      </div>
-    </div>
-  </div>
-  <div class="form-group row">
-    <button class="btn btn-success" (click)="addCommand()">Add command</button>
-  </div>
-
-  <h3>Init Commands</h3>
-  <div formArrayName="initCommands">
-    <div class="row">
-      <label class="col">SeqNo</label>
-      <label class="col-8">Command String</label>
-    </div>
-    <div *ngFor="let initcommand of initCommandsArray.controls; let i = index">
-      <div class="command-controls row" [formGroupName]="i">
-        <input class="form-control col" formControlName="seqNo">
-        <input class="form-control col-8" formControlName="commandString">
-        <button class="btn btn-danger col-xm" (click)="removeInitCommand(i)">
-          delete
+        <button *ngIf="!isMore" mat-button class="menuHide-button" (click)='isMore = true'>
+          <fa-icon icon="chevron-left"></fa-icon>
         </button>
-      </div>
+        <button *ngIf="isMore" mat-stroked-button (click)='readFromEeprom()'>Read from machine</button>
+        <button *ngIf="isMore" mat-stroked-button (click)='deleteMachine()' [disabled]="!machineForm.valid">Delete machine</button>
+        <button *ngIf="isMore" mat-stroked-button (click)='cloneMachine()' [disabled]="!machineForm.valid">Clone machine</button>
+        <button mat-stroked-button type="submit" form="ngForm" class="btn btn-default" [disabled]="!isLoaded || !machineForm.valid">Save machine</button>
+      </span>
     </div>
   </div>
-  <div class="form-group row">
-    <button class="btn btn-success" (click)="addInitCommand()">Add init command</button>
-  </div>
 
-  <button type="submit" class="btn btn-default" [disabled]="!machineForm.valid">
-    Save machine
-  </button>
+  <div class="container-fluid">
+
+    <div class="row">
+
+      <mat-card class="input-col-connect">
+
+        <mat-card-title>Connect to</mat-card-title>
+
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="e.g. https:\\localhost:5001">Serial Server</mat-label>
+          <input class="form-control" formControlName="serialServer"/>
+        </div>
+
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="e.g. 'com4' for windows, '/dev/ttyUSB1' for linux(rasperry pi)">Com Port</mat-label>
+          <input class="form-control" formControlName="comPort"/>
+        </div>
+
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Baudrate of machine, e.g. 250000 (windows), 115200 (raspberry pi)">Baud Rate</mat-label>
+          <input class="form-control" formControlName="baudRate"/>
+        </div>
+
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Serial server user name">Server User</mat-label>
+          <input class="form-control" formControlName="serialServerUser"/>
+        </div>
+
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Serial server user password">Server Password</mat-label>
+          <input class="form-control" type='password' formControlName="serialServerPassword"/>
+        </div>
+
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Machine Gcode command Buffersize, usual 63">Buffer Size</mat-label>
+          <input class="form-control" formControlName="bufferSize"/>
+        </div>
+
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Dtr is 'Reset', Uno,Mega,Due, not Zero">Dtr is "Reset"</mat-label>
+          <mat-checkbox class="form-control" formControlName="dtrIsReset"></mat-checkbox>
+        </div>
+
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Convert GCommand to upper, e.g. for 3D printer">Command to upper</mat-label>
+          <mat-checkbox class="form-control" formControlName="commandToUpper"></mat-checkbox>
+        </div>
+
+      </mat-card>
+
+      <mat-card class="input-col">
+
+        <mat-card-title>General</mat-card-title>
+
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="xxx">Axis</mat-label>
+          <input class="form-control" formControlName="axis"/>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="xxx">Size-X</mat-label>
+          <input class="form-control" formControlName="sizeX"/>
+        </div>
+        <div *ngIf="machine.axis > 1" class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="xxx">Size-Y</mat-label>
+          <input class="form-control" formControlName="sizeY"/>
+        </div>
+        <div *ngIf="machine.axis > 2" class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="xxx">Size-Z</mat-label>
+          <input class="form-control" formControlName="sizeZ"/>
+        </div>
+        <div *ngIf="machine.axis > 3" class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="xxx">Size-A</mat-label>
+          <input class="form-control" formControlName="sizeA"/>
+        </div>
+        <div *ngIf="machine.axis > 4" class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="xxx">Size-B</mat-label>
+          <input class="form-control" formControlName="sizeB"/>
+        </div>
+        <div *ngIf="machine.axis > 5" class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="xxx">Size-C</mat-label>
+          <input class="form-control" formControlName="sizeC"/>
+        </div>
+
+      </mat-card>
+
+      <mat-card class="input-col">
+
+        <mat-card-title>Probe</mat-card-title>
+
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="xxx">Probe Size X</mat-label>
+          <input class="form-control" formControlName="probeSizeX"/>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="xxx">Probe Size Y</mat-label>
+          <input class="form-control" formControlName="probeSizeY"/>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="xxx">Probe Size Z</mat-label>
+          <input class="form-control" formControlName="probeSizeZ"/>
+        </div>
+
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="xxx">Probe Dist: Up</mat-label>
+          <input class="form-control" formControlName="probeDistUp"/>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="xxx">Probe Dist</mat-label>
+          <input class="form-control" formControlName="probeDist"/>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="xxx">Probe Feed Rate</mat-label>
+          <input class="form-control" formControlName="probeFeed"/>
+        </div>
+
+      </mat-card>
+
+      <mat-card class="input-col">
+
+        <mat-card-title>Features</mat-card-title>
+
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="xxx">Command Syntax</mat-label>
+          <select formControlName="commandSyntax" class="form-control">
+            <option [value]=0>GCodeBasic</option>
+            <option [value]=1>GCode</option>
+            <option [value]=2>Hpgl</option>
+          </select>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Count of supported work offsets">Work Offsets</mat-label>
+          <input class="form-control" formControlName="workOffsets"/>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Machine has a SD card reader">SD-Support</mat-label>
+          <mat-checkbox class="form-control" formControlName="sdSupport"></mat-checkbox>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Machine has a spingle (GCode M3)">Spindle</mat-label>
+          <mat-checkbox class="form-control" formControlName="spindle"></mat-checkbox>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Machine with coolant">Coolant</mat-label>
+          <mat-checkbox class="form-control" formControlName="coolant"></mat-checkbox>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="This is a laser">Laser</mat-label>
+          <mat-checkbox class="form-control" formControlName="laser"></mat-checkbox>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Machine allows rotating the coordinat">Rotate</mat-label>
+          <mat-checkbox class="form-control" formControlName="rotate"></mat-checkbox>
+        </div>
+
+      </mat-card>
+
+    </div>
+    <div class="row">
+
+      <mat-card class="input-col-commands">
+
+        <mat-card-title>Commands</mat-card-title>
+
+        <div formArrayName="commands">
+          <div class="row">
+            <label class="col-3">Name</label>
+            <label class="col-4">Command</label>
+            <label class="col">X</label>
+            <label class="col">Y</label>
+            <label class="col-2">Joystick</label>
+            <label class="col"></label>
+          </div>
+          <div *ngFor="let command of commandsArray.controls; let i = index">
+            <div class="command-controls row" [formGroupName]="i">
+              <input class="form-control col-3" formControlName="commandName">
+              <input class="form-control col-4" formControlName="commandString">
+              <input class="form-control col" formControlName="posX">
+              <input class="form-control col" formControlName="posY">
+              <input class="form-control col-2" formControlName="joystickMessage">
+              <button class="btn btn-danger col-xm" (click)="removeCommand(i)">
+                delete
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <button class="btn btn-success" (click)="addCommand()">Add command</button>
+        </div>
+      </mat-card>
+
+      <mat-card class="input-col-initcommands">
+
+        <mat-card-title>Init Commands</mat-card-title>
+
+        <div formArrayName="initCommands">
+          <div class="row">
+            <label class="col">SeqNo</label>
+            <label class="col-8">Command String</label>
+          </div>
+          <div *ngFor="let initcommand of initCommandsArray.controls; let i = index">
+            <div class="command-controls row" [formGroupName]="i">
+              <input class="form-control col" formControlName="seqNo">
+              <input class="form-control col-8" formControlName="commandString">
+              <button class="btn btn-danger col-xm" (click)="removeInitCommand(i)">
+                delete
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <button class="btn btn-success" (click)="addInitCommand()">Add init command</button>
+        </div>
+
+      </mat-card>
+
+    </div>
+  </div>
 </form>
-
-</body>

@@ -14,6 +14,7 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -122,6 +123,13 @@ namespace CNCLib.WebAPI.Controllers
         public async Task<ActionResult<string>> TranslateJoystickMessage(int id, string joystickMessage)
         {
             return Ok(await _manager.TranslateJoystickMessage(id,joystickMessage));
+        }
+
+        [HttpPut("fromEeprom")]
+        public ActionResult<Machine> UpdateFromEeprom([FromBody] Tuple<Machine, uint[]> machine_eepromValues)
+        {
+            var ret = _manager.UpdateFromEeprom(machine_eepromValues.Item1, machine_eepromValues.Item2);
+            return Ok(ret);
         }
     }
 }

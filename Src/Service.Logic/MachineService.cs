@@ -53,9 +53,14 @@ namespace CNCLib.Service.Logic
             return await _manager.TranslateJoystickMessage(machineId, joystickMessage);
         }
 
-        public string TranslateJoystickMessage(Machine machine, string joystickMessage)
+        public async Task<string> TranslateJoystickMessage(Machine machine, string joystickMessage)
         {
-            return _manager.TranslateJoystickMessage(machine, joystickMessage);
+            return await Task.FromResult(_manager.TranslateJoystickMessage(machine, joystickMessage));
+        }
+
+        public async Task<Machine> UpdateFromEeprom(Machine machine, uint[] eepromValues)
+        {
+            return await Task.FromResult(_manager.UpdateFromEeprom(machine, eepromValues));
         }
     }
 }

@@ -29,5 +29,7 @@ namespace CNCLib.Logic.Abstraction
         Task<string> TranslateJoystickMessage(int machineId, string joystickMessage);
 
         string TranslateJoystickMessage(DTO.Machine machine, string joystickMessage);
+
+        DTO.Machine UpdateFromEeprom(DTO.Machine machine, uint[] eepromValues);
     }
 }

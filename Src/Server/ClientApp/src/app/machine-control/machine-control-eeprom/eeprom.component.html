@@ -26,13 +26,8 @@
       <button *ngIf="!isMore" mat-button class="menuHide-button" (click)='isMore = true'>
         <fa-icon icon="chevron-left"></fa-icon>
       </button>
-      <!--
-      <button *ngIf="isMore" mat-stroked-button (click)='exportgCode()' [disabled]="!gCodeForm.valid">Export</button>
-      <button *ngIf="isMore" mat-stroked-button (click)='deletegCode()' [disabled]="!gCodeForm.valid">Delete</button>
-      <button *ngIf="isMore" mat-stroked-button (click)='clonegCode()' [disabled]="!gCodeForm.valid">Clone</button>
-      -->
       <button *ngIf="isMore" mat-stroked-button (click)='eraseEeprom()'>Erase Eeprom</button>
-      <button mat-stroked-button type="submit" form="ngForm" class="btn btn-default" [disabled]="!isEepromLoaded || !eepromForm.valid">Write to machine</button>
+      <button *ngIf="isMore" mat-stroked-button type="submit" form="ngForm" class="btn btn-default" [disabled]="!isEepromLoaded || !eepromForm.valid">Write to machine</button>
       <button mat-stroked-button class="loadbutton" (click)='loadEeprom()'>Read Eeprom from machine</button>
     </span>
 
@@ -192,6 +187,113 @@
           </div>
         </div>
       </mat-card>
+
+      <mat-card *ngIf="isPlotter()" class="input-col">
+
+        <mat-card-title>Plotter</mat-card-title>
+
+        <!--
+  penDownFeedrate: number;
+  penUpFeedrate: number;
+  movePenDownFeedrate: number;
+  movePenUpFeedrate: number;
+  movePenChangeFeedrate: number;
+  penDownPos: number;
+  penUpPos: number;
+  penChangePos_x: number;
+  penChangePos_y: number;
+  penChangePos_z: number;
+  penChangePos_x_ofs: number;
+  penChangePos_y_ofs: number;
+  servoClampOpenPos: number;
+  servoClampClosePos: number;
+  servoClampOpenDelay: number;
+  servoClampCloseDelay: number;
+  -->
+
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Default drawing speed, in mm1000/min">Pen Down Feedrate</mat-label>
+          <input matInput class="form-control" formControlName="penDownFeedrate" />
+          <div *ngIf="f.penDownFeedrate && f.penDownFeedrate.invalid" class="alert alert-danger">Error</div>
+        </div>
+
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Default traveling speed, in mm1000/min, reduced to maxsteprate">Pen Up Feedrate</mat-label>
+          <input matInput class="form-control" formControlName="penUpFeedrate" />
+          <div *ngIf="f.penUpFeedrate && f.penUpFeedrate.invalid" class="alert alert-danger">Error</div>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Z-axis speed to set pen, in mm1000/min, reduced to maxsteprate - if servo, delay in ms e.g. 200 for 0.2 sec">Move PenDown Feedrate</mat-label>
+          <input matInput class="form-control" formControlName="movePenDownFeedrate" />
+          <div *ngIf="f.movePenDownFeedrate && f.movePenDownFeedrate.invalid" class="alert alert-danger">Error</div>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Z-axis speed to rise pen, in mm1000/min, reduced to maxsteprate - if servo, delay in ms e.g. 200 for 0.2 sec">Move PenUp Feedrate</mat-label>
+          <input matInput class="form-control" formControlName="movePenUpFeedrate" />
+          <div *ngIf="f.movePenUpFeedrate && f.movePenUpFeedrate.invalid" class="alert alert-danger">Error</div>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Z-axis speed while pen is changed, in mm1000/min, reduced to maxsteprate - if servo, delay in ms e.g. 200 for 0.2 sec">Move PenChange Feedrate</mat-label>
+          <input matInput class="form-control" formControlName="movePenChangeFeedrate" />
+          <div *ngIf="f.movePenChangeFeedrate && f.movePenChangeFeedrate.invalid" class="alert alert-danger">Error</div>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Z-axis position of pen down, in mm1000, adjusted to 0..zmax">PenDown Pos</mat-label>
+          <input matInput class="form-control" formControlName="penDownPos" />
+          <div *ngIf="f.penDownPos && f.penDownPos.invalid" class="alert alert-danger">Error</div>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Z-axis position of pen up, in mm1000, adjusted to 0..zmax">PenUp Pos</mat-label>
+          <input matInput class="form-control" formControlName="penUpPos" />
+          <div *ngIf="f.penUpPos && f.penUpPos.invalid" class="alert alert-danger">Error</div>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="X-axis position for pen change, in mm1000, adjusted to 0..xmax">PenChange Pos X</mat-label>
+          <input matInput class="form-control" formControlName="penChangePos_x" />
+          <div *ngIf="f.penChangePos_x && f.penChangePos_x.invalid" class="alert alert-danger">Error</div>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Y-axis position for pen change, in mm1000, adjusted to 0..ymax">PenChange Pos Y</mat-label>
+          <input matInput class="form-control" formControlName="penChangePos_y" />
+          <div *ngIf="f.penChangePos_y && f.penChangePos_y.invalid" class="alert alert-danger">Error</div>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Z-axis position for pen change, in mm1000, adjusted to 0..zmax">PenChange Pos Z</mat-label>
+          <input matInput class="form-control" formControlName="penChangePos_z" />
+          <div *ngIf="f.penChangePos_z && f.penChangePos_z.invalid" class="alert alert-danger">Error</div>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="X-axis distance between pens in pen-stack, in mm1000">PenChange Pos X-Ofs</mat-label>
+          <input matInput class="form-control" formControlName="penChangePos_x_ofs" />
+          <div *ngIf="f.penChangePos_x_ofs && f.penChangePos_x_ofs.invalid" class="alert alert-danger">Error</div>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Y-axis distance between pens in pen-stack, in mm1000">PenChange Pos Y-Ofs</mat-label>
+          <input matInput class="form-control" formControlName="penChangePos_y_ofs" />
+          <div *ngIf="f.penChangePos_y_ofs && f.penChangePos_y_ofs.invalid" class="alert alert-danger">Error</div>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Clamp open servo pos, in micro seconds, values 1000..2000">Clamp Open Pos</mat-label>
+          <input matInput class="form-control" formControlName="servoClampOpenPos" />
+          <div *ngIf="f.servoClampOpenPos && f.servoClampOpenPos.invalid" class="alert alert-danger">Error</div>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Clamp close servo pos, in micro seconds, values 1000..2000">Clamp Close Pos</mat-label>
+          <input matInput class="form-control" formControlName="servoClampClosePos" />
+          <div *ngIf="f.servoClampClosePos && f.servoClampClosePos.invalid" class="alert alert-danger">Error</div>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Delay to open clamp, in milli seconds, 1000 = 1sec)">Clamp Open Delay</mat-label>
+          <input matInput class="form-control" formControlName="servoClampOpenDelay" />
+          <div *ngIf="f.servoClampOpenDelay && f.servoClampOpenDelay.invalid" class="alert alert-danger">Error</div>
+        </div>
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Delay to close clamp, in milli seconds, 1000 = 1sec)">Clamp Close Delay</mat-label>
+          <input matInput class="form-control" formControlName="servoClampCloseDelay" />
+          <div *ngIf="f.servoClampCloseDelay && f.servoClampCloseDelay.invalid" class="alert alert-danger">Error</div>
+        </div>
+
+        </mat-card>
 
       <mat-card *ngFor="let item of [].constructor(eeprom.numAxis); let i = index" class="input-col" formArrayName="axis">
 

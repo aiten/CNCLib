@@ -100,6 +100,11 @@ namespace CNCLib.WpfClient.ViewModels
                 dto = await scope.Instance.Get(machineId);
             }
 
+            SetCurrentMachine(dto);
+        }
+
+        private void SetCurrentMachine(MachineDto dto)
+        {
             Machine = dto.Convert(_mapper);
 
             RaisePropertyChanged(nameof(Machine));
@@ -179,29 +184,15 @@ namespace CNCLib.WpfClient.ViewModels
                     await _global.Com.Current.SendCommandAsync("?", 3000);
                     await Task.Delay(100);
 
-                    var eeprom = await _global.Com.Current.ReadEeprom();
-                    if (eeprom != null)
+                    var eepromvalues = await _global.Com.Current.GetEpromValues();
+
+                    if (eepromvalues != null)
                     {
-                        Machine.Coolant   = eeprom.HasCoolant;
-                        Machine.Rotate    = eeprom.CanRotate;
-                        Machine.Spindle   = eeprom.HasSpindle;
-                        Machine.SDSupport = eeprom.HasSD;
-                        Machine.Rotate    = eeprom.CanRotate;
-                        Machine.Coolant   = eeprom.HasCoolant;
-                        Machine.Laser     = eeprom.IsLaser;
-                        Machine.Axis      = (int)eeprom.UseAxis;
-
-                        Machine.SizeX = eeprom.GetAxis(0).Size / 1000m;
-                        Machine.SizeY = eeprom.GetAxis(1).Size / 1000m;
-                        Machine.SizeZ = eeprom.GetAxis(2).Size / 1000m;
-                        Machine.SizeA = eeprom.GetAxis(3).Size / 1000m;
-
-                        Machine.WorkOffsets   = (int)eeprom.WorkOffsetCount;
-                        Machine.CommandSyntax = (CommandSyntax) eeprom.CommandSyntax;
-
-                        var orig = Machine;
-                        Machine = null;
-                        Machine = orig;
+                        using (var scope = _machineService.Create())
+                        {
+                            var machineDto = Machine.Convert(_mapper);
+                            SetCurrentMachine(await scope.Instance.UpdateFromEeprom(machineDto, eepromvalues));
+                        }
                     }
                 }
                 catch (Exception e)

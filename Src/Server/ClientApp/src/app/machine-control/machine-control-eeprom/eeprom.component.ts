@@ -23,7 +23,7 @@ import { JoystickServerConnection } from '../../serial-server/joystick-server-co
 
 import { MachineControlGlobal } from '../machine-control.global';
 import { MachineControlState } from '../machine-control-state';
-import { Eeprom, ECommandSyntax, EReverenceSequence } from "../../models/eeprom";
+import { Eeprom, ECommandSyntax, EReverenceSequence, ESignature } from "../../models/eeprom";
 
 import { MessageBoxComponent } from "../../modal/message-box/message-box.component";
 import { MessageBoxResult } from "../../modal/message-box-data";
@@ -72,8 +72,8 @@ export class EepromComponent implements OnInit, OnDestroy {
     this.eepromForm = fb.group(
       {
         maxStepRate: [0, [Validators.required, Validators.min(1), Validators.max(99999999)]],
-        acc: [0, [Validators.required, Validators.min(62), Validators.max(65535)]],
-        dec: [0, [Validators.required, Validators.min(62), Validators.max(65535)]],
+        acc: [0, [Validators.required, Validators.min(62), Validators.max(1024)]],
+        dec: [0, [Validators.required, Validators.min(62), Validators.max(1024)]],
         jerkSpeed: [0, [Validators.required, Validators.min(1), Validators.max(65535)]],
         refMoveStepRate: [0, [Validators.required, Validators.min(0), Validators.max(99999999)]],
         moveAwayFromReference: [0, [Validators.required, Validators.min(0), Validators.max(99999999)]],
@@ -106,6 +106,23 @@ export class EepromComponent implements OnInit, OnDestroy {
         needEEpromFlush: [false, [Validators.required]],
         workOffsetCount: [0, [Validators.required]],
 
+        penDownFeedrate: [0, [Validators.required]],
+        penUpFeedrate: [0, [Validators.required]],
+        movePenDownFeedrate: [0, [Validators.required]],
+        movePenUpFeedrate: [0, [Validators.required]],
+        movePenChangeFeedrate: [0, [Validators.required]],
+        penDownPos: [0, [Validators.required]],
+        penUpPos: [0, [Validators.required]],
+        penChangePos_x: [0, [Validators.required]],
+        penChangePos_y: [0, [Validators.required]],
+        penChangePos_z: [0, [Validators.required]],
+        penChangePos_x_ofs: [0, [Validators.required]],
+        penChangePos_y_ofs: [0, [Validators.required]],
+        servoClampOpenPos: [0, [Validators.required]],
+        servoClampClosePos: [0, [Validators.required]],
+        servoClampOpenDelay: [0, [Validators.required]],
+        servoClampCloseDelay: [0, [Validators.required]],
+
         axis: fb.array([
           this.createAxisControl(),
           this.createAxisControl(),
@@ -135,6 +152,7 @@ export class EepromComponent implements OnInit, OnDestroy {
   compareWithEnum(lt1, lt2) {
     return lt1 == lt2;
   }
+
   get f() { return this.eepromForm.controls; }
 
   ff(axis: number) {
@@ -149,8 +167,8 @@ export class EepromComponent implements OnInit, OnDestroy {
       refHitValueMin: new FormControl(0, [Validators.required]),
       refHitValueMax: new FormControl(0, [Validators.required]),
       maxStepRate: new FormControl(0, [Validators.required]),
-      acc: new FormControl(0, [Validators.required, Validators.min(0), Validators.max(65535)]),
-      dec: new FormControl(0, [Validators.required, Validators.min(0), Validators.max(65535)]),
+      acc: new FormControl(0, [Validators.required, Validators.min(0), Validators.max(1024)]),
+      dec: new FormControl(0, [Validators.required, Validators.min(0), Validators.max(1024)]),
       stepsPerMm1000: new FormControl(0, [Validators.required]),
       refMoveStepRate: new FormControl(0, [Validators.required]),
       initPosition: new FormControl(0, [Validators.required]),
@@ -169,6 +187,10 @@ export class EepromComponent implements OnInit, OnDestroy {
 
   isConnected() {
     return this.machineControlState.isConnected;
+  }
+
+  isPlotter() {
+    return this.isEepromLoaded && this.eeprom.signature == ESignature.SIGNATUREPLOTTER;
   }
 
   async loadEeprom() {

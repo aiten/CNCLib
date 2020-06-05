@@ -21,6 +21,10 @@ import { CNCLibMachineService } from '../../services/CNCLib-machine.service';
 import { machineURL } from '../../app.global';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { MatDialog } from "@angular/material/dialog";
+
+import { MessageBoxComponent } from "../../modal/message-box/message-box.component";
+import { MessageBoxResult } from "../../modal/message-box-data";
 
 
 @Component({
@@ -33,6 +37,7 @@ export class MachineFormComponent implements OnInit {
   errorMessage: string = '';
   isLoading: boolean = true;
   isLoaded: boolean = false;
+  isMore = false;
 
   machineForm: FormGroup;
   commandsArray: FormArray;
@@ -42,6 +47,7 @@ export class MachineFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private machineService: CNCLibMachineService,
+    private dialog: MatDialog,
     private fb: FormBuilder
   ) {
     this.machine = new Machine();
@@ -176,7 +182,41 @@ export class MachineFormComponent implements OnInit {
   async saveMachine(value: any): Promise<void> {
     Object.assign(this.machine, value);
     await this.machineService.update(this.machine);
-    this.router.navigate([machineURL, 'detail', this.machine.id]);
+    this.router.navigate([machineURL, this.machine.id]);
+  }
+
+  async deleteMachine() {
+
+    this.isLoaded = false;
+    const dialogRef = this.dialog.open(MessageBoxComponent,
+      {
+        width: '250px',
+        data: { title: "Warning", message: "Delete machine", haveYes: true, haveCancel: true }
+      });
+
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result.result == MessageBoxResult.Yes) {
+        await this.machineService.deleteById(this.machine.id);
+        this.router.navigate([machineURL]);
+      } else {
+        this.isLoaded = true;
+      }
+    });
+  }
+
+  async cloneMachine() {
+    this.isLoaded = false;
+    this.machine.description = this.machine.description + "(clone)";
+    this.machine.id = 0;
+    this.machine.commands.forEach(function (value) {
+      value.id = 0;
+    })
+    this.machine.initCommands.forEach(function (value) {
+      value.id = 0;
+    })
+    let newentry = await this.machineService.add(this.machine);
+    await this.router.navigate([machineURL]);
+    await this.router.navigate([machineURL, String(newentry.id)]);
   }
 
   userExistsValidator = (control) => {

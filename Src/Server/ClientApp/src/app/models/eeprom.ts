@@ -16,6 +16,11 @@
 
 import { SAxis } from "./eeprom-axis";
 
+export enum ESignature {
+  SIGNATURE = 0x21436502,
+  SIGNATUREPLOTTER = 0x21438702
+}
+
 export enum ECommandSyntax {
   GCodeBasic = 0,
   GCode = 1,
@@ -39,6 +44,8 @@ export enum EReverenceSequence {
 export class Eeprom {
 
   values: number[];
+
+  signature: number;
 
   maxStepRate: number;
   acc: number;
@@ -87,4 +94,21 @@ export class Eeprom {
   refSequence4: EReverenceSequence;
   refSequence5: EReverenceSequence;
   refSequence6: EReverenceSequence;
+
+  penDownFeedrate: number;
+  penUpFeedrate: number;
+  movePenDownFeedrate: number;
+  movePenUpFeedrate: number;
+  movePenChangeFeedrate: number;
+  penDownPos: number;
+  penUpPos: number;
+  penChangePos_x: number;
+  penChangePos_y: number;
+  penChangePos_z: number;
+  penChangePos_x_ofs: number;
+  penChangePos_y_ofs: number;
+  servoClampOpenPos: number;
+  servoClampClosePos: number;
+  servoClampOpenDelay: number;
+  servoClampCloseDelay: number;
 }
