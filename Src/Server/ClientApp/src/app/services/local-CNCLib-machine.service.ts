@@ -91,6 +91,17 @@ export class LocalCNCLibMachineService implements CNCLibMachineService {
 */
   }
 
+  fromEeprom(machine: Machine, eepromValues: number[]): Promise<Machine> {
+
+    let el: { item1: Machine, item2: number[] } = { item1: fromMachine(machine), item2: eepromValues };
+    const m = this.http
+      .put(`${this.baseUrl}api/machine/fromEeprom`, el)
+      .toPromise()
+      .then((response) => toMachine(response))
+      .catch(this.handleErrorPromise);
+    return m;
+  }
+
   joystickMessage(id: number, message: string): Promise<string> {
     let params = new HttpParams();
     params = params.set('joystickMessage', message);

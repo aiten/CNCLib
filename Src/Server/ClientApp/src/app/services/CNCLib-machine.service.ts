@@ -31,4 +31,6 @@ export abstract class CNCLibMachineService {
 
   public abstract joystickMessage(id: number, message: string): Promise<string>;
 
+  public abstract fromEeprom(machine: Machine, eepromValues: number[]): Promise<Machine>;
+
 }

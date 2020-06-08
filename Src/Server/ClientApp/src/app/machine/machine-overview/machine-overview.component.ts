@@ -54,6 +54,15 @@ export class MachineOverviewComponent implements OnInit {
     this.router.navigate([machineControlURL]);
   }
 
+  async disconnectFromMachine(machine: Machine) {
+
+    await this.serialServer.disconnectFrom();
+  }
+
+  isConnected(machine: Machine): boolean {
+    return this.serialServer.isConnected(machine);
+  }
+
   canConnectTo(machine: Machine): boolean {
     return machine.serialServer.length > 0;
   }

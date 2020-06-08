@@ -25,6 +25,7 @@ import { MatDialog } from "@angular/material/dialog";
 
 import { MessageBoxComponent } from "../../modal/message-box/message-box.component";
 import { MessageBoxResult } from "../../modal/message-box-data";
+import { SerialServerConnection } from "../../serial-server/serial-server-connection";
 
 
 @Component({
@@ -47,6 +48,7 @@ export class MachineFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private machineService: CNCLibMachineService,
+    private serialServer: SerialServerConnection,
     private dialog: MatDialog,
     private fb: FormBuilder
   ) {
@@ -217,6 +219,25 @@ export class MachineFormComponent implements OnInit {
     let newentry = await this.machineService.add(this.machine);
     await this.router.navigate([machineURL]);
     await this.router.navigate([machineURL, String(newentry.id)]);
+  }
+
+  async readFromEeprom() {
+
+    const dialogRef = this.dialog.open(MessageBoxComponent,
+      {
+        width: '250px',
+        data: { title: "Warning", message: "Read configuration from machine eeprom?", haveYes: true, haveCancel: true }
+      });
+
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result.result == MessageBoxResult.Yes) {
+        await this.serialServer.connectAndRead(this.machine);
+        var eeprom = await this.serialServer.getSerialServerService().readEeprom(this.serialServer.getSerialServerPortId());
+        var m = await this.machineService.fromEeprom(this.machine, eeprom);
+        console.log(m);
+        this.loadMachine(m);
+      }
+    });
   }
 
   userExistsValidator = (control) => {

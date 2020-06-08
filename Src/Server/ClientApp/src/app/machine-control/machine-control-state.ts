@@ -107,6 +107,8 @@ export class MachineControlState {
 
       this.serialport = await this.serialServerService.getPort(id);
       this.isConnected = this.serialport.isConnected !== 0;
+    } else {
+      this.isConnected = false;
     }
   }
 

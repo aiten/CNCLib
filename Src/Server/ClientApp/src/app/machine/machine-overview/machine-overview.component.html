@@ -47,7 +47,8 @@
   <ng-container matColumnDef="Connect">
     <th mat-header-cell *matHeaderCellDef> Connect </th>
     <td mat-cell *matCellDef="let element">
-      <button mat-stroked-button *ngIf="canConnectTo(element)" (click)='connectToMachine(element)'>Connect</button>
+      <button mat-stroked-button *ngIf="!isConnected(element) && canConnectTo(element)" (click)='connectToMachine(element)'>Connect</button>
+      <button mat-stroked-button *ngIf="isConnected(element)" (click)='disconnectFromMachine(element)'>Disconnect</button>
     </td>
   </ng-container>
 

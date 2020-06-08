@@ -43,7 +43,7 @@ namespace CNCLib.GCode.Generate
             return Commands;
         }
 
-        private readonly string webServerUri = @"https://cnclibwebapi.azurewebsites.net";
+        private readonly string webServerUri = @"https://cnclib.azurewebsites.net";
         private readonly string api          = @"api/GCode";
 
         #region private

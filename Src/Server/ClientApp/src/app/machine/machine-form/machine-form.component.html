@@ -18,9 +18,9 @@
           <fa-icon icon="chevron-left"></fa-icon>
         </button>
         <button *ngIf="isMore" mat-stroked-button (click)='readFromEeprom()'>Read from machine</button>
-        <button *ngIf="isMore" mat-stroked-button (click)='deleteMachine()' [disabled]="!machineForm.valid">Delete machine</button>
-        <button *ngIf="isMore" mat-stroked-button (click)='cloneMachine()' [disabled]="!machineForm.valid">Clone machine</button>
-        <button mat-stroked-button type="submit" form="ngForm" class="btn btn-default" [disabled]="!isLoaded || !machineForm.valid">Save machine</button>
+        <button *ngIf="isMore" mat-stroked-button (click)='deleteMachine()' [disabled]="!machineForm.valid">Delete</button>
+        <button *ngIf="isMore" mat-stroked-button (click)='cloneMachine()' [disabled]="!machineForm.valid">Clone</button>
+        <button mat-stroked-button type="submit" form="ngForm" class="btn btn-default" [disabled]="!isLoaded || !machineForm.valid">Save</button>
       </span>
     </div>
   </div>

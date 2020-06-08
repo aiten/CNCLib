@@ -67,7 +67,7 @@ namespace CNCLib.WpfClient.WebAPI.Start
                 .AddSerialCommunication()
                 .AddServiceAsWebAPI(httpClient =>
                 {
-                    HttpClientHelper.PrepareHttpClient(httpClient, @"https://cnclibwebapi.azurewebsites.net");
+                    HttpClientHelper.PrepareHttpClient(httpClient, @"https://cnclib.azurewebsites.net");
                     httpClient.DefaultRequestHeaders.Authorization =
                         new AuthenticationHeaderValue(
                             "Basic", Base64Helper.StringToBase64($"{userContextRW.UserName}:{userContextRW.Password}"));

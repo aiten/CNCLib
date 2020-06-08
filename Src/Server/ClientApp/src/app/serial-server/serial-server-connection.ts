@@ -60,10 +60,41 @@ export class SerialServerConnection {
     return this.serialServerAuth;
   }
 
+  isConnected(machine: Machine) {
+    if (this.machine != undefined && this.machine.id == machine.id) {
+      return true;
+    }
+    return false;
+  }
+
+  disconnectFrom() {
+    this.machine = undefined;
+  }
+
+  getSerialServerService(): SerialServerService {
+    return this.serialServerService;
+  }
+
+  async connectAndRead(machine: Machine): Promise<string> {
+
+    var url = await this.getInfoX(machine.serialServer,
+      machine.serialServerUser,
+      machine.serialServerPassword,
+      machine.comPort,
+      machine.baudRate,
+      machine.dtrIsReset);
+
+    return url;
+  }
+
   async connectTo(machine: Machine): Promise<string> {
 
-    var url =
-      await this.getInfoX(machine.serialServer, machine.serialServerUser, machine.serialServerPassword, machine.comPort, machine.baudRate, machine.dtrIsReset);
+    var url = await this.getInfoX(machine.serialServer,
+      machine.serialServerUser,
+      machine.serialServerPassword,
+      machine.comPort,
+      machine.baudRate,
+      machine.dtrIsReset);
 
     this.machine = machine;
 
