@@ -26,7 +26,7 @@ namespace CNCLib.Serial.Client
 {
     public class MyServiceBase : ServiceBase
     {
-        protected string WebServerUri { get; set; } = @"http://localhost:5000";
+        protected string WebServerUri { get; set; } = @"http://localhost:5000/";
         protected string UserName     { get; set; }
         protected string Password     { get; set; }
 
