@@ -11,3 +11,9 @@
 .mat-column-Detail { width: 90px; }
 
 .mat-column-Run { width: 90px; }
+
+.fileinput {
+  opacity: 0;
+  width: 1px;
+  display: none;
+}

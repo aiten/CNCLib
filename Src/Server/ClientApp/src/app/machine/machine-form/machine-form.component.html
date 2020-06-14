@@ -9,7 +9,7 @@
   <div *ngIf="isLoaded" class="mytoolbar">
     <div class="form-group input-group">
       <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="xxx">Machine</mat-label>
-      <input matInput class="form-control" formControlName="description" />
+      <input matInput class="form-control" formControlName="description"/>
       <span class='right'>
         <button *ngIf="isMore" mat-button class="menuHide-button" (click)='isMore = false'>
           <fa-icon icon="chevron-right"></fa-icon>
@@ -17,7 +17,8 @@
         <button *ngIf="!isMore" mat-button class="menuHide-button" (click)='isMore = true'>
           <fa-icon icon="chevron-left"></fa-icon>
         </button>
-        <button *ngIf="isMore" mat-stroked-button (click)='readFromEeprom()'>Read from machine</button>
+        <button *ngIf="isMore" mat-stroked-button (click)='readFromEeprom()' [disabled]="!machineForm.valid">Read from machine</button>
+        <button *ngIf="isMore" mat-stroked-button (click)='exportMachine()' [disabled]="!machineForm.valid">Export</button>
         <button *ngIf="isMore" mat-stroked-button (click)='deleteMachine()' [disabled]="!machineForm.valid">Delete</button>
         <button *ngIf="isMore" mat-stroked-button (click)='cloneMachine()' [disabled]="!machineForm.valid">Clone</button>
         <button mat-stroked-button type="submit" form="ngForm" class="btn btn-default" [disabled]="!isLoaded || !machineForm.valid">Save</button>
@@ -151,7 +152,8 @@
           <select formControlName="commandSyntax" class="form-control">
             <option [value]=0>GCodeBasic</option>
             <option [value]=1>GCode</option>
-            <option [value]=2>Hpgl</option>
+            <option [value]=2>Grbl</option>
+            <option [value]=7>Hpgl</option>
           </select>
         </div>
         <div class="form-group input-group">

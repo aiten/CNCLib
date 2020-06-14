@@ -23,6 +23,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { MatDialog } from "@angular/material/dialog";
 
+import { saveAs } from 'file-saver';
+
 import { MessageBoxComponent } from "../../modal/message-box/message-box.component";
 import { MessageBoxResult } from "../../modal/message-box-data";
 import { SerialServerConnection } from "../../serial-server/serial-server-connection";
@@ -187,6 +189,15 @@ export class MachineFormComponent implements OnInit {
     this.router.navigate([machineURL, this.machine.id]);
   }
 
+  async exportMachine() {
+
+    const data = JSON.stringify(this.machine);
+    const blob = new Blob([data], { type: 'application/octet-stream' });
+    const file = new File([blob], this.machine.description + '_machine.json', { type: 'application/octet-stream' });
+
+    saveAs(file);
+  }
+
   async deleteMachine() {
 
     this.isLoaded = false;
@@ -210,12 +221,12 @@ export class MachineFormComponent implements OnInit {
     this.isLoaded = false;
     this.machine.description = this.machine.description + "(clone)";
     this.machine.id = 0;
-    this.machine.commands.forEach(function (value) {
+    this.machine.commands.forEach(function(value) {
       value.id = 0;
-    })
-    this.machine.initCommands.forEach(function (value) {
+    });
+    this.machine.initCommands.forEach(function(value) {
       value.id = 0;
-    })
+    });
     let newentry = await this.machineService.add(this.machine);
     await this.router.navigate([machineURL]);
     await this.router.navigate([machineURL, String(newentry.id)]);

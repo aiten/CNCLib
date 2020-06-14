@@ -57,38 +57,7 @@
 
 </table>
 
-<button mat-stroked-button (click)='newMachine()'>new</button>
+<button mat-stroked-button (click)='newMachine()'>New</button>
+<input class="fileinput" #fileUpload id="fileUpload" name="fileUpload" (change)="uploadMachine($event)" type="file" accept=".json">
+<button mat-stroked-button (click)='importMachine()'>Import</button>
 
-<!--
-<h1>CNC machine (ID=1)</h1>
-
-<machine-entry [entry]="xentry"></machine-entry>
-
-<table>
-  <tr>
-    <th>Description</th>
-    <th>comPort</th>
-    <th>BaudRate</th>
-    <th>Axis</th>
-    <th>Size-X</th>
-    <th>Size-Y</th>
-    <th>Size-Z</th>
-    <th>Edit</th>
-  </tr>
-  <tr>
-
-    <td>{{ xentry.description }}</td>
-    <td>{{ xentry.comPort }} </td>
-    <td>{{ xentry.baudRate }} </td>
-    <td>{{ xentry.axis }} </td>
-    <td>{{ xentry.sizeX }} </td>
-    <td>{{ xentry.sizeY }} </td>
-    <td>{{ xentry.sizeZ }} </td>
-    <td><button (click)='editMachine()'>Edit</button></td>
-  </tr>
-</table>
-
-<h1>my CNC machines</h1>
-
-<machine-entry *ngFor="let entry of entries" [entry]="entry"></machine-entry>
--->

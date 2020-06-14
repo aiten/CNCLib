@@ -14,7 +14,7 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Machine } from '../../models/machine';
 import { CNCLibMachineService } from '../../services/CNCLib-machine.service';
 
@@ -36,6 +36,9 @@ export class MachineOverviewComponent implements OnInit {
   isLoading: boolean = true;
 
   displayedColumns: string[] = [/* 'Id', */ 'Description', 'SerialServer', 'ComPort', 'SizeX', 'SizeY', 'SizeZ', 'Detail', 'Connect'];
+
+  @ViewChild("fileUpload", { static: false })
+  fileUpload: ElementRef;
 
   constructor(
     private router: Router,
@@ -72,6 +75,40 @@ export class MachineOverviewComponent implements OnInit {
     var newmachineDefault = await this.machineService.getDefault();
     var newmachine = await this.machineService.add(newmachineDefault);
     this.router.navigate([machineURL, String(newmachine.id)]);
+  }
+
+  async importMachine() {
+    this.fileUpload.nativeElement.click();
+  }
+
+  uploadMachine(event) {
+    let files = event.target.files;
+    if (files.length > 0) {
+      console.log("Load");
+      const selectedFile = event.target.files[0];
+      const fileReader = new FileReader();
+      fileReader.readAsText(selectedFile, "UTF-8");
+      fileReader.onload = async () => {
+        const content = JSON.parse(fileReader.result as string);
+        console.log(content);
+        let formattedDt = new Date().toLocaleString();
+        content.description = content.description + `(import:${formattedDt})`;
+        content.id = 0;
+        content.commands.forEach(function(value) {
+          value.id = 0;
+        });
+        content.initCommands.forEach(function(value) {
+          value.id = 0;
+        });
+
+        let newentry = await this.machineService.add(content);
+        await this.router.navigate([machineURL]);
+        await this.router.navigate([machineURL, String(newentry.id)]);
+      }
+      fileReader.onerror = (error) => {
+        console.log(error);
+      }
+    }
   }
 
   async ngOnInit() {
