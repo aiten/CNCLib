@@ -28,5 +28,13 @@ namespace CNCLib.Service.Abstraction
         Task<User> GetByName(string username);
 
         Task<bool> IsValidUser(string username, string password);
+
+        Task<string> Register(string username, string password);
+
+        Task Leave();
+
+        Task InitData();
+
+        Task Cleanup();
     }
 }

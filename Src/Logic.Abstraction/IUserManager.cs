@@ -25,5 +25,13 @@ namespace CNCLib.Logic.Abstraction
         Task<DTO.User> GetByName(string username);
 
         Task<string> CreatePasswordHash(string password);
+
+        Task<string> Register(string username, string password);
+
+        Task Leave();
+
+        Task InitData();
+        
+        Task Cleanup();
     }
 }

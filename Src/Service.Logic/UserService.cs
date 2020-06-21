@@ -43,5 +43,25 @@ namespace CNCLib.Service.Logic
             var claimsPrincipal = await _manager.Authenticate(username, password);
             return claimsPrincipal != null;
         }
+
+        public async Task<string> Register(string username, string password)
+        {
+            var id = await _manager.Register(username, password);
+            return id;
+        }
+        public async Task Leave()
+        {
+            await _manager.Leave();
+        }
+
+        public async Task InitData()
+        {
+            await _manager.InitData();
+        }
+
+        public async Task Cleanup()
+        {
+            await _manager.Cleanup();
+        }
     }
 }

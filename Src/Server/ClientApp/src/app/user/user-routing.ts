@@ -14,8 +14,32 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-export const machineURL = '/machine';
-export const machineControlURL = '/machinecontrol';
-export const gcodeURL = '/gcode';
-export const previewURL = '/preview';
-export const homeURL = '/home';
+//import { UserFormComponent } from './user-form/user-form.component';
+import { UserComponent } from './User.component';
+
+import { CNCLibLoggedinService } from '../services/CNCLib-loggedin.service';
+import { LoginComponent } from "./login/login.component";
+import { RegisterComponent } from "./register/register.component";
+import { UserAdminComponent } from "./user-admin/user-admin.component";
+
+export const userRoutes =
+[
+  {
+    path: 'user',
+    component: UserComponent,
+    canActivate: [CNCLibLoggedinService],
+    children:
+    [
+//      { path: '', component: MachineOverviewComponent },
+//      { path: ':id', component: MachineFormComponent },
+    ]
+  }
+];
+
+export const userComponents =
+[
+    UserComponent,
+    LoginComponent,
+    RegisterComponent,
+    UserAdminComponent
+];

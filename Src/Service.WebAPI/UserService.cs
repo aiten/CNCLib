@@ -57,5 +57,56 @@ namespace CNCLib.Service.WebAPI
                 return response.IsSuccessStatusCode;
             }
         }
+
+        public async Task<string> Register(string username, string password)
+        {
+            using (var scope = CreateScope())
+            {
+                var builder = CreatePathBuilder()
+                    .AddPath("register")
+                    .AddQuery(new UriQueryBuilder()
+                        .Add("username", username)
+                        .Add("password", password));
+
+                var response = await scope.Instance.PutAsync(builder.Build(), null);
+                response.EnsureSuccessStatusCode();
+                return "1";
+            }
+        }
+        public async Task Leave()
+        {
+            using (var scope = CreateScope())
+            {
+                var builder = CreatePathBuilder()
+                    .AddPath("leave");
+
+                var response = await scope.Instance.DeleteAsync(builder.Build());
+                response.EnsureSuccessStatusCode();
+            }
+        }
+
+        public async Task InitData()
+        {
+            using (var scope = CreateScope())
+            {
+                var builder = CreatePathBuilder()
+                    .AddPath("init");
+
+                var response = await scope.Instance.PutAsync(builder.Build(),null);
+                response.EnsureSuccessStatusCode();
+            }
+        }
+
+        public async Task Cleanup()
+        {
+            using (var scope = CreateScope())
+            {
+                var builder = CreatePathBuilder()
+                    .AddPath("cleanup");
+
+                var response = await scope.Instance.DeleteAsync(builder.Build());
+                response.EnsureSuccessStatusCode();
+            }
+        }
     }
 }

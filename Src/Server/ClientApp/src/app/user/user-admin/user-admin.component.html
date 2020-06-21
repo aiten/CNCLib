@@ -1,0 +1,25 @@
+<div *ngIf="!cncLibloggedinService.isUserLoggedIn()">
+  <div *ngIf="isInRegister">
+    <register></register>
+  </div>
+  <div *ngIf="!isInRegister">
+    <login></login>
+    <div>
+      <p>
+        If you have no login please register <span>
+          <button mat-stroked-button (click)="isInRegister=true">here</button>
+        </span>
+      </p>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="cncLibloggedinService.isUserLoggedIn()">
+  <p>Login in as : {{cncLibloggedinService.username()}}</p>
+  <button mat-stroked-button (click)="cncLibloggedinService.logout()">Logout</button>
+
+  <button mat-stroked-button (click)="initialize()">Initialize</button>
+  <button mat-stroked-button (click)="cleanup()">Cleanup</button>
+  <button mat-stroked-button (click)="leave()">Leave</button>
+
+</div>

@@ -1,13 +1,14 @@
 -nouseregional
 -UniCode
 
-#exporttablecsv %tmp%\Configuration.csv=select * from configuration;
-#exporttablecsv %tmp%\Item.csv=select * from Item;
-#exporttablecsv %tmp%\ItemProperty.csv=select * from ItemProperty;
-#exporttablecsv %tmp%\Log.csv=select * from Log;
+#exporttablecsv %thisfiledir%\Configuration.csv=select * from configuration;
+#exporttablecsv %thisfiledir%\Item.csv=select * from Item;
+#exporttablecsv %thisfiledir%\ItemProperty.csv=select * from ItemProperty;
+#exporttablecsv %thisfiledir%\Log.csv=select * from Log where 1=0;
 
-#exporttablecsv %tmp%\Machine.csv=select * from Machine;
-#exporttablecsv %tmp%\MachineCommand.csv=select * from MachineCommand;
-#exporttablecsv %tmp%\MachineInitCommand.csv=select * from MachineInitCommand;
+#exporttablecsv %thisfiledir%\Machine.csv=select * from Machine;
+#exporttablecsv %thisfiledir%\MachineCommand.csv=select * from MachineCommand;
+#exporttablecsv %thisfiledir%\MachineInitCommand.csv=select * from MachineInitCommand;
 
-#exporttablecsv %tmp%\User.csv=select * from [User];
+#exporttablecsv %thisfiledir%\User.csv=select * from [User];
+--#exporttablecsv %thisfiledir%\UserFile.csv=select * from [UserFile];

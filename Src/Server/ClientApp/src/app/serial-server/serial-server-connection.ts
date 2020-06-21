@@ -96,6 +96,7 @@ export class SerialServerConnection {
       machine.baudRate,
       machine.dtrIsReset);
 
+    console.log(machine);
     this.machine = machine;
 
     this.machineControlGlobal.setFromMachine(machine);

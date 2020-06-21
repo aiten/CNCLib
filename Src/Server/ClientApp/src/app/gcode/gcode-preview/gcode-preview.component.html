@@ -4,7 +4,7 @@
     <div class="row">
       <div *ngIf="isShowParam">
         <ha-gcode-preview-input [previewOpt]="previewOpt"> </ha-gcode-preview-input>
-        <button mat-stroked-button class="btn btn-default" (click)='refreshImage()'>Refresh</button>
+        <button mat-stroked-button (click)='refreshImage()'>Refresh</button>
       </div>
       <div class="col">
         <img [src]="imageBlobUrl"/>

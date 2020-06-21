@@ -22,58 +22,28 @@ import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ColorPickerModule } from 'ngx-color-picker';
 
+import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { faHome, faSync, faPlug, faCalculator, faToolbox, faCogs, faEllipsisV, faArrowDown, faChevronDown, faChevronUp, faChevronLeft, faChevronRight, faDrawPolygon } from '@fortawesome/free-solid-svg-icons';
+
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { MaterialModule } from './material.module';
-import { LoginComponent } from "./login/login.component"
 
 import { MessageBoxComponent } from './modal/message-box/message-box.component';
-
-import { CNCLibInfoService } from './services/CNCLib-Info.service';
-import { LocalCNCLibInfoService } from './services/local-CNCLib-Info.service';
-
-import { CNCLibEepromConfigService } from './services/CNCLib-eeprom-config.service';
-import { LocalCNCLibEepromConfigService } from './services/local-CNCLib-eeprom-config.service';
-
-import { CNCLibMachineService } from './services/CNCLib-machine.service';
-import { LocalCNCLibMachineService } from './services/local-CNCLib-machine.service';
-
-import { CNCLibJoystickService } from './services/CNCLib-joystick.service';
-import { LocalCNCLibJoystickService } from './services/local-CNCLib-joystick.service';
-
-import { CNCLibLoadOptionService } from './services/CNCLib-load-option.service';
-import { LocalCNCLibLoadOptionService } from './services/local-CNCLib-load-option.service';
-
-import { CNCLibLoggedinService } from './services/CNCLib-loggedin.service';
-import { LocalCNCLibLoggedinService } from './services/local-CNCLib-loggedin.service';
-
-import { CNCLibGCodeService } from './services/CNCLib-gcode.service';
-import { LocalCNCLibGCodeService } from './services/local-CNCLib-gcode.service';
-
-import { CNCLibUserFileService } from './services/CNCLib-userFile.service';
-import { LocalCNCLibUserFileService } from './services/local-CNCLib-userFile.service';
 
 import { serialPortHistoryRoutes, serialPortHistoryComponents } from './serialporthistory/serialporthistory.routing';
 import { machineControlRoutes, machineControlComponents } from './machine-control/machine-control.routing';
 
-import { SerialServerService } from './services/serial-server.service';
-import { LocalSerialServerService } from './services/local-serial-server.service';
-
-import { JoystickServerService } from './services/joystick-server.service';
-import { LocalJoystickServerService } from './services/local-joystick-server.service';
-
 import { eepromConfigRoutes, eepromConfigComponents } from './eeprom-config/eeprom-config-routing';
 import { machineRoutes, machineComponents } from './machine/machine-routing';
-
+import { userRoutes, userComponents } from './user/user-routing';
 import { gcodeRoutes, gcodeComponents } from './gcode/gcode-routing';
 import { previewRoutes, previewComponents } from './preview/preview.routing';
+import { servicesProvides, servicesComponents } from "./services/services-routing";
 
 import { BasicAuthInterceptor, ErrorInterceptor } from './_helpers';
 import { MouseWheelDirective } from './_helpers/mousewheel.directive';
-
-import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { faHome, faSync, faPlug, faCalculator, faToolbox, faCogs, faEllipsisV, faArrowDown, faChevronDown, faChevronUp, faChevronLeft, faChevronRight, faDrawPolygon } from '@fortawesome/free-solid-svg-icons';
 
 import { SerialServerConnection } from './serial-server/serial-server-connection';
 import { JoystickServerConnection } from './serial-server/joystick-server-connection';
@@ -87,15 +57,16 @@ import { SerialPortHistoryPreviewGlobal } from "./serialporthistory/models/seria
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    LoginComponent,
     MessageBoxComponent,
     MouseWheelDirective,
+    ...userComponents,
     ...machineComponents,
     ...machineControlComponents,
     ...previewComponents,
     ...gcodeComponents,
     ...eepromConfigComponents,
     ...serialPortHistoryComponents,
+    ...servicesComponents
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -111,6 +82,7 @@ import { SerialPortHistoryPreviewGlobal } from "./serialporthistory/models/seria
         { path: 'home', component: HomeComponent },
         ...eepromConfigRoutes,
         ...machineRoutes,
+        ...userRoutes,
         ...machineControlRoutes,
         ...gcodeRoutes,
         ...previewRoutes,
@@ -123,16 +95,7 @@ import { SerialPortHistoryPreviewGlobal } from "./serialporthistory/models/seria
       })
   ],
   providers: [
-    { provide: SerialServerService, useClass: LocalSerialServerService },
-    { provide: JoystickServerService, useClass: LocalJoystickServerService },
-    { provide: CNCLibInfoService, useClass: LocalCNCLibInfoService },
-    { provide: CNCLibEepromConfigService, useClass: LocalCNCLibEepromConfigService },
-    { provide: CNCLibMachineService, useClass: LocalCNCLibMachineService },
-    { provide: CNCLibJoystickService, useClass: LocalCNCLibJoystickService },
-    { provide: CNCLibLoadOptionService, useClass: LocalCNCLibLoadOptionService },
-    { provide: CNCLibLoggedinService, useClass: LocalCNCLibLoggedinService },
-    { provide: CNCLibGCodeService, useClass: LocalCNCLibGCodeService },
-    { provide: CNCLibUserFileService, useClass: LocalCNCLibUserFileService },
+    ...servicesProvides,
     { provide: MachineControlState },
     { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

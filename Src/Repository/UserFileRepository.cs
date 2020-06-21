@@ -54,22 +54,28 @@ namespace CNCLib.Repository
 
         public async Task<IList<UserFile>> GetByUser(int userId)
         {
-            return await AddOptionalWhere(Query).Where(m => m.UserId == userId).ToListAsync();
+            return await QueryWithInclude.Where(m => m.UserId == userId).ToListAsync();
+        }
+
+        public async Task DeleteByUser(int userId)
+        {
+            var userFiles = await TrackingQueryWithInclude.Where(m => m.UserId == userId).ToListAsync();
+            DeleteEntities(userFiles);
         }
 
         public async Task<IList<string>> GetFileNames(int userId)
         {
-            return await QueryWithOptional.Where(f => f.UserId == userId).Select(f => f.FileName).ToListAsync();
+            return await Query.Where(f => f.UserId == userId).Select(f => f.FileName).ToListAsync();
         }
 
         public async Task<int> GetFileId(int userId, string fileName)
         {
-            return await QueryWithOptional.Where(f => f.UserId == userId && f.FileName == fileName).Select(f => f.UserFileId).FirstOrDefaultAsync();
+            return await Query.Where(f => f.UserId == userId && f.FileName == fileName).Select(f => f.UserFileId).FirstOrDefaultAsync();
         }
 
         public async Task<UserFile> GetByName(int userId, string fileName)
         {
-            return await QueryWithOptional.FirstOrDefaultAsync(f => f.UserId == userId && f.FileName == fileName);
+            return await QueryWithInclude.FirstOrDefaultAsync(f => f.UserId == userId && f.FileName == fileName);
         }
 
         #endregion

@@ -1,5 +1,7 @@
 <div class="container-fluid">
   <div class="row custom-row">
-    <button mat-stroked-button class="custom-button" (click)='machineControlState.postcommand("g53 g0 z#5163")'>Z(home)</button>
+    <div *ngFor="let item of machineControlState.serialServer.getMachine().commands">
+      <button mat-stroked-button class="custom-button" (click)='machineControlState.postcommand(item.commandString)'>{{item.commandName}}</button>
+    </div>
   </div>
 </div>

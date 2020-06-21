@@ -28,6 +28,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CNCLib.WebAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class UserController : Controller
     {
@@ -69,6 +70,19 @@ namespace CNCLib.WebAPI.Controllers
             return Ok();
         }
 
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public async Task<ActionResult<string>> Register(string userName, string password)
+        {
+            var result = await _manager.Register(userName, password);
+            if (string.IsNullOrEmpty(result))
+            {
+                return Forbid();
+            }
+
+            return Ok(result);
+        }
+
         [HttpGet("currentUser")]
         public async Task<ActionResult<string>> CurrentUser()
         {
@@ -82,6 +96,27 @@ namespace CNCLib.WebAPI.Controllers
             return Ok(await _manager.CreatePasswordHash(password));
         }
 
+        [HttpPut("init")]
+        public async Task<ActionResult> InitUser()
+        {
+            await _manager.InitData();
+            return Ok();
+        }
+
+        [HttpDelete("cleanup")]
+        public async Task<ActionResult> Cleanup()
+        {
+            await _manager.Cleanup();
+            return Ok();
+        }
+
+        [HttpDelete("leave")]
+        public async Task<ActionResult> Leave()
+        {
+            await _manager.Leave();
+            return Ok();
+        }
+
         #region default REST
 
         [HttpGet("{id:int}")]
@@ -90,6 +125,7 @@ namespace CNCLib.WebAPI.Controllers
             return await this.Get<User, int>(_manager, id);
         }
 
+/*
         [HttpPost]
         public async Task<ActionResult<User>> Add([FromBody] User value)
         {
@@ -107,6 +143,7 @@ namespace CNCLib.WebAPI.Controllers
         {
             return await this.Delete<User, int>(_manager, id);
         }
+*/
 
         #endregion
     }

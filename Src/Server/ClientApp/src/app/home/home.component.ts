@@ -33,6 +33,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   appCopyright: string = '';
   appVersionInfo: CNCLibServerInfo = new CNCLibServerInfo();
 
+  isInRegister = false;
+
   private hubConnection!: HubConnection;
 
   constructor(

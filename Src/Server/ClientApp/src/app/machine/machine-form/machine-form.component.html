@@ -21,7 +21,7 @@
         <button *ngIf="isMore" mat-stroked-button (click)='exportMachine()' [disabled]="!machineForm.valid">Export</button>
         <button *ngIf="isMore" mat-stroked-button (click)='deleteMachine()' [disabled]="!machineForm.valid">Delete</button>
         <button *ngIf="isMore" mat-stroked-button (click)='cloneMachine()' [disabled]="!machineForm.valid">Clone</button>
-        <button mat-stroked-button type="submit" form="ngForm" class="btn btn-default" [disabled]="!isLoaded || !machineForm.valid">Save</button>
+        <button mat-stroked-button type="submit" form="ngForm" [disabled]="!isLoaded || !machineForm.valid">Save</button>
       </span>
     </div>
   </div>
@@ -206,14 +206,14 @@
               <input class="form-control col" formControlName="posX">
               <input class="form-control col" formControlName="posY">
               <input class="form-control col-2" formControlName="joystickMessage">
-              <button class="btn btn-danger col-xm" (click)="removeCommand(i)">
+              <button mat-stroked-button class="col-xm" (click)="removeCommand(i)">
                 delete
               </button>
             </div>
           </div>
         </div>
         <div class="form-group row">
-          <button class="btn btn-success" (click)="addCommand()">Add command</button>
+          <button mat-stroked-button (click)="addCommand()">Add command</button>
         </div>
       </mat-card>
 
@@ -230,14 +230,14 @@
             <div class="command-controls row" [formGroupName]="i">
               <input class="form-control col" formControlName="seqNo">
               <input class="form-control col-8" formControlName="commandString">
-              <button class="btn btn-danger col-xm" (click)="removeInitCommand(i)">
+              <button mat-stroked-button class="col-xm" (click)="removeInitCommand(i)">
                 delete
               </button>
             </div>
           </div>
         </div>
         <div class="form-group row">
-          <button class="btn btn-success" (click)="addInitCommand()">Add init command</button>
+          <button mat-stroked-button (click)="addInitCommand()">Add init command</button>
         </div>
 
       </mat-card>

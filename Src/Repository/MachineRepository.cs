@@ -67,7 +67,13 @@ namespace CNCLib.Repository
 
         public async Task<IList<Machine>> GetByUser(int userId)
         {
-            return await AddOptionalWhere(Query).Where(m => m.UserId == userId).ToListAsync();
+            return await QueryWithInclude.Where(m => m.UserId == userId).ToListAsync();
+        }
+
+        public async Task DeleteByUser(int userId)
+        {
+            var machines = await TrackingQueryWithInclude.Where(m => m.UserId == userId).ToListAsync();
+            DeleteEntities(machines);
         }
 
         public async Task<IList<MachineCommand>> GetMachineCommands(int machineId)

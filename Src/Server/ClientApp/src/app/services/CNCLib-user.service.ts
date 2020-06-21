@@ -1,4 +1,4 @@
-﻿/*
+/*
   This file is part of CNCLib - A library for stepper motors.
 
   Copyright (c) Herbert Aitenbichler
@@ -14,26 +14,13 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
+export abstract class CNCLibUserService {
 
-using CNCLib.Repository.Abstraction.Entities;
+  public abstract register(username: string, password: string): Promise<void>;
 
-using Framework.Repository.Abstraction;
+  public abstract initialize(): Promise<void>;
 
-namespace CNCLib.Repository.Abstraction
-{
-    public interface IUserFileRepository : ICrudRepository<UserFile, int>
-    {
-        Task<IList<UserFile>> GetByUser(int userId);
+  public abstract cleanup(): Promise<void>;
 
-        Task DeleteByUser(int userId);
-
-
-        Task<IList<string>> GetFileNames(int userId);
-
-        Task<int> GetFileId(int userId, string fileName);
-
-        Task<UserFile> GetByName(int userId, string fileName);
-    }
+  public abstract leave(): Promise<void>;
 }

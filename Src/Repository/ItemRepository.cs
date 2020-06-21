@@ -63,12 +63,18 @@ namespace CNCLib.Repository
 
         public async Task<IList<Item>> GetByUser(int userId)
         {
-            return await AddOptionalWhere(Query).Where(m => m.UserId == userId).ToListAsync();
+            return await QueryWithInclude.Where(m => m.UserId == userId).ToListAsync();
+        }
+
+        public async Task DeleteByUser(int userId)
+        {
+            var items = await TrackingQueryWithInclude.Where(m => m.UserId == userId).ToListAsync();
+            DeleteEntities(items);
         }
 
         public async Task<IList<Item>> Get(int userId, string typeIdString)
         {
-            return await QueryWithOptional
+            return await QueryWithInclude
                 .Where(i => i.UserId == userId && i.ClassName == typeIdString)
                 .Include(d => d.ItemProperties)
                 .ToListAsync();

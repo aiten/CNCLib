@@ -19,7 +19,7 @@
       <button *ngIf="isMore" mat-stroked-button (click)='deletegCode()' [disabled]="!gCodeForm.valid">Delete</button>
       <button *ngIf="isMore" mat-stroked-button (click)='clonegCode()' [disabled]="!gCodeForm.valid">Clone</button>
       <button mat-stroked-button (click)='rungCode()' [disabled]="!gCodeForm.valid">Run</button>
-      <button mat-stroked-button type="submit" class="btn btn-default" [disabled]="!gCodeForm.valid">Save</button>
+      <button mat-stroked-button type="submit" [disabled]="!gCodeForm.valid">Save</button>
     </span>
   </h1>
 

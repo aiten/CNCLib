@@ -201,7 +201,7 @@ function fromMachine(r: Machine): any {
       sizeA: r.sizeA,
       sizeB: r.sizeB,
       sizeC: r.sizeC,
-      bBufferSize: r.bufferSize,
+      bufferSize: r.bufferSize,
       commandToUpper: r.commandToUpper,
       probeSizeX: r.probeSizeX,
       probeSizeY: r.probeSizeY,
