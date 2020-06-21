@@ -67,7 +67,7 @@ namespace CNCLib.UnitTest.Repository
         {
             var entities = (await CreateTestContext().GetAll()).OrderBy(u => u.Name);
             entities.Count().Should().BeGreaterOrEqualTo(1);
-            entities.ElementAt(0).Name.Should().Be("global");
+            entities.ElementAt(0).Name.Should().Be("CNCLibGlobal");
         }
 
         [Fact]
