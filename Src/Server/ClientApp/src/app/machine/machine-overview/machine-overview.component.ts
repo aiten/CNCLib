@@ -112,6 +112,6 @@ export class MachineOverviewComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.entries = await this.machineService.getAll();
+    this.entries = (await this.machineService.getAll()).sort((a, b) => a.description >= b.description ? 1 : -1);
   }
 }

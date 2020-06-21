@@ -102,6 +102,6 @@ export class GcodeOverviewComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.entries = await this.loadOptionService.getAll();
+    this.entries = (await this.loadOptionService.getAll()).sort((a, b) => a.settingName > b.settingName ? 1 : -1);
   }
 }

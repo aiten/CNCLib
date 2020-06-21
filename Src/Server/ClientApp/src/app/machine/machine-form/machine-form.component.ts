@@ -178,6 +178,8 @@ export class MachineFormComponent implements OnInit {
 
   loadMachine(m: Machine) {
     this.machine = m;
+    this.machine.commands = this.machine.commands.sort((a, b) => a.posX > b.posX ? 1 : (a.posX < b.posX ? -1 : (a.posY > b.posY) ? 1 : (a.posY < b.posY ? -1 : 0)));
+    this.machine.initCommands = this.machine.initCommands.sort((a, b) => a.seqNo > b.seqNo ? 1 : (a.seqNo < b.seqNo ? -1 : 0));
     this.adjustCommandsArray(this.machine.commands);
     this.adjustInitCommandsArray(this.machine.initCommands);
 

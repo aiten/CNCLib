@@ -33,6 +33,7 @@ import { homeURL } from "../../app.global";
 export class UserAdminComponent {
 
   isInRegister = false;
+  isMore = false;
 
   constructor(
     public cncLibloggedinService: CNCLibLoggedinService,

@@ -99,6 +99,8 @@ export class SerialServerConnection {
     console.log(machine);
     this.machine = machine;
 
+    // this.machine.commands = this.machine.commands.sort((a, b) => a.posX > b.posX ? 1 : (a.posX < b.posX ? -1 : (a.posY > b.posY) ? 1 : (a.posY < b.posY ? -1 : 0)));
+
     this.machineControlGlobal.setFromMachine(machine);
     this.previewGlobal.setFromMachine(machine);
 

@@ -18,8 +18,16 @@
   <p>Login in as : {{cncLibloggedinService.username()}}</p>
   <button mat-stroked-button (click)="cncLibloggedinService.logout()">Logout</button>
 
-  <button mat-stroked-button (click)="initialize()">Initialize</button>
-  <button mat-stroked-button (click)="cleanup()">Cleanup</button>
-  <button mat-stroked-button (click)="leave()">Leave</button>
+  <button *ngIf="!isMore" mat-button class="menuHide-button" (click)='isMore = true'>
+    <fa-icon icon="chevron-right"></fa-icon>
+  </button>
+
+  <button *ngIf="isMore" mat-stroked-button (click)="initialize()">Initialize</button>
+  <button *ngIf="isMore" mat-stroked-button (click)="cleanup()">Cleanup</button>
+  <button *ngIf="isMore" mat-stroked-button (click)="leave()">Leave</button>
+
+  <button *ngIf="isMore" mat-button class="menuHide-button" (click)='isMore = false'>
+    <fa-icon icon="chevron-left"></fa-icon>
+  </button>
 
 </div>
