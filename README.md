@@ -11,7 +11,9 @@ https://github.com/aiten/CNCStepper
 CNCLib
 ======
 
-CNCLib is a Windows application. 
+CNCLib is a Windows and Web application. 
+
+The web application is hosted here: https://cnclib.azurewebsites.net 
 
 Define and configure your own machine
 ------
