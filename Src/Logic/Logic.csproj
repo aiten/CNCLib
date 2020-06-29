@@ -4,6 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Framework\Logic\Logic.csproj">    </ProjectReference>
+    <ProjectReference Include="..\Framework\Schedule\Schedule.csproj" />
     <ProjectReference Include="..\Framework\Tools\Tools.csproj">    </ProjectReference>
     <ProjectReference Include="..\GCode.Generate\GCode.Generate.csproj">    </ProjectReference>
     <ProjectReference Include="..\Logic.Client\Logic.Client.csproj">    </ProjectReference>

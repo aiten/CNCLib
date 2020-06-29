@@ -142,6 +142,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GCode.Tools", "GCode.Tools\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GCode.Machine", "GCode.Machine\GCode.Machine.csproj", "{91BBFBC0-5B42-42CA-9954-8B107BDB58CA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Schedule", "Framework\Schedule\Schedule.csproj", "{CD2B0A17-5DCC-4E0B-AC3C-17C5CC4D8010}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -356,6 +358,10 @@ Global
 		{91BBFBC0-5B42-42CA-9954-8B107BDB58CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91BBFBC0-5B42-42CA-9954-8B107BDB58CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91BBFBC0-5B42-42CA-9954-8B107BDB58CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD2B0A17-5DCC-4E0B-AC3C-17C5CC4D8010}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD2B0A17-5DCC-4E0B-AC3C-17C5CC4D8010}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD2B0A17-5DCC-4E0B-AC3C-17C5CC4D8010}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD2B0A17-5DCC-4E0B-AC3C-17C5CC4D8010}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -414,6 +420,7 @@ Global
 		{6EED9F02-4306-4B8F-85B1-9B59C0DBB24F} = {153254D9-07E8-4B92-885C-D7A208B6C852}
 		{A8FCF691-877C-4F40-9D72-27F9B2D4771F} = {153254D9-07E8-4B92-885C-D7A208B6C852}
 		{91BBFBC0-5B42-42CA-9954-8B107BDB58CA} = {153254D9-07E8-4B92-885C-D7A208B6C852}
+		{CD2B0A17-5DCC-4E0B-AC3C-17C5CC4D8010} = {96217F41-39D9-4FCF-AACF-7EAEB4E4479C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {149E2CA7-C574-4FFF-8699-9678D9AFC1FA}

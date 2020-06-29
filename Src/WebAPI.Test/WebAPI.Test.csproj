@@ -27,7 +27,7 @@
       <Version>5.10.3</Version>
     </PackageReference>
     <PackageReference Include="NSubstitute">
-      <Version>4.2.1</Version>
+      <Version>4.2.2</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

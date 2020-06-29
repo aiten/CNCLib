@@ -21,6 +21,7 @@ using System.Threading;
 using AutoMapper;
 
 using CNCLib.Logic;
+using CNCLib.Logic.Abstraction;
 using CNCLib.Logic.Client;
 using CNCLib.Logic.Manager;
 using CNCLib.Repository;
@@ -37,6 +38,8 @@ using Framework.Dependency;
 using Framework.Localization;
 using Framework.Logic;
 using Framework.Logic.Abstraction;
+using Framework.Schedule;
+using Framework.Schedule.Abstraction;
 using Framework.Tools;
 using Framework.Tools.Password;
 using Framework.WebAPI.Filter;
@@ -157,6 +160,7 @@ namespace CNCLib.Server
 
             services
                 .AddFrameWorkTools()
+                .AddJobScheduler()
                 .AddRepository(SqlServerDatabaseTools.OptionBuilder)
                 .AddLogic()
                 .AddLogicClient()
@@ -223,6 +227,11 @@ namespace CNCLib.Server
                         spa.UseAngularCliServer(npmScript: "start");
                     }
                 });
+
+
+            var scheduler = Services.GetRequiredService<IJobScheduler>();
+            scheduler.Periodic<ICleanupJob>(TimeSpan.FromMinutes(1), null);
+            scheduler.Daily<IDailyJob>(TimeSpan.Parse("02:00"), "Hallo from daily");
         }
 
         public string Xxx => @"Herbert";
