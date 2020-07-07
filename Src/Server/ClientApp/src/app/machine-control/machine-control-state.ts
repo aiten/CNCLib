@@ -266,4 +266,8 @@ export class MachineControlState {
   async deleteEeprom(): Promise<void> {
     await this.serialServerService.deleteEeprom(this.serialServer.getSerialServerPortId());
   }
+
+  async rebootMachine(): Promise<void> {
+    await this.serialServer.reConnect();
+  }
 }

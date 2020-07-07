@@ -110,6 +110,13 @@ export class SerialServerConnection {
     return url;
   }
 
+  async reConnect(): Promise<void> {
+    console.log(this.machine);
+    console.log("reconnect:" + this.machine.baudRate + this.machine.dtrIsReset);
+    await this.serialServerService.disconnect(this.serialServerPortId);
+    await this.serialServerService.connect(this.serialServerPortId, this.machine.baudRate, this.machine.dtrIsReset, true);
+  }
+
   async getInfoX(serialServer: string, username: string, password: string, comPort: string, baudrate: number, dtrIsReset: boolean): Promise<string> {
 
     var uri = serialServer + '/';

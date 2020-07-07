@@ -3,5 +3,6 @@
     <div *ngFor="let item of [].constructor(machineControlState.serialServer.getMachine().axis); let i = index">
       <button mat-stroked-button class="ref-button" (click)='machineControlState.refMove(i)'>{{machineControlState.toAxisName(i)}}</button>
     </div>
+    <button mat-stroked-button class="ref-button" (click)='machineControlState.rebootMachine()'>Reset</button>
   </div>
 </div>
