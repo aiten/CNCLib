@@ -230,10 +230,11 @@ namespace CNCLib.Server
 
 
             var scheduler = Services.GetRequiredService<IJobScheduler>();
-            scheduler.Periodic<ICleanupJob>(TimeSpan.FromMinutes(1), "1");
             scheduler
-                .Daily<IDailyJob>(TimeSpan.Parse("02:00"), "Hallo from daily")
-                .Then<ICleanupJob>("2");
+                .Periodic<ICleanupJob>(TimeSpan.FromMinutes(1), "Cleanup 1")
+                .Then<ICleanupJob>("Cleanup 2")
+                .Then<ICleanupJob>("Cleanup 3");
+            scheduler.Daily<IDailyJob>(TimeSpan.Parse("02:00"), "Hallo from daily");
         }
 
         public string Xxx => @"Herbert";

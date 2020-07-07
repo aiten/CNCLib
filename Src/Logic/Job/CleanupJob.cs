@@ -37,7 +37,7 @@ namespace CNCLib.Logic.Job
         {
             try
             {
-                _logger.LogInformation($"Background Task: CleanUp {state}");
+                _logger.LogInformation($"Background Task: {state}");
                 await Task.Delay(1000, ct);
             }
             catch (Exception e)
