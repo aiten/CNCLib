@@ -96,9 +96,9 @@ import { SerialPortHistoryPreviewGlobal } from "./serialporthistory/models/seria
   ],
   providers: [
     ...servicesProvides,
-    { provide: MachineControlState },
     { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    MachineControlState,
     SerialServerConnection,
     JoystickServerConnection,
     MachineControlGlobal,

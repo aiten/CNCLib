@@ -41,7 +41,7 @@ namespace CNCLib.GCode.Generate.Parser
 
         public char SkipSpacesOrComment()
         {
-            switch (_reader.SkipSpaces())
+            switch (Reader.SkipSpaces())
             {
                 case '(':
                     SkipCommentNested();
@@ -52,23 +52,23 @@ namespace CNCLib.GCode.Generate.Parser
                     break;
             }
 
-            return _reader.NextChar;
+            return Reader.NextChar;
         }
 
         ////////////////////////////////////////////////////////////
 
         void SkipCommentSingleLine()
         {
-            _reader.ReadToEnd();
+            Reader.ReadToEnd();
         }
 
         void SkipCommentNested()
         {
             int cnt = 0;
 
-//            char* start = (char*)_reader->GetBuffer();
+//            char* start = (char*)Reader->GetBuffer();
 
-            for (char ch = _reader.NextChar; ch != 0; ch = _reader.Next())
+            for (char ch = Reader.NextChar; ch != 0; ch = Reader.Next())
             {
                 switch (ch)
                 {
@@ -77,7 +77,7 @@ namespace CNCLib.GCode.Generate.Parser
                         cnt--;
                         if (cnt == 0)
                         {
-                            _reader.Next();
+                            Reader.Next();
 
 //                            CommentMessage(start);
                             return;

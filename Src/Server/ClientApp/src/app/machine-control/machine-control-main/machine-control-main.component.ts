@@ -40,16 +40,22 @@ export class MachineControlMainComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit(): Promise<void> {
-    await this.machineControlState.load();
-    this.isLoading = false;
-    await this.machineControlState.loadJoystick(false);
+    if (this.machineControlState.isValid()) {
+      await this.machineControlState.load();
+      this.isLoading = false;
+      await this.machineControlState.loadJoystick(false);
+    } else {
+      this.isLoading = false;
+    }
   }
 
   async ngOnDestroy(): Promise<void> {
-    await this.machineControlState.close();
+    if (this.machineControlState.isValid()) {
+      await this.machineControlState.close();
+    }
   }
 
   isConnected() {
-    return this.machineControlState.isConnected;
+    return this.machineControlState.isValid() && this.machineControlState.isConnected;
   }
 }

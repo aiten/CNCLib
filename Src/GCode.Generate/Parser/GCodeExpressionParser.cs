@@ -34,12 +34,12 @@ namespace CNCLib.GCode.Generate.Parser
 
         protected override void ScanNextToken()
         {
-            char ch = _reader.NextChar;
+            char ch = Reader.NextChar;
             while (ch != 0)
             {
                 if (ch == ';' || ch == '(') // comment
                 {
-                    ch = new GCodeParser(_reader).SkipSpacesOrComment();
+                    ch = new GCodeParser(Reader).SkipSpacesOrComment();
                     Error("NotImplemented yet");
                 }
                 else
@@ -61,17 +61,17 @@ namespace CNCLib.GCode.Generate.Parser
         {
             // read variable name of gcode : #1 or #<_x>
 
-            var idx = _reader.PushIdx();
+            var idx = Reader.PushIdx();
 
-            char ch = _reader.NextChar;
+            char ch = Reader.NextChar;
             if (ch == '#')
             {
                 // start of GCODE variable => format #1 or #<_x>
-                _reader.Next();
-                _state._number = _reader.GetInt();
+                Reader.Next();
+                _state._number = Reader.GetInt();
             }
 
-            _reader.PopIdx(idx);
+            Reader.PopIdx(idx);
             return base.ReadIdent();
         }
 

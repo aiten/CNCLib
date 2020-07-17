@@ -77,7 +77,7 @@ namespace CNCLib.Logic.Manager
 
         public async Task<User> GetByName(string username)
         {
-            return MapToDto(await _repository.GetByName(username));
+            return await MapToDto(await _repository.GetByName(username));
         }
 
         public async Task<ClaimsPrincipal> Authenticate(string userName, string password)

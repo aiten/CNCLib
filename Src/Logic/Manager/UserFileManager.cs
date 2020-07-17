@@ -64,7 +64,7 @@ namespace CNCLib.Logic.Manager
 
         public async Task<UserFile> GetByName(string filename)
         {
-            return MapToDto(await _repository.GetByName(_userContext.UserId, filename));
+            return await MapToDto(await _repository.GetByName(_userContext.UserId, filename));
         }
 
         public async Task<int> GetFileId(string fileName)

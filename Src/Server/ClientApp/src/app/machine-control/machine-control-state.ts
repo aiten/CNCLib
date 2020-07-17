@@ -64,6 +64,10 @@ export class MachineControlState {
   ) {
   }
 
+  isValid() {
+    return this.serialServer.getMachine() != null;
+  }
+
   async getJoystick() {
     if (!this.isJoystickLoaded) {
       this.joystick = (await this.joystickService.getAll())[0];

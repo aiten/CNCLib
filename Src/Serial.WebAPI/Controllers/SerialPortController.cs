@@ -238,7 +238,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
             {
                 var result = await port.Serial.SendCommandsAsync(new[] { c }, commands.TimeOut);
                 ret.AddRange(result);
-                if (result.Any() && result.LastOrDefault().ReplyType != EReplyType.ReplyOK)
+                if (result.Any() && result.LastOrDefault().ReplyType != EReplyType.ReplyOk)
                 {
                     break;
                 }
