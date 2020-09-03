@@ -14,10 +14,10 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.ComponentModel;
-
 namespace CNCLib.WpfClient.Models
 {
+    using System.ComponentModel;
+
     public class Joystick
     {
         const string CATEGORY_INTERNAL      = "Internal";

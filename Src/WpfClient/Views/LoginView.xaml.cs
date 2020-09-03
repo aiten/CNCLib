@@ -14,14 +14,14 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Windows;
-using System.Windows.Controls;
-
-using Framework.Dependency;
-using Framework.Wpf.Views;
-
 namespace CNCLib.WpfClient.Views
 {
+    using System.Windows;
+    using System.Windows.Controls;
+
+    using Framework.Dependency;
+    using Framework.Wpf.Views;
+
     public partial class LoginView : Window
     {
         public LoginView()

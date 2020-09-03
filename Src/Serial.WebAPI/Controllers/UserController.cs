@@ -14,15 +14,15 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Threading.Tasks;
-
-using Framework.Logic.Abstraction;
-
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
 namespace CNCLib.Serial.WebAPI.Controllers
 {
+    using System.Threading.Tasks;
+
+    using Framework.Logic.Abstraction;
+
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+
     [Route("api/[controller]")]
     public class UserController : Controller
     {

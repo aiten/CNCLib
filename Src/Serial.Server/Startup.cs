@@ -14,39 +14,39 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.IO;
-using System.Threading;
-
-using CNCLib.Serial.WebAPI.Controllers;
-using CNCLib.Serial.WebAPI.Hubs;
-using CNCLib.Serial.WebAPI.Manager;
-using CNCLib.Serial.WebAPI.SerialPort;
-
-using Framework.Arduino.SerialCommunication;
-using Framework.Dependency;
-using Framework.Logic.Abstraction;
-using Framework.Tools;
-using Framework.Tools.Password;
-using Framework.WebAPI.Filter;
-
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
-
-using Newtonsoft.Json.Serialization;
-
-using Swashbuckle.AspNetCore.Filters;
-
 namespace CNCLib.Serial.Server
 {
+    using System;
+    using System.IO;
+    using System.Threading;
+
+    using CNCLib.Serial.WebAPI.Controllers;
+    using CNCLib.Serial.WebAPI.Hubs;
+    using CNCLib.Serial.WebAPI.Manager;
+    using CNCLib.Serial.WebAPI.SerialPort;
+
+    using Framework.Arduino.SerialCommunication;
+    using Framework.Dependency;
+    using Framework.Logic.Abstraction;
+    using Framework.Tools;
+    using Framework.Tools.Password;
+    using Framework.WebAPI.Filter;
+
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.SignalR;
+    using Microsoft.AspNetCore.SpaServices.AngularCli;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.OpenApi.Models;
+
+    using Newtonsoft.Json.Serialization;
+
+    using Swashbuckle.AspNetCore.Filters;
+
     public class Startup
     {
         private const string CorsAllowAllName     = "AllowAll";

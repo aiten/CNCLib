@@ -14,14 +14,14 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-
-using CNCLib.GCode.Generate.Commands;
-
-using Framework.Drawing;
-
 namespace CNCLib.GCode.Generate.Load
 {
+    using System;
+
+    using CNCLib.GCode.Generate.Commands;
+
+    using Framework.Drawing;
+
     public abstract class LoadImageBase : LoadBase
     {
         protected         double PixelSizeX { get; private set; } = 1;
@@ -29,10 +29,11 @@ namespace CNCLib.GCode.Generate.Load
         protected virtual double PixelDistX => 0;
         protected virtual double PixelDistY => 0;
 
-        protected int                   SizeX  { get; private set; }
-        protected int                   SizeY  { get; private set; }
-        protected double                ShiftX { get; private set; } = 0;
-        protected double                ShiftY { get; private set; } = 0;
+        protected int    SizeX  { get; private set; }
+        protected int    SizeY  { get; private set; }
+        protected double ShiftX { get; private set; } = 0;
+        protected double ShiftY { get; private set; } = 0;
+
         protected System.Drawing.Bitmap Bitmap { get; private set; }
 
         protected void WriteGCode(System.Drawing.Bitmap b)

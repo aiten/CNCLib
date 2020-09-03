@@ -14,15 +14,15 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using CNCLib.Service.Abstraction;
-
-using Framework.Dependency;
-using Framework.Pattern;
-
-using Microsoft.Extensions.DependencyInjection;
-
 namespace CNCLib.WpfClient
 {
+    using CNCLib.Service.Abstraction;
+
+    using Framework.Dependency;
+    using Framework.Pattern;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     public static class LiveServiceCollectionExtensions
     {
         public static IServiceCollection AddCNCLibWpf(this IServiceCollection services)

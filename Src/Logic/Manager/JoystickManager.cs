@@ -14,17 +14,17 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-using CNCLib.Logic.Abstraction;
-using CNCLib.Logic.Abstraction.DTO;
-using CNCLib.Logic.Client;
-
-using Framework.Logic;
-
 namespace CNCLib.Logic.Manager
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
+    using CNCLib.Logic.Abstraction;
+    using CNCLib.Logic.Abstraction.DTO;
+    using CNCLib.Logic.Client;
+
+    using Framework.Logic;
+
     public class JoystickManager : ManagerBase, IJoystickManager
     {
         private readonly IDynItemController _dynItemController;

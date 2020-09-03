@@ -14,26 +14,26 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
-
-using CNCLib.GCode;
-using CNCLib.GCode.Generate;
-using CNCLib.GCode.Generate.Commands;
-using CNCLib.Logic.Abstraction.DTO;
-
-using Framework.Arduino.SerialCommunication;
-using Framework.Drawing;
-using Framework.Wpf.Helpers;
-using Framework.Wpf.ViewModels;
-
 namespace CNCLib.WpfClient.ViewModels
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Input;
+    using System.Windows.Media;
+
+    using CNCLib.GCode;
+    using CNCLib.GCode.Generate;
+    using CNCLib.GCode.Generate.Commands;
+    using CNCLib.Logic.Abstraction.DTO;
+
+    using Framework.Arduino.SerialCommunication;
+    using Framework.Drawing;
+    using Framework.Wpf.Helpers;
+    using Framework.Wpf.ViewModels;
+
     public class PreviewViewModel : BaseViewModel
     {
         private readonly Global _global;

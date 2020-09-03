@@ -14,55 +14,55 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.Reflection;
-using System.Threading;
-
-using AutoMapper;
-
-using CNCLib.Logic;
-using CNCLib.Logic.Abstraction;
-using CNCLib.Logic.Client;
-using CNCLib.Logic.Manager;
-using CNCLib.Repository;
-using CNCLib.Repository.Context;
-using CNCLib.Repository.SqlServer;
-using CNCLib.Service.Logic;
-using CNCLib.Shared;
-using CNCLib.WebAPI;
-using CNCLib.WebAPI.Controllers;
-using CNCLib.WebAPI.Filter;
-using CNCLib.WebAPI.Hubs;
-
-using Framework.Dependency;
-using Framework.Localization;
-using Framework.Logic;
-using Framework.Logic.Abstraction;
-using Framework.Schedule;
-using Framework.Schedule.Abstraction;
-using Framework.Tools;
-using Framework.Tools.Password;
-using Framework.WebAPI.Filter;
-
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
-
-using Newtonsoft.Json.Serialization;
-
-using NLog;
-
-using Swashbuckle.AspNetCore.Filters;
-
 namespace CNCLib.Server
 {
+    using System;
+    using System.Reflection;
+    using System.Threading;
+
+    using AutoMapper;
+
+    using CNCLib.Logic;
+    using CNCLib.Logic.Abstraction;
+    using CNCLib.Logic.Client;
+    using CNCLib.Logic.Manager;
+    using CNCLib.Repository;
+    using CNCLib.Repository.Context;
+    using CNCLib.Repository.SqlServer;
+    using CNCLib.Service.Logic;
+    using CNCLib.Shared;
+    using CNCLib.WebAPI;
+    using CNCLib.WebAPI.Controllers;
+    using CNCLib.WebAPI.Filter;
+    using CNCLib.WebAPI.Hubs;
+
+    using Framework.Dependency;
+    using Framework.Localization;
+    using Framework.Logic;
+    using Framework.Logic.Abstraction;
+    using Framework.Schedule;
+    using Framework.Schedule.Abstraction;
+    using Framework.Tools;
+    using Framework.Tools.Password;
+    using Framework.WebAPI.Filter;
+
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.SignalR;
+    using Microsoft.AspNetCore.SpaServices.AngularCli;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.OpenApi.Models;
+
+    using Newtonsoft.Json.Serialization;
+
+    using NLog;
+
+    using Swashbuckle.AspNetCore.Filters;
+
     public class Startup
     {
         private const string CorsAllowAllName     = "AllowAll";

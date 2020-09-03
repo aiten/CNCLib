@@ -14,13 +14,12 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-
 namespace CNCLib.GCode.Machine
 {
-     public class Eeprom
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+
+    public class Eeprom
     {
         public const string CATEGORY_INTERNAL = "Internal";
         public const string CATEGORY_SIZE     = "Size";

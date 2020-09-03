@@ -14,21 +14,21 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-using CNCLib.GCode.Machine;
-using CNCLib.GCode.Serial;
-using CNCLib.Serial.WebAPI.Hubs;
-using CNCLib.Serial.WebAPI.SerialPort;
-
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-
 namespace CNCLib.Serial.WebAPI.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
+    using CNCLib.GCode.Machine;
+    using CNCLib.GCode.Serial;
+    using CNCLib.Serial.WebAPI.Hubs;
+    using CNCLib.Serial.WebAPI.SerialPort;
+
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.SignalR;
+
     [Authorize]
     [Route("api/[controller]")]
     public class GCodeController : Controller

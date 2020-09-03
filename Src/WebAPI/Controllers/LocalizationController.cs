@@ -14,16 +14,16 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Globalization;
-
-using Framework.Localization;
-
-using Microsoft.AspNetCore.Mvc;
-
-using UserFileDto = CNCLib.Logic.Abstraction.DTO.UserFile;
-
 namespace CNCLib.WebAPI.Controllers
 {
+    using System.Globalization;
+
+    using Framework.Localization;
+
+    using Microsoft.AspNetCore.Mvc;
+
+    using UserFileDto = CNCLib.Logic.Abstraction.DTO.UserFile;
+
     [Route("api/[controller]")]
     public class LocalizationController : Controller
     {

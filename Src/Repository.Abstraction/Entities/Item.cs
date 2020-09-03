@@ -14,10 +14,10 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Collections.Generic;
-
 namespace CNCLib.Repository.Abstraction.Entities
 {
+    using System.Collections.Generic;
+
     public class Item
     {
         public int    ItemId    { get; set; }

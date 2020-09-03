@@ -14,14 +14,14 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.IO;
-using System.Reflection;
-
-using CNCLib.Repository.Abstraction.Entities;
-
 namespace CNCLib.Repository.Context
 {
+    using System;
+    using System.IO;
+    using System.Reflection;
+
+    using CNCLib.Repository.Abstraction.Entities;
+
     public class CNCLibDefaultData : CNCLibDbImporter
     {
         public CNCLibDefaultData(CNCLibContext context) : base(context)

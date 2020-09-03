@@ -14,23 +14,23 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-using AutoMapper;
-
-using CNCLib.Logic.Abstraction;
-using CNCLib.Logic.Abstraction.DTO;
-using CNCLib.Repository.Abstraction;
-using CNCLib.Shared;
-
-using Framework.Logic;
-using Framework.Repository.Abstraction;
-
-using UserFileEntity = CNCLib.Repository.Abstraction.Entities.UserFile;
-
 namespace CNCLib.Logic.Manager
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
+    using AutoMapper;
+
+    using CNCLib.Logic.Abstraction;
+    using CNCLib.Logic.Abstraction.DTO;
+    using CNCLib.Repository.Abstraction;
+    using CNCLib.Shared;
+
+    using Framework.Logic;
+    using Framework.Repository.Abstraction;
+
+    using UserFileEntity = CNCLib.Repository.Abstraction.Entities.UserFile;
+
     public class UserFileManager : CrudManager<UserFile, int, UserFileEntity>, IUserFileManager
     {
         private readonly IUnitOfWork         _unitOfWork;

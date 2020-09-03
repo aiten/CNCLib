@@ -14,13 +14,13 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Windows.Input;
-
-using Framework.Arduino.SerialCommunication;
-using Framework.Wpf.Helpers;
-
 namespace CNCLib.WpfClient.ViewModels.ManualControl
 {
+    using System.Windows.Input;
+
+    using Framework.Arduino.SerialCommunication;
+    using Framework.Wpf.Helpers;
+
     public class ShiftViewModel : DetailViewModel
     {
         private readonly Global _global;

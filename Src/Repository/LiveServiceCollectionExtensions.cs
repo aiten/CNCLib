@@ -14,19 +14,19 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-
-using CNCLib.Repository.Context;
-
-using Framework.Dependency;
-using Framework.Repository;
-using Framework.Repository.Abstraction;
-
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace CNCLib.Repository
 {
+    using System;
+
+    using CNCLib.Repository.Context;
+
+    using Framework.Dependency;
+    using Framework.Repository;
+    using Framework.Repository.Abstraction;
+
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.DependencyInjection;
+
     public static class LiveServicCollectionExtensions
     {
         public static IServiceCollection AddRepository(this IServiceCollection services, Action<DbContextOptionsBuilder> optionsAction)

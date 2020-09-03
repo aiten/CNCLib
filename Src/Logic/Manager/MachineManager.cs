@@ -14,26 +14,26 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-using AutoMapper;
-
-using CNCLib.GCode.Machine;
-using CNCLib.Logic.Abstraction;
-using CNCLib.Logic.Abstraction.DTO;
-using CNCLib.Repository.Abstraction;
-using CNCLib.Shared;
-
-using Framework.Logic;
-using Framework.Repository.Abstraction;
-
-using ConfigurationEntity = CNCLib.Repository.Abstraction.Entities.Configuration;
-using MachineEntity = CNCLib.Repository.Abstraction.Entities.Machine;
-
 namespace CNCLib.Logic.Manager
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using AutoMapper;
+
+    using CNCLib.GCode.Machine;
+    using CNCLib.Logic.Abstraction;
+    using CNCLib.Logic.Abstraction.DTO;
+    using CNCLib.Repository.Abstraction;
+    using CNCLib.Shared;
+
+    using Framework.Logic;
+    using Framework.Repository.Abstraction;
+
+    using ConfigurationEntity = CNCLib.Repository.Abstraction.Entities.Configuration;
+    using MachineEntity = CNCLib.Repository.Abstraction.Entities.Machine;
+
     public class MachineManager : CrudManager<Machine, int, MachineEntity>, IMachineManager
     {
         private readonly IUnitOfWork              _unitOfWork;

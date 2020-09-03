@@ -14,19 +14,19 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-
-using CNCLib.GCode.Machine;
-
-using Framework.Arduino.SerialCommunication;
-using Framework.Arduino.SerialCommunication.Abstraction;
-
 namespace CNCLib.GCode.Serial
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using CNCLib.GCode.Machine;
+
+    using Framework.Arduino.SerialCommunication;
+    using Framework.Arduino.SerialCommunication.Abstraction;
+
     public static class GCodeSerialEepromExtension
     {
         public static async Task<uint[]> GetEpromValues(this ISerial serial, int waitForMilliseconds = GCodeSerial.DefaultEpromTimeout)

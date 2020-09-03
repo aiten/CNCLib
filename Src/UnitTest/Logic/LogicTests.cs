@@ -14,14 +14,14 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using AutoMapper;
-
-using CNCLib.Logic;
-
-using Framework.UnitTest;
-
 namespace CNCLib.UnitTest.Logic
 {
+    using AutoMapper;
+
+    using CNCLib.Logic;
+
+    using Framework.UnitTest;
+
     public class LogicTests : UnitTestBase
     {
         public static IMapper Mapper { get; private set; }

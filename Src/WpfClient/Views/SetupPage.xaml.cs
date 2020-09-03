@@ -14,16 +14,16 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Threading.Tasks;
-using System.Windows.Controls;
-
-using CNCLib.WpfClient.ViewModels;
-
-using Framework.Dependency;
-using Framework.Wpf.Views;
-
 namespace CNCLib.WpfClient.Views
 {
+    using System.Threading.Tasks;
+    using System.Windows.Controls;
+
+    using CNCLib.WpfClient.ViewModels;
+
+    using Framework.Dependency;
+    using Framework.Wpf.Views;
+
     /// <summary>
     /// Interaction logic for SetupPage.xaml
     /// </summary>

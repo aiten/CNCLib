@@ -14,32 +14,32 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-
-using AutoMapper;
-
-using CNCLib.GCode.Serial;
-using CNCLib.Logic.Abstraction.DTO;
-using CNCLib.Service.Abstraction;
-using CNCLib.WpfClient.Helpers;
-using CNCLib.WpfClient.Models;
-
-using Framework.Arduino.SerialCommunication;
-using Framework.Pattern;
-using Framework.Wpf.Helpers;
-using Framework.Wpf.ViewModels;
-
-using Machine = CNCLib.WpfClient.Models.Machine;
-using MachineCommand = CNCLib.WpfClient.Models.MachineCommand;
-using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;
-using MachineInitCommand = CNCLib.WpfClient.Models.MachineInitCommand;
-
 namespace CNCLib.WpfClient.ViewModels
 {
+    using System;
+    using System.Collections.ObjectModel;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Input;
+
+    using AutoMapper;
+
+    using CNCLib.GCode.Serial;
+    using CNCLib.Logic.Abstraction.DTO;
+    using CNCLib.Service.Abstraction;
+    using CNCLib.WpfClient.Helpers;
+    using CNCLib.WpfClient.Models;
+
+    using Framework.Arduino.SerialCommunication;
+    using Framework.Pattern;
+    using Framework.Wpf.Helpers;
+    using Framework.Wpf.ViewModels;
+
+    using Machine = CNCLib.WpfClient.Models.Machine;
+    using MachineCommand = CNCLib.WpfClient.Models.MachineCommand;
+    using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;
+    using MachineInitCommand = CNCLib.WpfClient.Models.MachineInitCommand;
+
     public class MachineViewModel : BaseViewModel
     {
         #region crt

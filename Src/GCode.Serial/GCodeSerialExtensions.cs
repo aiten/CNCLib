@@ -14,16 +14,16 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-
-using Framework.Arduino.SerialCommunication;
-using Framework.Arduino.SerialCommunication.Abstraction;
-
 namespace CNCLib.GCode.Serial
 {
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using Framework.Arduino.SerialCommunication;
+    using Framework.Arduino.SerialCommunication.Abstraction;
+
     public static class GCodeSerialExtension
     {
         public const int DefaultTimeout = 120 * 1000;

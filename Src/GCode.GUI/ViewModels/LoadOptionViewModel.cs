@@ -14,30 +14,30 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using System.Xml.Serialization;
-
-using AutoMapper;
-
-using CNCLib.GCode.GUI.Models;
-using CNCLib.Service.Abstraction;
-
-using Framework.Pattern;
-using Framework.Tools;
-using Framework.Wpf.Helpers;
-using Framework.Wpf.ViewModels;
-
-using LoadOptionsDto = CNCLib.Logic.Abstraction.DTO.LoadOptions;
-
 namespace CNCLib.GCode.GUI.ViewModels
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Input;
+    using System.Xml.Serialization;
+
+    using AutoMapper;
+
+    using CNCLib.GCode.GUI.Models;
+    using CNCLib.Service.Abstraction;
+
+    using Framework.Pattern;
+    using Framework.Tools;
+    using Framework.Wpf.Helpers;
+    using Framework.Wpf.ViewModels;
+
+    using LoadOptionsDto = CNCLib.Logic.Abstraction.DTO.LoadOptions;
+
     public class LoadOptionViewModel : BaseViewModel
     {
         #region crt

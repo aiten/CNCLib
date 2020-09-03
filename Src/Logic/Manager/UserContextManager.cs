@@ -14,12 +14,12 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using CNCLib.Logic.Abstraction;
-
-using Framework.Logic;
-
 namespace CNCLib.Logic.Manager
 {
+    using CNCLib.Logic.Abstraction;
+
+    using Framework.Logic;
+
     public class UserContextManager : ManagerBase, IUserContextManager
     {
     }

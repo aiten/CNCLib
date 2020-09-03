@@ -14,15 +14,15 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-
-using CNCLib.GCode.Generate.Commands;
-using CNCLib.Logic.Abstraction.DTO;
-
-using Framework.Tools;
-
 namespace CNCLib.GCode.Generate.Load
 {
+    using System;
+
+    using CNCLib.GCode.Generate.Commands;
+    using CNCLib.Logic.Abstraction.DTO;
+
+    using Framework.Tools;
+
     public class LoadImageHole : LoadImageBase
     {
         public int ImageToDotSizeX => LoadOptions.DotSizeX;

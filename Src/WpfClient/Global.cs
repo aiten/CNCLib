@@ -14,24 +14,24 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
-using CNCLib.GCode.Generate.Commands;
-using CNCLib.WpfClient.Helpers;
-using CNCLib.WpfClient.Models;
-
-using Framework.Arduino.SerialCommunication;
-using Framework.Arduino.SerialCommunication.Abstraction;
-using Framework.Dependency;
-using Framework.Pattern;
-
-using Microsoft.Extensions.Logging;
-
-using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;
-
 namespace CNCLib.WpfClient
 {
+    using System.ComponentModel;
+    using System.Runtime.CompilerServices;
+
+    using CNCLib.GCode.Generate.Commands;
+    using CNCLib.WpfClient.Helpers;
+    using CNCLib.WpfClient.Models;
+
+    using Framework.Arduino.SerialCommunication;
+    using Framework.Arduino.SerialCommunication.Abstraction;
+    using Framework.Dependency;
+    using Framework.Pattern;
+
+    using Microsoft.Extensions.Logging;
+
+    using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;
+
     public class Global : INotifyPropertyChanged
     {
         public Global()

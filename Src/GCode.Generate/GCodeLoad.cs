@@ -14,19 +14,19 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.IO;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
-
-using CNCLib.GCode.Generate.Commands;
-using CNCLib.GCode.Generate.Load;
-using CNCLib.Logic.Abstraction.DTO;
-
 namespace CNCLib.GCode.Generate
 {
+    using System;
+    using System.IO;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Threading.Tasks;
+    using System.Xml.Serialization;
+
+    using CNCLib.GCode.Generate.Commands;
+    using CNCLib.GCode.Generate.Load;
+    using CNCLib.Logic.Abstraction.DTO;
+
     public class GCodeLoad
     {
         public async Task<CommandList> Load(LoadOptions loadInfo, bool azure)

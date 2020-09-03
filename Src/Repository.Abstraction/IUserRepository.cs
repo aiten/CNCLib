@@ -14,14 +14,14 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Threading.Tasks;
-
-using CNCLib.Repository.Abstraction.Entities;
-
-using Framework.Repository.Abstraction;
-
 namespace CNCLib.Repository.Abstraction
 {
+    using System.Threading.Tasks;
+
+    using CNCLib.Repository.Abstraction.Entities;
+
+    using Framework.Repository.Abstraction;
+
     public interface IUserRepository : ICrudRepository<User, int>
     {
         Task<User> GetByName(string username);

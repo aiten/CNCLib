@@ -14,19 +14,19 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.Threading.Tasks;
-
-using Framework.Arduino.SerialCommunication;
-using Framework.Arduino.SerialCommunication.Abstraction;
-using Framework.Pattern;
-
-using Microsoft.Extensions.Logging;
-
-using SerialCom = Framework.Arduino.SerialCommunication.Serial;
-
 namespace CNCLib.WpfClient.Helpers
 {
+    using System;
+    using System.Threading.Tasks;
+
+    using Framework.Arduino.SerialCommunication;
+    using Framework.Arduino.SerialCommunication.Abstraction;
+    using Framework.Pattern;
+
+    using Microsoft.Extensions.Logging;
+
+    using SerialCom = Framework.Arduino.SerialCommunication.Serial;
+
     class JoystickArduinoSerialCommunication : SerialCom
     {
         private Global _global;

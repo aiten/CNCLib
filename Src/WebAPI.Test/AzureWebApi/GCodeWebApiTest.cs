@@ -14,20 +14,20 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.IO;
-using System.Net.Http;
-using System.Reflection;
-using System.Threading.Tasks;
-
-using CNCLib.Logic.Abstraction.DTO;
-
-using FluentAssertions;
-
-using Xunit;
-
 namespace CNCLib.WebAPI.Test.AzureWebApi
 {
+    using System;
+    using System.IO;
+    using System.Net.Http;
+    using System.Reflection;
+    using System.Threading.Tasks;
+
+    using CNCLib.Logic.Abstraction.DTO;
+
+    using FluentAssertions;
+
+    using Xunit;
+
     public class GCodeWebApiTest : AzureWebApiTest
     {
         private readonly string api = "/api/GCode";

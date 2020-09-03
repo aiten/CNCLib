@@ -14,12 +14,12 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using Framework.Dependency;
-
-using Microsoft.Extensions.DependencyInjection;
-
 namespace CNCLib.Logic
 {
+    using Framework.Dependency;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     public static class LiveServiceCollectionExtensions
     {
         public static IServiceCollection AddLogic(this IServiceCollection services)

@@ -14,15 +14,17 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using Framework.Arduino.SerialCommunication;
-using Framework.Arduino.SerialCommunication.Abstraction;
-using Framework.Dependency;
-using Framework.Pattern;
-
-using Microsoft.Extensions.Logging;
-
 namespace CNCLib.WpfClient.Helpers
 {
+    using Framework.Arduino.SerialCommunication;
+    using Framework.Arduino.SerialCommunication.Abstraction;
+    using Framework.Dependency;
+    using Framework.Pattern;
+
+    using Microsoft.Extensions.Logging;
+
+    using CNCLib.Serial.Client;
+
     public class SerialProxy
     {
         public SerialProxy()
@@ -30,7 +32,7 @@ namespace CNCLib.WpfClient.Helpers
             Current = LocalCom;
         }
 
-        public ISerial RemoteCom => Singleton<Serial.Client.SerialService>.Instance;
+        public ISerial RemoteCom => Singleton<SerialService>.Instance;
 
         private static Framework.Arduino.SerialCommunication.Serial _localSerial =
             new Framework.Arduino.SerialCommunication.Serial(

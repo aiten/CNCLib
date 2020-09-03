@@ -14,36 +14,36 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.Globalization;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Markup;
-
-using AutoMapper;
-
-using CNCLib.GCode.GUI;
-using CNCLib.Logic.Client;
-using CNCLib.Service.Abstraction;
-using CNCLib.Service.WebAPI;
-using CNCLib.Shared;
-
-using Framework.Arduino.SerialCommunication;
-using Framework.Dependency;
-using Framework.Logic;
-using Framework.Service.WebAPI;
-using Framework.Tools;
-
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-
-using NLog;
-
-using ILogger = NLog.ILogger;
-
 namespace CNCLib.WpfClient.WebAPI.Start
 {
+    using System;
+    using System.Globalization;
+    using System.Net.Http.Headers;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Markup;
+
+    using AutoMapper;
+
+    using CNCLib.GCode.GUI;
+    using CNCLib.Logic.Client;
+    using CNCLib.Service.Abstraction;
+    using CNCLib.Service.WebAPI;
+    using CNCLib.Shared;
+
+    using Framework.Arduino.SerialCommunication;
+    using Framework.Dependency;
+    using Framework.Logic;
+    using Framework.Service.WebAPI;
+    using Framework.Tools;
+
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
+
+    using NLog;
+
+    using ILogger = NLog.ILogger;
+
     public partial class App : Application
     {
         private ILogger _logger => LogManager.GetCurrentClassLogger();

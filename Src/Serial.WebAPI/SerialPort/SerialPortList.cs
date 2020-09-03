@@ -14,15 +14,15 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-using Framework.Arduino.SerialCommunication.Abstraction;
-using Framework.Dependency;
-
 namespace CNCLib.Serial.WebAPI.SerialPort
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using Framework.Arduino.SerialCommunication.Abstraction;
+    using Framework.Dependency;
+
     public class SerialPortList
     {
         #region INTERNAL List

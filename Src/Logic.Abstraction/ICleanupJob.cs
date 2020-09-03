@@ -14,13 +14,13 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Threading.Tasks;
-
-using Framework.Logic.Abstraction;
-using Framework.Schedule.Abstraction;
-
 namespace CNCLib.Logic.Abstraction
 {
+    using System.Threading.Tasks;
+
+    using Framework.Logic.Abstraction;
+    using Framework.Schedule.Abstraction;
+
     public interface ICleanupJob : IJob
     {
     }

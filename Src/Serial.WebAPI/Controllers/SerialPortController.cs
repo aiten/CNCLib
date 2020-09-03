@@ -14,31 +14,31 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-
-using CNCLib.GCode.Draw;
-using CNCLib.GCode.Generate.Load;
-using CNCLib.Serial.Shared;
-using CNCLib.Serial.WebAPI.Hubs;
-using CNCLib.Serial.WebAPI.Models;
-using CNCLib.Serial.WebAPI.SerialPort;
-
-using Framework.Arduino.SerialCommunication;
-using Framework.Drawing;
-using Framework.WebAPI.Controller;
-
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-
 namespace CNCLib.Serial.WebAPI.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Drawing.Imaging;
+    using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using CNCLib.GCode.Draw;
+    using CNCLib.GCode.Generate.Load;
+    using CNCLib.Serial.Shared;
+    using CNCLib.Serial.WebAPI.Hubs;
+    using CNCLib.Serial.WebAPI.Models;
+    using CNCLib.Serial.WebAPI.SerialPort;
+
+    using Framework.Arduino.SerialCommunication;
+    using Framework.Drawing;
+    using Framework.WebAPI.Controller;
+
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.SignalR;
+
     [Authorize]
     [Route("api/[controller]")]
     public class SerialPortController : Controller

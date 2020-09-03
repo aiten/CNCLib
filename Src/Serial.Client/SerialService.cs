@@ -14,21 +14,21 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-
-using CNCLib.Serial.Shared;
-
-using Framework.Arduino.SerialCommunication;
-using Framework.Arduino.SerialCommunication.Abstraction;
-
-using Microsoft.AspNetCore.SignalR.Client;
-
 namespace CNCLib.Serial.Client
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+
+    using CNCLib.Serial.Shared;
+
+    using Framework.Arduino.SerialCommunication;
+    using Framework.Arduino.SerialCommunication.Abstraction;
+
+    using Microsoft.AspNetCore.SignalR.Client;
+
     public class SerialService : MyServiceBase, ISerial
     {
         protected readonly string           _api = @"api/SerialPort";

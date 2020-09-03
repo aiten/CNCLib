@@ -14,21 +14,21 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
-
-using AutoMapper;
-
-using CNCLib.Service.Abstraction;
-using CNCLib.WpfClient.Models;
-
-using Framework.Pattern;
-using Framework.Wpf.Helpers;
-using Framework.Wpf.ViewModels;
-
 namespace CNCLib.WpfClient.ViewModels
 {
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Windows.Input;
+
+    using AutoMapper;
+
+    using CNCLib.Service.Abstraction;
+    using CNCLib.WpfClient.Models;
+
+    using Framework.Pattern;
+    using Framework.Wpf.Helpers;
+    using Framework.Wpf.ViewModels;
+
     public class JoystickViewModel : BaseViewModel
     {
         private readonly IFactory<IJoystickService> _joystickService;

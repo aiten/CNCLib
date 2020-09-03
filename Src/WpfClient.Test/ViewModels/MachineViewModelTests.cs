@@ -14,24 +14,24 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-
-using CNCLib.Logic.Abstraction.DTO;
-using CNCLib.Service.Abstraction;
-using CNCLib.WpfClient.ViewModels;
-
-using FluentAssertions;
-
-using Framework.Pattern;
-
-using NSubstitute;
-
-using Xunit;
-
 namespace CNCLib.WpfClient.Test.ViewModels
 {
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using CNCLib.Logic.Abstraction.DTO;
+    using CNCLib.Service.Abstraction;
+    using CNCLib.WpfClient.ViewModels;
+
+    using FluentAssertions;
+
+    using Framework.Pattern;
+
+    using NSubstitute;
+
+    using Xunit;
+
     public class MachineViewModelTests : WpfUnitTestBase
     {
         private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable

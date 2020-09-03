@@ -14,15 +14,15 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using AutoMapper;
-
-using JoystickDto = CNCLib.Logic.Abstraction.DTO.Joystick;
-using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;
-using MachineInitCommandDto = CNCLib.Logic.Abstraction.DTO.MachineInitCommand;
-using MachineCommandDto = CNCLib.Logic.Abstraction.DTO.MachineCommand;
-
 namespace CNCLib.WpfClient
 {
+    using AutoMapper;
+
+    using JoystickDto = CNCLib.Logic.Abstraction.DTO.Joystick;
+    using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;
+    using MachineInitCommandDto = CNCLib.Logic.Abstraction.DTO.MachineInitCommand;
+    using MachineCommandDto = CNCLib.Logic.Abstraction.DTO.MachineCommand;
+
     public sealed class WpfAutoMapperProfile : Profile
     {
         public WpfAutoMapperProfile()

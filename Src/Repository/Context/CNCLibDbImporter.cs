@@ -14,15 +14,15 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.Collections.Generic;
-
-using CNCLib.Repository.Abstraction.Entities;
-
-using Framework.Repository.Tools;
-
 namespace CNCLib.Repository.Context
 {
+    using System;
+    using System.Collections.Generic;
+
+    using CNCLib.Repository.Abstraction.Entities;
+
+    using Framework.Repository.Tools;
+
     public class CNCLibDbImporter : DbImporter
     {
         protected Dictionary<int, User>                        _userMap;

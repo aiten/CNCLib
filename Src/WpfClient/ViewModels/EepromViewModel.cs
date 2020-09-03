@@ -14,19 +14,19 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Windows;
-using System.Windows.Input;
-
-using CNCLib.GCode.Machine;
-using CNCLib.GCode.Serial;
-using CNCLib.WpfClient.Helpers;
-using CNCLib.WpfClient.Models;
-
-using Framework.Wpf.Helpers;
-using Framework.Wpf.ViewModels;
-
 namespace CNCLib.WpfClient.ViewModels
 {
+    using System.Windows;
+    using System.Windows.Input;
+
+    using CNCLib.GCode.Machine;
+    using CNCLib.GCode.Serial;
+    using CNCLib.WpfClient.Helpers;
+    using CNCLib.WpfClient.Models;
+
+    using Framework.Wpf.Helpers;
+    using Framework.Wpf.ViewModels;
+
     public class EepromViewModel : BaseViewModel
     {
         private readonly Global _global;

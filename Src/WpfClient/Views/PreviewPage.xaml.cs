@@ -14,20 +14,20 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-
-using CNCLib.GCode.GUI.ViewModels;
-using CNCLib.GCode.GUI.Views;
-using CNCLib.WpfClient.ViewModels;
-
-using Framework.Dependency;
-using Framework.Wpf.Helpers;
-using Framework.Wpf.Views;
-
 namespace CNCLib.WpfClient.Views
 {
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Input;
+
+    using CNCLib.GCode.GUI.ViewModels;
+    using CNCLib.GCode.GUI.Views;
+    using CNCLib.WpfClient.ViewModels;
+
+    using Framework.Dependency;
+    using Framework.Wpf.Helpers;
+    using Framework.Wpf.Views;
+
     /// <summary>
     /// Interaction logic for PreviewPage.xaml
     /// </summary>

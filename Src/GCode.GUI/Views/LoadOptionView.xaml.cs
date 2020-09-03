@@ -14,15 +14,15 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Windows;
-
-using CNCLib.GCode.GUI.ViewModels;
-
-using Framework.Dependency;
-using Framework.Wpf.Views;
-
 namespace CNCLib.GCode.GUI.Views
 {
+    using System.Windows;
+
+    using CNCLib.GCode.GUI.ViewModels;
+
+    using Framework.Dependency;
+    using Framework.Wpf.Views;
+
     /// <summary>
     /// Interaction logic for EepromView.xaml
     /// </summary>

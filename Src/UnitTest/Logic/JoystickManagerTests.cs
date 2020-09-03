@@ -14,22 +14,22 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-
-using CNCLib.Logic.Abstraction.DTO;
-using CNCLib.Logic.Client;
-using CNCLib.Logic.Manager;
-
-using FluentAssertions;
-
-using NSubstitute;
-
-using Xunit;
-
 namespace CNCLib.UnitTest.Logic
 {
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using CNCLib.Logic.Abstraction.DTO;
+    using CNCLib.Logic.Client;
+    using CNCLib.Logic.Manager;
+
+    using FluentAssertions;
+
+    using NSubstitute;
+
+    using Xunit;
+
     public class JoystickManagerTests : LogicTests
     {
         private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable

@@ -14,10 +14,10 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using Framework.Drawing;
-
 namespace CNCLib.GCode.Generate.Commands
 {
+    using Framework.Drawing;
+
     public class DrillCommand : Command
     {
         #region crt + factory

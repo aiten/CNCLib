@@ -14,16 +14,16 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-
-using CNCLib.GCode;
-using CNCLib.GCode.Generate;
-using CNCLib.GCode.Tools;
-
-using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;
-
 namespace CNCLib.WpfClient.Helpers
 {
+    using System;
+
+    using CNCLib.GCode;
+    using CNCLib.GCode.Generate;
+    using CNCLib.GCode.Tools;
+
+    using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;
+
     public static class Extensions
     {
         public static string GetAxisName(this MachineDto m, int axis)

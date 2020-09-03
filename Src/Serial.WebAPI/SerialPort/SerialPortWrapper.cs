@@ -14,18 +14,18 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-
-using CNCLib.Serial.WebAPI.Hubs;
-
-using Framework.Arduino.SerialCommunication.Abstraction;
-using Framework.Dependency;
-using Framework.Tools;
-
-using Microsoft.AspNetCore.SignalR;
-
 namespace CNCLib.Serial.WebAPI.SerialPort
 {
+    using System;
+
+    using CNCLib.Serial.WebAPI.Hubs;
+
+    using Framework.Arduino.SerialCommunication.Abstraction;
+    using Framework.Dependency;
+    using Framework.Tools;
+
+    using Microsoft.AspNetCore.SignalR;
+
     public class SerialPortWrapper
     {
         #region ctr/SignalR

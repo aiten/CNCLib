@@ -14,18 +14,18 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Net.Http;
-using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading;
-using System.Threading.Tasks;
-
-using Framework.Arduino.SerialCommunication.Abstraction;
-
-using Microsoft.AspNetCore.SignalR.Client;
-
 namespace CNCLib.Serial.Client
 {
+    using System.Net.Http;
+    using System.Net.Security;
+    using System.Security.Cryptography.X509Certificates;
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    using Framework.Arduino.SerialCommunication.Abstraction;
+
+    using Microsoft.AspNetCore.SignalR.Client;
+
     public class SerialServiceHub : MyServiceBase
     {
         public SerialServiceHub(string adr, ISerial serial)

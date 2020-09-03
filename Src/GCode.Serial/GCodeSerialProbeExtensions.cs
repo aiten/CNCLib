@@ -14,17 +14,17 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-
-using CNCLib.GCode.Tools;
-
-using Framework.Arduino.SerialCommunication;
-using Framework.Arduino.SerialCommunication.Abstraction;
-
 namespace CNCLib.GCode.Serial
 {
+    using System.Globalization;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using CNCLib.GCode.Tools;
+
+    using Framework.Arduino.SerialCommunication;
+    using Framework.Arduino.SerialCommunication.Abstraction;
+
     public static class GCodeSerialProbeExtension
     {
         public static async Task<bool> SendProbeCommandAsync(this ISerial serial, string axisName, decimal probeSize, decimal probeDist, decimal probeDistUp, decimal probeFeed)

@@ -14,28 +14,28 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-
-using CNCLib.GCode.Draw;
-using CNCLib.GCode.Generate.Load;
-using CNCLib.Logic.Abstraction;
-using CNCLib.Logic.Abstraction.DTO;
-
-using Microsoft.AspNetCore.Mvc;
-
-using CNCLib.Shared;
-using CNCLib.WebAPI.Models;
-
-using Framework.Drawing;
-using Framework.WebAPI.Controller;
-
 namespace CNCLib.WebAPI.Controllers
 {
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Drawing.Imaging;
+    using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using CNCLib.GCode.Draw;
+    using CNCLib.GCode.Generate.Load;
+    using CNCLib.Logic.Abstraction;
+    using CNCLib.Logic.Abstraction.DTO;
+
+    using Microsoft.AspNetCore.Mvc;
+
+    using CNCLib.Shared;
+    using CNCLib.WebAPI.Models;
+
+    using Framework.Drawing;
+    using Framework.WebAPI.Controller;
+
     [Route("api/[controller]")]
     public class GCodeController : Controller
     {

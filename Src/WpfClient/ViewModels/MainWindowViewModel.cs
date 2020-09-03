@@ -14,10 +14,10 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using Framework.Wpf.ViewModels;
-
 namespace CNCLib.WpfClient.ViewModels
 {
+    using Framework.Wpf.ViewModels;
+
     public class MainWindowViewModel : BaseViewModel
     {
         #region Properties

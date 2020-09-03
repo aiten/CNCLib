@@ -14,18 +14,18 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-
-using CNCLib.Logic.Abstraction.DTO;
-using CNCLib.Service.Abstraction;
-
-using Framework.Service.WebAPI;
-using Framework.Service.WebAPI.Uri;
-
 namespace CNCLib.Service.WebAPI
 {
+    using System.Linq;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+
+    using CNCLib.Logic.Abstraction.DTO;
+    using CNCLib.Service.Abstraction;
+
+    using Framework.Service.WebAPI;
+    using Framework.Service.WebAPI.Uri;
+
     public class UserService : CrudServiceBase<User, int>, IUserService
     {
         public UserService(HttpClient httpClient) : base(httpClient)

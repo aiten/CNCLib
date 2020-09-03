@@ -14,16 +14,16 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.Threading.Tasks;
-
-using CNCLib.Logic.Abstraction;
-using CNCLib.Logic.Abstraction.DTO;
-
-using Framework.Logic;
-
 namespace CNCLib.Logic.Manager
 {
+    using System;
+    using System.Threading.Tasks;
+
+    using CNCLib.Logic.Abstraction;
+    using CNCLib.Logic.Abstraction.DTO;
+
+    using Framework.Logic;
+
     public class EepromConfigurationManager : ManagerBase, IEepromConfigurationManager
     {
         public async Task<EepromConfiguration> CalculateConfig(EepromConfigurationInput param)

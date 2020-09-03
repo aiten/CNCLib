@@ -14,12 +14,12 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using CNCLib.Shared;
-
-using Microsoft.AspNetCore.Mvc.Filters;
-
 namespace CNCLib.WebAPI.Filter
 {
+    using CNCLib.Shared;
+
+    using Microsoft.AspNetCore.Mvc.Filters;
+
     public sealed class SetUserContextFilter : IActionFilter
     {
         private ICNCLibUserContext _userContext;

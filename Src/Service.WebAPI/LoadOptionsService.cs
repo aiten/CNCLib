@@ -14,15 +14,15 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Net.Http;
-
-using CNCLib.Logic.Abstraction.DTO;
-using CNCLib.Service.Abstraction;
-
-using Framework.Service.WebAPI;
-
 namespace CNCLib.Service.WebAPI
 {
+    using System.Net.Http;
+
+    using CNCLib.Logic.Abstraction.DTO;
+    using CNCLib.Service.Abstraction;
+
+    using Framework.Service.WebAPI;
+
     public class LoadOptionsService : CrudServiceBase<LoadOptions, int>, ILoadOptionsService
     {
         public LoadOptionsService(HttpClient httpClient) : base(httpClient)

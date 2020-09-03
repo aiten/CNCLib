@@ -14,20 +14,20 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Linq;
-
-using CNCLib.Repository.Abstraction.Entities;
-using CNCLib.Repository.Mappings;
-
-using Framework.Dependency;
-using Framework.Repository.Abstraction.Entities;
-using Framework.Repository.Mappings;
-
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace CNCLib.Repository.Context
 {
+    using System.Linq;
+
+    using CNCLib.Repository.Abstraction.Entities;
+    using CNCLib.Repository.Mappings;
+
+    using Framework.Dependency;
+    using Framework.Repository.Abstraction.Entities;
+    using Framework.Repository.Mappings;
+
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.DependencyInjection;
+
     public class CNCLibContext : DbContext
     {
         public CNCLibContext(DbContextOptions<CNCLibContext> options) : base(options)

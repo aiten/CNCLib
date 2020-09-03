@@ -14,13 +14,13 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.Threading.Tasks;
-
-using Microsoft.AspNetCore.SignalR;
-
 namespace CNCLib.WebAPI.Hubs
 {
+    using System;
+    using System.Threading.Tasks;
+
+    using Microsoft.AspNetCore.SignalR;
+
     public class CNCLibHub : Hub<ICNCLibHubClient>
     {
         public override Task OnDisconnectedAsync(Exception exception)

@@ -14,28 +14,28 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-
-using AutoMapper;
-
-using CNCLib.Service.Abstraction;
-using CNCLib.Shared;
-using CNCLib.WpfClient.Models;
-
-using Framework.Pattern;
-using Framework.Tools;
-using Framework.Wpf.Helpers;
-using Framework.Wpf.ViewModels;
-
 namespace CNCLib.WpfClient.ViewModels
 {
+    using System;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Reflection;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Input;
+
+    using AutoMapper;
+
+    using CNCLib.Service.Abstraction;
+    using CNCLib.Shared;
+    using CNCLib.WpfClient.Models;
+
+    using Framework.Pattern;
+    using Framework.Tools;
+    using Framework.Wpf.Helpers;
+    using Framework.Wpf.ViewModels;
+
     public class SetupWindowViewModel : BaseViewModel
     {
         #region crt

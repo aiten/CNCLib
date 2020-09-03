@@ -14,23 +14,23 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-
-using CNCLib.Logic.Abstraction;
-using CNCLib.Shared;
-
-using Framework.WebAPI.Controller;
-
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-using UserFileDto = CNCLib.Logic.Abstraction.DTO.UserFile;
-
 namespace CNCLib.WebAPI.Controllers
 {
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Threading.Tasks;
+
+    using CNCLib.Logic.Abstraction;
+    using CNCLib.Shared;
+
+    using Framework.WebAPI.Controller;
+
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+
+    using UserFileDto = CNCLib.Logic.Abstraction.DTO.UserFile;
+
     [Authorize]
     [Route("api/[controller]")]
     public class UserFileController : Controller

@@ -14,12 +14,10 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using Framework.Parser;
-
-///////////////////////////////////////////////////////
-
 namespace CNCLib.GCode.Generate.Parser
 {
+    using Framework.Parser;
+
     public class GCodeParser : Framework.Parser.Parser
     {
         readonly string MESSAGE_GCODE_CommentNestingError = "Comment nesting error";

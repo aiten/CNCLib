@@ -14,21 +14,21 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using System;
-using System.Security.Claims;
-using System.Threading.Tasks;
-
-using CNCLib.Logic.Abstraction.DTO;
-using CNCLib.Service.Abstraction;
-using CNCLib.Shared;
-
-using Framework.Dependency;
-using Framework.Tools;
-
-using Microsoft.Extensions.DependencyInjection;
-
 namespace CNCLib.WpfClient
 {
+    using System;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
+
+    using CNCLib.Logic.Abstraction.DTO;
+    using CNCLib.Service.Abstraction;
+    using CNCLib.Shared;
+
+    using Framework.Dependency;
+    using Framework.Tools;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     public class CNCLibUserContext : ICNCLibUserContextRW
     {
         public CNCLibUserContext(string userName = null)
