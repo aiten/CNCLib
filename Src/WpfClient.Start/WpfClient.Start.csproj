@@ -41,12 +41,12 @@
     <ProjectReference Include="..\WpfClient\WpfClient.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.6">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite">
-      <Version>3.1.6</Version>
+      <Version>3.1.7</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite.Core">
       <Version>1.0.113.1</Version>
