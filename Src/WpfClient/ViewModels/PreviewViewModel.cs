@@ -24,7 +24,6 @@ namespace CNCLib.WpfClient.ViewModels
     using System.Windows.Input;
     using System.Windows.Media;
 
-    using CNCLib.GCode;
     using CNCLib.GCode.Generate;
     using CNCLib.GCode.Generate.Commands;
     using CNCLib.Logic.Abstraction.DTO;

@@ -20,10 +20,10 @@ namespace CNCLib.Server
 
     using Framework.WebAPI.Host;
 
-    using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Hosting;
 
     using NLog;
     using NLog.Web;
@@ -41,7 +41,7 @@ namespace CNCLib.Server
 #endif
             try
             {
-                ProgramUtilities.StartWebService(args, BuildWebHost);
+                ProgramUtilities.StartWebService(args, BuildHost);
             }
             catch (Exception e)
             {
@@ -50,21 +50,25 @@ namespace CNCLib.Server
             }
         }
 
-        private static IWebHostBuilder BuildWebHost(string[] args)
+        private static IHostBuilder BuildHost(string[] args)
         {
             var hostConfig = new ConfigurationBuilder()
                 .AddJsonFile("hosting.json", optional: true)
                 .Build();
 
-            return WebHost.CreateDefaultBuilder(args)
-                .UseConfiguration(hostConfig)
-                .UseStartup<Startup>()
-                .ConfigureLogging(logging =>
+            return Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    logging.ClearProviders();
-                    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
-                })
-                .UseNLog();
+                    webBuilder
+                        .UseConfiguration(hostConfig)
+                        .UseStartup<Startup>()
+                        .ConfigureLogging(logging =>
+                        {
+                            logging.ClearProviders();
+                            logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+                        })
+                        .UseNLog();
+                });
         }
     }
 }

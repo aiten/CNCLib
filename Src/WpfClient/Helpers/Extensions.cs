@@ -18,8 +18,6 @@ namespace CNCLib.WpfClient.Helpers
 {
     using System;
 
-    using CNCLib.GCode;
-    using CNCLib.GCode.Generate;
     using CNCLib.GCode.Tools;
 
     using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;

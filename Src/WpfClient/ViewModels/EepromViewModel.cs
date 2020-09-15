@@ -21,8 +21,6 @@ namespace CNCLib.WpfClient.ViewModels
 
     using CNCLib.GCode.Machine;
     using CNCLib.GCode.Serial;
-    using CNCLib.WpfClient.Helpers;
-    using CNCLib.WpfClient.Models;
 
     using Framework.Wpf.Helpers;
     using Framework.Wpf.ViewModels;

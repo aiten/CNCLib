@@ -16,10 +16,10 @@
 
 namespace CNCLib.Serial.Server
 {
-    using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Hosting;
 
     using NLog.Web;
 
@@ -60,7 +60,7 @@ namespace CNCLib.Serial.Server
             try
             {
                 logger.Info("Starting (Main)");
-                ProgramUtilities.StartWebService(args, BuildWebHost);
+                ProgramUtilities.StartWebService(args, BuildHost);
             }
             catch (Exception e)
             {
@@ -69,7 +69,7 @@ namespace CNCLib.Serial.Server
             }
         }
 
-        private static IWebHostBuilder BuildWebHost(string[] args)
+        private static IHostBuilder BuildHost(string[] args)
         {
             var hostConfig = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -77,15 +77,19 @@ namespace CNCLib.Serial.Server
                 .AddCommandLine(args)
                 .Build();
 
-            return WebHost.CreateDefaultBuilder(args)
-                .UseConfiguration(hostConfig)
-                .UseStartup<Startup>()
-                .ConfigureLogging(logging =>
+            return Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    logging.ClearProviders();
-                    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
-                })
-                .UseNLog();
+                    webBuilder
+                        .UseConfiguration(hostConfig)
+                        .UseStartup<Startup>()
+                        .ConfigureLogging(logging =>
+                        {
+                            logging.ClearProviders();
+                            logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+                        })
+                        .UseNLog();
+                });
         }
     }
 }

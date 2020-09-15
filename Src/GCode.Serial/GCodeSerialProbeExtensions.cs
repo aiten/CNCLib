@@ -20,8 +20,6 @@ namespace CNCLib.GCode.Serial
     using System.Linq;
     using System.Threading.Tasks;
 
-    using CNCLib.GCode.Tools;
-
     using Framework.Arduino.SerialCommunication;
     using Framework.Arduino.SerialCommunication.Abstraction;
 

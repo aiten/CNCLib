@@ -18,7 +18,6 @@ namespace CNCLib.Logic.Manager
 {
     using System;
     using System.Security.Claims;
-    using System.Threading;
     using System.Threading.Tasks;
 
     using AutoMapper;
@@ -31,8 +30,6 @@ namespace CNCLib.Logic.Manager
     using Framework.Logic;
     using Framework.Repository.Abstraction;
     using Framework.Tools.Password;
-
-    using Microsoft.VisualBasic.CompilerServices;
 
     using UserEntity = CNCLib.Repository.Abstraction.Entities.User;
 

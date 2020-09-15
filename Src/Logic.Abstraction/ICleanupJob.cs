@@ -16,9 +16,6 @@
 
 namespace CNCLib.Logic.Abstraction
 {
-    using System.Threading.Tasks;
-
-    using Framework.Logic.Abstraction;
     using Framework.Schedule.Abstraction;
 
     public interface ICleanupJob : IJob

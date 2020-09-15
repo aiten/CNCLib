@@ -25,9 +25,7 @@ namespace CNCLib.WpfClient.ViewModels
     using AutoMapper;
 
     using CNCLib.GCode.Serial;
-    using CNCLib.Logic.Abstraction.DTO;
     using CNCLib.Service.Abstraction;
-    using CNCLib.WpfClient.Helpers;
     using CNCLib.WpfClient.Models;
 
     using Framework.Arduino.SerialCommunication;
