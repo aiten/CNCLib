@@ -3,7 +3,7 @@
   <PropertyGroup Label="Versioning">
     <Authors>Herbert Aitenbichler</Authors>
     <Company>Herbert Aitenbichler</Company>
-    <Version>1.3.0</Version>
+    <VersionPrefix>1.3.0</VersionPrefix>
     <Copyright>Herbert Aitenbichler</Copyright>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
