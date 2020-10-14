@@ -20,30 +20,42 @@ namespace CNCLib.Logic.Job
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Framework.Schedule;
+
     using CNCLib.Logic.Abstraction;
 
     using Microsoft.Extensions.Logging;
 
     public sealed class CleanupJob : ICleanupJob
     {
-        private readonly ILogger _logger;
+        private readonly ILogger  _logger;
+        private readonly JobState _jobState;
 
-        public CleanupJob(ILogger<CleanupJob> logger)
+        public object            State  { get; set; }
+        public CancellationToken CToken { get; set; }
+
+        public CleanupJob(ILogger<CleanupJob> logger, JobState jobState)
         {
-            _logger = logger;
+            _logger   = logger;
+            _jobState = jobState;
         }
 
-        public async Task Execute(object state, CancellationToken ct)
+        public async Task Execute()
         {
             try
             {
-                _logger.LogInformation($"Background Task: {state}");
-                await Task.Delay(1000, ct);
+                _logger.LogInformation($"Background Task: {State},{_jobState.State}");
+                await Task.Delay(1000, CToken);
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "Could not cleanup.");
             }
+        }
+
+        public async Task SetContext()
+        {
+            await Task.CompletedTask;
         }
     }
 }

@@ -31,7 +31,7 @@ export class PreviewGCodeComponent implements OnInit {
 
   gCommands: string[];
 
-  gCommandsDataSource = new MatTableDataSource<string>(this.gCommands);
+  gCommandsDataSource = new MatTableDataSource<string>([]);
 
   displayedColumns: string[] = ['Cmd'];
 

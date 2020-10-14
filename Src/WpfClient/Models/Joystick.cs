@@ -29,7 +29,7 @@ namespace CNCLib.WpfClient.Models
         [Category(CATEGORY_INTERNAL)]
         [DisplayName("Joystick Id")]
         [Description("Internal Id of joystick")]
-        public int    Id                   { get; set; }
+        public int Id { get; set; }
 
         [Category(CATEGORY_COMMUNICATION)]
         [DisplayName("SerialServer")]

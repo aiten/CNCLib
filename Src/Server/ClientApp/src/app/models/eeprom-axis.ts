@@ -22,7 +22,7 @@ export enum EReverenceType {
 
 export class SAxis {
 
-  dweeSizeOf: number;   // == version number, 3 Uno, 8 Mega
+  dweeSizeOf: number; // == version number, 3 Uno, 8 Mega
   size: number;
   refMove: EReverenceType;
   stepperDirection: boolean;

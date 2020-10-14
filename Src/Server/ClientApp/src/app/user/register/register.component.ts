@@ -46,7 +46,7 @@ export class RegisterComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private userService: CNCLibUserService,
-  private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService
   ) {
   }
 

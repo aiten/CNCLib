@@ -228,13 +228,19 @@ namespace CNCLib.Server
                     }
                 });
 
+            void SetJobExecutor(IJobExecutor executor, object obj)
+            {
+                executor.JobState = typeof(JobState);
+                executor.State    = obj;
+            }
 
             var scheduler = Services.GetRequiredService<IJobScheduler>();
             scheduler
-                .Periodic<ICleanupJob>(TimeSpan.FromMinutes(1), "Cleanup 1")
-                .Then<ICleanupJob>("Cleanup 2")
-                .Then<ICleanupJob>("Cleanup 3");
-            scheduler.Daily<IDailyJob>(TimeSpan.Parse("02:00"), "Hallo from daily");
+                .Periodic<ICleanupJob>(TimeSpan.FromMinutes(1), executor => SetJobExecutor(executor, "Cleanup 1"))
+                .Then<ICleanupJob>(executor => SetJobExecutor(executor,                              "Cleanup 2"))
+                .Then<ICleanupJob>(executor => SetJobExecutor(executor,                              "Cleanup 3"));
+            scheduler.Daily<IDailyJob>(TimeSpan.Parse("02:00"), executor => SetJobExecutor(executor, "Hallo from daily"));
+            scheduler.Start();
         }
 
         public string Xxx => @"Herbert";

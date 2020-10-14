@@ -38,8 +38,8 @@ export const userRoutes =
 
 export const userComponents =
 [
-    UserComponent,
-    LoginComponent,
-    RegisterComponent,
-    UserAdminComponent
+  UserComponent,
+  LoginComponent,
+  RegisterComponent,
+  UserAdminComponent
 ];

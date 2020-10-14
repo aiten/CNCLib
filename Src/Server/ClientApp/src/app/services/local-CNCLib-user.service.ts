@@ -68,7 +68,7 @@ export class LocalCNCLibUserService implements CNCLibUserService {
 
   leave(): Promise<void> {
 
-    
+
     return this.http
       .delete<void>(`${this.baseUrl}api/user/leave`)
       .toPromise()

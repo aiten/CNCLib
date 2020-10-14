@@ -40,7 +40,7 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
             var info = new LoadOptions { LoadType = LoadOptions.ELoadType.Hpgl };
 
             var ass     = Assembly.GetExecutingAssembly();
-            var   assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
+            var assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
 
             info.FileName    = assPath + @"\TestData\heikes-mietzi.hpgl";
             info.FileContent = File.ReadAllBytes(info.FileName);
@@ -71,7 +71,7 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
             };
 
             var ass     = Assembly.GetExecutingAssembly();
-            var   assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
+            var assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
 
             info.FileName    = assPath + @"\TestData\Wendelin_Ait110.png";
             info.FileContent = File.ReadAllBytes(info.FileName);
@@ -98,7 +98,7 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
             var client = GetHttpClient();
 
             var ass     = Assembly.GetExecutingAssembly();
-            var   assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
+            var assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
 
             var input = new CreateGCode
             {

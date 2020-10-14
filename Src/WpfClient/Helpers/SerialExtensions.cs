@@ -35,7 +35,7 @@ namespace CNCLib.WpfClient.Helpers
 
         public static async Task<bool> SendProbeCommandAsync(this ISerial serial, Machine machine, int axisIndex)
         {
-            return await serial.SendProbeCommandAsync(machine.GetAxisName(axisIndex), machine.GetProbeSize(axisIndex),  machine.ProbeDist, machine.ProbeDistUp, machine.ProbeFeed);
+            return await serial.SendProbeCommandAsync(machine.GetAxisName(axisIndex), machine.GetProbeSize(axisIndex), machine.ProbeDist, machine.ProbeDistUp, machine.ProbeFeed);
         }
 
         #endregion

@@ -97,6 +97,7 @@ namespace CNCLib.WpfClient.ViewModels
                 {
                     await scope.Instance.Update(joystick);
                 }
+
                 CloseAction();
             }
         }

@@ -18,7 +18,7 @@ namespace CNCLib.Logic.Abstraction
 {
     using Framework.Schedule.Abstraction;
 
-    public interface IDailyJob : IJob
+    public interface IDailyJob : ISupervisedJob
     {
     }
 }

@@ -27,7 +27,7 @@ namespace CNCLib.GCode.Machine
         public const string CATEGORY_PROBE    = "Probe";
         public const string CATEGORY_GENERAL  = "General";
         public const string CATEGORY_INFO     = "Info";
-        public const string CATEGORY_PLOTTER = "Plotter";
+        public const string CATEGORY_PLOTTER  = "Plotter";
 
         protected const int EEPROM_NUM_AXIS = 6;
 

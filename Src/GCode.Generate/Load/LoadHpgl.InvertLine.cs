@@ -23,7 +23,7 @@ namespace CNCLib.GCode.Generate.Load
     using CNCLib.Logic.Abstraction.DTO;
 
     using Framework.Drawing;
-    using Framework.Tools.Clipper;
+    using Framework.Drawing.Clipper;
 
     public partial class LoadHpgl
     {

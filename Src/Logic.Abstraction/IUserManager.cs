@@ -31,7 +31,7 @@ namespace CNCLib.Logic.Abstraction
         Task Leave();
 
         Task InitData();
-        
+
         Task Cleanup();
     }
 }

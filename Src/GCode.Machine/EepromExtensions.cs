@@ -72,7 +72,7 @@ namespace CNCLib.GCode.Machine
 
                 if (signature != EepromV1.SIGNATUREPLOTTER)
                 {
-                    var attributes = property.Attributes;
+                    var               attributes  = property.Attributes;
                     CategoryAttribute myAttribute = (CategoryAttribute)attributes[typeof(CategoryAttribute)];
                     if (myAttribute.Category == Eeprom.CATEGORY_PLOTTER)
                     {
@@ -128,9 +128,9 @@ namespace CNCLib.GCode.Machine
 
             for (int i = 0; i < numAxis; i++)
             {
-                eeprom.GetAxis(i).DWEESizeOf = ee.DWSizeAxis;
-                eeprom.GetAxis(i).Size = ee[i, EepromV1.EAxisOffsets32.Size];
-                eeprom.GetAxis(i).RefMove = (Eeprom.EReverenceType)ee[i, EepromV1.EAxisOffsets8.EReverenceType];
+                eeprom.GetAxis(i).DWEESizeOf     = ee.DWSizeAxis;
+                eeprom.GetAxis(i).Size           = ee[i, EepromV1.EAxisOffsets32.Size];
+                eeprom.GetAxis(i).RefMove        = (Eeprom.EReverenceType)ee[i, EepromV1.EAxisOffsets8.EReverenceType];
                 eeprom.GetAxis(i).RefHitValueMin = ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMin];
                 eeprom.GetAxis(i).RefHitValueMax = ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMax];
 
@@ -142,11 +142,11 @@ namespace CNCLib.GCode.Machine
 
                 if (ee.DWSizeAxis > EepromV1.SIZEOFAXIS_EX)
                 {
-                    eeprom.GetAxis(i).MaxStepRate = ee[i, EepromV1.EAxisOffsets32.MaxStepRate];
-                    eeprom.GetAxis(i).Acc = ee[i, EepromV1.EAxisOffsets16.Acc];
-                    eeprom.GetAxis(i).Dec = ee[i, EepromV1.EAxisOffsets16.Dec];
-                    eeprom.GetAxis(i).StepsPerMm1000 = BitConverter.ToSingle(BitConverter.GetBytes(ee[i, EepromV1.EAxisOffsets32.StepsPerMm1000]), 0);
-                    eeprom.GetAxis(i).ProbeSize = ee[i, EepromV1.EAxisOffsets32.ProbeSize];
+                    eeprom.GetAxis(i).MaxStepRate     = ee[i, EepromV1.EAxisOffsets32.MaxStepRate];
+                    eeprom.GetAxis(i).Acc             = ee[i, EepromV1.EAxisOffsets16.Acc];
+                    eeprom.GetAxis(i).Dec             = ee[i, EepromV1.EAxisOffsets16.Dec];
+                    eeprom.GetAxis(i).StepsPerMm1000  = BitConverter.ToSingle(BitConverter.GetBytes(ee[i, EepromV1.EAxisOffsets32.StepsPerMm1000]), 0);
+                    eeprom.GetAxis(i).ProbeSize       = ee[i, EepromV1.EAxisOffsets32.ProbeSize];
                     eeprom.GetAxis(i).RefMoveStepRate = ee[i, EepromV1.EAxisOffsets32.RefMoveStepRate];
                 }
             }
@@ -154,13 +154,13 @@ namespace CNCLib.GCode.Machine
             eeprom.MaxSpindleSpeed = ee[EepromV1.EValueOffsets16.MaxSpindleSpeed];
             eeprom.SpindleFadeTime = ee[EepromV1.EValueOffsets8.SpindleFadeTime];
 
-            eeprom.RefMoveStepRate = ee[EepromV1.EValueOffsets32.RefMoveStepRate];
+            eeprom.RefMoveStepRate       = ee[EepromV1.EValueOffsets32.RefMoveStepRate];
             eeprom.MoveAwayFromReference = ee[EepromV1.EValueOffsets32.MoveAwayFromReference];
 
             eeprom.MaxStepRate = ee[EepromV1.EValueOffsets32.MaxStepRate];
-            eeprom.Acc = ee[EepromV1.EValueOffsets16.Acc];
-            eeprom.Dec = ee[EepromV1.EValueOffsets16.Dec];
-            eeprom.JerkSpeed = ee[EepromV1.EValueOffsets16.JerkSpeed];
+            eeprom.Acc         = ee[EepromV1.EValueOffsets16.Acc];
+            eeprom.Dec         = ee[EepromV1.EValueOffsets16.Dec];
+            eeprom.JerkSpeed   = ee[EepromV1.EValueOffsets16.JerkSpeed];
 
             eeprom.StepsPerMm1000 = BitConverter.ToSingle(BitConverter.GetBytes(ee[EepromV1.EValueOffsets32.StepsPerMm1000]), 0);
 
@@ -197,9 +197,9 @@ namespace CNCLib.GCode.Machine
 
             for (int i = 0; i < numAxis; i++)
             {
-                ee[i, EepromV1.EAxisOffsets32.Size] = eeprom.GetAxis(i).Size;
-                ee[i, EepromV1.EAxisOffsets8.EReverenceType] = (byte)eeprom.GetAxis(i).RefMove;
-                ee[i, EepromV1.EAxisOffsets8.EReverenceSequence] = (byte)(Eeprom.EReverenceSequence)eeprom[i];
+                ee[i, EepromV1.EAxisOffsets32.Size]                 = eeprom.GetAxis(i).Size;
+                ee[i, EepromV1.EAxisOffsets8.EReverenceType]        = (byte)eeprom.GetAxis(i).RefMove;
+                ee[i, EepromV1.EAxisOffsets8.EReverenceSequence]    = (byte)(Eeprom.EReverenceSequence)eeprom[i];
                 ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMin] = eeprom.GetAxis(i).RefHitValueMin;
                 ee[i, EepromV1.EAxisOffsets8.EReverenceHitValueMax] = eeprom.GetAxis(i).RefHitValueMax;
 
@@ -215,25 +215,25 @@ namespace CNCLib.GCode.Machine
 
                 if (ee.DWSizeAxis > EepromV1.SIZEOFAXIS_EX)
                 {
-                    ee[i, EepromV1.EAxisOffsets32.MaxStepRate] = eeprom.GetAxis(i).MaxStepRate;
-                    ee[i, EepromV1.EAxisOffsets16.Acc] = eeprom.GetAxis(i).Acc;
-                    ee[i, EepromV1.EAxisOffsets16.Dec] = eeprom.GetAxis(i).Dec;
-                    ee[i, EepromV1.EAxisOffsets32.StepsPerMm1000] = BitConverter.ToUInt32(BitConverter.GetBytes(eeprom.GetAxis(i).StepsPerMm1000), 0);
-                    ee[i, EepromV1.EAxisOffsets32.ProbeSize] = eeprom.GetAxis(i).ProbeSize;
+                    ee[i, EepromV1.EAxisOffsets32.MaxStepRate]     = eeprom.GetAxis(i).MaxStepRate;
+                    ee[i, EepromV1.EAxisOffsets16.Acc]             = eeprom.GetAxis(i).Acc;
+                    ee[i, EepromV1.EAxisOffsets16.Dec]             = eeprom.GetAxis(i).Dec;
+                    ee[i, EepromV1.EAxisOffsets32.StepsPerMm1000]  = BitConverter.ToUInt32(BitConverter.GetBytes(eeprom.GetAxis(i).StepsPerMm1000), 0);
+                    ee[i, EepromV1.EAxisOffsets32.ProbeSize]       = eeprom.GetAxis(i).ProbeSize;
                     ee[i, EepromV1.EAxisOffsets32.RefMoveStepRate] = eeprom.GetAxis(i).RefMoveStepRate;
                 }
             }
 
             ee[EepromV1.EValueOffsets16.MaxSpindleSpeed] = eeprom.MaxSpindleSpeed;
-            ee[EepromV1.EValueOffsets8.SpindleFadeTime] = eeprom.SpindleFadeTime;
+            ee[EepromV1.EValueOffsets8.SpindleFadeTime]  = eeprom.SpindleFadeTime;
 
-            ee[EepromV1.EValueOffsets32.RefMoveStepRate] = eeprom.RefMoveStepRate;
+            ee[EepromV1.EValueOffsets32.RefMoveStepRate]       = eeprom.RefMoveStepRate;
             ee[EepromV1.EValueOffsets32.MoveAwayFromReference] = eeprom.MoveAwayFromReference;
 
             ee[EepromV1.EValueOffsets32.MaxStepRate] = eeprom.MaxStepRate;
-            ee[EepromV1.EValueOffsets16.Acc] = eeprom.Acc;
-            ee[EepromV1.EValueOffsets16.Dec] = eeprom.Dec;
-            ee[EepromV1.EValueOffsets16.JerkSpeed] = eeprom.JerkSpeed;
+            ee[EepromV1.EValueOffsets16.Acc]         = eeprom.Acc;
+            ee[EepromV1.EValueOffsets16.Dec]         = eeprom.Dec;
+            ee[EepromV1.EValueOffsets16.JerkSpeed]   = eeprom.JerkSpeed;
 
             ee[EepromV1.EValueOffsets32.StepsPerMm1000] = BitConverter.ToUInt32(BitConverter.GetBytes(eeprom.StepsPerMm1000), 0);
 

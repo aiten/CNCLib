@@ -126,8 +126,6 @@ namespace CNCLib.GCode.Serial
 
         #region Convert
 
- 
-
         #endregion
     }
 }

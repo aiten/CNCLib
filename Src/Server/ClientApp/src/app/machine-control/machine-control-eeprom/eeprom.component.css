@@ -1,15 +1,11 @@
-.mytoolbar {
-  height: 40px;
-}
+.mytoolbar { height: 40px; }
 
 .loadbutton {
   width: 200px;
   padding: 0px;
 }
 
-.container {
-  width: 100px;
-}
+.container { width: 100px; }
 
 .input-col {
   margin-left: 10px;

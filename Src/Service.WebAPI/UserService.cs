@@ -73,6 +73,7 @@ namespace CNCLib.Service.WebAPI
                 return "1";
             }
         }
+
         public async Task Leave()
         {
             using (var scope = CreateScope())
@@ -92,7 +93,7 @@ namespace CNCLib.Service.WebAPI
                 var builder = CreatePathBuilder()
                     .AddPath("init");
 
-                var response = await scope.Instance.PutAsync(builder.Build(),null);
+                var response = await scope.Instance.PutAsync(builder.Build(), null);
                 response.EnsureSuccessStatusCode();
             }
         }

@@ -14,11 +14,14 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
+
 namespace CNCLib.Logic.Job
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+
+    using Framework.Schedule.Abstraction;
 
     using CNCLib.Logic.Abstraction;
 
@@ -28,6 +31,9 @@ namespace CNCLib.Logic.Job
     {
         private readonly ILogger      _logger;
         private readonly IUserManager _userManager;
+        
+        public object            State    { get; set; }
+        public CancellationToken CToken { get; set; }
 
         public DailyJob(IUserManager userManager, ILogger<CleanupJob> logger)
         {
@@ -35,12 +41,12 @@ namespace CNCLib.Logic.Job
             _logger      = logger;
         }
 
-        public async Task Execute(object state, CancellationToken ct)
+        public async Task Execute()
         {
             try
             {
                 // do something to test the daily background job
-                _logger.LogInformation($"Background Task: Daily: {state.ToString()}");
+                _logger.LogInformation($"Background Task: Daily: {State.ToString()}");
 
                 var user = await _userManager.GetAll();
             }
@@ -48,6 +54,21 @@ namespace CNCLib.Logic.Job
             {
                 _logger.LogError(e, "Could not run Daily.");
             }
+        }
+
+        public async Task SetContext()
+        {
+            await Task.CompletedTask;
+        }
+
+        public async Task<bool> IsAlreadyExecuted()
+        {
+            return await Task.FromResult(false);
+        }
+
+        public async Task SetAsExecuted()
+        {
+            await Task.CompletedTask;
         }
     }
 }

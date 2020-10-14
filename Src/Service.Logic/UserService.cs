@@ -49,6 +49,7 @@ namespace CNCLib.Service.Logic
             var id = await _manager.Register(username, password);
             return id;
         }
+
         public async Task Leave()
         {
             await _manager.Leave();
