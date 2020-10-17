@@ -228,10 +228,11 @@ namespace CNCLib.Server
                     }
                 });
 
-            void SetJobExecutor(IJobExecutor executor, object obj)
+            void SetJobExecutor(IJobExecutor executor, object param)
             {
-                executor.JobState = typeof(JobState);
-                executor.State    = obj;
+                // executor.ParamContainer = typeof(JobParamContainer); => this is default
+                //executor.JobName  = xxx => default is Classname
+                executor.Param = param;
             }
 
             var scheduler = Services.GetRequiredService<IJobScheduler>();

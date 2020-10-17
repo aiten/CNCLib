@@ -31,9 +31,10 @@ namespace CNCLib.Logic.Job
     {
         private readonly ILogger      _logger;
         private readonly IUserManager _userManager;
-        
-        public object            State    { get; set; }
-        public CancellationToken CToken { get; set; }
+
+        public string            JobName { get; set; }
+        public object            Param   { get; set; }
+        public CancellationToken CToken  { get; set; }
 
         public DailyJob(IUserManager userManager, ILogger<CleanupJob> logger)
         {
@@ -46,13 +47,13 @@ namespace CNCLib.Logic.Job
             try
             {
                 // do something to test the daily background job
-                _logger.LogInformation($"Background Task: Daily: {State.ToString()}");
+                _logger.LogInformation($"Job {JobName}: {Param.ToString()}");
 
                 var user = await _userManager.GetAll();
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Could not run Daily.");
+                _logger.LogError(e, $"Job {JobName}: failed with exception.");
             }
         }
 

@@ -28,28 +28,29 @@ namespace CNCLib.Logic.Job
 
     public sealed class CleanupJob : ICleanupJob
     {
-        private readonly ILogger  _logger;
-        private readonly JobState _jobState;
+        private readonly ILogger           _logger;
+        private readonly JobParamContainer _jobParamContainer;
 
-        public object            State  { get; set; }
-        public CancellationToken CToken { get; set; }
+        public string            JobName { get; set; }
+        public object            Param   { get; set; }
+        public CancellationToken CToken  { get; set; }
 
-        public CleanupJob(ILogger<CleanupJob> logger, JobState jobState)
+        public CleanupJob(ILogger<CleanupJob> logger, JobParamContainer jobParamContainer)
         {
-            _logger   = logger;
-            _jobState = jobState;
+            _logger            = logger;
+            _jobParamContainer = jobParamContainer;
         }
 
         public async Task Execute()
         {
             try
             {
-                _logger.LogInformation($"Background Task: {State},{_jobState.State}");
+                _logger.LogInformation($"Job {JobName}: {Param},{_jobParamContainer.Param}");
                 await Task.Delay(1000, CToken);
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Could not cleanup.");
+                _logger.LogError(e, $"Job {JobName}: failed with exception.");
             }
         }
 

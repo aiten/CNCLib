@@ -28,7 +28,7 @@ namespace CNCLib.Logic
         public static IServiceCollection AddLogic(this IServiceCollection services)
         {
             services.AddAssembylIncludingInternals(ServiceLifetime.Transient, typeof(Manager.MachineManager).Assembly);
-            services.AddScoped<JobState>();
+            services.AddScoped<JobParamContainer>();
             return services;
         }
     }
