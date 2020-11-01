@@ -109,7 +109,7 @@ namespace CNCLib.GCode.Serial
             {
                 eepromValue.WriteTo(ee);
 
-                File.WriteAllLines(Environment.ExpandEnvironmentVariables(@"%TEMP%\EepromWrite.nc"), ee.ToGCode());
+                await File.WriteAllLinesAsync(Environment.ExpandEnvironmentVariables(@"%TEMP%\EepromWrite.nc"), ee.ToGCode());
 
                 await serial.WriteEepromValues(ee);
                 return true;

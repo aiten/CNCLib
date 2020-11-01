@@ -164,38 +164,38 @@ namespace CNCLib.WpfClient.ViewModels.ManualControl
 
                         using (var sw = new StreamWriter(Environment.ExpandEnvironmentVariables(FileName), true))
                         {
-                            sw.Write("g1");
+                            await sw.WriteAsync("g1");
                             if (positions.Length >= 1)
                             {
-                                sw.Write("X" + positions[0]);
+                                await sw.WriteAsync("X" + positions[0]);
                             }
 
                             if (positions.Length >= 2)
                             {
-                                sw.Write("Y" + positions[1]);
+                                await sw.WriteAsync("Y" + positions[1]);
                             }
 
                             if (positions.Length >= 3)
                             {
-                                sw.Write("Z" + positions[2]);
+                                await sw.WriteAsync("Z" + positions[2]);
                             }
 
                             if (positions.Length >= 4)
                             {
-                                sw.Write("A" + positions[3]);
+                                await sw.WriteAsync("A" + positions[3]);
                             }
 
                             if (positions.Length >= 5)
                             {
-                                sw.Write("B" + positions[4]);
+                                await sw.WriteAsync("B" + positions[4]);
                             }
 
                             if (positions.Length >= 6)
                             {
-                                sw.Write("C" + positions[5]);
+                                await sw.WriteAsync("C" + positions[5]);
                             }
 
-                            sw.WriteLine();
+                            await sw.WriteLineAsync();
                         }
                     }
                 });

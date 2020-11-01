@@ -78,7 +78,7 @@ namespace CNCLib.GCode.Generate
         {
             using (var client = CreateHttpClient())
             {
-                info.FileContent = File.ReadAllBytes(info.FileName);
+                info.FileContent = await File.ReadAllBytesAsync(info.FileName);
 
                 HttpResponseMessage response = await client.PostAsJsonAsync(api, info);
                 string[]            gcode    = await response.Content.ReadAsAsync<string[]>();

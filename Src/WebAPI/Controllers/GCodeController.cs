@@ -76,6 +76,8 @@ namespace CNCLib.WebAPI.Controllers
         [HttpPut("render")]
         public async Task<IActionResult> Render([FromBody] PreviewGCode opt)
         {
+            await Task.CompletedTask;
+
             var gCodeDraw = new GCodeBitmapDraw()
             {
                 SizeX      = opt.SizeX,
@@ -122,6 +124,8 @@ namespace CNCLib.WebAPI.Controllers
         [HttpGet("render")]
         public async Task<ActionResult<PreviewGCode>> RenderDefault()
         {
+            await Task.CompletedTask;
+
             var gCodeDraw = new GCodeBitmapDraw();
             var opt = new PreviewGCode()
             {

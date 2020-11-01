@@ -43,7 +43,7 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
             var assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
 
             info.FileName    = assPath + @"\TestData\heikes-mietzi.hpgl";
-            info.FileContent = File.ReadAllBytes(info.FileName);
+            info.FileContent = await File.ReadAllBytesAsync(info.FileName);
 
             var response = await client.PostAsJsonAsync(api, info);
             response.EnsureSuccessStatusCode();
@@ -74,7 +74,7 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
             var assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
 
             info.FileName    = assPath + @"\TestData\Wendelin_Ait110.png";
-            info.FileContent = File.ReadAllBytes(info.FileName);
+            info.FileContent = await File.ReadAllBytesAsync(info.FileName);
 
             var response = await client.PostAsJsonAsync(api, info);
             response.EnsureSuccessStatusCode();
@@ -106,7 +106,7 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
                 FileName      = assPath + @"\TestData\Wendelin_Ait110.png"
             };
 
-            input.FileContent = File.ReadAllBytes(input.FileName);
+            input.FileContent = await File.ReadAllBytesAsync(input.FileName);
 
             var response = await client.PutAsJsonAsync(api, input);
             response.EnsureSuccessStatusCode();

@@ -432,6 +432,8 @@ namespace CNCLib.Serial.WebAPI.Controllers
         [HttpGet("{id:int}/render")]
         public async Task<ActionResult<PreviewGCode>> RenderDefault(int id)
         {
+            await Task.CompletedTask;
+
             var gCodeDraw = new GCodeBitmapDraw();
             var opt = new PreviewGCode()
             {

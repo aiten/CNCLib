@@ -237,7 +237,7 @@ export class MachineControlState {
   }
 
   async selectWOfs(offsetId: number): Promise<void> {
-    await this.postcommand("g" + (54 + offsetId).toString())
+    await this.postcommand("g" + (54 + offsetId).toString());
   }
 
   async getWOfs(offsetId: number): Promise<void> {

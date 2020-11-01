@@ -43,7 +43,7 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
             var assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
 
             info.FileName    = assPath + @"\TestData\heikes-mietzi.hpgl";
-            info.FileContent = File.ReadAllBytes(info.FileName);
+            info.FileContent = await File.ReadAllBytesAsync(info.FileName);
 
             var response = await client.PostAsJsonAsync(api, info);
             response.EnsureSuccessStatusCode();

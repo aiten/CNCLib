@@ -31,7 +31,7 @@ export class LocalCNCLibUserFileService implements CNCLibUserFileService {
     const formData = new FormData();
 
     formData.append('image', userFile.image);
-    formData.append('fileName', userFile.fileName)
+    formData.append('fileName', userFile.fileName);
 
     return this.http.post<any>(`${this.baseUrl}api/userFile`, formData).toPromise()
       .catch(this.handleErrorPromise);
@@ -41,7 +41,7 @@ export class LocalCNCLibUserFileService implements CNCLibUserFileService {
     const formData = new FormData();
 
     formData.append('image', userFile.image);
-    formData.append('fileName', userFile.fileName)
+    formData.append('fileName', userFile.fileName);
 
     return this.http.put<any>(`${this.baseUrl}api/userFile/${encodeURIComponent(fileName)}`, formData).toPromise()
       .catch(this.handleErrorPromise);

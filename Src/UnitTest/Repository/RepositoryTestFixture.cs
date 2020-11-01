@@ -29,9 +29,9 @@ namespace CNCLib.UnitTest.Repository
         {
             //drop and recreate the test Db every time the tests are run. 
             //               string dbDir     = testContext.TestDeploymentDir;
-            string dbDir     = System.IO.Path.GetTempPath();
-            string pathRoot  = System.IO.Path.GetPathRoot(dbDir);
-            var    driveInfo = new System.IO.DriveInfo(pathRoot);
+            var dbDir     = System.IO.Path.GetTempPath();
+            var pathRoot  = System.IO.Path.GetPathRoot(dbDir);
+            var driveInfo = new System.IO.DriveInfo(pathRoot);
 
             if (driveInfo.DriveType == System.IO.DriveType.Network)
             {
