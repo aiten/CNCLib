@@ -1,6 +1,6 @@
-﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.68">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>$(TargetFrameworkForFull)</TargetFramework>
+    <TargetFramework>$(TargetFrameworkForUnitTest)-windows</TargetFramework>
     <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
   </PropertyGroup>
   <ItemGroup>

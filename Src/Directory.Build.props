@@ -9,10 +9,14 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Custom Variables">
+
     <SolutionNamespace>CNCLib</SolutionNamespace>
-    <TargetFrameworkForProjects>netcoreapp3.1</TargetFrameworkForProjects>
-    <TargetFrameworkForAppAndTests>netcoreapp3.1</TargetFrameworkForAppAndTests>
-    <TargetFrameworkForFull>netcoreapp3.1</TargetFrameworkForFull>
+
+    <TargetFrameworkForProject>net5.0</TargetFrameworkForProject>
+    <TargetFrameworkForApp>net5.0</TargetFrameworkForApp>
+    <TargetFrameworkForUnitTest>net5.0</TargetFrameworkForUnitTest>
+    <TargetFrameworkForWpf>net5.0-windows</TargetFrameworkForWpf>
+
   </PropertyGroup>
 
   <PropertyGroup Label="Compiler Settings">

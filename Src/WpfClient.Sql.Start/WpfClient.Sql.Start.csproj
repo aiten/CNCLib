@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>$(TargetFrameworkForFull)</TargetFramework>
+    <TargetFramework>$(TargetFrameworkForWpf)</TargetFramework>
     <OutputType>WinExe</OutputType>
     <UseWPF>true</UseWPF>
     <StartupObject>CNCLib.WpfClient.Sql.Start.App</StartupObject>
@@ -40,7 +40,7 @@
   <ItemGroup>
     <PackageReference Include="NLog.WindowsIdentity" Version="4.7.5" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
-    <PackageReference Include="System.Management" Version="4.7.0" />
+    <PackageReference Include="System.Management" Version="5.0.0" />
   </ItemGroup>
 
 </Project>

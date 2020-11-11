@@ -205,7 +205,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
         /// <summary>
         /// Convert the eeprom-object to uint32.
         /// </summary>
-        /// <param name="eepromValue">eeprom values from machine.</param>
+        /// <param name="eeprom">eeprom values from machine.</param>
         /// <returns>uint32 to be sent to the machine.</returns>
         [HttpPost("fromEeprom")]
         public ActionResult<UInt32[]> GetEepromInfo([FromBody] Eeprom eeprom)

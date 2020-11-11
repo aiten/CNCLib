@@ -20,6 +20,7 @@ namespace CNCLib.Serial.Server
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Hosting.WindowsServices;
 
     using NLog.Web;
 
@@ -46,7 +47,7 @@ namespace CNCLib.Serial.Server
             else
             {
                 var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                if (!Directory.Exists(localAppData) || ProgramUtilities.RunsAsService())
+                if (!Directory.Exists(localAppData) || WindowsServiceHelpers.IsWindowsService())
                 {
                     // service user
                     localAppData = Environment.GetEnvironmentVariable("ProgramData");
