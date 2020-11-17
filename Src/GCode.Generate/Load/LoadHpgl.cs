@@ -42,7 +42,7 @@ namespace CNCLib.GCode.Generate.Load
                 string line;
                 var    last    = new Point3D();
                 bool   isPenUp = true;
-                var    stream  = new CommandStream();
+                var    stream  = new ParserStreamReader();
 
                 while ((line = sr.ReadLine()) != null)
                 {
@@ -52,7 +52,7 @@ namespace CNCLib.GCode.Generate.Load
                     while (!stream.IsEOF())
                     {
                         stream.SkipSpaces();
-                        int cmdIdx = stream.IsCommand(cmds);
+                        int cmdIdx = stream.GetString(cmds);
 
                         if (cmdIdx >= 0)
                         {
@@ -70,7 +70,7 @@ namespace CNCLib.GCode.Generate.Load
                             {
                                 var pt = new Point3D();
                                 pt.X = stream.GetInt() / 40.0;
-                                stream.IsCommand(",");
+                                stream.GetString(",");
                                 pt.Y = stream.GetInt() / 40.0;
 
                                 AdjustOrig(ref pt);
@@ -90,7 +90,7 @@ namespace CNCLib.GCode.Generate.Load
 
                                 last = pt;
 
-                                stream.IsCommand(",");
+                                stream.GetString(",");
                             }
                         }
                         else if (stream.SkipSpaces() == ';')

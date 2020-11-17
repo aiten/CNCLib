@@ -73,9 +73,9 @@ namespace CNCLib.GCode.Generate.Commands
 
         #region Serialization
 
-        public override void ReadFrom(CommandStream stream)
+        public override void ReadFrom(ParserStreamReader stream)
         {
-            int saveIndex = stream.PushIdx();
+            int saveIndex = stream.PushPosition();
 
             stream.Next();
 
@@ -91,7 +91,7 @@ namespace CNCLib.GCode.Generate.Commands
                 else
                 {
                     // error => do not analyze line
-                    stream.PopIdx(saveIndex);
+                    stream.PopPosition(saveIndex);
                 }
             }
 
@@ -111,7 +111,7 @@ namespace CNCLib.GCode.Generate.Commands
 
         private bool EvaluateParameterValue(CommandState state, out double paramValue)
         {
-            var lineStream       = new CommandStream() { Line                              = GCodeAdd };
+            var lineStream       = new ParserStreamReader() { Line                              = GCodeAdd };
             var expressionParser = new GCodeExpressionParser(lineStream) { ParameterValues = state.ParameterValues };
             expressionParser.Parse();
             if (expressionParser.IsError())

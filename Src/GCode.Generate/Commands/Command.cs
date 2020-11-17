@@ -177,7 +177,7 @@ namespace CNCLib.GCode.Generate.Commands
             {
                 if (var.ParameterIsTerm)
                 {
-                    var lineStream       = new CommandStream() { Line                              = var.Parameter };
+                    var lineStream       = new ParserStreamReader() { Line                              = var.Parameter };
                     var expressionParser = new GCodeExpressionParser(lineStream) { ParameterValues = state.ParameterValues };
                     expressionParser.Parse();
                     if (!expressionParser.IsError())
@@ -381,7 +381,7 @@ namespace CNCLib.GCode.Generate.Commands
             }
         }
 
-        protected void ReadFromToEnd(CommandStream stream)
+        protected void ReadFromToEnd(ParserStreamReader stream)
         {
             GCodeAdd = "";
             while (!stream.IsEOF())
@@ -391,7 +391,7 @@ namespace CNCLib.GCode.Generate.Commands
             }
         }
 
-        protected double? ReadVariable(CommandStream stream, char param, bool allowNameOnly)
+        protected double? ReadVariable(ParserStreamReader stream, char param, bool allowNameOnly)
         {
             stream.Next();
             stream.SkipSpaces();
@@ -452,7 +452,7 @@ namespace CNCLib.GCode.Generate.Commands
             throw new ArgumentOutOfRangeException(nameof(param), param, @"Illegal Variable name.");
         }
 
-        public virtual void ReadFrom(CommandStream stream)
+        public virtual void ReadFrom(ParserStreamReader stream)
         {
             var ep = new Point3D();
 

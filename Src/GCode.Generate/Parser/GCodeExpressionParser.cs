@@ -22,7 +22,7 @@ namespace CNCLib.GCode.Generate.Parser
 
     public class GCodeExpressionParser : ExpressionParser
     {
-        public GCodeExpressionParser(CommandStream reader) : base(reader)
+        public GCodeExpressionParser(ParserStreamReader reader) : base(reader)
         {
             LeftParenthesis  = '[';
             RightParenthesis = ']';
@@ -59,7 +59,7 @@ namespace CNCLib.GCode.Generate.Parser
         {
             // read variable name of gcode : #1 or #<_x>
 
-            var idx = Reader.PushIdx();
+            var idx = Reader.PushPosition();
 
             char ch = Reader.NextChar;
             if (ch == '#')
@@ -69,7 +69,7 @@ namespace CNCLib.GCode.Generate.Parser
                 _state._number = Reader.GetInt();
             }
 
-            Reader.PopIdx(idx);
+            Reader.PopPosition(idx);
             return base.ReadIdent();
         }
 
