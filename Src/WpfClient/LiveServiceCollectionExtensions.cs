@@ -14,6 +14,8 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
+using Framework.Tools.Password;
+
 namespace CNCLib.WpfClient
 {
     using CNCLib.Service.Abstraction;
@@ -33,6 +35,7 @@ namespace CNCLib.WpfClient
                 .AddTransient<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>()
                 .AddTransient<IFactory<IJoystickService>, FactoryResolve<IJoystickService>>()
                 .AddTransient<IFactory<IUserService>, FactoryResolve<IUserService>>()
+                .AddTransient<IOneWayPasswordProvider, Pbkdf2PasswordProvider>()
                 .AddAssemblyByName(
                     n => n.EndsWith("ViewModel"),
                     ServiceLifetime.Transient,

@@ -42,17 +42,16 @@ namespace CNCLib.GCode.Generate.Load
                 string line;
                 var    last    = new Point3D();
                 bool   isPenUp = true;
-                var    stream  = new ParserStreamReader();
 
                 while ((line = sr.ReadLine()) != null)
                 {
-                    stream.Line = line;
+                    var parser = new Parser(line);
 
                     var cmds = new[] { "PU", "PD", "PA", "PR" };
-                    while (!stream.IsEOF())
+                    while (!parser.IsEOF())
                     {
-                        stream.SkipSpaces();
-                        int cmdIdx = stream.GetString(cmds);
+                        parser.SkipSpaces();
+                        int cmdIdx = parser.TryGetString(cmds);
 
                         if (cmdIdx >= 0)
                         {
@@ -66,12 +65,12 @@ namespace CNCLib.GCode.Generate.Load
                                     break;
                             }
 
-                            while (stream.IsNumber())
+                            while (parser.IsNumber())
                             {
                                 var pt = new Point3D();
-                                pt.X = stream.GetInt() / 40.0;
-                                stream.GetString(",");
-                                pt.Y = stream.GetInt() / 40.0;
+                                pt.X = parser.GetInt() / 40.0;
+                                parser.TryGetString(",");
+                                pt.Y = parser.GetInt() / 40.0;
 
                                 AdjustOrig(ref pt);
 
@@ -90,16 +89,16 @@ namespace CNCLib.GCode.Generate.Load
 
                                 last = pt;
 
-                                stream.GetString(",");
+                                parser.TryGetString(",");
                             }
                         }
-                        else if (stream.SkipSpaces() == ';')
+                        else if (parser.SkipSpaces() == ';')
                         {
-                            stream.Next();
+                            parser.Next();
                         }
                         else
                         {
-                            var hpglCmd = stream.ReadString(new[] { ';' });
+                            var hpglCmd = parser.ReadString(new[] { ';' });
                             list.Add(new HpglCommand { CommandString = hpglCmd });
                         }
                     }

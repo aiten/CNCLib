@@ -73,29 +73,29 @@ namespace CNCLib.GCode.Generate.Commands
 
         #region Serialization
 
-        public override void ReadFrom(ParserStreamReader stream)
+        public override void ReadFrom(Parser parser)
         {
-            int saveIndex = stream.PushPosition();
+            int saveIndex = parser.PushPosition();
 
-            stream.Next();
+            parser.Next();
 
-            if (stream.IsNumber())
+            if (parser.IsNumber())
             {
-                int parameter = stream.GetInt();
+                int parameter = parser.GetInt();
 
-                if (parameter >= 0 && stream.SkipSpacesToUpper() == '=')
+                if (parameter >= 0 && parser.SkipSpacesToUpper() == '=')
                 {
-                    stream.Next();
+                    parser.Next();
                     ParameterNo = parameter;
                 }
                 else
                 {
                     // error => do not analyze line
-                    stream.PopPosition(saveIndex);
+                    parser.PopPosition(saveIndex);
                 }
             }
 
-            ReadFromToEnd(stream);
+            ReadFromToEnd(parser);
         }
 
         public override void UpdateCalculatedEndPosition(CommandState state)

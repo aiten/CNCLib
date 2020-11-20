@@ -25,8 +25,8 @@ namespace CNCLib.GCode.Generate.Load
 
     public class LoadGCode : LoadBase
     {
-        readonly ParserStreamReader _stream = new ParserStreamReader();
-        Command                _lastNoPrefixCommand;
+        readonly Parser _parser = new Parser("");
+        Command         _lastNoPrefixCommand;
 
         public override void Load()
         {
@@ -41,7 +41,7 @@ namespace CNCLib.GCode.Generate.Load
                     string line;
                     while ((line = sr.ReadLine()) != null)
                     {
-                        _stream.Line = line;
+                        _parser.Reset(line);
                         Command();
                     }
                 }
@@ -62,7 +62,7 @@ namespace CNCLib.GCode.Generate.Load
             {
                 foreach (string line in lines)
                 {
-                    _stream.Line = line;
+                    _parser.Reset(line);
                     Command();
                 }
             }
@@ -78,27 +78,27 @@ namespace CNCLib.GCode.Generate.Load
         {
             int? lineNumber = null;
 
-            if (_stream.NextCharToUpper == 'N')
+            if (_parser.NextCharToUpper == 'N')
             {
-                _stream.Next();
+                _parser.Next();
 
-                if (!_stream.IsNumber())
+                if (!_parser.IsNumber())
                 {
                     throw new FormatException(@"A number must follow after N");
                 }
 
-                lineNumber = _stream.GetInt();
-                _stream.SkipSpaces();
+                lineNumber = _parser.GetInt();
+                _parser.SkipSpaces();
             }
 
-            _stream.SkipSpaces();
+            _parser.SkipSpaces();
             Command cmd;
 
-            if (_stream.NextCharToUpper == 'G')
+            if (_parser.NextCharToUpper == 'G')
             {
                 cmd = ReadGCommand();
             }
-            else if ("XYZABCF".IndexOf(_stream.NextCharToUpper) >= 0)
+            else if ("XYZABCF".IndexOf(_parser.NextCharToUpper) >= 0)
             {
                 if (_lastNoPrefixCommand == null)
                 {
@@ -107,11 +107,11 @@ namespace CNCLib.GCode.Generate.Load
 
                 cmd = ReadGNoPrefixCommand();
             }
-            else if (_stream.NextCharToUpper == 'M')
+            else if (_parser.NextCharToUpper == 'M')
             {
                 cmd = ReadMCommand();
             }
-            else if (_stream.NextCharToUpper == '#')
+            else if (_parser.NextCharToUpper == '#')
             {
                 cmd = ReadSetParameterCommand();
             }
@@ -134,16 +134,16 @@ namespace CNCLib.GCode.Generate.Load
         private Command AddGxxMxxCommand(Command cmd, string cmdName)
         {
             cmd.SetCode(cmdName);
-            cmd.ReadFrom(_stream);
+            cmd.ReadFrom(_parser);
             return cmd;
         }
 
         private Command ReadGCommand()
         {
-            _stream.Next();
+            _parser.Next();
 
-            string cmdName = "G" + _stream.ReadDigits();
-            _stream.SkipSpaces();
+            string cmdName = "G" + _parser.ReadDigits();
+            _parser.SkipSpaces();
 
             Command cmd = CommandFactory.Create(cmdName);
 
@@ -154,7 +154,7 @@ namespace CNCLib.GCode.Generate.Load
                     _lastNoPrefixCommand = cmd;
                 }
 
-                cmd.ReadFrom(_stream);
+                cmd.ReadFrom(_parser);
             }
             else
             {
@@ -169,21 +169,21 @@ namespace CNCLib.GCode.Generate.Load
             // g without prefix
 
             Command cmd = CommandFactory.Create(_lastNoPrefixCommand.Code);
-            cmd?.ReadFrom(_stream);
+            cmd?.ReadFrom(_parser);
             return cmd;
         }
 
         private Command ReadMCommand()
         {
-            _stream.Next();
-            string cmdName = "M" + _stream.ReadDigits();
-            _stream.SkipSpaces();
+            _parser.Next();
+            string cmdName = "M" + _parser.ReadDigits();
+            _parser.SkipSpaces();
 
             Command cmd = CommandFactory.Create(cmdName);
 
             if (cmd != null)
             {
-                cmd.ReadFrom(_stream);
+                cmd.ReadFrom(_parser);
             }
             else
             {
@@ -196,14 +196,14 @@ namespace CNCLib.GCode.Generate.Load
         private Command ReadOtherCommand()
         {
             Command cmd = CommandFactory.Create("GXX");
-            cmd.ReadFrom(_stream);
+            cmd.ReadFrom(_parser);
             return cmd;
         }
 
         private Command ReadSetParameterCommand()
         {
             Command cmd = CommandFactory.Create("#");
-            cmd.ReadFrom(_stream);
+            cmd.ReadFrom(_parser);
             return cmd;
         }
     }

@@ -26,10 +26,6 @@ namespace CNCLib.GCode.Generate.Parser
         {
         }
 
-        public override void Parse()
-        {
-        }
-
         public static bool IsCommentStart(char ch)
         {
             return ch == '(' || ch == '*' || ch == ';';
@@ -39,7 +35,7 @@ namespace CNCLib.GCode.Generate.Parser
 
         public char SkipSpacesOrComment()
         {
-            switch (Reader.SkipSpaces())
+            switch (SkipSpaces())
             {
                 case '(':
                     SkipCommentNested();
@@ -57,7 +53,7 @@ namespace CNCLib.GCode.Generate.Parser
 
         void SkipCommentSingleLine()
         {
-            Reader.ReadToEnd();
+            ReadToEnd();
         }
 
         void SkipCommentNested()

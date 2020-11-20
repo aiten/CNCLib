@@ -48,7 +48,7 @@ namespace CNCLib.GCode.Generate.Parser
 
             if (ch == '\0')
             {
-                _state._detailToken = ETokenType.EndOfLineSy;
+                _state._detailToken = TokenType.EndOfLineSy;
                 return;
             }
 
@@ -59,17 +59,31 @@ namespace CNCLib.GCode.Generate.Parser
         {
             // read variable name of gcode : #1 or #<_x>
 
-            var idx = Reader.PushPosition();
-
-            char ch = Reader.NextChar;
+            char ch = NextChar;
             if (ch == '#')
             {
                 // start of GCODE variable => format #1 or #<_x>
-                Reader.Next();
-                _state._number = Reader.GetInt();
+                ch = Next();
+
+                if (ch == '<')
+                {
+                    ch = Next();
+                    var ident = ReadString('>');
+                    if (NextChar == '>')
+                    {
+                        Next();
+                        return $"#<{ident}>";
+                    }
+                    Error("> expected");
+                    return "";
+                }
+                else
+                {
+                    _state._number = GetInt();
+                    return $"#{_state._number}";
+                }
             }
 
-            Reader.PopPosition(idx);
             return base.ReadIdent();
         }
 
@@ -83,8 +97,16 @@ namespace CNCLib.GCode.Generate.Parser
             if (varName[0] == '#')
             {
                 // assigned in ReadIdent
-                int paramNo = int.Parse(varName.TrimStart('#'));
-                answer = ParameterValues.ContainsKey(paramNo) ? ParameterValues[paramNo] : 0.0;
+
+                if (varName[1] == '<')
+                {
+                    return false;
+                }
+                else
+                {
+                    int paramNo = int.Parse(varName.TrimStart('#'));
+                    answer = ParameterValues.ContainsKey(paramNo) ? ParameterValues[paramNo] : 0.0;
+                }
 
                 return true;
             }

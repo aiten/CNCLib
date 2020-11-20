@@ -42,7 +42,7 @@ namespace CNCLib.WpfClient
             User   = CreatePrincipal(userName, UserId);
 
             UserName          = userName; // Environment.UserName;
-            EncriptedPassword = Base64Helper.StringToBase64(UserName);
+            EncryptedPassword = Base64Helper.StringToBase64(UserName);
         }
 
         private ClaimsPrincipal CreatePrincipal(string userName, int userId)
@@ -61,9 +61,9 @@ namespace CNCLib.WpfClient
 
         public string UserName { get; private set; }
 
-        public string EncriptedPassword { get; private set; }
+        public string EncryptedPassword { get; private set; }
 
-        public string Password => Base64Helper.StringFromBase64(EncriptedPassword);
+        public string Password => Base64Helper.StringFromBase64(EncryptedPassword);
 
         public int UserId { get; private set; }
 
@@ -91,7 +91,7 @@ namespace CNCLib.WpfClient
 
                     UserId            = user.UserId;
                     User              = CreatePrincipal(UserName, UserId);
-                    EncriptedPassword = Base64Helper.StringToBase64(UserName);
+                    EncryptedPassword = Base64Helper.StringToBase64(UserName);
                 }
             }
             catch (Exception exception)

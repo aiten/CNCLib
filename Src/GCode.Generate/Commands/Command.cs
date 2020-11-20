@@ -381,37 +381,37 @@ namespace CNCLib.GCode.Generate.Commands
             }
         }
 
-        protected void ReadFromToEnd(ParserStreamReader stream)
+        protected void ReadFromToEnd(Parser parser)
         {
             GCodeAdd = "";
-            while (!stream.IsEOF())
+            while (!parser.IsEOF())
             {
-                GCodeAdd += stream.NextChar;
-                stream.Next();
+                GCodeAdd += parser.NextChar;
+                parser.Next();
             }
         }
 
-        protected double? ReadVariable(ParserStreamReader stream, char param, bool allowNameOnly)
+        protected double? ReadVariable(Parser parser, char param, bool allowNameOnly)
         {
-            stream.Next();
-            stream.SkipSpaces();
-            if (stream.NextChar == '#')
+            parser.Next();
+            parser.SkipSpaces();
+            if (parser.NextChar == '#')
             {
-                stream.Next();
-                int paramNr = stream.GetInt();
+                parser.Next();
+                int paramNr = parser.GetInt();
                 AddVariableParam(param, paramNr.ToString(), false);
                 return 0;
             }
 
-            if (stream.NextChar == '[')
+            if (parser.NextChar == '[')
             {
                 int depth = 1;
-                stream.Next();
+                parser.Next();
                 var sb = new StringBuilder();
 
-                while (!stream.IsEndCommand() && depth != 0)
+                while (!parser.IsEndCommand() && depth != 0)
                 {
-                    switch (stream.NextChar)
+                    switch (parser.NextChar)
                     {
                         case '[':
                             depth++;
@@ -423,22 +423,22 @@ namespace CNCLib.GCode.Generate.Commands
 
                     if (depth != 0)
                     {
-                        sb.Append(stream.NextChar);
+                        sb.Append(parser.NextChar);
                     }
 
-                    stream.Next();
+                    parser.Next();
                 }
 
                 AddVariableParam(param, sb.ToString(), true);
                 return 0;
             }
 
-            stream.SkipSpaces();
+            parser.SkipSpaces();
 
-            if (stream.IsNumber())
+            if (parser.IsNumber())
             {
                 bool   isFloatingPoint;
-                double val = stream.GetDouble(out isFloatingPoint);
+                double val = parser.GetDouble(out isFloatingPoint);
                 AddVariable(param, val, isFloatingPoint);
                 return val;
             }
@@ -452,44 +452,44 @@ namespace CNCLib.GCode.Generate.Commands
             throw new ArgumentOutOfRangeException(nameof(param), param, @"Illegal Variable name.");
         }
 
-        public virtual void ReadFrom(ParserStreamReader stream)
+        public virtual void ReadFrom(Parser parser)
         {
             var ep = new Point3D();
 
-            if (stream.NextChar == '.')
+            if (parser.NextChar == '.')
             {
-                stream.Next();
-                SubCode = stream.GetInt().ToString();
+                parser.Next();
+                SubCode = parser.GetInt().ToString();
             }
 
             if (PositionValid)
             {
                 while (true)
                 {
-                    switch (stream.SkipSpacesToUpper())
+                    switch (parser.SkipSpacesToUpper())
                     {
                         case 'X':
-                            ep.X = ReadVariable(stream, stream.NextCharToUpper, false);
+                            ep.X = ReadVariable(parser, parser.NextCharToUpper, false);
                             break;
                         case 'Y':
-                            ep.Y = ReadVariable(stream, stream.NextCharToUpper, false);
+                            ep.Y = ReadVariable(parser, parser.NextCharToUpper, false);
                             break;
                         case 'Z':
-                            ep.Z = ReadVariable(stream, stream.NextCharToUpper, false);
+                            ep.Z = ReadVariable(parser, parser.NextCharToUpper, false);
                             break;
                         case 'F':
-                            ReadVariable(stream, stream.NextCharToUpper, true);
+                            ReadVariable(parser, parser.NextCharToUpper, true);
                             break;
                         case 'P':
                         case 'R':
                         case 'I':
                         case 'J':
                         case 'K':
-                            ReadVariable(stream, stream.NextCharToUpper, false);
+                            ReadVariable(parser, parser.NextCharToUpper, false);
                             break;
                         default:
                         {
-                            ReadFromToEnd(stream);
+                            ReadFromToEnd(parser);
                             return;
                         }
                     }
@@ -499,14 +499,14 @@ namespace CNCLib.GCode.Generate.Commands
             {
                 while (true)
                 {
-                    switch (stream.SkipSpacesToUpper())
+                    switch (parser.SkipSpacesToUpper())
                     {
                         case 'P':
-                            ReadVariable(stream, stream.NextCharToUpper, false);
+                            ReadVariable(parser, parser.NextCharToUpper, false);
                             break;
                         default:
                         {
-                            ReadFromToEnd(stream);
+                            ReadFromToEnd(parser);
                             return;
                         }
                     }
