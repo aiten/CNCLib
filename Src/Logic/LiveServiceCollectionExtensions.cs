@@ -14,12 +14,10 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using Framework.Schedule;
-using Framework.Schedule.Abstraction;
-
 namespace CNCLib.Logic
 {
     using Framework.Dependency;
+    using Framework.Schedule;
 
     using Microsoft.Extensions.DependencyInjection;
 
@@ -27,7 +25,7 @@ namespace CNCLib.Logic
     {
         public static IServiceCollection AddLogic(this IServiceCollection services)
         {
-            services.AddAssembylIncludingInternals(ServiceLifetime.Transient, typeof(Manager.MachineManager).Assembly);
+            services.AddAssemblyIncludingInternals(ServiceLifetime.Transient, typeof(Manager.MachineManager).Assembly);
             services.AddScoped<JobParamContainer>();
             return services;
         }

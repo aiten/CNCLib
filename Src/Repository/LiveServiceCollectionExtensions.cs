@@ -27,7 +27,7 @@ namespace CNCLib.Repository
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
 
-    public static class LiveServicCollectionExtensions
+    public static class LiveServiceCollectionExtensions
     {
         public static IServiceCollection AddRepository(this IServiceCollection services, Action<DbContextOptionsBuilder> optionsAction)
         {
@@ -38,7 +38,7 @@ namespace CNCLib.Repository
             services.AddScoped<CNCLibContext, CNCLibContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
-            services.AddAssembylIncludingInternals(ServiceLifetime.Transient, typeof(Repository.MachineRepository).Assembly);
+            services.AddAssemblyIncludingInternals(ServiceLifetime.Transient, typeof(Repository.MachineRepository).Assembly);
             return services;
         }
     }

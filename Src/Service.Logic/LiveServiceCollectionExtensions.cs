@@ -24,7 +24,7 @@ namespace CNCLib.Service.Logic
     {
         public static IServiceCollection AddServiceAsLogic(this IServiceCollection services)
         {
-            services.AddAssembylIncludingInternals(ServiceLifetime.Transient, typeof(MachineService).Assembly);
+            services.AddAssemblyIncludingInternals(ServiceLifetime.Transient, typeof(MachineService).Assembly);
             return services;
         }
     }

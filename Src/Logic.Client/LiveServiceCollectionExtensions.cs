@@ -20,11 +20,11 @@ namespace CNCLib.Logic.Client
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public static class LiveServicCollectionExtensions
+    public static class LiveServiceCollectionExtensions
     {
         public static IServiceCollection AddLogicClient(this IServiceCollection services)
         {
-            services.AddAssembylIncludingInternals(ServiceLifetime.Transient, typeof(Logic.Client.DynItemController).Assembly);
+            services.AddAssemblyIncludingInternals(ServiceLifetime.Transient, typeof(Logic.Client.DynItemController).Assembly);
             return services;
         }
     }
