@@ -164,7 +164,7 @@ namespace CNCLib.GCode.Machine
             EEPROM_INFO_NEED_DTR          = (1 << 17), // deprecated
             EEPROM_INFO_DTR_IS_RESET      = (1 << 18),
 
-            EEPROM_INFO_WORKOFFSETCOUT        = (1 << 19), // 4 bits
+            EEPROM_INFO_WORKOFFSETCOUT = (1 << 19), // 4 bits
         }
 
         public static int GetCommandSyntax(uint info1)
@@ -181,17 +181,41 @@ namespace CNCLib.GCode.Machine
 
         #region Get/Set
 
-        public uint this[EValueOffsets32 ofs] { get => GetValue32(ofs); set => SetValue32(ofs, value); }
+        public uint this[EValueOffsets32 ofs]
+        {
+            get => GetValue32(ofs);
+            set => SetValue32(ofs, value);
+        }
 
-        public ushort this[EValueOffsets16 ofs] { get => GetValue16(ofs); set => SetValue16(ofs, value); }
+        public ushort this[EValueOffsets16 ofs]
+        {
+            get => GetValue16(ofs);
+            set => SetValue16(ofs, value);
+        }
 
-        public byte this[EValueOffsets8 ofs] { get => GetValue8(ofs); set => SetValue8(ofs, value); }
+        public byte this[EValueOffsets8 ofs]
+        {
+            get => GetValue8(ofs);
+            set => SetValue8(ofs, value);
+        }
 
-        public uint this[int axis, EAxisOffsets32 ofs] { get => GetAxisValue32(axis, ofs); set => SetAxisValue32(axis, ofs, value); }
+        public uint this[int axis, EAxisOffsets32 ofs]
+        {
+            get => GetAxisValue32(axis, ofs);
+            set => SetAxisValue32(axis, ofs, value);
+        }
 
-        public ushort this[int axis, EAxisOffsets16 ofs] { get => GetAxisValue16(axis, ofs); set => SetAxisValue16(axis, ofs, value); }
+        public ushort this[int axis, EAxisOffsets16 ofs]
+        {
+            get => GetAxisValue16(axis, ofs);
+            set => SetAxisValue16(axis, ofs, value);
+        }
 
-        public byte this[int axis, EAxisOffsets8 ofs] { get => GetAxisValue8(axis, ofs); set => SetAxisValue8(axis, ofs, value); }
+        public byte this[int axis, EAxisOffsets8 ofs]
+        {
+            get => GetAxisValue8(axis, ofs);
+            set => SetAxisValue8(axis, ofs, value);
+        }
 
         private EValueOffsets32 AddPlotterOfs(EValueOffsets32Plotter ofs)
         {
@@ -203,9 +227,17 @@ namespace CNCLib.GCode.Machine
             return (EValueOffsets16)((uint)ofs + (_ofsAfterAxis << 8));
         }
 
-        public uint this[EValueOffsets32Plotter ofs] { get => GetValue32(AddPlotterOfs(ofs)); set => SetValue32(AddPlotterOfs(ofs), value); }
+        public uint this[EValueOffsets32Plotter ofs]
+        {
+            get => GetValue32(AddPlotterOfs(ofs));
+            set => SetValue32(AddPlotterOfs(ofs), value);
+        }
 
-        public ushort this[EValueOffsets16Plotter ofs] { get => GetValue16(AddPlotterOfs(ofs)); set => SetValue16(AddPlotterOfs(ofs), value); }
+        public ushort this[EValueOffsets16Plotter ofs]
+        {
+            get => GetValue16(AddPlotterOfs(ofs));
+            set => SetValue16(AddPlotterOfs(ofs), value);
+        }
 
         public List<string> ToGCode()
         {

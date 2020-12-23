@@ -111,7 +111,7 @@ namespace CNCLib.GCode.Generate.Commands
 
         private bool EvaluateParameterValue(CommandState state, out double paramValue)
         {
-            var lineStream       = new ParserStreamReader() { Line                              = GCodeAdd };
+            var lineStream       = new ParserStreamReader() { Line                         = GCodeAdd };
             var expressionParser = new GCodeExpressionParser(lineStream) { ParameterValues = state.ParameterValues };
             expressionParser.Parse();
             if (expressionParser.IsError())

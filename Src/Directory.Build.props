@@ -1,28 +1,28 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <PropertyGroup Label="Versioning">
-    <Authors>Herbert Aitenbichler</Authors>
-    <Company>Herbert Aitenbichler</Company>
-    <VersionPrefix>1.4.0</VersionPrefix>
-    <Copyright>Herbert Aitenbichler</Copyright>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-  </PropertyGroup>
+	<PropertyGroup Label="Versioning">
+		<Authors>Herbert Aitenbichler</Authors>
+		<Company>Herbert Aitenbichler</Company>
+		<VersionPrefix>1.4.1</VersionPrefix>
+		<Copyright>Herbert Aitenbichler</Copyright>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+	</PropertyGroup>
 
-  <PropertyGroup Label="Custom Variables">
+	<PropertyGroup Label="Custom Variables">
 
-    <SolutionNamespace>CNCLib</SolutionNamespace>
+		<SolutionNamespace>CNCLib</SolutionNamespace>
 
-    <TargetFrameworkForProject>net5.0</TargetFrameworkForProject>
-    <TargetFrameworkForApp>net5.0</TargetFrameworkForApp>
-    <TargetFrameworkForUnitTest>net5.0</TargetFrameworkForUnitTest>
-    <TargetFrameworkForWpf>net5.0-windows</TargetFrameworkForWpf>
+		<TargetFrameworkForProject>net5.0</TargetFrameworkForProject>
+		<TargetFrameworkForApp>net5.0</TargetFrameworkForApp>
+		<TargetFrameworkForUnitTest>net5.0</TargetFrameworkForUnitTest>
+		<TargetFrameworkForWpf>net5.0-windows</TargetFrameworkForWpf>
 
-  </PropertyGroup>
+	</PropertyGroup>
 
-  <PropertyGroup Label="Compiler Settings">
-    <LangVersion>latest</LangVersion>
-    <AssemblyName>$(SolutionNamespace).$(MSBuildProjectName)</AssemblyName>
-    <RootNamespace>$(SolutionNamespace).$(MSBuildProjectName)</RootNamespace>
-  </PropertyGroup>
+	<PropertyGroup Label="Compiler Settings">
+		<LangVersion>latest</LangVersion>
+		<AssemblyName>$(SolutionNamespace).$(MSBuildProjectName)</AssemblyName>
+		<RootNamespace>$(SolutionNamespace).$(MSBuildProjectName)</RootNamespace>
+	</PropertyGroup>
 
 </Project>

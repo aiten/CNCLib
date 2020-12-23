@@ -177,7 +177,7 @@ namespace CNCLib.GCode.Generate.Commands
             {
                 if (var.ParameterIsTerm)
                 {
-                    var lineStream       = new ParserStreamReader() { Line                              = var.Parameter };
+                    var lineStream       = new ParserStreamReader() { Line                         = var.Parameter };
                     var expressionParser = new GCodeExpressionParser(lineStream) { ParameterValues = state.ParameterValues };
                     expressionParser.Parse();
                     if (!expressionParser.IsError())

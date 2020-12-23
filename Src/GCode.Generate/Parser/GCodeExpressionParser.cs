@@ -74,6 +74,7 @@ namespace CNCLib.GCode.Generate.Parser
                         Next();
                         return $"#<{ident}>";
                     }
+
                     Error("> expected");
                     return "";
                 }
