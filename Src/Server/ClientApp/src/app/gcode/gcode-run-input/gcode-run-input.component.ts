@@ -21,8 +21,6 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserFile } from "../../models/userFile";
 import { CNCLibUserFileService } from '../../services/CNCLib-userFile.service';
 
-import { SerialServerConnection } from '../../serial-server/serial-server-connection';
-
 @Component(
   {
     selector: 'gcode-run-input',
@@ -35,7 +33,6 @@ export class GcodeRunInputComponent implements OnInit {
   gCodeForm: FormGroup;
 
   constructor(
-    public serialServer: SerialServerConnection,
     public userFileService: CNCLibUserFileService,
     private fb: FormBuilder
   ) {
@@ -118,11 +115,6 @@ export class GcodeRunInputComponent implements OnInit {
   }
 
   async ngOnInit() {
-
-    if (this.serialServer.getMachine()) {
-      this.entry.autoScaleSizeX = this.serialServer.getMachine().sizeX;
-      this.entry.autoScaleSizeY = this.serialServer.getMachine().sizeY;
-    }
 
     this.gCodeForm.patchValue(this.entry);
   }

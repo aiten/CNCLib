@@ -16,6 +16,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { LoadOptions } from "../../models/load-options";
+import { SerialServerConnection } from '../../serial-server/serial-server-connection';
 import { CNCLibLoadOptionService } from '../../services/CNCLib-load-option.service';
 import { CNCLibGCodeService } from '../../services/CNCLib-gcode.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -38,6 +39,7 @@ export class GcodeRunComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
+    public serialServer: SerialServerConnection,
     private loadOptionService: CNCLibLoadOptionService,
     private gCodeService: CNCLibGCodeService,
     private previewGlobal: PreviewGlobal
@@ -57,6 +59,12 @@ export class GcodeRunComponent implements OnInit {
 
     if (id != null) {
       this.entry = await this.loadOptionService.getById(+id);
+
+      if (this.serialServer.getMachine()) {
+        this.entry.autoScaleSizeX = this.serialServer.getMachine().sizeX;
+        this.entry.autoScaleSizeY = this.serialServer.getMachine().sizeY;
+      }
+
       this.isLoaded = true;
     } else if (this.previewGlobal.loadOptions != null) {
       this.entry = this.previewGlobal.loadOptions;
