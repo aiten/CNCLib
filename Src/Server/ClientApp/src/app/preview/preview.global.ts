@@ -16,6 +16,7 @@
 
 import { Injectable } from '@angular/core';
 import { PreviewGCode } from '../models/gcode-view-input';
+import { LoadOptions } from "../models/load-options";
 
 import { Machine } from '../models/machine';
 
@@ -29,6 +30,8 @@ export class PreviewGlobal {
   isShowParam: boolean = false;
 
   previewOpt = new PreviewGCode();
+
+  loadOptions: LoadOptions;
 
   setFromMachine(machine: Machine) {
     this.previewOpt.sizeX = machine.sizeX;

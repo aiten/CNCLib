@@ -47,14 +47,22 @@ export class GcodeRunComponent implements OnInit {
   async createGCode() {
     this.gCommands = await this.gCodeService.createGCode(this.entry);
     this.previewGlobal.commands = this.gCommands;
+    this.previewGlobal.loadOptions = this.entry;
     this.router.navigate([previewURL]);
   }
 
   async ngOnInit() {
 
     let id = this.route.snapshot.paramMap.get('id');
-    this.entry = await this.loadOptionService.getById(+id);
 
-    this.isLoaded = true;
+    if (id != null) {
+      this.entry = await this.loadOptionService.getById(+id);
+      this.isLoaded = true;
+    } else if (this.previewGlobal.loadOptions != null) {
+      this.entry = this.previewGlobal.loadOptions;
+      this.isLoaded = true;
+    } else {
+      console.log("Error no input for gcode-run");
+    }
   }
 }

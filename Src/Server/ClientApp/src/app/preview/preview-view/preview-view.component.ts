@@ -18,12 +18,13 @@ import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angula
 
 import { CNCLibGCodeService } from '../../services/CNCLib-gcode.service';
 import { PreviewGCode } from '../../models/gcode-view-input';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { SerialServerConnection } from "../../serial-server/serial-server-connection";
 import { SerialServerService } from '../../services/serial-server.service';
 
 import { PreviewGlobal } from '../preview.global';
+import { gcodeURL } from '../../app.global';
 
 import { interval } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
@@ -41,6 +42,7 @@ export class PreviewViewComponent implements OnInit, AfterViewInit {
   imagediv: ElementRef;
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private gCodeService: CNCLibGCodeService,
     public serialServer: SerialServerConnection,
@@ -97,6 +99,10 @@ export class PreviewViewComponent implements OnInit, AfterViewInit {
 
   async ngOnInit() {
     await this.refreshImage();
+  }
+
+  reRun() {
+    this.router.navigate([gcodeURL,'run']);
   }
 
   canSendToMachine(): boolean {
