@@ -15,7 +15,7 @@
 */
 
 import { Component, OnInit, Input } from '@angular/core';
-import { LoadOptions, ELoadType, PenType, SmoothTypeEnum } from '../../models/load-options';
+import { LoadOptions, ELoadType, PenType, ConvertTypeEnum, SmoothTypeEnum } from '../../models/load-options';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { UserFile } from "../../models/userFile";
@@ -46,6 +46,9 @@ export class GcodeRunInputComponent implements OnInit {
         autoScaleSizeY: [0.0, [Validators.required]],
         autoScaleBorderDistX: [0.0, [Validators.required]],
         autoScaleBorderDistY: [0.0, [Validators.required]],
+        moveSpeed: [450],
+        cutterSize: [1.5],
+        engravePosDown: [-0.5],
       });
 
     this.gCodeForm.valueChanges.subscribe((
@@ -105,6 +108,10 @@ export class GcodeRunInputComponent implements OnInit {
 
   isLaser() {
     return (this.isHpgl() && this.entry.penMoveType == PenType.CommandString) || this.isImageOrImageHole();
+  }
+
+  isInvertLineOrder() {
+    return this.isHpgl() && this.entry.convertType == ConvertTypeEnum.InvertLineSequence;
   }
 
   isEngrave() {

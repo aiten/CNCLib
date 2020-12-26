@@ -42,4 +42,29 @@
 
   </div>
 
+  <div *ngIf="isHpglOrImageOrImageHole()" class="input-container">
+
+    <div class="form-group input-group">
+      <span class="input-group-addon">Move Speed (mm/min)</span>
+      <input matInput class="form-control" formControlName="moveSpeed"/>
+    </div>
+
+  </div>
+
+  <div *ngIf="isInvertLineOrder()" class="input-container">
+
+    <div class="form-group input-group">
+      <span class="input-group-addon">Cutter Size (mm)</span>
+      <input matInput class="form-control" formControlName="cutterSize"/>
+    </div>
+
+  </div>
+  <div *ngIf="isEngrave()" class="input-container">
+
+    <div class="form-group input-group">
+      <span class="input-group-addon">Z-Position Down</span>
+      <input matInput class="form-control" formControlName="engravePosDown"/>
+    </div>
+  </div>
+
 </form>
