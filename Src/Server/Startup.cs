@@ -237,7 +237,7 @@ namespace CNCLib.Server
 
             var scheduler = Services.GetRequiredService<IJobScheduler>();
             scheduler
-                .Periodic<ICleanupJob>(TimeSpan.FromMinutes(1), executor => SetJobExecutor(executor, "Cleanup 1"))
+                .Periodic<ICleanupJob>(TimeSpan.FromHours(5), executor => SetJobExecutor(executor, "Cleanup 1"))
                 .Then<ICleanupJob>(executor => SetJobExecutor(executor,                              "Cleanup 2"))
                 .Then<ICleanupJob>(executor => SetJobExecutor(executor,                              "Cleanup 3"));
             scheduler.Daily<IDailyJob>(TimeSpan.Parse("02:00"), executor => SetJobExecutor(executor, "Hallo from daily"));

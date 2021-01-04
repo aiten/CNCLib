@@ -44,12 +44,10 @@ namespace CNCLib.Serial.WebAPI.Controllers
     public class SerialPortController : Controller
     {
         private readonly IHubContext<CNCLibHub, ICNCLibHubClient> _hubContext;
-        private static   IHubContext<CNCLibHub, ICNCLibHubClient> _myHubContext;
 
         public SerialPortController(IHubContext<CNCLibHub, ICNCLibHubClient> hubContext)
         {
             _hubContext   = hubContext;
-            _myHubContext = _hubContext;
         }
 
         private SerialPortDefinition GetDefinition(SerialPortWrapper port)

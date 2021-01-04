@@ -108,7 +108,7 @@ namespace CNCLib.WebAPI.Controllers
                     await this.Add(_manager, userFileDto);
                 }
 
-                return Ok(value.FileName);
+                return Ok();
             }
 
             return NoContent();

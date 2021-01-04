@@ -57,7 +57,7 @@ export class GcodeRunInputComponent implements OnInit {
     });
   }
 
-  uploadFile(event) {
+  async uploadFile(event) {
     let files = event.target.files;
     if (files.length > 0) {
       let tmpFileName = "$$$";
@@ -65,7 +65,7 @@ export class GcodeRunInputComponent implements OnInit {
       let userFile = new UserFile();
       userFile.image = file;
       userFile.fileName = tmpFileName;
-      this.userFileService.update(tmpFileName, userFile);
+      await this.userFileService.update(tmpFileName, userFile);
       this.gCodeForm.get('fileName').setValue(this.entry.fileName = 'db:' + tmpFileName);
     }
   }

@@ -33,15 +33,6 @@ namespace CNCLib.Serial.WebAPI.Controllers
     [Route("api/[controller]")]
     public class GCodeController : Controller
     {
-        private readonly IHubContext<CNCLibHub, ICNCLibHubClient> _hubContext;
-        private static   IHubContext<CNCLibHub, ICNCLibHubClient> _myHubContext;
-
-        public GCodeController(IHubContext<CNCLibHub, ICNCLibHubClient> hubContext)
-        {
-            _hubContext   = hubContext;
-            _myHubContext = _hubContext;
-        }
-
         #region SpecialCommand
 
         /// <summary>
