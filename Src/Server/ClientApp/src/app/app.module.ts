@@ -23,12 +23,14 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ColorPickerModule } from 'ngx-color-picker';
 
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { faHome, faSync, faPlug, faCalculator, faToolbox, faCogs, faEllipsisV, faArrowDown, faChevronDown, faChevronUp, faChevronLeft, faChevronRight, faDrawPolygon } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faSync, faPlug, faCalculator, faToolbox, faCogs, faDatabase, faEllipsisV, faArrowDown, faChevronDown, faChevronUp, faChevronLeft, faChevronRight, faDrawPolygon } from '@fortawesome/free-solid-svg-icons';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { MaterialModule } from './material.module';
+
+import { NgxFilesizeModule } from 'ngx-filesize';
 
 import { MessageBoxComponent } from './modal/message-box/message-box.component';
 
@@ -41,6 +43,7 @@ import { userRoutes, userComponents } from './user/user-routing';
 import { gcodeRoutes, gcodeComponents } from './gcode/gcode-routing';
 import { previewRoutes, previewComponents } from './preview/preview.routing';
 import { servicesProvides, servicesComponents } from "./services/services-routing";
+import { userFileRoutes, userFileComponents } from './user-file/user-file.routing';
 
 import { BasicAuthInterceptor, ErrorInterceptor } from './_helpers';
 import { MouseWheelDirective } from './_helpers/mousewheel.directive';
@@ -64,6 +67,7 @@ import { SerialPortHistoryPreviewGlobal } from "./serialporthistory/models/seria
     ...machineControlComponents,
     ...previewComponents,
     ...gcodeComponents,
+    ...userFileComponents,
     ...eepromConfigComponents,
     ...serialPortHistoryComponents,
     ...servicesComponents
@@ -72,6 +76,7 @@ import { SerialPortHistoryPreviewGlobal } from "./serialporthistory/models/seria
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     BrowserAnimationsModule,
     ColorPickerModule,
+    NgxFilesizeModule,    
     HttpClientModule,
     FormsModule,
     FontAwesomeModule,
@@ -86,6 +91,7 @@ import { SerialPortHistoryPreviewGlobal } from "./serialporthistory/models/seria
         ...machineControlRoutes,
         ...gcodeRoutes,
         ...previewRoutes,
+        ...userFileRoutes,
         ...serialPortHistoryRoutes,
       ],
       {
@@ -117,6 +123,7 @@ export class AppModule {
       faCalculator,
       faToolbox,
       faCogs,
+      faDatabase,
       faEllipsisV,
       faArrowDown,
       faChevronDown,

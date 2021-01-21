@@ -102,7 +102,7 @@ export class PreviewViewComponent implements OnInit, AfterViewInit {
   }
 
   reRun() {
-    this.router.navigate([gcodeURL,'run']);
+    this.router.navigate([gcodeURL, 'run']);
   }
 
   canSendToMachine(): boolean {

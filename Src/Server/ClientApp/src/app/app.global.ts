@@ -19,3 +19,4 @@ export const machineControlURL = '/machinecontrol';
 export const gcodeURL = '/gcode';
 export const previewURL = '/preview';
 export const homeURL = '/home';
+export const fileURL = '/file';

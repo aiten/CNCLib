@@ -15,11 +15,16 @@
 */
 
 import { UserFile } from '../models/userFile'
+import { UserFileInfo } from '../models/userFileInfo'
 
 export abstract class CNCLibUserFileService {
-  public abstract add(userFile: UserFile): Promise<any>;
+  public abstract add(userFile: UserFile): Promise<UserFile>;
 
   public abstract update(filename: string, userFile: UserFile): Promise<any>;
 
   public abstract delete(filename: string): Promise<any>;
+
+  public abstract getAll(wildcard: string): Promise<UserFileInfo[]>;
+
+  public abstract get(filename: string): Promise<Blob>;
 }

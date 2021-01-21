@@ -47,7 +47,7 @@ namespace CNCLib.Serial.WebAPI.Controllers
 
         public SerialPortController(IHubContext<CNCLibHub, ICNCLibHubClient> hubContext)
         {
-            _hubContext   = hubContext;
+            _hubContext = hubContext;
         }
 
         private SerialPortDefinition GetDefinition(SerialPortWrapper port)

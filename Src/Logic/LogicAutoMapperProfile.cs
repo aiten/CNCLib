@@ -19,6 +19,7 @@ namespace CNCLib.Logic
     using AutoMapper;
 
     using CNCLib.Repository.Abstraction.Entities;
+    using CNCLib.Repository.Abstraction.QueryResult;
 
     public sealed class LogicAutoMapperProfile : Profile
     {
@@ -33,6 +34,7 @@ namespace CNCLib.Logic
 
             CreateMap<User, Abstraction.DTO.User>().ReverseMap();
             CreateMap<UserFile, Abstraction.DTO.UserFile>().ReverseMap();
+            CreateMap<UserFileInfo, Abstraction.DTO.UserFileInfo>().ReverseMap();
         }
     }
 }

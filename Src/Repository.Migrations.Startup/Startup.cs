@@ -17,7 +17,7 @@
 namespace CNCLib.Repository.Migrations.Startup
 {
     using CNCLib.Repository.Context;
-    using CNCLib.Repository.SqLite;
+    using CNCLib.Repository.SqlServer;
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -37,8 +37,8 @@ namespace CNCLib.Repository.Migrations.Startup
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            // services.AddDbContext<CNCLibContext>(options => SqlServerDatabaseTools.OptionBuilder(options));
-            services.AddDbContext<CNCLibContext>(options => SqliteDatabaseTools.OptionBuilder(options));
+            services.AddDbContext<CNCLibContext>(options => SqlServerDatabaseTools.OptionBuilder(options));
+            //services.AddDbContext<CNCLibContext>(options => SqliteDatabaseTools.OptionBuilder(options));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

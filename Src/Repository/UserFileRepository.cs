@@ -16,12 +16,14 @@
 
 namespace CNCLib.Repository
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
     using CNCLib.Repository.Abstraction;
     using CNCLib.Repository.Abstraction.Entities;
+    using CNCLib.Repository.Abstraction.QueryResult;
     using CNCLib.Repository.Context;
 
     using Framework.Repository;
@@ -63,9 +65,31 @@ namespace CNCLib.Repository
             DeleteEntities(userFiles);
         }
 
-        public async Task<IList<string>> GetFileNames(int userId)
+        private static UserFileInfo WithNoImage(UserFile userFile)
         {
-            return await Query.Where(f => f.UserId == userId).Select(f => f.FileName).ToListAsync();
+            return new UserFileInfo()
+            {
+                FileName   = userFile.FileName,
+                UserFileId = userFile.UserFileId,
+                IsSystem   = userFile.IsSystem,
+                UploadTime = userFile.UploadTime,
+                FileSize   = userFile.Content.Length
+            };
+        }
+
+        public async Task<IList<UserFileInfo>> GetFileInfos(int userId)
+        {
+            return await Query
+                .Where(f => f.UserId == userId)
+                .Select(f => WithNoImage(f)).ToListAsync();
+        }
+
+        public async Task<UserFileInfo> GetFileInfo(int userFileId)
+        {
+            return await Query
+                .Where(f => f.UserFileId == userFileId)
+                .Select(f => WithNoImage(f))
+                .FirstOrDefaultAsync();
         }
 
         public async Task<int> GetFileId(int userId, string fileName)
@@ -76,6 +100,22 @@ namespace CNCLib.Repository
         public async Task<UserFile> GetByName(int userId, string fileName)
         {
             return await QueryWithInclude.FirstOrDefaultAsync(f => f.UserId == userId && f.FileName == fileName);
+        }
+
+        public async Task<long> GetTotalUserFileSize(int userId)
+        {
+            return await Query
+                .Where(f => f.UserId == userId)
+                .GroupBy(f => f.UserId, g => g.Content.Length, (_, fileSizes) => fileSizes.Sum())
+                .FirstAsync();
+        }
+
+        public async Task<long> GetUserFileSize(int userFileId)
+        {
+            return await Query
+                .Where(f => f.UserFileId == userFileId)
+                .Select(f => f.Content.Length)
+                .FirstAsync();
         }
 
         #endregion

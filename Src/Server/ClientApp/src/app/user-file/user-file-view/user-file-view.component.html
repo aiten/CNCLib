@@ -1,0 +1,56 @@
+<h1>User Files</h1>
+
+<table mat-table [dataSource]="entries" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="Id">
+    <th mat-header-cell *matHeaderCellDef> Id </th>
+    <td mat-cell *matCellDef="let element"> {{element.userFileId}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="fileName">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.fileName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="fileSize">
+    <th mat-header-cell *matHeaderCellDef> Size </th>
+    <td mat-cell *matCellDef="let element"> {{element.fileSize | filesize}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="uploadTime">
+    <th mat-header-cell *matHeaderCellDef> Uploaded </th>
+    <td mat-cell *matCellDef="let element"> {{element.uploadTime | date:'d.M.y HH:mm'}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="update">
+    <th mat-header-cell *matHeaderCellDef> Update </th>
+    <td mat-cell *matCellDef="let element">
+      <span *ngIf="!element.isSystem" class="btn mat-stroked-button btn-file">
+        Update<input class="fileinput" #fileUpload id="fileUpload" name="fileUpload" (change)="updateUserFile($event, element)" type="file">
+      </span>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="delete">
+    <th mat-header-cell *matHeaderCellDef> Delete </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-stroked-button *ngIf="!element.isSystem" (click)='deleteUserFile(element)'>Delete</button>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="download">
+    <th mat-header-cell *matHeaderCellDef> Download </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-stroked-button (click)='downloadUserFile(element)'>Download</button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+</table>
+
+<span class="btn mat-stroked-button btn-file">
+  Add new file <input class="fileinput" #fileUpload id="fileUpload" name="fileUpload" (change)="uploadNewFile($event)" type="file">
+</span>
+

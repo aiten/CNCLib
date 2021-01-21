@@ -1,0 +1,43 @@
+.inputshow {
+  max-width: 300px;
+  min-width: 300px;
+}
+
+.inputhide {
+  max-width: 100px;
+  min-width: 100px;
+}
+
+.hidebuttons { width: 80px; }
+
+.hmyslider { width: 200px; }
+
+.vyslider { }
+
+.btn-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  outline: none;
+  background: white;
+  cursor: inherit;
+  display: block;
+}
+
+.mat-column-uploadTime {
+  min-width: 8rem;
+}
+
+.mat-column-fileSize {
+  min-width: 5rem;
+}
+
+.mat-column-fileName {
+  min-width: 165pt;
+}

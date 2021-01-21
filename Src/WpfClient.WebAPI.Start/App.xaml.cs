@@ -33,8 +33,10 @@ namespace CNCLib.WpfClient.WebAPI.Start
 
     using Framework.Arduino.SerialCommunication;
     using Framework.Dependency;
+    using Framework.Localization;
     using Framework.Logic;
     using Framework.Service.WebAPI;
+    using Framework.Startup;
     using Framework.Tools;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -50,6 +52,12 @@ namespace CNCLib.WpfClient.WebAPI.Start
 
         private void AppStartup(object sender, StartupEventArgs e)
         {
+            var moduleInit = new InitializationManager();
+
+            moduleInit.Add(new Framework.Tools.ModuleInitializer());
+
+            var localizationCollector = new LocalizationCollector();
+
             GlobalDiagnosticsContext.Set("logDir", $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib.Web/logs");
 
             _logger.Info(@"Starting ...");
@@ -60,7 +68,6 @@ namespace CNCLib.WpfClient.WebAPI.Start
 
             AppService.ServiceCollection = new ServiceCollection();
             AppService.ServiceCollection
-                .AddFrameWorkTools()
                 .AddTransient<ILoggerFactory, LoggerFactory>()
                 .AddTransient(typeof(ILogger<>), typeof(Logger<>))
                 .AddLogicClient()
@@ -82,6 +89,8 @@ namespace CNCLib.WpfClient.WebAPI.Start
                             cfg.AddProfile<GCodeGUIAutoMapperProfile>();
                         }))
                 .AddSingleton(userContext);
+
+            moduleInit.Initialize(AppService.ServiceCollection, localizationCollector);
 
             AppService.BuildServiceProvider();
 

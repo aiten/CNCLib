@@ -18,6 +18,7 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UserFile } from "../models/userFile";
 import { CNCLibUserFileService } from './CNCLib-userFile.service';
+import { UserFileInfo } from '../models/userFileInfo';
 
 @Injectable()
 export class LocalCNCLibUserFileService implements CNCLibUserFileService {
@@ -27,13 +28,23 @@ export class LocalCNCLibUserFileService implements CNCLibUserFileService {
   ) {
   }
 
-  add(userFile: UserFile): Promise<any> {
+  getAll(wildcard: string): Promise<UserFileInfo[]> {
+    const userFile = this.http
+      .get<UserFileInfo[]>(`${this.baseUrl}api/userfile`)
+      .toPromise()
+      .catch(this.handleErrorPromise);
+
+    return userFile;
+  }
+
+  add(userFile: UserFile): Promise<UserFile> {
     const formData = new FormData();
 
     formData.append('image', userFile.image);
     formData.append('fileName', userFile.fileName);
 
-    return this.http.post<any>(`${this.baseUrl}api/userFile`, formData).toPromise()
+    return this.http.post<UserFile>(`${this.baseUrl}api/userFile`, formData)
+      .toPromise()
       .catch(this.handleErrorPromise);
   }
 
@@ -52,7 +63,12 @@ export class LocalCNCLibUserFileService implements CNCLibUserFileService {
     return this.http.delete<any>(`${this.baseUrl}api/userFile/${encodeURIComponent(fileName)}`).toPromise()
       .catch(this.handleErrorPromise);
   }
-
+  
+  get(fileName: string): Promise<Blob> {
+    return this.http.get(`${this.baseUrl}api/userFile/${encodeURIComponent(fileName)}`,    {  responseType: "blob"   })
+      .toPromise()
+      .catch(this.handleErrorPromise);
+  }
   private handleErrorPromise(error: Response | any) {
     console.error(error.message || error);
     return Promise.reject(error.message || error);

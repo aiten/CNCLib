@@ -18,7 +18,7 @@ namespace CNCLib.WebAPI.Controllers
 {
     using System.Globalization;
 
-    using Framework.Localization;
+    using Framework.Localization.Abstraction;
 
     using Microsoft.AspNetCore.Mvc;
 
@@ -27,9 +27,9 @@ namespace CNCLib.WebAPI.Controllers
     [Route("api/[controller]")]
     public class LocalizationController : Controller
     {
-        private readonly LocalizationCollector _generator;
+        private readonly ILocalizationCollector _generator;
 
-        public LocalizationController(LocalizationCollector generator)
+        public LocalizationController(ILocalizationCollector generator)
         {
             _generator = generator;
         }

@@ -14,7 +14,7 @@ namespace CNCLib.Repository.SqLite.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.1");
+                .HasAnnotation("ProductVersion", "5.0.2");
 
             modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.Configuration", b =>
                 {
@@ -24,25 +24,25 @@ namespace CNCLib.Repository.SqLite.Migrations
 
                     b.Property<string>("Group")
                         .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Value")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(4000);
+                        .HasMaxLength(4000)
+                        .HasColumnType("TEXT");
 
                     b.HasKey("ConfigurationId");
 
@@ -60,13 +60,13 @@ namespace CNCLib.Repository.SqLite.Migrations
 
                     b.Property<string>("ClassName")
                         .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(64);
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
@@ -85,8 +85,8 @@ namespace CNCLib.Repository.SqLite.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Value")
                         .HasColumnType("TEXT");
@@ -113,8 +113,8 @@ namespace CNCLib.Repository.SqLite.Migrations
 
                     b.Property<string>("ComPort")
                         .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(32);
+                        .HasMaxLength(32)
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("CommandSyntax")
                         .HasColumnType("INTEGER");
@@ -133,8 +133,8 @@ namespace CNCLib.Repository.SqLite.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(64);
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("ProbeDist")
                         .HasColumnType("TEXT");
@@ -161,16 +161,16 @@ namespace CNCLib.Repository.SqLite.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("SerialServer")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("SerialServerPassword")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(64);
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("SerialServerUser")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(32);
+                        .HasMaxLength(32)
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("SizeA")
                         .HasColumnType("TEXT");
@@ -215,17 +215,17 @@ namespace CNCLib.Repository.SqLite.Migrations
 
                     b.Property<string>("CommandName")
                         .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(64);
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("CommandString")
                         .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(64);
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("JoystickMessage")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(64);
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("MachineId")
                         .HasColumnType("INTEGER");
@@ -251,8 +251,8 @@ namespace CNCLib.Repository.SqLite.Migrations
 
                     b.Property<string>("CommandString")
                         .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(64);
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("MachineId")
                         .HasColumnType("INTEGER");
@@ -275,14 +275,14 @@ namespace CNCLib.Repository.SqLite.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT")
                         .HasMaxLength(128)
-                        .IsUnicode(true);
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
-                        .HasColumnType("TEXT")
                         .HasMaxLength(255)
-                        .IsUnicode(true);
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
 
                     b.HasKey("UserId");
 
@@ -303,9 +303,15 @@ namespace CNCLib.Repository.SqLite.Migrations
 
                     b.Property<string>("FileName")
                         .IsRequired()
-                        .HasColumnType("TEXT")
                         .HasMaxLength(1024)
-                        .IsUnicode(true);
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsSystem")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("UploadTime")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
@@ -326,71 +332,71 @@ namespace CNCLib.Repository.SqLite.Migrations
 
                     b.Property<string>("Application")
                         .IsRequired()
-                        .HasColumnType("TEXT")
                         .HasMaxLength(50)
-                        .IsUnicode(true);
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Exception")
-                        .HasColumnType("TEXT")
-                        .IsUnicode(true);
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Level")
                         .IsRequired()
-                        .HasColumnType("TEXT")
                         .HasMaxLength(50)
-                        .IsUnicode(true);
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("LogDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Logger")
-                        .HasColumnType("TEXT")
                         .HasMaxLength(250)
-                        .IsUnicode(true);
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("MachineName")
-                        .HasColumnType("TEXT")
                         .HasMaxLength(64)
-                        .IsUnicode(true);
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Message")
                         .IsRequired()
-                        .HasColumnType("TEXT")
-                        .IsUnicode(true);
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Port")
-                        .HasColumnType("TEXT")
                         .HasMaxLength(256)
-                        .IsUnicode(true);
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("RemoteAddress")
-                        .HasColumnType("TEXT")
                         .HasMaxLength(100)
-                        .IsUnicode(true);
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ServerAddress")
-                        .HasColumnType("TEXT")
                         .HasMaxLength(100)
-                        .IsUnicode(true);
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ServerName")
-                        .HasColumnType("TEXT")
                         .HasMaxLength(64)
-                        .IsUnicode(true);
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("StackTrace")
-                        .HasColumnType("TEXT")
-                        .IsUnicode(true);
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Url")
-                        .HasColumnType("TEXT")
                         .HasMaxLength(500)
-                        .IsUnicode(true);
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("TEXT")
                         .HasMaxLength(250)
-                        .IsUnicode(true);
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -404,6 +410,8 @@ namespace CNCLib.Repository.SqLite.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.Item", b =>
@@ -413,6 +421,8 @@ namespace CNCLib.Repository.SqLite.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.ItemProperty", b =>
@@ -422,6 +432,8 @@ namespace CNCLib.Repository.SqLite.Migrations
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Item");
                 });
 
             modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.Machine", b =>
@@ -431,6 +443,8 @@ namespace CNCLib.Repository.SqLite.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.MachineCommand", b =>
@@ -440,6 +454,8 @@ namespace CNCLib.Repository.SqLite.Migrations
                         .HasForeignKey("MachineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Machine");
                 });
 
             modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.MachineInitCommand", b =>
@@ -449,6 +465,8 @@ namespace CNCLib.Repository.SqLite.Migrations
                         .HasForeignKey("MachineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Machine");
                 });
 
             modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.UserFile", b =>
@@ -458,6 +476,20 @@ namespace CNCLib.Repository.SqLite.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.Item", b =>
+                {
+                    b.Navigation("ItemProperties");
+                });
+
+            modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.Machine", b =>
+                {
+                    b.Navigation("MachineCommands");
+
+                    b.Navigation("MachineInitCommands");
                 });
 #pragma warning restore 612, 618
         }

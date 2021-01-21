@@ -27,8 +27,9 @@ namespace CNCLib.Serial.Server
 
     using Framework.Arduino.SerialCommunication;
     using Framework.Dependency;
+    using Framework.Localization;
     using Framework.Logic.Abstraction;
-    using Framework.Tools;
+    using Framework.Startup;
     using Framework.Tools.Password;
     using Framework.WebAPI.Filter;
 
@@ -64,7 +65,13 @@ namespace CNCLib.Serial.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var moduleInit = new InitializationManager();
+
+            moduleInit.Add(new Framework.Tools.ModuleInitializer());
+
             var controllerAssembly = typeof(InfoController).Assembly;
+
+            var localizationCollector = new LocalizationCollector();
 
             //services.AddControllers();
 
@@ -129,10 +136,10 @@ namespace CNCLib.Serial.Server
                 c.IncludeXmlComments(xmlPath);
             });
 
+            moduleInit.Initialize(services, localizationCollector);
 
             services
-                .AddSerialCommunication()
-                .AddFrameWorkTools();
+                .AddSerialCommunication();
 
             AppService.ServiceCollection = services;
             AppService.BuildServiceProvider();

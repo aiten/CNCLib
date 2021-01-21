@@ -19,6 +19,8 @@ namespace CNCLib.Logic.Abstraction
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    using CNCLib.Logic.Abstraction.DTO;
+
     using Framework.Logic.Abstraction;
 
     public interface IUserFileManager : ICrudManager<DTO.UserFile, int>
@@ -27,6 +29,8 @@ namespace CNCLib.Logic.Abstraction
 
         Task<DTO.UserFile> GetByName(string fileName);
 
-        Task<IEnumerable<string>> GetFileNames();
+        Task<IEnumerable<UserFileInfo>> GetFileInfos();
+
+        Task<UserFileInfo> GetFileInfo(UserFile userFile);
     }
 }

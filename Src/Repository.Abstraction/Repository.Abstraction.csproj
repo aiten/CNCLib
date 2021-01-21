@@ -3,7 +3,6 @@
     <TargetFramework>$(TargetFrameworkForProject)</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference
-      Include="..\Framework\Repository.Abstraction\Repository.Abstraction.csproj" />
+    <ProjectReference Include="..\Framework\Repository.Abstraction\Repository.Abstraction.csproj" />
   </ItemGroup>
 </Project>

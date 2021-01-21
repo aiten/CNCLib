@@ -36,8 +36,9 @@ namespace CNCLib.WpfClient.Sql.Start
 
     using Framework.Arduino.SerialCommunication;
     using Framework.Dependency;
+    using Framework.Localization;
     using Framework.Logic;
-    using Framework.Tools;
+    using Framework.Startup;
 
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
@@ -52,6 +53,13 @@ namespace CNCLib.WpfClient.Sql.Start
 
         private void AppStartup(object sender, StartupEventArgs e)
         {
+            var moduleInit = new InitializationManager();
+
+            moduleInit.Add(new Framework.Tools.ModuleInitializer());
+            moduleInit.Add(new CNCLib.Logic.ModuleInitializer());
+
+            var localizationCollector = new LocalizationCollector();
+
             string connectString = SqlServerDatabaseTools.ConnectString;
 
             GlobalDiagnosticsContext.Set("logDir",           $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib.Sql/logs");
@@ -80,11 +88,9 @@ namespace CNCLib.WpfClient.Sql.Start
 
             AppService.ServiceCollection = new ServiceCollection();
             AppService.ServiceCollection
-                .AddFrameWorkTools()
                 .AddTransient<ILoggerFactory, LoggerFactory>()
                 .AddTransient(typeof(ILogger<>), typeof(Logger<>))
                 .AddRepository(SqlServerDatabaseTools.OptionBuilder)
-                .AddLogic()
                 .AddLogicClient()
                 .AddSerialCommunication()
                 .AddServiceAsLogic()
@@ -98,6 +104,8 @@ namespace CNCLib.WpfClient.Sql.Start
                             cfg.AddProfile<GCodeGUIAutoMapperProfile>();
                         }))
                 .AddSingleton((ICNCLibUserContext)userContext);
+
+            moduleInit.Initialize(AppService.ServiceCollection, localizationCollector);
 
             AppService.BuildServiceProvider();
 

@@ -22,12 +22,10 @@ namespace CNCLib.Serial.WebAPI.Controllers
 
     using CNCLib.GCode.Machine;
     using CNCLib.GCode.Serial;
-    using CNCLib.Serial.WebAPI.Hubs;
     using CNCLib.Serial.WebAPI.SerialPort;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.SignalR;
 
     [Authorize]
     [Route("api/[controller]")]

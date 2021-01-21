@@ -1,4 +1,4 @@
-﻿/*
+/*
   This file is part of CNCLib - A library for stepper motors.
 
   Copyright (c) Herbert Aitenbichler
@@ -14,20 +14,8 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Logic
-{
-    using Framework.Dependency;
-    using Framework.Schedule;
+import { Injectable } from '@angular/core';
 
-    using Microsoft.Extensions.DependencyInjection;
-
-    public static class LiveServiceCollectionExtensions
-    {
-        public static IServiceCollection AddLogic(this IServiceCollection services)
-        {
-            services.AddAssemblyIncludingInternals(ServiceLifetime.Transient, typeof(Manager.MachineManager).Assembly);
-            services.AddScoped<JobParamContainer>();
-            return services;
-        }
-    }
+@Injectable()
+export class UserFileGlobal {
 }

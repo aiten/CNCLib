@@ -16,7 +16,9 @@
 
 namespace CNCLib.Logic.Manager
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using AutoMapper;
@@ -26,9 +28,12 @@ namespace CNCLib.Logic.Manager
     using CNCLib.Repository.Abstraction;
     using CNCLib.Shared;
 
+    using Framework.Localization;
     using Framework.Logic;
     using Framework.Repository.Abstraction;
+    using Framework.Tools.Abstraction;
 
+    using ErrorMessagesLogic = CNCLib.Logic.ErrorMessages;
     using UserFileEntity = CNCLib.Repository.Abstraction.Entities.UserFile;
 
     public class UserFileManager : CrudManager<UserFile, int, UserFileEntity>, IUserFileManager
@@ -37,14 +42,62 @@ namespace CNCLib.Logic.Manager
         private readonly IUserFileRepository _repository;
         private readonly IMapper             _mapper;
         private readonly ICNCLibUserContext  _userContext;
+        private readonly ICurrentDateTime    _currentDateTime;
 
-
-        public UserFileManager(IUnitOfWork unitOfWork, IUserFileRepository repository, ICNCLibUserContext userContext, IMapper mapper) : base(unitOfWork, repository, mapper)
+        public UserFileManager(IUnitOfWork unitOfWork, IUserFileRepository repository, ICNCLibUserContext userContext, IMapper mapper, ICurrentDateTime currentDateTime) : base(unitOfWork, repository, mapper)
         {
-            _unitOfWork  = unitOfWork;
-            _repository  = repository;
-            _userContext = userContext;
-            _mapper      = mapper;
+            _unitOfWork      = unitOfWork;
+            _repository      = repository;
+            _userContext     = userContext;
+            _mapper          = mapper;
+            _currentDateTime = currentDateTime;
+        }
+
+        #region file size check
+
+        protected override async Task ValidateDto(UserFile dto, ValidationType validation)
+        {
+            await base.ValidateDto(dto, validation);
+
+            if (validation == ValidationType.AddValidation || validation == ValidationType.UpdateValidation)
+            {
+                const int MAXFILESIZE = 1024 * 1024 * 32;
+                if (dto.Content.Length > MAXFILESIZE)
+                {
+                    throw new ArgumentException(
+                        ErrorMessagesLogic.ResourceManager.ToLocalizable(nameof(ErrorMessagesLogic.CNCLib_Logic_FileToBig), new object[] { MAXFILESIZE, dto.Content.Length }).Message());
+                }
+
+                var currentDbSize = await _repository.GetTotalUserFileSize(_userContext.UserId);
+
+                if (validation == ValidationType.UpdateValidation)
+                {
+                    currentDbSize -= await _repository.GetUserFileSize(dto.UserFileId);
+                }
+
+                currentDbSize += dto.Content.LongLength;
+
+                const int MAXTOTALFILESIZE = 1024 * 1024 * 100;
+                if (currentDbSize > MAXTOTALFILESIZE)
+                {
+                    throw new ArgumentException(
+                        ErrorMessagesLogic.ResourceManager.ToLocalizable(nameof(ErrorMessagesLogic.CNCLib_Logic_TotalFilesToBig), new object[] { MAXTOTALFILESIZE, currentDbSize }).Message());
+                }
+            }
+        }
+
+        #endregion
+
+        protected override void AddEntity(UserFileEntity entity)
+        {
+            base.AddEntity(entity);
+            entity.UploadTime = _currentDateTime.Now;
+        }
+
+        protected override void UpdateEntity(UserFileEntity entityInDb, UserFileEntity values)
+        {
+            values.UploadTime = _currentDateTime.Now;
+            base.UpdateEntity(entityInDb, values);
         }
 
         protected override Task<IList<UserFileEntity>> GetAllEntities()
@@ -52,9 +105,14 @@ namespace CNCLib.Logic.Manager
             return _repository.GetByUser(_userContext.UserId);
         }
 
-        public async Task<IEnumerable<string>> GetFileNames()
+        public async Task<IEnumerable<UserFileInfo>> GetFileInfos()
         {
-            return await _repository.GetFileNames(_userContext.UserId);
+            return _mapper.Map<IEnumerable<UserFileInfo>>(await _repository.GetFileInfos(_userContext.UserId));
+        }
+
+        public async Task<UserFileInfo> GetFileInfo(UserFile userFile)
+        {
+            return _mapper.Map<UserFileInfo>(await _repository.GetFileInfo(userFile.UserFileId));
         }
 
         protected override int GetKey(UserFileEntity entity)

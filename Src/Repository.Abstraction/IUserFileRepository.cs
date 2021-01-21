@@ -20,6 +20,7 @@ namespace CNCLib.Repository.Abstraction
     using System.Threading.Tasks;
 
     using CNCLib.Repository.Abstraction.Entities;
+    using CNCLib.Repository.Abstraction.QueryResult;
 
     using Framework.Repository.Abstraction;
 
@@ -29,11 +30,16 @@ namespace CNCLib.Repository.Abstraction
 
         Task DeleteByUser(int userId);
 
+        Task<IList<UserFileInfo>> GetFileInfos(int userId);
 
-        Task<IList<string>> GetFileNames(int userId);
+        Task<UserFileInfo> GetFileInfo(int userFileId);
 
         Task<int> GetFileId(int userId, string fileName);
 
         Task<UserFile> GetByName(int userId, string fileName);
+
+        Task<long> GetTotalUserFileSize(int userId);
+
+        Task<long> GetUserFileSize(int userFileId);
     }
 }

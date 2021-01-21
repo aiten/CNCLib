@@ -21,6 +21,7 @@ namespace CNCLib.WebAPI.Controllers
     using System.Threading.Tasks;
 
     using CNCLib.Logic.Abstraction;
+    using CNCLib.Logic.Abstraction.DTO;
     using CNCLib.Shared;
 
     using Framework.WebAPI.Controller;
@@ -45,9 +46,9 @@ namespace CNCLib.WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<string>>> GetAll(string wildcard)
+        public async Task<ActionResult<IEnumerable<UserFileInfo>>> GetAll(string wildcard)
         {
-            return Ok(await _manager.GetFileNames());
+            return Ok(await _manager.GetFileInfos());
         }
 
         #region default REST
@@ -76,14 +77,16 @@ namespace CNCLib.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<string>> Add([FromForm] UserFile value)
+        public async Task<ActionResult<UserFile>> Add([FromForm] UserFile value)
         {
             var userFileDto = GetUserFileDto(value);
 
             if (userFileDto != null)
             {
-                await this.Add(_manager, userFileDto);
-                return Ok(value.FileName);
+                var userFile     = await this.Add(_manager, userFileDto);
+                var userFileInfo = await _manager.GetFileInfo((UserFileDto) ((CreatedResult) userFile.Result).Value);
+                var newUri       = this.GetCurrentUri() + "/" + userFileDto.FileName;
+                return Created(newUri, userFileInfo);
             }
 
             return NoContent();

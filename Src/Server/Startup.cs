@@ -38,11 +38,12 @@ namespace CNCLib.Server
 
     using Framework.Dependency;
     using Framework.Localization;
+    using Framework.Localization.Abstraction;
     using Framework.Logic;
     using Framework.Logic.Abstraction;
     using Framework.Schedule;
     using Framework.Schedule.Abstraction;
-    using Framework.Tools;
+    using Framework.Startup;
     using Framework.Tools.Password;
     using Framework.WebAPI.Filter;
 
@@ -90,13 +91,18 @@ namespace CNCLib.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var moduleInit = new InitializationManager();
+
+            moduleInit.Add(new CNCLib.Logic.ModuleInitializer());
+            moduleInit.Add(new Framework.Tools.ModuleInitializer());
+
             var controllerAssembly = typeof(CambamController).Assembly;
 
             var localizationCollector = new LocalizationCollector();
             localizationCollector.Resources.Add(Framework.Logic.ErrorMessages.ResourceManager);
             localizationCollector.Resources.Add(Framework.Repository.ErrorMessages.ResourceManager);
 
-            services.AddSingleton<LocalizationCollector>(localizationCollector);
+            services.AddSingleton<ILocalizationCollector>(localizationCollector);
 
             services.AddControllers();
 
@@ -158,11 +164,11 @@ namespace CNCLib.Server
                 c.OperationFilter<SecurityRequirementsOperationFilter>(true, "basic");
             });
 
+            moduleInit.Initialize(services, localizationCollector);
+
             services
-                .AddFrameWorkTools()
                 .AddJobScheduler()
                 .AddRepository(SqlServerDatabaseTools.OptionBuilder)
-                .AddLogic()
                 .AddLogicClient()
                 .AddServiceAsLogic() // used for Logic.Client
                 .AddScoped<ICNCLibUserContext, CNCLibUserContext>()
@@ -238,8 +244,8 @@ namespace CNCLib.Server
             var scheduler = Services.GetRequiredService<IJobScheduler>();
             scheduler
                 .Periodic<ICleanupJob>(TimeSpan.FromHours(5), executor => SetJobExecutor(executor, "Cleanup 1"))
-                .Then<ICleanupJob>(executor => SetJobExecutor(executor,                              "Cleanup 2"))
-                .Then<ICleanupJob>(executor => SetJobExecutor(executor,                              "Cleanup 3"));
+                .Then<ICleanupJob>(executor => SetJobExecutor(executor,                            "Cleanup 2"))
+                .Then<ICleanupJob>(executor => SetJobExecutor(executor,                            "Cleanup 3"));
             scheduler.Daily<IDailyJob>(TimeSpan.Parse("02:00"), executor => SetJobExecutor(executor, "Hallo from daily"));
             scheduler.Start();
         }

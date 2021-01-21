@@ -20,6 +20,9 @@
       <li *ngIf="cncLibloggedinService.isUserLoggedIn()" class="nav-item">
         <a class="nav-link" routerLink="/preview"><fa-icon icon="draw-polygon"></fa-icon> Preview</a>
       </li>
+      <li *ngIf="cncLibloggedinService.isUserLoggedIn()" class="nav-item">
+        <a class="nav-link" routerLink="/file"><fa-icon icon="database"></fa-icon> File</a>
+      </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="/eepromconfig"><fa-icon icon="calculator"></fa-icon> Eeprom-Config</a>
       </li>

@@ -21,8 +21,6 @@ namespace CNCLib.Logic.Job
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Framework.Schedule.Abstraction;
-
     using CNCLib.Logic.Abstraction;
 
     using Microsoft.Extensions.Logging;
