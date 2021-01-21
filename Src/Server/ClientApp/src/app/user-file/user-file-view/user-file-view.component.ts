@@ -30,7 +30,6 @@ import { CNCLibUserFileService } from '../../services/CNCLib-userFile.service';
 import { MatDialog } from "@angular/material/dialog";
 
 import { UserFileGlobal } from '../user-file.global';
-import { ConsoleReporter } from 'jasmine';
 
 @Component(
   {
