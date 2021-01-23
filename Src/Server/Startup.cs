@@ -94,6 +94,7 @@ namespace CNCLib.Server
             var moduleInit = new InitializationManager();
 
             moduleInit.Add(new CNCLib.Logic.ModuleInitializer());
+            moduleInit.Add(new CNCLib.Repository.ModuleInitializer() { OptionsAction = SqlServerDatabaseTools.OptionBuilder });
             moduleInit.Add(new Framework.Tools.ModuleInitializer());
 
             var controllerAssembly = typeof(CambamController).Assembly;
@@ -110,6 +111,7 @@ namespace CNCLib.Server
 
             services.AddSignalR(hu => hu.EnableDetailedErrors = true);
 
+            services.AddTransient<GCodeLoadHelper>();
             services.AddTransient<SetUserContextFilter>();
             services.AddTransient<UnhandledExceptionFilter>();
             services.AddTransient<MethodCallLogFilter>();
@@ -168,7 +170,6 @@ namespace CNCLib.Server
 
             services
                 .AddJobScheduler()
-                .AddRepository(SqlServerDatabaseTools.OptionBuilder)
                 .AddLogicClient()
                 .AddServiceAsLogic() // used for Logic.Client
                 .AddScoped<ICNCLibUserContext, CNCLibUserContext>()

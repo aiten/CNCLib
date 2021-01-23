@@ -16,30 +16,31 @@
 
 namespace CNCLib.Repository
 {
-    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
 
+    using CNCLib.Repository.Abstraction;
+    using CNCLib.Repository.Abstraction.Entities;
     using CNCLib.Repository.Context;
 
-    using Framework.Dependency;
     using Framework.Repository;
-    using Framework.Repository.Abstraction;
 
     using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.DependencyInjection;
 
-    public static class LiveServiceCollectionExtensions
+    public class InitRepository : RepositoryBase<CNCLibContext>, IInitRepository
     {
-        public static IServiceCollection AddRepository(this IServiceCollection services, Action<DbContextOptionsBuilder> optionsAction)
+        #region ctr/default/overrides
+
+        public InitRepository(CNCLibContext context) : base(context)
         {
-            var options = new DbContextOptionsBuilder<CNCLibContext>();
-            optionsAction(options);
+        }
 
-            services.AddSingleton<DbContextOptions<CNCLibContext>>(options.Options);
-            services.AddScoped<CNCLibContext, CNCLibContext>();
-            services.AddScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
+        #endregion
 
-            services.AddAssemblyIncludingInternals(ServiceLifetime.Transient, typeof(Repository.MachineRepository).Assembly);
-            return services;
+        public async Task Initialize(int userId)
+        {
+            Context.ImportForUser(userId);
+            await Task.CompletedTask;
         }
     }
 }

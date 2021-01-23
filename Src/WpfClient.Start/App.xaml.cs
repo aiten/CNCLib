@@ -56,6 +56,7 @@ namespace CNCLib.WpfClient.Start
 
             moduleInit.Add(new Framework.Tools.ModuleInitializer());
             moduleInit.Add(new CNCLib.Logic.ModuleInitializer());
+            moduleInit.Add(new CNCLib.Repository.ModuleInitializer() { OptionsAction = SqliteDatabaseTools.OptionBuilder });
 
             var localizationCollector = new LocalizationCollector();
 
@@ -83,7 +84,6 @@ namespace CNCLib.WpfClient.Start
             AppService.ServiceCollection
                 .AddTransient<ILoggerFactory, LoggerFactory>()
                 .AddTransient(typeof(ILogger<>), typeof(Logger<>))
-                .AddRepository(SqliteDatabaseTools.OptionBuilder)
                 .AddLogicClient()
                 .AddSerialCommunication()
                 .AddServiceAsLogic()

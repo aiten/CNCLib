@@ -69,8 +69,10 @@ export class LocalCNCLibUserFileService implements CNCLibUserFileService {
       .toPromise()
       .catch(this.handleErrorPromise);
   }
+ 
   private handleErrorPromise(error: Response | any) {
     console.error(error.message || error);
     return Promise.reject(error.message || error);
   }
 }
+

@@ -57,6 +57,7 @@ namespace CNCLib.WpfClient.Sql.Start
 
             moduleInit.Add(new Framework.Tools.ModuleInitializer());
             moduleInit.Add(new CNCLib.Logic.ModuleInitializer());
+            moduleInit.Add(new CNCLib.Repository.ModuleInitializer() { OptionsAction = SqlServerDatabaseTools.OptionBuilder });
 
             var localizationCollector = new LocalizationCollector();
 
@@ -90,7 +91,6 @@ namespace CNCLib.WpfClient.Sql.Start
             AppService.ServiceCollection
                 .AddTransient<ILoggerFactory, LoggerFactory>()
                 .AddTransient(typeof(ILogger<>), typeof(Logger<>))
-                .AddRepository(SqlServerDatabaseTools.OptionBuilder)
                 .AddLogicClient()
                 .AddSerialCommunication()
                 .AddServiceAsLogic()

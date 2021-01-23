@@ -1,0 +1,114 @@
+(.../pcb-gcode-3.6.2.4/pcb-gcode.ulp)
+(Copyright 2005 - 2012 by John Johnson)
+(See readme.txt for licensing terms.)
+(This file generated from the board:)
+(.../projects/DiceCR2302/DiceCR2302.brd)
+(Current profile is .../pcb-gcode-3.6.2.4/profiles/mach.pp  )
+(This file generated 21.12.2017 23:48)
+(Settings from pcb-machine.h)
+(spindle on time = 1.0000)
+(spindle speed = 20000.0000)
+(tool change at 0.0000  0.0000  10.0000 )
+(feed rate xy = F0     )
+(feed rate z  = F400   )
+(Z Axis Settings)
+(  High     Up        Down     Drill)
+(12.7000 	0.5000  	-0.1500 	-2.0000 )
+(Settings from pcb-defaults.h)
+(isolate min = 0.0000)
+(isolate max = 0.1500)
+(isolate step = 0.1500)
+(Generated bottom outlines, bottom drill, )
+(Unit of measure: mm)
+( Tool|       Size       |  Min Sub |  Max Sub |   Count )
+( T01 | 0.813mm 0.0320in | 0.0000in | 0.0000in |       0 )
+( T02 | 1.016mm 0.0400in | 0.0000in | 0.0000in |       0 )
+( T03 | 1.100mm 0.0433in | 0.0000in | 0.0000in |       0 )
+( T04 | 1.300mm 0.0512in | 0.0000in | 0.0000in |       0 )
+(Metric Mode)
+G21
+(Absolute Coordinates)
+G90
+S20000
+G00 Z12.7000 
+G00 X0.0000  Y0.0000  
+M03
+G04 P1.000000
+M05
+G00 Z10.0000 
+M06 T01  ; 0.8128  
+G00 Z0.5000  
+M03
+G04 P1.000000
+G82 X-24.7650 Y14.6050 Z-2.0000 F400   R0.5000  P0.000000
+G82 X-24.7650 Y17.1450 
+G82 X-24.7650 Y19.6850 
+G82 X-24.7650 Y22.2250 
+G82 X-24.7650 Y26.0350 
+G82 X-32.3850 Y26.0350 
+G82 X-32.3850 Y22.2250 
+G82 X-32.3850 Y19.6850 
+G82 X-32.3850 Y17.1450 
+G82 X-32.3850 Y14.6050 
+G82 X-36.8300 Y14.6050 
+G82 X-40.6400 Y18.4150 
+G82 X-36.8300 Y22.2250 
+G82 X-41.9100 Y27.3050 
+G82 X-41.9100 Y29.8450 
+G82 X-36.8300 Y29.8450 
+G82 X-48.2600 Y29.8450 
+G82 X-53.3400 Y29.8450 
+G82 X-53.3400 Y27.3050 
+G82 X-59.6900 Y29.8450 
+G82 X-64.7700 Y29.8450 
+G82 X-64.7700 Y27.3050 
+G82 X-59.6900 Y22.2250 
+G82 X-53.3400 Y18.4150 
+G82 X-53.3400 Y15.8750 
+G82 X-48.2600 Y14.6050 
+G82 X-48.2600 Y18.4150 
+G82 X-48.2600 Y22.2250 
+G82 X-59.6900 Y14.6050 
+G82 X-59.6900 Y6.9850  
+G82 X-64.7700 Y6.9850  
+G82 X-64.7700 Y4.4450  
+G82 X-53.3400 Y4.4450  
+G82 X-53.3400 Y6.9850  
+G82 X-48.2600 Y6.9850  
+G82 X-41.9100 Y6.9850  
+G82 X-41.9100 Y4.4450  
+G82 X-36.8300 Y6.9850  
+M05
+G00 Z10.0000 
+G00 X0.0000  Y0.0000  
+M06 T02  ; 1.0160  
+G00 Z0.5000  
+M03
+G04 P1.000000
+G82 X-25.9588 Y2.8194  Z-2.0000 F400   R0.5000  P0.000000
+G82 X-25.9588 Y7.3406  
+G82 X-32.4612 Y7.3406  
+G82 X-32.4612 Y2.8194  
+M05
+G00 Z10.0000 
+G00 X0.0000  Y0.0000  
+M06 T03  ; 1.1000  
+G00 Z0.5000  
+M03
+G04 P1.000000
+G82 X-8.8900 Y29.8450 Z-2.0000 F400   R0.5000  P0.000000
+G82 X-11.4300 Y29.8450 
+G82 X-13.9700 Y29.8450 
+M05
+G00 Z10.0000 
+G00 X0.0000  Y0.0000  
+M06 T04  ; 1.3000  
+G00 Z0.5000  
+M03
+G04 P1.000000
+G82 X-11.4300 Y2.7550  Z-2.0000 F400   R0.5000  P0.000000
+G82 X-11.4300 Y22.7550 
+T01 
+G00 Z12.7000 
+M05
+M02

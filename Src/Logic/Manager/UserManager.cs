@@ -40,6 +40,7 @@ namespace CNCLib.Logic.Manager
         private readonly IMachineRepository  _machineRepository;
         private readonly IItemRepository     _itemRepository;
         private readonly IUserFileRepository _userFileRepository;
+        private readonly IInitRepository     _initRepository;
 
         private readonly IMapper            _mapper;
         private readonly ICNCLibUserContext _userContext;
@@ -53,6 +54,7 @@ namespace CNCLib.Logic.Manager
             IMachineRepository         machineRepository,
             IItemRepository            itemRepository,
             IUserFileRepository        userFileRepository,
+            IInitRepository            initRepository,
             ICNCLibUserContext         userContext,
             IMapper                    mapper,
             IOneWayPasswordProvider    passwordProvider) : base(unitOfWork, repository, mapper)
@@ -62,6 +64,7 @@ namespace CNCLib.Logic.Manager
             _machineRepository  = machineRepository;
             _itemRepository     = itemRepository;
             _userFileRepository = userFileRepository;
+            _initRepository     = initRepository;
             _userContext        = userContext;
             _mapper             = mapper;
             _passwordProvider   = passwordProvider;
@@ -114,7 +117,7 @@ namespace CNCLib.Logic.Manager
 
                 await trans.SaveChangesAsync();
 
-                await Initialize(userEntity.UserId);
+                await _initRepository.Initialize(userEntity.UserId);
 
                 await CommitTransaction(trans);
 
@@ -132,54 +135,10 @@ namespace CNCLib.Logic.Manager
         {
             using (var trans = _unitOfWork.BeginTransaction())
             {
-                await Initialize(_userContext.UserId);
+                await _initRepository.Initialize(_userContext.UserId);
 
                 await CommitTransaction(trans);
             }
-        }
-
-        private async Task Initialize(int userId)
-        {
-            var machines = await _machineRepository.GetByUser(GlobalUserId);
-            var items    = await _itemRepository.GetByUser(GlobalUserId);
-            var files    = await _userFileRepository.GetByUser(GlobalUserId);
-
-            foreach (var m in machines)
-            {
-                m.UserId    = userId;
-                m.User      = null;
-                m.MachineId = 0;
-
-                foreach (var mc in m.MachineCommands)
-                {
-                    mc.MachineId        = 0;
-                    mc.MachineCommandId = 0;
-                }
-
-                foreach (var mic in m.MachineInitCommands)
-                {
-                    mic.MachineId            = 0;
-                    mic.MachineInitCommandId = 0;
-                }
-            }
-
-            foreach (var i in items)
-            {
-                i.UserId = userId;
-                i.User   = null;
-                i.ItemId = 0;
-            }
-
-            foreach (var uf in files)
-            {
-                uf.UserId     = userId;
-                uf.User       = null;
-                uf.UserFileId = 0;
-            }
-
-            _machineRepository.AddRange(machines);
-            _itemRepository.AddRange(items);
-            _userFileRepository.AddRange(files);
         }
 
         public async Task Cleanup()

@@ -16,7 +16,7 @@
 
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 
-import { switchMap } from 'rxjs/operators';
+import { saveAs } from "file-saver";
 
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserFile } from '../../models/userFile';
@@ -100,6 +100,8 @@ export class UserFileViewComponent {
 
   public async downloadUserFile(userFileInfo: UserFileInfo) {
     const action = await this.userFileService.get(userFileInfo.fileName);
+    console.log(action);
+    console.log(action.text());
     saveAs(action, userFileInfo.fileName);
   }
 

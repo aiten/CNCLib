@@ -16,24 +16,71 @@
 
 namespace CNCLib.WebAPI.Controllers
 {
+    using System;
     using System.IO;
+    using System.Threading.Tasks;
 
+    using CNCLib.GCode.Generate;
     using CNCLib.GCode.Generate.Load;
+    using CNCLib.Logic.Abstraction;
     using CNCLib.Logic.Abstraction.DTO;
+    using CNCLib.Shared;
 
     public class GCodeLoadHelper
     {
-        public static LoadBase CallLoad(LoadOptions opt)
-        {
-            if (opt.FileContent == null)
-            {
-                return CallLoadWithFileName(opt);
-            }
+        private readonly IUserFileManager   _fileManager;
+        private readonly ICNCLibUserContext _userContext;
 
-            return CallLoadWithContent(opt);
+        public GCodeLoadHelper(IUserFileManager fileManager, ICNCLibUserContext userContext)
+        {
+            _fileManager = fileManager;
+            _userContext = userContext;
         }
 
-        private static LoadBase CallLoadWithFileName(LoadOptions opt)
+        public async Task<LoadBase> CallLoad(LoadOptions opt, bool writeIntermediateFiles)
+        {
+            var loadBase = (opt.FileContent == null) ? CallLoadWithFileName(opt) : CallLoadWithContent(opt);
+
+            if (writeIntermediateFiles && !string.IsNullOrEmpty(opt.GCodeWriteToFileName))
+            {
+                await CallWriteToDb("render.nc",   loadBase, (load, ms) => load.WriteGCodeFile(ms));
+                await CallWriteToDb("render.cb",   loadBase, (load, ms) => load.WriteCamBamFile(ms));
+                await CallWriteToDb("render.hpgl", loadBase, (load, ms) => load.WriteImportInfoFile(ms));
+            }
+
+            return loadBase;
+        }
+
+        private async Task CallWriteToDb(string dbFileName, LoadBase load, Action<LoadBase, StreamWriter> write)
+        {
+            using (var memoryStream = new MemoryStream())
+            using (var sw = new StreamWriter(memoryStream))
+            {
+                write(load, sw);
+                await sw.FlushAsync();
+
+                var userFileDto = new UserFile()
+                {
+                    FileName = dbFileName,
+                    UserId   = _userContext.UserId,
+                    Content  = memoryStream.ToArray()
+                };
+
+                var fileIdFromUri = await _fileManager.GetFileId(dbFileName);
+                if (fileIdFromUri > 0)
+                {
+                    userFileDto.UserFileId = fileIdFromUri;
+                    var fileIdFromValue = await _fileManager.GetFileId(dbFileName);
+                    await _fileManager.Update(userFileDto);
+                }
+                else
+                {
+                    await _fileManager.Add(userFileDto);
+                }
+            }
+        }
+
+        private LoadBase CallLoadWithFileName(LoadOptions opt)
         {
             var load = LoadBase.Create(opt);
 
@@ -46,7 +93,7 @@ namespace CNCLib.WebAPI.Controllers
             return load;
         }
 
-        private static LoadBase CallLoadWithContent(LoadOptions opt)
+        private LoadBase CallLoadWithContent(LoadOptions opt)
         {
             var filename    = opt.FileName;
             var fileContent = opt.FileContent;

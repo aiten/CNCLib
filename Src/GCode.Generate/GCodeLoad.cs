@@ -21,7 +21,6 @@ namespace CNCLib.GCode.Generate
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
-    using System.Xml.Serialization;
 
     using CNCLib.GCode.Generate.Commands;
     using CNCLib.GCode.Generate.Load;
@@ -63,9 +62,20 @@ namespace CNCLib.GCode.Generate
                 if (!string.IsNullOrEmpty(loadInfo.GCodeWriteToFileName))
                 {
                     string gcodeFileName = Environment.ExpandEnvironmentVariables(loadInfo.GCodeWriteToFileName);
-                    WriteGCodeFile(gcodeFileName);
-                    WriteCamBamFile(load, Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".cb");
-                    WriteImportInfoFile(load, Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".hpgl");
+                    using (var sw = File.CreateText(gcodeFileName))
+                    {
+                        load.WriteGCodeFile(sw);
+                    }
+
+                    using (var sw = File.CreateText(Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".cb"))
+                    {
+                        load.WriteCamBamFile(sw);
+                    }
+
+                    using (var sw = File.CreateText(Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".hpgl"))
+                    {
+                        load.WriteImportInfoFile(sw);
+                    }
                 }
             }
             catch (Exception)
@@ -80,8 +90,8 @@ namespace CNCLib.GCode.Generate
             {
                 info.FileContent = await File.ReadAllBytesAsync(info.FileName);
 
-                HttpResponseMessage response = await client.PostAsJsonAsync(api, info);
-                string[]            gcode    = await response.Content.ReadAsAsync<string[]>();
+                var response = await client.PostAsJsonAsync(api, info);
+                var gcode    = await response.Content.ReadAsAsync<string[]>();
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -91,57 +101,11 @@ namespace CNCLib.GCode.Generate
                     Commands.AddRange(load.Commands);
                     if (!string.IsNullOrEmpty(info.GCodeWriteToFileName))
                     {
-                        WriteGCodeFile(Environment.ExpandEnvironmentVariables(info.GCodeWriteToFileName));
-                    }
-                }
-            }
-        }
-
-        private void WriteGCodeFile(string filename)
-        {
-            using (var sw = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
-            {
-                Command last  = null;
-                var     state = new CommandState();
-                foreach (var r in Commands)
-                {
-                    string[] cmds = r.GetGCodeCommands(last?.CalculatedEndPosition, state);
-                    if (cmds != null)
-                    {
-                        foreach (string str in cmds)
+                        using (var sw = File.CreateText(Environment.ExpandEnvironmentVariables(info.GCodeWriteToFileName)))
                         {
-                            sw.WriteLine(str);
+                            load.WriteGCodeFile(sw);
                         }
                     }
-
-                    last = r;
-                }
-            }
-        }
-
-        private static void WriteCamBamFile(LoadBase load, string filename)
-        {
-            using (TextWriter writer = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
-            {
-                var x = new XmlSerializer(typeof(CamBam.CamBam));
-                x.Serialize(writer, load.CamBam);
-            }
-        }
-
-        private void WriteImportInfoFile(LoadBase load, string filename)
-        {
-            if (Commands.Exists(c => !string.IsNullOrEmpty(c.ImportInfo)))
-            {
-                using (TextWriter writer = new StreamWriter(Environment.ExpandEnvironmentVariables(filename)))
-                {
-                    Commands.ForEach(
-                        c =>
-                        {
-                            if (!string.IsNullOrEmpty(c.ImportInfo))
-                            {
-                                writer.WriteLine(c.ImportInfo);
-                            }
-                        });
                 }
             }
         }

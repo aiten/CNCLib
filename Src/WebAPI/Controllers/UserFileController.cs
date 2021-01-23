@@ -53,6 +53,7 @@ namespace CNCLib.WebAPI.Controllers
 
         #region default REST
 
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         [HttpGet("{filename}")]
         public async Task<IActionResult> Get(string filename)
         {

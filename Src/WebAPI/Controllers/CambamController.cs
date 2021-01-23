@@ -35,9 +35,12 @@ namespace CNCLib.WebAPI.Controllers
     [Route("api/[controller]")]
     public class CambamController : Controller
     {
-        public CambamController(ILoadOptionsManager loadOptionsManager, ICNCLibUserContext userContext)
+        private readonly GCodeLoadHelper _loadHelper;
+
+        public CambamController(ILoadOptionsManager loadOptionsManager, GCodeLoadHelper loadHelper, ICNCLibUserContext userContext)
         {
             _loadOptionsManager = loadOptionsManager;
+            _loadHelper         = loadHelper;
             _userContext        = userContext;
         }
 
@@ -45,9 +48,9 @@ namespace CNCLib.WebAPI.Controllers
         readonly ICNCLibUserContext  _userContext;
 
         [HttpPost]
-        public string Post([FromBody] LoadOptions input)
+        public async Task<string> Post([FromBody] LoadOptions input)
         {
-            var load = GCodeLoadHelper.CallLoad(input);
+            var load = await _loadHelper.CallLoad(input, false);
             var sw   = new StringWriter();
             new XmlSerializer(typeof(CamBam)).Serialize(sw, load.CamBam);
             return sw.ToString();
@@ -59,7 +62,7 @@ namespace CNCLib.WebAPI.Controllers
             var opt = await _loadOptionsManager.Get(input.LoadOptionsId);
             opt.FileName    = input.FileName;
             opt.FileContent = input.FileContent;
-            var load = GCodeLoadHelper.CallLoad(opt);
+            var load = await _loadHelper.CallLoad(opt, false);
             var sw   = new StringWriter();
             new XmlSerializer(typeof(CamBam)).Serialize(sw, load.CamBam);
             return sw.ToString();

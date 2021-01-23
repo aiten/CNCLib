@@ -40,13 +40,15 @@ namespace CNCLib.WebAPI.Controllers
     public class GCodeController : Controller
     {
         private readonly ILoadOptionsManager _loadOptionsManager;
+        private readonly GCodeLoadHelper     _loadHelper;
         private readonly IUserFileManager    _fileManager;
         private readonly ICNCLibUserContext  _userContext;
 
-        public GCodeController(ILoadOptionsManager loadOptionsManager, IUserFileManager fileManager, ICNCLibUserContext userContext)
+        public GCodeController(ILoadOptionsManager loadOptionsManager, IUserFileManager fileManager, GCodeLoadHelper loadHelper, ICNCLibUserContext userContext)
         {
             _loadOptionsManager = loadOptionsManager;
             _fileManager        = fileManager;
+            _loadHelper         = loadHelper;
             _userContext        = userContext;
         }
 
@@ -60,7 +62,7 @@ namespace CNCLib.WebAPI.Controllers
                 input.FileContent = fileDto.Content;
             }
 
-            return GCodeLoadHelper.CallLoad(input).Commands.ToStringList();
+            return (await _loadHelper.CallLoad(input, true)).Commands.ToStringList();
         }
 
         [HttpPut]
@@ -70,7 +72,7 @@ namespace CNCLib.WebAPI.Controllers
             opt.FileName    = input.FileName;
             opt.FileContent = input.FileContent;
 
-            return GCodeLoadHelper.CallLoad(opt).Commands.ToStringList();
+            return (await _loadHelper.CallLoad(opt, true)).Commands.ToStringList();
         }
 
         [HttpPut("render")]
