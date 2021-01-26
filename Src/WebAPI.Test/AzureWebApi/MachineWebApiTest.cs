@@ -16,6 +16,8 @@
 
 namespace CNCLib.WebAPI.Test.AzureWebApi
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -29,20 +31,35 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
     public class MachineWebApiTest : AzureWebApiTest
     {
         private readonly string api = @"api/Machine";
+        
+        private async Task<IEnumerable<Machine>> GetAll()
+        {
+            var client   = GetHttpClient();
+            var response = await client.GetAsync(api);
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<IList<Machine>>();
+        }
 
         [Fact]
         public async Task GetMachine1()
         {
+            var all = await GetAll();
+            all.Should().HaveCountGreaterThan(0);
+
+            var first = all.First();
+
             var client = GetHttpClient();
 
-            var response = await client.GetAsync(api + "/1");
+            var response = await client.GetAsync($"{api}/{first.MachineId}");
 
             response.IsSuccessStatusCode.Should().BeTrue();
 
             if (response.IsSuccessStatusCode)
             {
                 var m = await response.Content.ReadAsAsync<Machine>();
-                m.MachineId.Should().Be(1);
+                m.MachineId.Should().Be(first.MachineId);
             }
         }
 

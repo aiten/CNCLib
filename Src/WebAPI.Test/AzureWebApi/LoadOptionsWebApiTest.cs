@@ -32,12 +32,27 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
     {
         private readonly string api = "/api/loadoptions";
 
+        private async Task<IEnumerable<LoadOptions>> GetAll()
+        {
+            var client = GetHttpClient();
+            var response = await client.GetAsync(api);
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<IList<LoadOptions>>();
+        }
+
         [Fact]
         public async Task GetOption1()
         {
+            var all = await GetAll();
+            all.Should().HaveCountGreaterThan(0);
+
+            var first = all.First();
+
             var client = GetHttpClient();
 
-            var response = await client.GetAsync(api + "/1");
+            var response = await client.GetAsync($"{api}/{first.Id}");
 
             response.IsSuccessStatusCode.Should().BeTrue();
 

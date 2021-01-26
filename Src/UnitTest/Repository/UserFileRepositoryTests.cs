@@ -65,9 +65,9 @@ namespace CNCLib.UnitTest.Repository
         [Fact]
         public async Task GetAllTest()
         {
-            var entities = (await CreateTestContext().GetAll()).OrderBy(u => u.FileName);
-            entities.Count().Should().BeGreaterOrEqualTo(1);
-            entities.ElementAt(0).FileName.Should().Be(@"Examples\cat.hpgl");
+            var entities = (await CreateTestContext().GetAll()).OrderBy(u => u.FileName).ToList();
+            entities.Should().HaveCountGreaterThan(0);
+            entities.Should().Contain(f => f.FileName == @"Examples\cat.hpgl");
         }
 
         [Fact]

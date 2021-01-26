@@ -17,7 +17,9 @@
 namespace CNCLib.WebAPI.Test.AzureWebApi
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Net.Http;
     using System.Reflection;
     using System.Threading.Tasks;
@@ -91,10 +93,25 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
 
             public byte[] FileContent { get; set; }
         }
+        
+        private async Task<IEnumerable<LoadOptions>> GetAllLoadOptions()
+        {
+            var client   = GetHttpClient();
+            var response = await client.GetAsync("/api/loadoptions");
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsAsync<IList<LoadOptions>>();
+        }
 
         [Fact]
         public async Task PutImageWithStoredOptions()
         {
+            var all = await GetAllLoadOptions();
+            all.Should().HaveCountGreaterThan(0);
+
+            var first  = all.First(l => l.SettingName == "laser grave image");
+
             var client = GetHttpClient();
 
             var ass     = Assembly.GetExecutingAssembly();
@@ -102,7 +119,7 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
 
             var input = new CreateGCode
             {
-                LoadOptionsId = 3,
+                LoadOptionsId = first.Id,
                 FileName      = assPath + @"\TestData\Wendelin_Ait110.png"
             };
 
