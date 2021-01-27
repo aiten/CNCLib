@@ -67,7 +67,7 @@
     <PackageReference Include="MahApps.Metro">
       <Version>2.4.3</Version>
     </PackageReference>
-    <PackageReference Include="NLog" Version="4.7.6" />
+    <PackageReference Include="NLog" Version="4.7.7" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Views\LoginView.xaml.cs">
