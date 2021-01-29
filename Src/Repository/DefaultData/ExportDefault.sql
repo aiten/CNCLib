@@ -11,4 +11,4 @@
 #exporttablecsv %thisfiledir%\MachineInitCommand.csv=select * from MachineInitCommand;
 
 #exporttablecsv %thisfiledir%\User.csv=select * from [User];
---#exporttablecsv %thisfiledir%\UserFile.csv=select * from [UserFile];
+#exporttablecsv %thisfiledir%\UserFile.csv=select UserId,FileName,convert(image,Content) as Content,UserFileId,IsSystem,UploadTime from [UserFile];
