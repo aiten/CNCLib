@@ -28,7 +28,7 @@ namespace CNCLib.Server
     using CNCLib.Logic.Manager;
     using CNCLib.Repository;
     using CNCLib.Repository.Context;
-    using CNCLib.Repository.SqlServer;
+    using CNCLib.Repository.SqLite;
     using CNCLib.Service.Logic;
     using CNCLib.Shared;
     using CNCLib.WebAPI;
@@ -72,14 +72,18 @@ namespace CNCLib.Server
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            string sqlConnectString =
-                Microsoft.Azure.Web.DataProtection.Util.IsAzureEnvironment()
-                    ? $"Data Source = cnclibdb.database.windows.net; Initial Catalog = CNCLibDb; Persist Security Info = True; User ID = {Xxx}; Password = {Yyy};"
-                    : SqlServerDatabaseTools.ConnectString;
+            /*
+                        string sqlConnectString =
+                            Microsoft.Azure.Web.DataProtection.Util.IsAzureEnvironment()
+                                ? $"Data Source = cnclibdb.database.windows.net; Initial Catalog = CNCLibDb; Persist Security Info = True; User ID = {Xxx}; Password = {Yyy};"
+                                : SqlServerDatabaseTools.ConnectString;
 
-            SqlServerDatabaseTools.ConnectString = sqlConnectString;
+                        SqlServerDatabaseTools.ConnectString = sqlConnectString;
+            */
 
-            GlobalDiagnosticsContext.Set("connectionString", sqlConnectString);
+            string connectString    = SqliteDatabaseTools.SetEnvironment(Microsoft.Azure.Web.DataProtection.Util.IsAzureEnvironment());
+
+            GlobalDiagnosticsContext.Set("connectionString", connectString);
             GlobalDiagnosticsContext.Set("version",          Assembly.GetExecutingAssembly().GetName().Version.ToString());
             GlobalDiagnosticsContext.Set("application",      "CNCLib.WebAPI.Server");
             GlobalDiagnosticsContext.Set("username",         Environment.UserName);
@@ -94,7 +98,7 @@ namespace CNCLib.Server
             var moduleInit = new InitializationManager();
 
             moduleInit.Add(new CNCLib.Logic.ModuleInitializer());
-            moduleInit.Add(new CNCLib.Repository.ModuleInitializer() { OptionsAction = SqlServerDatabaseTools.OptionBuilder });
+            moduleInit.Add(new CNCLib.Repository.ModuleInitializer() { OptionsAction = SqliteDatabaseTools.OptionBuilder });
             moduleInit.Add(new Framework.Tools.ModuleInitializer());
 
             var controllerAssembly = typeof(CambamController).Assembly;

@@ -60,12 +60,7 @@ namespace CNCLib.WpfClient.Start
 
             var localizationCollector = new LocalizationCollector();
 
-            string userProfilePath = Environment.GetEnvironmentVariable(@"USERPROFILE");
-            AppDomain.CurrentDomain.SetData("DataDirectory", userProfilePath);
-
-            string dbFile = userProfilePath + @"\CNCLib.db";
-            SqliteDatabaseTools.DatabaseFile = dbFile;
-            string connectString = SqliteDatabaseTools.ConnectString;
+            string connectString = SqliteDatabaseTools.SetEnvironment(false);
 
             GlobalDiagnosticsContext.Set("logDir",           $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib/logs");
             GlobalDiagnosticsContext.Set("connectionString", connectString);
@@ -111,7 +106,7 @@ namespace CNCLib.WpfClient.Start
             {
                 _logger.Error(ex);
 
-                MessageBox.Show($"Cannot create/connect database in {dbFile} \n\r" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Cannot create/connect database in {connectString} \n\r" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Current.Shutdown();
             }
 

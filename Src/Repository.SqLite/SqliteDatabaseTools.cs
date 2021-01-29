@@ -16,12 +16,40 @@
 
 namespace CNCLib.Repository.SqLite
 {
+    using System;
+    using System.IO;
+    using System.Reflection;
+
     using Microsoft.EntityFrameworkCore;
 
     public class SqliteDatabaseTools
     {
         public static string DatabaseFile  { get; set; } = $"{System.IO.Path.GetTempPath()}\\CNCLib.db";
         public static string ConnectString => $"Data Source={DatabaseFile}";
+
+        public static string SetEnvironment(bool isAzure)
+        {
+            string dbFolder;
+            string dbFileName;
+
+            if (isAzure)
+            {
+                string baseDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                dbFolder   = $@"{baseDirectory}\data";
+                dbFileName = "CNCLibAzure.db";
+            }
+            else
+            {
+                dbFolder   = Environment.GetEnvironmentVariable(@"USERPROFILE");
+                dbFileName = "CNCLib.db";
+            }
+
+            AppDomain.CurrentDomain.SetData("DataDirectory", dbFolder);
+
+            var dbFile = $@"{dbFolder}\{dbFileName}";
+            SqliteDatabaseTools.DatabaseFile = dbFile;
+            return SqliteDatabaseTools.ConnectString;
+        }
 
         public static void OptionBuilder(DbContextOptionsBuilder option)
         {

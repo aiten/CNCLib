@@ -49,7 +49,7 @@
     <ProjectReference Include="..\Logic.Abstraction\Logic.Abstraction.csproj" />
     <ProjectReference Include="..\Logic\Logic.csproj" />
     <ProjectReference Include="..\Repository.Abstraction\Repository.Abstraction.csproj" />
-    <ProjectReference Include="..\Repository.SqlServer\Repository.SqlServer.csproj" />
+    <ProjectReference Include="..\Repository.SqLite\Repository.SqLite.csproj" />
     <ProjectReference Include="..\Repository\Repository.csproj" />
     <ProjectReference Include="..\Service.Logic\Service.Logic.csproj" />
     <ProjectReference Include="..\WebAPI\WebAPI.csproj" />
