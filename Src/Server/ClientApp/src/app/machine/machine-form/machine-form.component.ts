@@ -255,6 +255,41 @@ export class MachineFormComponent implements OnInit {
     });
   }
 
+  async testSerialServer() {
+
+    try {
+      var response = await this.serialServer.connectAndRead(this.machine);
+
+      const dialogRef = this.dialog.open(MessageBoxComponent,
+        {
+          width: '250px',
+          data: { title: "OK", message: "sucessfully connected!" }
+        });
+    } catch(error) {
+      console.log(error);
+
+      const dialogRef = this.dialog.open(MessageBoxComponent,
+        {
+          width: '250px',
+          data: { title: "Error", message: error }
+        });
+    }    
+
+/*
+    const dialogRef = this.dialog.open(MessageBoxComponent,
+      {
+        width: '250px',
+        data: { title: "Warning", message: "Read configuration from machine eeprom?", haveYes: true, haveCancel: true }
+      });
+
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result.result == MessageBoxResult.Yes) {
+        await this.serialServer.connectAndRead(this.machine);
+      }
+    });
+*/    
+  }
+
   userExistsValidator = (control) => {
     /*
         return this.userService.checkUserExists(control.value)

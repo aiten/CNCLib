@@ -67,7 +67,7 @@ export class MachineOverviewComponent implements OnInit {
   }
 
   canConnectTo(machine: Machine): boolean {
-    return machine.serialServer.length > 0;
+    return machine.serialServer?.length > 0;
   }
 
   async newMachine() {

@@ -35,18 +35,13 @@
         <mat-card-title>Connect to</mat-card-title>
 
         <div class="form-group input-group">
-          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="e.g. https:\\localhost:5001">Serial Server</mat-label>
-          <input class="form-control" formControlName="serialServer"/>
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="e.g. https:\\localhost:5000">Serial Server</mat-label>
+          <input class="form-control" formControlName="serialServer"/><a class="mat-stroked-button" href={{machine.serialServer}}>open</a>
         </div>
 
         <div class="form-group input-group">
           <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="e.g. 'com4' for windows, '/dev/ttyUSB1' for linux(rasperry pi)">Com Port</mat-label>
           <input class="form-control" formControlName="comPort"/>
-        </div>
-
-        <div class="form-group input-group">
-          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Baudrate of machine, e.g. 250000 (windows), 115200 (raspberry pi)">Baud Rate</mat-label>
-          <input class="form-control" formControlName="baudRate"/>
         </div>
 
         <div class="form-group input-group">
@@ -57,6 +52,20 @@
         <div class="form-group input-group">
           <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Serial server user password">Server Password</mat-label>
           <input class="form-control" type='password' formControlName="serialServerPassword"/>
+        </div>
+
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Test serial server connection">Test Serial Server</mat-label>
+          <button mat-stroked-button (click)='testSerialServer()' [disabled]="!machineForm.valid">Try connect (server+login)</button>
+        </div>
+
+        <div class="form-group input-group">
+          <p>The web site cannot connect to a local USB port. In order to connect to a machine you need a running serial server. Please install the serial server from <a href='https://github.com/aiten/CNCLib/releases'>github.com/aiten/CNCLib</a></p>
+        </div>
+
+        <div class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Baudrate of machine, e.g. 250000 (windows), 115200 (raspberry pi)">Baud Rate</mat-label>
+          <input class="form-control" formControlName="baudRate"/>
         </div>
 
         <div class="form-group input-group">
