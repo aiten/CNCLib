@@ -26,6 +26,7 @@ namespace CNCLib.Serial.Server
 
     using System;
     using System.IO;
+    using System.Reflection;
     using System.Runtime.InteropServices;
 
     using Framework.WebAPI.Host;
@@ -34,6 +35,8 @@ namespace CNCLib.Serial.Server
 
     public class Program
     {
+        protected static string BaseDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
         public static void Main(string[] args)
         {
 #if DEBUG
@@ -79,6 +82,7 @@ namespace CNCLib.Serial.Server
                 .Build();
 
             return Host.CreateDefaultBuilder(args)
+                .UseContentRoot(BaseDirectory)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder

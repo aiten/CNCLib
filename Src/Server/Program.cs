@@ -27,9 +27,13 @@ namespace CNCLib.Server
 
     using NLog;
     using NLog.Web;
+    using System.IO;
+    using System.Reflection;
 
     public class Program
     {
+        protected static string BaseDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
         public static void Main(string[] args)
         {
             GlobalDiagnosticsContext.Set("logDir", $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib.Web/logs");
@@ -57,6 +61,7 @@ namespace CNCLib.Server
                 .Build();
 
             return Host.CreateDefaultBuilder(args)
+                .UseContentRoot(BaseDirectory)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder
