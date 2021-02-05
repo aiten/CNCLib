@@ -20,6 +20,8 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
     using System.Net.Http;
     using System.Net.Http.Headers;
 
+    using CNCLib.Shared;
+
     using Framework.Tools;
 
     public class AzureWebApiTest : UnitTestBase
@@ -38,7 +40,7 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
                 _httpClient.DefaultRequestHeaders.Accept.Clear();
                 _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Base64Helper.StringToBase64($"{"CNCLibGlobal"}:{"CNCLib4Global."}"));
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Base64Helper.StringToBase64($"{CNCLibConst.AdminUser}:{"CNCLib4Global."}"));
             }
 
 

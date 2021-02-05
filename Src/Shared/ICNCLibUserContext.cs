@@ -20,8 +20,8 @@ namespace CNCLib.Shared
 
     public interface ICNCLibUserContext : IUserContext
     {
-        int UserId { get; }
-
+        int    UserId   { get; }
         string UserName { get; }
+        bool   IsAdmin  { get; }
     }
 }

@@ -41,6 +41,7 @@ namespace CNCLib.WebAPI.Controllers
             _userContext = userContext;
         }
 
+        [Authorize(Policy = Policies.IsAdmin)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> Get(string userName)
         {
@@ -119,6 +120,7 @@ namespace CNCLib.WebAPI.Controllers
 
         #region default REST
 
+        [Authorize(Policy = Policies.IsAdmin)]
         [HttpGet("{id:int}")]
         public async Task<ActionResult<User>> Get(int id)
         {

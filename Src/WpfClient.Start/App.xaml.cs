@@ -73,7 +73,7 @@ namespace CNCLib.WpfClient.Start
 
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
-            var userContext = new CNCLibUserContext("CNCLibGlobal");
+            var userContext = new CNCLibUserContext(CNCLibConst.AdminUser);
 
             AppService.ServiceCollection = new ServiceCollection();
             AppService.ServiceCollection

@@ -19,12 +19,14 @@ namespace CNCLib.UnitTest
 {
     using System.Security.Claims;
 
+    using CNCLib.Logic.Abstraction;
     using CNCLib.Shared;
 
     public class CNCLibUserContext : ICNCLibUserContextRW
     {
         public int    UserId   { get; private set; }
         public string UserName { get; private set; }
+        public bool   IsAdmin  { get; private set; }
 
         public ClaimsPrincipal User { get; private set; }
 
@@ -32,11 +34,13 @@ namespace CNCLib.UnitTest
         {
             UserName = "Maxi";
             UserId   = 1;
+            IsAdmin  = true;
 
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, UserId.ToString()),
                 new Claim(ClaimTypes.Name,           UserName),
+                new Claim(CNCLibClaims.IsAdmin,      "true"),
             };
             var identity = new ClaimsIdentity(claims, "BasicAuthentication");
 

@@ -17,6 +17,7 @@
 namespace CNCLib.Logic.Manager
 {
     using System;
+    using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
@@ -86,12 +87,18 @@ namespace CNCLib.Logic.Manager
 
             if (!string.IsNullOrEmpty(password) && userEntity != null && _passwordProvider.ValidatePassword(password, userEntity.Password))
             {
-                var claims = new[]
+                var claims = new List<Claim>()
                 {
                     new Claim(ClaimTypes.NameIdentifier, userEntity.UserId.ToString()),
                     new Claim(ClaimTypes.Name,           userName),
                 };
-                var identity  = new ClaimsIdentity(claims, "BasicAuthentication");
+
+                if (userName == CNCLibConst.AdminUser)
+                {
+                    claims.Add(new Claim(CNCLibClaims.IsAdmin, "true"));
+                }
+
+                var identity = new ClaimsIdentity(claims, "BasicAuthentication");
                 var principal = new ClaimsPrincipal(identity);
 
                 return principal;

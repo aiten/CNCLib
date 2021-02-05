@@ -20,6 +20,7 @@ namespace CNCLib.WpfClient
     using System.Security.Claims;
     using System.Threading.Tasks;
 
+    using CNCLib.Logic.Abstraction;
     using CNCLib.Logic.Abstraction.DTO;
     using CNCLib.Service.Abstraction;
     using CNCLib.Shared;
@@ -38,8 +39,9 @@ namespace CNCLib.WpfClient
                 userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
             }
 
-            UserId = 1;
-            User   = CreatePrincipal(userName, UserId);
+            UserId  = 1;
+            User    = CreatePrincipal(userName, UserId);
+            IsAdmin = true;
 
             UserName          = userName; // Environment.UserName;
             EncryptedPassword = Base64Helper.StringToBase64(UserName);
@@ -51,6 +53,7 @@ namespace CNCLib.WpfClient
             {
                 new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
                 new Claim(ClaimTypes.Name,           userName),
+                new Claim(CNCLibClaims.IsAdmin,      "true"),
             };
             var identity = new ClaimsIdentity(claims, "BasicAuthentication");
 
@@ -65,7 +68,8 @@ namespace CNCLib.WpfClient
 
         public string Password => Base64Helper.StringFromBase64(EncryptedPassword);
 
-        public int UserId { get; private set; }
+        public int  UserId  { get; private set; }
+        public bool IsAdmin { get; private set; }
 
         public async Task InitUserContext()
         {

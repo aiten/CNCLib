@@ -16,6 +16,7 @@
     <ProjectReference Include="..\Framework\Tools\Tools.csproj" />
     <ProjectReference Include="..\Logic.Abstraction.DTO\Logic.Abstraction.DTO.csproj" />
     <ProjectReference Include="..\Logic.Abstraction\Logic.Abstraction.csproj" />
+    <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="TestData\heikes-mietzi.hpgl">

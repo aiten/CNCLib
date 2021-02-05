@@ -88,7 +88,7 @@ namespace CNCLib.Serial.Server
                         options.Filters.AddService<UnhandledExceptionFilter>();
                         options.Filters.AddService<MethodCallLogFilter>();
                     })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .SetCompatibilityVersion(CompatibilityVersion.Latest)
                 .AddNewtonsoftJson(
                     options =>
                         options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())

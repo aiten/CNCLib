@@ -18,6 +18,7 @@ namespace CNCLib.Server
 {
     using System;
     using System.Reflection;
+    using System.Security.Claims;
     using System.Threading;
 
     using AutoMapper;
@@ -72,19 +73,11 @@ namespace CNCLib.Server
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            /*
-                        string sqlConnectString =
-                            Microsoft.Azure.Web.DataProtection.Util.IsAzureEnvironment()
-                                ? $"Data Source = cnclibdb.database.windows.net; Initial Catalog = CNCLibDb; Persist Security Info = True; User ID = {Xxx}; Password = {Yyy};"
-                                : SqlServerDatabaseTools.ConnectString;
 
-                        SqlServerDatabaseTools.ConnectString = sqlConnectString;
-            */
-
-            string connectString    = SqliteDatabaseTools.SetEnvironment(Microsoft.Azure.Web.DataProtection.Util.IsAzureEnvironment());
+            string connectString = SqliteDatabaseTools.SetEnvironment(Microsoft.Azure.Web.DataProtection.Util.IsAzureEnvironment());
 
             GlobalDiagnosticsContext.Set("connectionString", connectString);
-            GlobalDiagnosticsContext.Set("version",          Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            GlobalDiagnosticsContext.Set("version",          Assembly.GetExecutingAssembly().GetName().Version?.ToString());
             GlobalDiagnosticsContext.Set("application",      "CNCLib.WebAPI.Server");
             GlobalDiagnosticsContext.Set("username",         Environment.UserName);
         }
@@ -127,7 +120,7 @@ namespace CNCLib.Server
                         options.Filters.AddService<MethodCallLogFilter>();
                         options.Filters.AddService<SetUserContextFilter>();
                     })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .SetCompatibilityVersion(CompatibilityVersion.Latest)
                 .AddNewtonsoftJson(
                     options =>
                         options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
@@ -135,6 +128,11 @@ namespace CNCLib.Server
 
             services.AddAuthentication(AuthenticationScheme)
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>(AuthenticationScheme, null);
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(Policies.IsAdmin, policy => policy.RequireClaim(CNCLibClaims.IsAdmin));
+            });
 
             services.AddScoped<IAuthenticationManager, UserManager>();
             services.AddTransient<IOneWayPasswordProvider, Pbkdf2PasswordProvider>();
@@ -254,8 +252,5 @@ namespace CNCLib.Server
             scheduler.Daily<IDailyJob>(TimeSpan.Parse("02:00"), executor => SetJobExecutor(executor, "Hallo from daily"));
             scheduler.Start();
         }
-
-        public string Xxx => @"Herbert";
-        public string Yyy => @"Edith1234";
     }
 }

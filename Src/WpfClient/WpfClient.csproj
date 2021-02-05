@@ -54,6 +54,7 @@
     <ProjectReference Include="..\GCode.GUI\GCode.GUI.csproj" />
     <ProjectReference Include="..\GCode.Serial\GCode.Serial.csproj" />
     <ProjectReference Include="..\GCode.Generate\GCode.Generate.csproj" />
+    <ProjectReference Include="..\Logic.Abstraction\Logic.Abstraction.csproj" />
     <ProjectReference Include="..\Logic.Client\Logic.Client.csproj" />
     <ProjectReference Include="..\Logic.Abstraction.DTO\Logic.Abstraction.DTO.csproj" />
     <ProjectReference Include="..\Serial.Client\Serial.Client.csproj" />

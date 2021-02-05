@@ -14,35 +14,10 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WebAPI
-{
-    using System.Security.Claims;
-
-    using CNCLib.Logic.Abstraction;
-    using CNCLib.Shared;
-
-    using Microsoft.AspNetCore.Mvc;
-
-    public class CNCLibUserContext : ICNCLibUserContextRW
+namespace CNCLib.Logic.Abstraction
+{ 
+    public static class CNCLibClaims
     {
-        public ClaimsPrincipal User { get; private set; }
-
-        public int UserId { get; private set; }
-
-        public string UserName { get; private set; }
-        public bool   IsAdmin  { get; private set; }
-
-        public void InitFromController(Controller controller)
-        {
-            User = controller.User;
-            string userIdString = controller.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (!string.IsNullOrEmpty(userIdString))
-            {
-                UserId = int.Parse(userIdString);
-            }
-
-            UserName = controller.User.FindFirst(ClaimTypes.Name)?.Value;
-            IsAdmin  = controller.User.HasClaim(CNCLibClaims.IsAdmin,"true");
-        }
+        public const string IsAdmin = nameof(IsAdmin);
     }
 }
