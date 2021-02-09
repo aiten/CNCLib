@@ -16,11 +16,13 @@
 
 namespace CNCLib.Logic.Abstraction.DTO
 {
+    using System;
+
     public class User
     {
-        public int UserId { get; set; }
-
-        public string Name { get; set; }
-        // public string UserPassword { get; set; }
+        public int       UserId    { get; set; }
+        public string    Name      { get; set; }
+        public DateTime? Created   { get; set; }
+        public DateTime? LastLogin { get; set; }
     }
 }

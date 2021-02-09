@@ -14,9 +14,11 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-
 namespace CNCLib.Logic
 {
+    using CNCLib.Logic.Job;
+    using CNCLib.Logic.Statistics;
+
     using Framework.Dependency;
     using Framework.Localization.Abstraction;
     using Framework.Schedule;
@@ -28,8 +30,10 @@ namespace CNCLib.Logic
     {
         public void AddServices(IServiceCollection services)
         {
-            services.AddAssemblyIncludingInternals(ServiceLifetime.Transient, typeof(Manager.MachineManager).Assembly);
-            services.AddScoped<JobParamContainer>();
+            services
+                .AddAssemblyIncludingInternals(ServiceLifetime.Transient, typeof(Manager.MachineManager).Assembly)
+                .AddScoped<JobParamContainer>()
+                .AddSingleton<CallStatisticCache>();
         }
 
         public void AddTranslationResources(ILocalizationCollector localisation)

@@ -14,49 +14,43 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Logic.Job
+namespace CNCLib.Logic.Statistics
 {
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
+    using System.Collections.Generic;
 
-    using Framework.Schedule;
+    using Framework.Tools.Abstraction;
 
-    using CNCLib.Logic.Abstraction;
-
-    using Microsoft.Extensions.Logging;
-
-    public sealed class CleanupJob : ICleanupJob
+    public sealed class CallStatisticCache
     {
-        private readonly ILogger           _logger;
-        private readonly JobParamContainer _jobParamContainer;
+        // must be a singleton
 
-        public string            JobName { get; set; }
-        public object            Param   { get; set; }
-        public CancellationToken CToken  { get; set; }
+        private IList<CallStatistic> _calls = new List<CallStatistic>();
+        private object               _lock  = new object();
 
-        public CleanupJob(ILogger<CleanupJob> logger, JobParamContainer jobParamContainer)
+        private readonly ICurrentDateTime _currentDateTime;
+
+        public CallStatisticCache(ICurrentDateTime currentDateTime)
         {
-            _logger            = logger;
-            _jobParamContainer = jobParamContainer;
+            _currentDateTime = currentDateTime;
         }
 
-        public async Task Execute()
+        public void AddCall(CallStatistic call)
         {
-            try
+            call.CallTime = _currentDateTime.Now;
+            lock (_lock)
             {
-                _logger.LogInformation($"Job {JobName}: {Param},{_jobParamContainer.Param}");
-                await Task.Delay(1000, CToken);
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, $"Job {JobName}: failed with exception.");
+                _calls.Add(call);
             }
         }
 
-        public async Task SetContext()
+        public IList<CallStatistic> GetCallStatisticsAndClear()
         {
-            await Task.CompletedTask;
+            lock (_lock)
+            {
+                var calls = _calls;
+                _calls = new List<CallStatistic>();
+                return calls;
+            }
         }
     }
 }

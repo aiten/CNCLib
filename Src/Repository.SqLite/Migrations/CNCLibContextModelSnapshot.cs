@@ -273,6 +273,12 @@ namespace CNCLib.Repository.SqLite.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("LastLogin")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(128)

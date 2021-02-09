@@ -14,7 +14,6 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-
 namespace CNCLib.Logic.Job
 {
     using System;
@@ -34,7 +33,7 @@ namespace CNCLib.Logic.Job
         public object            Param   { get; set; }
         public CancellationToken CToken  { get; set; }
 
-        public DailyJob(IUserManager userManager, ILogger<CleanupJob> logger)
+        public DailyJob(IUserManager userManager, ILogger<DailyJob> logger)
         {
             _userManager = userManager;
             _logger      = logger;

@@ -16,10 +16,14 @@
 
 namespace CNCLib.Repository.Abstraction.Entities
 {
+    using System;
+
     public class User
     {
-        public int    UserId   { get; set; }
-        public string Name     { get; set; }
-        public string Password { get; set; }
+        public int       UserId    { get; set; }
+        public string    Name      { get; set; }
+        public string    Password  { get; set; }
+        public DateTime? Created   { get; set; }
+        public DateTime? LastLogin { get; set; }
     }
 }

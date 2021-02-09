@@ -14,30 +14,11 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository.Mappings
+namespace CNCLib.Logic.Abstraction
 {
-    using CNCLib.Repository.Abstraction.Entities;
+    using Framework.Schedule.Abstraction;
 
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-    public static class UserMapping
+    public interface IFlushCallStatisticJob : IJob
     {
-        public static void Map(this EntityTypeBuilder<User> entity)
-        {
-            entity.ToTable("User");
-
-            entity.HasKey(m => m.UserId);
-
-            entity.HasIndex(e => e.Name).IsUnique();
-
-            entity.Property(m => m.Name).IsRequired().IsUnicode().HasMaxLength(128);
-
-            entity.Property(m => m.Password).IsUnicode().HasMaxLength(255);
-
-            entity.Property(e => e.Created);
-
-            entity.Property(e => e.LastLogin);
-        }
     }
 }

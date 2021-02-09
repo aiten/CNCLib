@@ -25,11 +25,13 @@ namespace CNCLib.Logic.Manager
 
     using CNCLib.Logic.Abstraction;
     using CNCLib.Logic.Abstraction.DTO;
+    using CNCLib.Logic.Statistics;
     using CNCLib.Repository.Abstraction;
     using CNCLib.Shared;
 
     using Framework.Logic;
     using Framework.Repository.Abstraction;
+    using Framework.Tools.Abstraction;
     using Framework.Tools.Password;
 
     using UserEntity = CNCLib.Repository.Abstraction.Entities.User;
@@ -43,10 +45,12 @@ namespace CNCLib.Logic.Manager
         private readonly IUserFileRepository _userFileRepository;
         private readonly IInitRepository     _initRepository;
 
+        private readonly ICurrentDateTime   _currentDate;
         private readonly IMapper            _mapper;
         private readonly ICNCLibUserContext _userContext;
 
         private readonly IOneWayPasswordProvider _passwordProvider;
+        private readonly CallStatisticCache      _callStatisticCache;
 
         public const int GlobalUserId = 1;
 
@@ -57,8 +61,10 @@ namespace CNCLib.Logic.Manager
             IUserFileRepository        userFileRepository,
             IInitRepository            initRepository,
             ICNCLibUserContext         userContext,
+            ICurrentDateTime           currentDate,
             IMapper                    mapper,
-            IOneWayPasswordProvider    passwordProvider) : base(unitOfWork, repository, mapper)
+            IOneWayPasswordProvider    passwordProvider,
+            CallStatisticCache         callStatisticCache) : base(unitOfWork, repository, mapper)
         {
             _unitOfWork         = unitOfWork;
             _repository         = repository;
@@ -67,8 +73,10 @@ namespace CNCLib.Logic.Manager
             _userFileRepository = userFileRepository;
             _initRepository     = initRepository;
             _userContext        = userContext;
+            _currentDate        = currentDate;
             _mapper             = mapper;
             _passwordProvider   = passwordProvider;
+            _callStatisticCache = callStatisticCache;
         }
 
         protected override int GetKey(UserEntity entity)
@@ -98,8 +106,14 @@ namespace CNCLib.Logic.Manager
                     claims.Add(new Claim(CNCLibClaims.IsAdmin, "true"));
                 }
 
-                var identity = new ClaimsIdentity(claims, "BasicAuthentication");
+                var identity  = new ClaimsIdentity(claims, "BasicAuthentication");
                 var principal = new ClaimsPrincipal(identity);
+
+                _callStatisticCache.AddCall(new CallStatistic()
+                {
+                    CallTime = _currentDate.Now,
+                    UserId   = userEntity.UserId
+                });
 
                 return principal;
             }
@@ -118,7 +132,12 @@ namespace CNCLib.Logic.Manager
                     throw new Exception("user already exists");
                 }
 
-                userEntity = new UserEntity() { Name = userName, Password = _passwordProvider.GetPasswordHash(password) };
+                userEntity = new UserEntity()
+                {
+                    Name     = userName,
+                    Password = _passwordProvider.GetPasswordHash(password),
+                    Created  = _currentDate.Now
+                };
 
                 _repository.Add(userEntity);
 

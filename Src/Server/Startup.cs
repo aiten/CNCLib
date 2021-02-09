@@ -26,6 +26,7 @@ namespace CNCLib.Server
     using CNCLib.Logic;
     using CNCLib.Logic.Abstraction;
     using CNCLib.Logic.Client;
+    using CNCLib.Logic.Job;
     using CNCLib.Logic.Manager;
     using CNCLib.Repository;
     using CNCLib.Repository.Context;
@@ -69,6 +70,10 @@ namespace CNCLib.Server
     {
         private const string CorsAllowAllName     = "AllowAll";
         private const string AuthenticationScheme = "BasicAuthentication";
+
+        private static readonly TimeSpan _flushStatisticsTime = TimeSpan.FromMinutes(1);
+
+        private IJobExecutor _flushCallStatisticsJob;
 
         public Startup(IConfiguration configuration)
         {
@@ -129,10 +134,7 @@ namespace CNCLib.Server
             services.AddAuthentication(AuthenticationScheme)
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>(AuthenticationScheme, null);
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy(Policies.IsAdmin, policy => policy.RequireClaim(CNCLibClaims.IsAdmin));
-            });
+            services.AddAuthorization(options => { options.AddPolicy(Policies.IsAdmin, policy => policy.RequireClaim(CNCLibClaims.IsAdmin)); });
 
             services.AddScoped<IAuthenticationManager, UserManager>();
             services.AddTransient<IOneWayPasswordProvider, Pbkdf2PasswordProvider>();
@@ -181,8 +183,16 @@ namespace CNCLib.Server
             AppService.BuildServiceProvider();
         }
 
+        private void OnShutdown()
+        {
+            _flushCallStatisticsJob?.Execute().ConfigureAwait(false).GetAwaiter().GetResult();
+        }
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
+            var applicationLifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
+            applicationLifetime.ApplicationStopping.Register(OnShutdown);
+
             Services = app.ApplicationServices;
 
             CNCLibContext.InitializeDatabase2();
@@ -245,11 +255,11 @@ namespace CNCLib.Server
             }
 
             var scheduler = Services.GetRequiredService<IJobScheduler>();
-            scheduler
-                .Periodic<ICleanupJob>(TimeSpan.FromHours(5), executor => SetJobExecutor(executor, "Cleanup 1"))
-                .Then<ICleanupJob>(executor => SetJobExecutor(executor,                            "Cleanup 2"))
-                .Then<ICleanupJob>(executor => SetJobExecutor(executor,                            "Cleanup 3"));
+
             scheduler.Daily<IDailyJob>(TimeSpan.Parse("02:00"), executor => SetJobExecutor(executor, "Hallo from daily"));
+
+            _flushCallStatisticsJob = scheduler.Periodic<IFlushCallStatisticJob>(_flushStatisticsTime);
+
             scheduler.Start();
         }
     }
