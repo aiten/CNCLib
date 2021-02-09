@@ -76,13 +76,6 @@ export class LocalCNCLibJoystickService implements CNCLibJoystickService {
       .toPromise()
       .catch(this.handleErrorPromise);
     return m;
-/*
-    const m = this.http
-      .delete(`${this.baseUrl}/machine/${id}`, this.getHeaders())
-      .map((response: Response) => toMachine(response.json()))
-      .catch(this.handleError);
-    return m;
-*/
   }
 
   private handleErrorPromise(error: Response | any) {

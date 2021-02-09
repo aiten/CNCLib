@@ -32,11 +32,13 @@ export class MachineControlCommandComponent {
   machineControlState: MachineControlState;
 
   async sendcommand(command: string): Promise<void> {
-    await this.machineControlState.postcommand(command);
-    if (this.machineControlState.machineControlGlobal.lastCommands.find(elem => elem === command) == undefined) {
-      this.machineControlState.machineControlGlobal.lastCommands.unshift(command);
-      if (this.machineControlState.machineControlGlobal.lastCommands.length > 10) {
-        this.machineControlState.machineControlGlobal.lastCommands = this.machineControlState.machineControlGlobal.lastCommands.slice(0, 10);
+    if (command.length > 0) {
+      await this.machineControlState.postcommand(command);
+      if (this.machineControlState.machineControlGlobal.lastCommands.find(elem => elem === command) == undefined) {
+        this.machineControlState.machineControlGlobal.lastCommands.unshift(command);
+        if (this.machineControlState.machineControlGlobal.lastCommands.length > 10) {
+          this.machineControlState.machineControlGlobal.lastCommands = this.machineControlState.machineControlGlobal.lastCommands.slice(0, 10);
+        }
       }
     }
   }

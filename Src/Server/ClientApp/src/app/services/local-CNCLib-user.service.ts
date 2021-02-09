@@ -28,7 +28,6 @@ export class LocalCNCLibUserService implements CNCLibUserService {
   }
 
   register(username: string, password: string): Promise<void> {
-
     const params = new HttpParams()
       .set('userName', username)
       .set('password', password);
@@ -50,7 +49,6 @@ export class LocalCNCLibUserService implements CNCLibUserService {
   }
 
   initialize(): Promise<void> {
-
     return this.http
       .put<void>(`${this.baseUrl}api/user/init`, null)
       .toPromise()
@@ -67,8 +65,6 @@ export class LocalCNCLibUserService implements CNCLibUserService {
   }
 
   leave(): Promise<void> {
-
-
     return this.http
       .delete<void>(`${this.baseUrl}api/user/leave`)
       .toPromise()

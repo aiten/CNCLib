@@ -75,13 +75,6 @@ export class LocalCNCLibLoadOptionService implements CNCLibLoadOptionService {
       .toPromise()
       .catch(this.handleErrorPromise);
     return m;
-/*
-    const m = this.http
-      .delete(`${this.baseUrl}/loadOption/${id}`, this.getHeaders())
-      .map((response: Response) => toLoadOptions(response.json()))
-      .catch(this.handleError);
-    return m;
-*/
   }
 
   private handleErrorPromise(error: Response | any) {

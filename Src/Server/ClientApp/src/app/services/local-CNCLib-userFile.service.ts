@@ -15,7 +15,7 @@
 */
 
 import { Injectable, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { UserFile } from "../models/userFile";
 import { CNCLibUserFileService } from './CNCLib-userFile.service';
 import { UserFileInfo } from '../models/userFileInfo';
@@ -49,23 +49,34 @@ export class LocalCNCLibUserFileService implements CNCLibUserFileService {
   }
 
   update(fileName: string, userFile: UserFile): Promise<any> {
+
+    const params = new HttpParams()
+      .set('fileName', fileName);
+
     const formData = new FormData();
 
     formData.append('image', userFile.image);
     formData.append('fileName', userFile.fileName);
 
-    return this.http.put<any>(`${this.baseUrl}api/userFile/${encodeURIComponent(fileName)}`, formData).toPromise()
+    return this.http.put<any>(`${this.baseUrl}api/userFile`, formData, { params }).toPromise()
       .catch(this.handleErrorPromise);
   }
 
   delete(fileName: string): Promise<any> {
 
-    return this.http.delete<any>(`${this.baseUrl}api/userFile/${encodeURIComponent(fileName)}`).toPromise()
+    const params = new HttpParams()
+      .set('fileName', fileName);
+
+    return this.http.delete<any>(`${this.baseUrl}api/userFile`, { params: params }).toPromise()
       .catch(this.handleErrorPromise);
   }
   
   get(fileName: string): Promise<Blob> {
-    return this.http.get(`${this.baseUrl}api/userFile/${encodeURIComponent(fileName)}`,    {  responseType: "blob"   })
+
+    const params = new HttpParams()
+      .set('fileName', fileName);
+
+    return this.http.get(`${this.baseUrl}api/userFile/download`, { params: params, responseType: "blob" })
       .toPromise()
       .catch(this.handleErrorPromise);
   }

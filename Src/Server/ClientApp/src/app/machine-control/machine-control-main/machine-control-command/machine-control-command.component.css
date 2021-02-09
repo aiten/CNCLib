@@ -5,12 +5,17 @@
   padding: 0px;
 }
 
+.go-button {
+  width: 150px;
+  padding: 0px;
+}
+
 .resend-button {
   width: 150px;
   padding: 0px;
 }
 
-.ofsRow {
+.commandRow {
   width: 150px;
   padding: 0px;
 }

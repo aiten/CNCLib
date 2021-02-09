@@ -18,6 +18,7 @@ namespace CNCLib.WebAPI.Controllers
 {
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using CNCLib.Logic.Abstraction;
@@ -54,10 +55,10 @@ namespace CNCLib.WebAPI.Controllers
         #region default REST
 
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        [HttpGet("{filename}")]
-        public async Task<IActionResult> Get(string filename)
+        [HttpGet("download")]
+        public async Task<IActionResult> Get(string fileName)
         {
-            var dto = await _manager.Get(await GetKey(filename));
+            var dto = await _manager.Get(await GetKey(fileName));
 
             if (dto == null)
             {
@@ -65,9 +66,9 @@ namespace CNCLib.WebAPI.Controllers
             }
 
             var memoryStream = new MemoryStream(dto.Content);
-            var fileName     = Path.GetFileName(dto.FileName);
+            var name     = Path.GetFileName(dto.FileName);
             memoryStream.Position = 0;
-            return File(memoryStream, this.GetContentType(fileName), fileName);
+            return File(memoryStream, this.GetContentType(name), name);
         }
 
         public class UserFile
@@ -93,7 +94,7 @@ namespace CNCLib.WebAPI.Controllers
             return NoContent();
         }
 
-        [HttpPut("{filename}")]
+        [HttpPut]
         public async Task<ActionResult> Update(string fileName, [FromForm] UserFile value)
         {
             var userFileDto = GetUserFileDto(value);
@@ -118,7 +119,7 @@ namespace CNCLib.WebAPI.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{filename}")]
+        [HttpDelete]
         public async Task<ActionResult> Delete(string fileName)
         {
             var fileIdFromUri = await _manager.GetFileId(fileName);

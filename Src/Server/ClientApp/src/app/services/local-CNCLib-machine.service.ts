@@ -82,13 +82,6 @@ export class LocalCNCLibMachineService implements CNCLibMachineService {
       .toPromise()
       .catch(this.handleErrorPromise);
     return m;
-/*
-    const m = this.http
-      .delete(`${this.baseUrl}/machine/${id}`, this.getHeaders())
-      .map((response: Response) => toMachine(response.json()))
-      .catch(this.handleError);
-    return m;
-*/
   }
 
   fromEeprom(machine: Machine, eepromValues: number[]): Promise<Machine> {
