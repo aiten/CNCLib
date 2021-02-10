@@ -118,10 +118,5 @@ namespace CNCLib.Repository.Context
             Database.Migrate();
             InitOrUpdateDatabase();
         }
-
-        public void ImportForUser(int userId)
-        {
-            new CNCLibDefaultData(this).ImportForUser(userId);
-        }
     }
 }

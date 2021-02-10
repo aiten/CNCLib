@@ -103,6 +103,20 @@ namespace CNCLib.WebAPI.Controllers
             await _manager.InitData();
             return Ok();
         }
+        
+        [HttpPut("initMachines")]
+        public async Task<ActionResult> InitMachines()
+        {
+            await _manager.InitMachines();
+            return Ok();
+        }
+        
+        [HttpPut("initItems")]
+        public async Task<ActionResult> InitItems()
+        {
+            await _manager.InitItems();
+            return Ok();
+        }
 
         [HttpDelete("cleanup")]
         public async Task<ActionResult> Cleanup()

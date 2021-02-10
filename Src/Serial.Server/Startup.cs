@@ -73,8 +73,6 @@ namespace CNCLib.Serial.Server
 
             var localizationCollector = new LocalizationCollector();
 
-            //services.AddControllers();
-
             services.AddCors(options => options.AddPolicy(CorsAllowAllName, options => options.SetIsOriginAllowed(x => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
 
             services.AddSignalR(hu => hu.EnableDetailedErrors = true);
@@ -100,7 +98,6 @@ namespace CNCLib.Serial.Server
             services.AddScoped<IAuthenticationManager, UserManager>();
             services.AddTransient<IOneWayPasswordProvider, Pbkdf2PasswordProvider>();
 
-            // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
 
             services.AddSwaggerGen(c =>
@@ -130,7 +127,6 @@ namespace CNCLib.Serial.Server
                 });
                 c.OperationFilter<SecurityRequirementsOperationFilter>(true, "basic");
 
-                // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = "CNCLib.Serial.WebAPI.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
@@ -190,7 +186,6 @@ namespace CNCLib.Serial.Server
                 endpoints.MapHub<CNCLibHub>("/serialSignalR");
                 endpoints.MapDefaultControllerRoute();
             });
-
 
             app.UseSpa(spa =>
             {

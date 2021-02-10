@@ -56,7 +56,12 @@ namespace CNCLib.Repository
 
         public async Task<IList<UserFile>> GetByUser(int userId)
         {
-            return await QueryWithInclude.Where(m => m.UserId == userId).ToListAsync();
+            return await QueryWithInclude.Where(f => f.UserId == userId).ToListAsync();
+        }
+
+        public async Task<IList<int>> GetIdByUser(int userId)
+        {
+            return await Query.Where(f => f.UserId == userId).Select(f => f.UserFileId).ToListAsync();
         }
 
         public async Task DeleteByUser(int userId)

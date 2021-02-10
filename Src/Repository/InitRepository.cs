@@ -16,6 +16,7 @@
 
 namespace CNCLib.Repository
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -39,8 +40,41 @@ namespace CNCLib.Repository
 
         public async Task Initialize(int userId)
         {
-            Context.ImportForUser(userId);
+            new CNCLibDefaultData(Context).ImportForUser(userId);
             await Task.CompletedTask;
+        }
+
+        public async Task AddDefaultMachines(int userId)
+        {
+            new CNCLibDefaultData(Context).ImportForUserMachine(userId);
+            await Task.CompletedTask;
+        }
+
+        public async Task AddDefaultItems(int userId)
+        {
+            new CNCLibDefaultData(Context).ImportForUserItem(userId);
+            await Task.CompletedTask;
+        }
+
+        public async Task AddDefaultFiles(int userId)
+        {
+            new CNCLibDefaultData(Context).ImportForUserFile(userId);
+            await Task.CompletedTask;
+        }
+
+        public IList<Machine> GetDefaultMachines()
+        {
+            return new CNCLibDefaultData(Context).GetDefaultMachines();
+        }
+
+        public IList<Item> GetDefaultItems()
+        {
+            return new CNCLibDefaultData(Context).GetDefaultItems();
+        }
+
+        public IList<UserFile> GetDefaultFiles()
+        {
+            return new CNCLibDefaultData(Context).GetDefaultFiles();
         }
     }
 }

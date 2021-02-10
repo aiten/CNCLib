@@ -16,6 +16,7 @@
 
 namespace CNCLib.Repository.Abstraction
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using CNCLib.Repository.Abstraction.Entities;
@@ -25,5 +26,13 @@ namespace CNCLib.Repository.Abstraction
     public interface IInitRepository : IRepository
     {
         Task Initialize(int userId);
+
+        Task AddDefaultMachines(int userId);
+        Task AddDefaultItems(int    userId);
+        Task AddDefaultFiles(int    userId);
+
+        IList<Machine>  GetDefaultMachines();
+        IList<Item>     GetDefaultItems();
+        IList<UserFile> GetDefaultFiles();
     }
 }

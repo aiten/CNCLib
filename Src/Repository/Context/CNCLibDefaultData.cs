@@ -30,7 +30,22 @@ namespace CNCLib.Repository.Context
             CsvDir = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\DefaultData";
         }
 
-        public void ImportForUser(int userId)
+        public IList<Machine> GetDefaultMachines()
+        {
+            return Read<Machine>("Machine.csv");
+        }
+
+        public IList<Item> GetDefaultItems()
+        {
+            return Read<Item>("Item.csv");
+        }
+
+        public IList<UserFile> GetDefaultFiles()
+        {
+            return Read<UserFile>("UserFile.csv");
+        }
+
+        public void ImportForUserMachine(int userId)
         {
             _machineMap = ImportCsv<int, Machine>("Machine.csv", m => m.MachineId, (m, key) =>
             {
@@ -50,7 +65,10 @@ namespace CNCLib.Repository.Context
                 mic.Machine              = _machineMap[mic.MachineId];
                 mic.MachineId            = 0;
             });
+        }
 
+        public void ImportForUserItem(int userId)
+        {
             _itemMap = ImportCsv<int, Item>("Item.csv", i => i.ItemId, (i, key) =>
             {
                 i.ItemId = key;
@@ -62,12 +80,23 @@ namespace CNCLib.Repository.Context
                 ip.Item   = _itemMap[ip.ItemId];
                 ip.ItemId = 0;
             });
+        }
+
+        public void ImportForUserFile(int userId)
+        {
             _userFileMap = ImportCsv<int, UserFile>("UserFile.csv", uf => uf.UserFileId, (uf, key) =>
             {
                 uf.UserFileId = key;
                 uf.User       = null;
                 uf.UserId     = userId;
             });
+        }
+
+        public void ImportForUser(int userId)
+        {
+            ImportForUserMachine(userId);
+            ImportForUserItem(userId);
+            ImportForUserFile(userId);
         }
 
         public void Import()

@@ -18,6 +18,7 @@ namespace CNCLib.Logic.Manager
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
@@ -192,6 +193,59 @@ namespace CNCLib.Logic.Manager
 
                 _repository.Delete(await _repository.GetTracking(_userContext.UserId));
 
+                await CommitTransaction(trans);
+            }
+        }
+
+        public async Task InitMachines()
+        {
+            var defaultMachines = _initRepository.GetDefaultMachines();
+
+            using (var trans = _unitOfWork.BeginTransaction())
+            {
+                var userMachines = await _machineRepository.GetTracking(await _machineRepository.GetIdByUser(_userContext.UserId));
+
+                var sameMachines = userMachines.Join(defaultMachines,
+                    m => m.Name.ToLower(),
+                    m => m.Name.ToLower(),
+                    (m, _) => m);
+
+                _machineRepository.DeleteRange(sameMachines);
+
+                await _unitOfWork.SaveChangesAsync();
+                await _initRepository.AddDefaultMachines(_userContext.UserId);
+                await CommitTransaction(trans);
+            }
+        }
+
+        public async Task InitItems()
+        {
+            var defaultItems = _initRepository.GetDefaultItems();
+            var defaultFiles = _initRepository.GetDefaultFiles();
+
+            using (var trans = _unitOfWork.BeginTransaction())
+            {
+                var userItems = await _itemRepository.GetTracking(await _itemRepository.GetIdByUser(_userContext.UserId));
+
+                var sameItems = userItems.Join(defaultItems,
+                    item => item.Name.ToLower(),
+                    item => item.Name.ToLower(),
+                    (item, _) => item);
+
+                _itemRepository.DeleteRange(sameItems);
+
+                var userFiles = await _userFileRepository.GetTracking(await _userFileRepository.GetIdByUser(_userContext.UserId));
+
+                var sameFiles = userFiles.Join(defaultFiles,
+                    f => f.FileName.ToLower(),
+                    f => f.FileName.ToLower(),
+                    (r, _) => r);
+
+                _userFileRepository.DeleteRange(sameFiles);
+
+                await _unitOfWork.SaveChangesAsync();
+                await _initRepository.AddDefaultItems(_userContext.UserId);
+                await _initRepository.AddDefaultFiles(_userContext.UserId);
                 await CommitTransaction(trans);
             }
         }

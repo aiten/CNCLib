@@ -23,7 +23,9 @@
     <fa-icon icon="chevron-right"></fa-icon>
   </button>
 
-  <button *ngIf="isMore" mat-stroked-button (click)="initialize()">Initialize</button>
+  <button *ngIf="isMore" mat-stroked-button (click)="initialize()">Initialize(all)</button>
+  <button *ngIf="isMore" mat-stroked-button (click)="initMachines()">Init(machines)</button>
+  <button *ngIf="isMore" mat-stroked-button (click)="initGCodes()">Init(G-Code)</button>
   <button *ngIf="isMore" mat-stroked-button (click)="cleanup()">Cleanup</button>
   <button *ngIf="isMore" mat-stroked-button (click)="leave()">Leave</button>
 

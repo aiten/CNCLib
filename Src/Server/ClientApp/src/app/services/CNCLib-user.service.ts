@@ -23,4 +23,8 @@ export abstract class CNCLibUserService {
   public abstract cleanup(): Promise<void>;
 
   public abstract leave(): Promise<void>;
+
+  public abstract initMachines(): Promise<void>;
+
+  public abstract initGCode(): Promise<void>;
 }

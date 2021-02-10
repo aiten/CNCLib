@@ -27,6 +27,7 @@ namespace CNCLib.Server
 
     using NLog;
     using NLog.Web;
+
     using System.IO;
     using System.Reflection;
 
@@ -36,7 +37,16 @@ namespace CNCLib.Server
 
         public static void Main(string[] args)
         {
-            GlobalDiagnosticsContext.Set("logDir", $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib.Web/logs");
+            var logDir = Microsoft.Azure.Web.DataProtection.Util.IsAzureEnvironment()
+                ? $"{BaseDirectory}/data/logs"
+                : $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib.Server/logs";
+
+            if (!Directory.Exists(logDir))
+            {
+                Directory.CreateDirectory(logDir);
+            }
+
+            GlobalDiagnosticsContext.Set("logDir", logDir);
 
             var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 

@@ -53,7 +53,20 @@ export class LocalCNCLibUserService implements CNCLibUserService {
       .put<void>(`${this.baseUrl}api/user/init`, null)
       .toPromise()
       .catch(this.handleErrorPromise);
+  }
 
+  initMachines(): Promise<void> {
+    return this.http
+      .put<void>(`${this.baseUrl}api/user/initMachines`, null)
+      .toPromise()
+      .catch(this.handleErrorPromise);
+  }
+
+  initGCode(): Promise<void> {
+    return this.http
+      .put<void>(`${this.baseUrl}api/user/initItems`, null)
+      .toPromise()
+      .catch(this.handleErrorPromise);
   }
 
   cleanup(): Promise<void> {
@@ -61,7 +74,6 @@ export class LocalCNCLibUserService implements CNCLibUserService {
       .delete<void>(`${this.baseUrl}api/user/cleanup`)
       .toPromise()
       .catch(this.handleErrorPromise);
-
   }
 
   leave(): Promise<void> {
@@ -69,7 +81,6 @@ export class LocalCNCLibUserService implements CNCLibUserService {
       .delete<void>(`${this.baseUrl}api/user/leave`)
       .toPromise()
       .catch(this.handleErrorPromise);
-
   }
 
   private handleErrorPromise(error: Response | any) {

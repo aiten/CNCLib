@@ -58,6 +58,34 @@ export class UserAdminComponent {
     });
   }
 
+  async initMachines() {
+    const dialogRef = this.dialog.open(MessageBoxComponent,
+      {
+        width: '250px',
+        data: { title: "Warning", message: "Revert the machines to the default. Only predefined machines are overwritten. Custom machinies are preserved.", haveYes: true, haveCancel: true }
+      });
+
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result.result == MessageBoxResult.Yes) {
+        await this.userService.initMachines();
+      }
+    });
+  }
+
+  async initGCodes() {
+    const dialogRef = this.dialog.open(MessageBoxComponent,
+      {
+        width: '250px',
+        data: { title: "Warning", message: "Revert the GCode-Generation to the default. Only predefined are overwritten. Custom GCode-generation-configurations are preserved.", haveYes: true, haveCancel: true }
+      });
+
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result.result == MessageBoxResult.Yes) {
+        await this.userService.initGCode();
+      }
+    });
+  }
+
   async cleanup() {
 
     const dialogRef = this.dialog.open(MessageBoxComponent,

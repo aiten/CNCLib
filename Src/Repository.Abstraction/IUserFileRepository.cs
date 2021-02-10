@@ -28,6 +28,8 @@ namespace CNCLib.Repository.Abstraction
     {
         Task<IList<UserFile>> GetByUser(int userId);
 
+        Task<IList<int>> GetIdByUser(int userId);
+
         Task DeleteByUser(int userId);
 
         Task<IList<UserFileInfo>> GetFileInfos(int userId);
