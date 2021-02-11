@@ -106,7 +106,7 @@ export class PreviewViewComponent implements OnInit, AfterViewInit {
   }
 
   canSendToMachine(): boolean {
-    return this.serialServer.getMachine() != null;
+    return this.serialServer.getMachine() != null && this.serialServer.getMachine().commandSyntax != 7;
   }
 
   async sendToMachine(): Promise<void> {

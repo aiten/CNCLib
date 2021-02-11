@@ -3,33 +3,33 @@
 <form novalidate [formGroup]="eepromConfigForm" (ngSubmit)="calcEepromConfig(eepromConfigForm.value)">
 
   <div class="form-group input-group">
-    <span class="input-group-addon">Teeth (thread bar: 1)</span>
+    <mat-label class="input-group-addon">Teeth (thread bar: 1)</mat-label>
     <input class="form-control" formControlName="teeth"/>
   </div>
 
   <div class="form-group input-group">
-    <span class="input-group-addon">Tooth-size or lead (mm)</span>
+    <mat-label class="input-group-addon">Tooth-size or lead (mm)</mat-label>
     <input class="form-control" formControlName="toothsizeinMm"/>
   </div>
 
   <div class="form-group input-group">
-    <span class="input-group-addon">Microsteps (1..256)</span>
+    <mat-label class="input-group-addon">Microsteps (1..256)</mat-label>
     <input class="form-control" formControlName="microsteps"/>
   </div>
   <div class="form-group input-group">
-    <span class="input-group-addon">Steps per rotation (usual 200)</span>
+    <mat-label class="input-group-addon">Steps per rotation (usual 200)</mat-label>
     <input class="form-control" formControlName="stepsPerRotation"/>
   </div>
   <div class="form-group input-group">
-    <span class="input-group-addon">Estimated rotation speed (rotations/sec)</span>
+    <mat-label class="input-group-addon">Estimated rotation speed (rotations/sec)</mat-label>
     <input class="form-control" formControlName="estimatedRotationSpeed"/>
   </div>
   <div class="form-group input-group">
-    <span class="input-group-addon">Time to acc to maxspeed (sec)</span>
+    <mat-label class="input-group-addon">Time to acc to maxspeed (sec)</mat-label>
     <input class="form-control" formControlName="timeToAcc"/>
   </div>
   <div class="form-group input-group">
-    <span class="input-group-addon">Time to break from maxspeed (sec)</span>
+    <mat-label class="input-group-addon">Time to break from maxspeed (sec)</mat-label>
     <input class="form-control" formControlName="timeToDec"/>
   </div>
 

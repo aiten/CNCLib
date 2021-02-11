@@ -180,6 +180,10 @@ export class MachineControlState {
   }
 
   async postcommand(command: string): Promise<void> {
+    if (command.length > 0 && this.serialServer.getMachine().commandSyntax == 7){
+      // this is a plotter, add command escape 27
+      command = '\u001b' + command;
+    }
     await this.serialServerService.queueCommands(this.serialServer.getSerialServerPortId(), [command], 1000);
   }
 

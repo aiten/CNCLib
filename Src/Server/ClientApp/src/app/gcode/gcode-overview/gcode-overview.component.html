@@ -16,15 +16,15 @@
 
   <!-- Detail Column -->
   <ng-container matColumnDef="detail">
-    <th mat-header-cell *matHeaderCellDef> Detail </th>
+    <th mat-header-cell *matHeaderCellDef> </th>
     <td mat-cell *matCellDef="let element">
-      <button mat-stroked-button (click)='detailLoadOption(element.id)'>Details</button>
+      <button mat-stroked-button (click)='detailLoadOption(element.id)'>Edit</button>
     </td>
   </ng-container>
 
   <!-- Run Column -->
   <ng-container matColumnDef="run">
-    <th mat-header-cell *matHeaderCellDef> Run </th>
+    <th mat-header-cell *matHeaderCellDef> </th>
     <td mat-cell *matCellDef="let element">
       <button mat-stroked-button (click)='runLoadOption(element.id)'>Run ...</button>
     </td>

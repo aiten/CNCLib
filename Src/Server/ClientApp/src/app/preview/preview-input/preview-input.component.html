@@ -1,42 +1,42 @@
 <form novalidate [formGroup]="previewOptForm" (ngSubmit)="savegCode(previewOptForm.value)">
 
   <div class="form-group input-group">
-    <span class="input-group-addon">RenderSizeX</span>
+    <mat-label class="input-group-addon">Render Size X</mat-label>
     <input matInput class="form-control" type="number" min="10" max="2500" step="10" formControlName="renderSizeX"/>
   </div>
 
   <div class="form-group input-group">
-    <span class="input-group-addon">RenderSizeY</span>
+    <mat-label class="input-group-addon">Render Size Y</mat-label>
     <input matInput class="form-control" type="number" min="10" max="2500" step="10" formControlName="renderSizeY"/>
   </div>
 
   <div class="form-group input-group">
-    <span class="input-group-addon">SizeX</span>
+    <mat-label class="input-group-addon">Size X</mat-label>
     <input matInput class="form-control" type="number" min="10" max="2500" step="10" formControlName="sizeX"/>
   </div>
 
   <div class="form-group input-group">
-    <span class="input-group-addon">SizeY</span>
+    <mat-label class="input-group-addon">Size Y</mat-label>
     <input matInput class="form-control" type="number" min="10" max="2500" step="10" formControlName="sizeY"/>
   </div>
   <div class="form-group input-group">
-    <span class="input-group-addon">SizeZ</span>
+    <mat-label class="input-group-addon">Size Z</mat-label>
     <input matInput class="form-control" type="number" min="10" max="2500" step="10" formControlName="sizeZ"/>
   </div>
 
 
   <div class="form-group input-group">
-    <span class="input-group-addon">CutterSize</span>
+    <mat-label class="input-group-addon">Cutter Size</mat-label>
     <input matInput class="form-control" formControlName="cutterSize"/>
   </div>
 
   <div class="form-group input-group">
-    <span class="input-group-addon">LaserSize</span>
+    <mat-label class="input-group-addon">Laser Size</mat-label>
     <input matInput class="form-control" formControlName="laserSize"/>
   </div>
 
   <div class="form-group input-group">
-    <span class="input-group-addon">MachineColor</span>
+    <mat-label class="input-group-addon">Machine Color</mat-label>
     <input matInput
            [colorPicker]="previewOptForm.get('machineColor').value"
            [value]="previewOptForm.get('machineColor').value"
@@ -51,7 +51,7 @@
   </div>
 
   <div class="form-group input-group">
-    <span class="input-group-addon">LaserOnColor</span>
+    <mat-label class="input-group-addon">Laser On Color</mat-label>
     <input matInput [colorPicker]="previewOptForm.get('laserOnColor').value"
            [value]="previewOptForm.get('laserOnColor').value"
            [style.background]="previewOptForm.get('laserOnColor').value"
@@ -65,7 +65,7 @@
   </div>
 
   <div class="form-group input-group">
-    <span class="input-group-addon">LaserOffColor</span>
+    <mat-label class="input-group-addon">Laser Off Color</mat-label>
     <input matInput [colorPicker]="previewOptForm.get('laserOffColor').value"
            [value]="previewOptForm.get('laserOffColor').value"
            [style.background]="previewOptForm.get('laserOffColor').value"
@@ -78,7 +78,7 @@
            formControlName="laserOffColor"/>
   </div>
   <div class="form-group input-group">
-    <span class="input-group-addon">CutColor</span>
+    <mat-label class="input-group-addon">Cut Color</mat-label>
     <input matInput [colorPicker]="previewOptForm.get('cutColor').value"
            [value]="previewOptForm.get('cutColor').value"
            [style.background]="previewOptForm.get('cutColor').value"
@@ -91,7 +91,7 @@
            formControlName="cutColor"/>
   </div>
   <div class="form-group input-group">
-    <span class="input-group-addon">CutDotColor</span>
+    <mat-label class="input-group-addon">Cut Dot Color</mat-label>
     <input matInput [colorPicker]="previewOptForm.get('cutDotColor').value"
            [value]="previewOptForm.get('cutDotColor').value"
            [style.background]="previewOptForm.get('cutDotColor').value"
@@ -104,7 +104,7 @@
            formControlName="cutDotColor"/>
   </div>
   <div class="form-group input-group">
-    <span class="input-group-addon">CutEllipseColor</span>
+    <mat-label class="input-group-addon">Cut Ellipse Color</mat-label>
     <input matInput [colorPicker]="previewOptForm.get('cutEllipseColor').value"
            [value]="previewOptForm.get('cutEllipseColor').value"
            [style.background]="previewOptForm.get('cutEllipseColor').value"
@@ -118,7 +118,7 @@
   </div>
 
   <div class="form-group input-group">
-    <span class="input-group-addon">CutArcColor</span>
+    <mat-label class="input-group-addon">Cut Arc Color</mat-label>
     <input matInput [colorPicker]="previewOptForm.get('cutArcColor').value"
            [value]="previewOptForm.get('cutArcColor').value"
            [style.background]="previewOptForm.get('cutArcColor').value"
@@ -131,7 +131,7 @@
            formControlName="cutArcColor"/>
   </div>
   <div class="form-group input-group">
-    <span class="input-group-addon">FastMoveColor</span>
+    <mat-label class="input-group-addon">Fast Move Color</mat-label>
     <input matInput [colorPicker]="previewOptForm.get('fastMoveColor').value"
            [value]="previewOptForm.get('fastMoveColor').value"
            [style.background]="previewOptForm.get('fastMoveColor').value"
@@ -144,7 +144,7 @@
            formControlName="fastMoveColor"/>
   </div>
   <div class="form-group input-group">
-    <span class="input-group-addon">HelpLineColor</span>
+    <mat-label class="input-group-addon">Help Line Color</mat-label>
     <input matInput [colorPicker]="previewOptForm.get('helpLineColor').value"
            [value]="previewOptForm.get('helpLineColor').value"
            [style.background]="previewOptForm.get('helpLineColor').value"
@@ -158,47 +158,47 @@
   </div>
 
   <div *ngIf="isMore" class="form-group input-group">
-    <span class="input-group-addon">OffsetX</span>
+    <mat-label class="input-group-addon">Offset X</mat-label>
     <input matInput class="form-control" type="number" min="-2500" max="2500" step="10" formControlName="offsetX"/>
   </div>
 
   <div *ngIf="isMore" class="form-group input-group">
-    <span class="input-group-addon">OffsetY</span>
+    <mat-label class="input-group-addon">Offset Y</mat-label>
     <input matInput class="form-control" type="number" min="-2500" max="2500" step="10" formControlName="offsetY"/>
   </div>
 
   <div *ngIf="isMore" class="form-group input-group">
-    <span class="input-group-addon">OffsetZ</span>
+    <mat-label class="input-group-addon">Offset Z</mat-label>
     <input matInput class="form-control" type="number" min="-2500" max="2500" step="10" formControlName="offsetZ"/>
   </div>
 
   <div *ngIf="isMore" class="form-group input-group">
-    <span class="input-group-addon">Rotate Angle</span>
+    <mat-label class="input-group-addon">Rotate Angle</mat-label>
     <input matInput class="form-control" type="number" min="-10" max="+10" step="0.1" formControlName="rotate3DAngle"/>
   </div>
 
   <div *ngIf="isMore" class="form-group input-group">
-    <span class="input-group-addon">Rotate Vect X</span>
+    <mat-label class="input-group-addon">Rotate Vect X</mat-label>
     <input matInput class="form-control" type="number" min="-10" max="+10" step="0.1" formControlName="rotate3DVectX"/>
   </div>
 
   <div *ngIf="isMore" class="form-group input-group">
-    <span class="input-group-addon">Rotate Vect Y</span>
+    <mat-label class="input-group-addon">Rotate Vect Y</mat-label>
     <input matInput class="form-control" type="number" min="-10" max="+10" step="0.1" formControlName="rotate3DVectY"/>
   </div>
 
   <div *ngIf="isMore" class="form-group input-group">
-    <span class="input-group-addon">Rotate Vect Z</span>
+    <mat-label class="input-group-addon">Rotate Vect Z</mat-label>
     <input matInput class="form-control" type="number" min="-10" max="+10" step="0.1" formControlName="rotate3DVectZ"/>
   </div>
 
   <div *ngIf="isMore" class="form-group input-group">
-    <span class="input-group-addon">KeepRatio</span>
+    <mat-label class="input-group-addon">KeepRatio</mat-label>
     <mat-checkbox class="form-control" formControlName="keepRatio"></mat-checkbox>
   </div>
 
   <div *ngIf="isMore" class="form-group input-group">
-    <span class="input-group-addon">Zoom</span>
+    <mat-label class="input-group-addon">Zoom</mat-label>
     <input matInput class="form-control" type="number" min="0.1" step="0.1" formControlName="zoom"/>
   </div>
 

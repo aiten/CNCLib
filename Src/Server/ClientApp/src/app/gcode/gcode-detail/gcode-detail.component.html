@@ -33,39 +33,39 @@
           <h2>Common</h2>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Setting Name</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="The name of the G-Code generation template.">Name</mat-label>
             <input matInput class="form-control" formControlName="settingName"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Source</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Type of GCode generation, e.g. from HPGL, from image, ...">Source</mat-label>
             <mat-select formControlName="loadType" class="form-control" [compareWith]="compareWithEnum">
               <mat-option *ngFor="let key of keysELoadType" [value]="key">{{ELoadType[key]}}</mat-option>
             </mat-select>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">File Name</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">File Name</mat-label>
             <input matInput class="form-control" formControlName="fileName"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Startup Commands</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Startup Commands</mat-label>
             <input matInput class="form-control" formControlName="startupCommands"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Shutdown Commands</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Shutdown Commands</mat-label>
             <input matInput class="form-control" formControlName="shutdownCommands"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Substitute G82</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Substitute G82</mat-label>
             <mat-checkbox class="form-control" formControlName="substG82"></mat-checkbox>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Add Line Numbers</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Add Line Numbers</mat-label>
             <mat-checkbox class="form-control" formControlName="addLineNumbers"></mat-checkbox>
           </div>
         </div>
@@ -75,33 +75,33 @@
           <h2>Source: Hpgl</h2>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Pen Up/Down</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Pen Up/Down</mat-label>
             <mat-select formControlName="penMoveType" class="form-control" [compareWith]="compareWithEnum">
               <mat-option *ngFor="let key of keysPenType" [value]="key">{{PenType[key]}}</mat-option>
             </mat-select>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Smooth</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Smooth</mat-label>
             <mat-select formControlName="smoothType" class="form-control" [compareWith]="compareWithEnum">
               <mat-option *ngFor="let key of keysSmoothTypeEnum" [value]="key">{{SmoothTypeEnum[key]}}</mat-option>
             </mat-select>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Convert</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Convert</mat-label>
             <mat-select formControlName="convertType" class="form-control" [compareWith]="compareWithEnum">
               <mat-option *ngFor="let key of keysConvertTypeEnum" [value]="key">{{ConvertTypeEnum[key]}}</mat-option>
             </mat-select>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Swap XY</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Swap XY</mat-label>
             <mat-checkbox class="form-control" formControlName="swapXY"></mat-checkbox>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Auto Scale</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Auto Scale</mat-label>
             <mat-checkbox class="form-control" formControlName="autoScale"></mat-checkbox>
           </div>
 
@@ -113,44 +113,44 @@
           <h3 *ngIf="isImageHole()">Source: Image-Hole</h3>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Auto Scale</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Auto Scale</mat-label>
             <mat-checkbox class="form-control" formControlName="autoScale"></mat-checkbox>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Image Write To</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Image Write To</mat-label>
             <input matInput class="form-control" formControlName="imageWriteToFileName"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Gray Threshold</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Gray Threshold</mat-label>
             <input matInput class="form-control" formControlName="grayThreshold"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Image DPI X</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Image DPI X</mat-label>
             <input matInput class="form-control" formControlName="imageDPIX"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Image DPI Y</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Image DPI Y</mat-label>
             <input matInput class="form-control" formControlName="imageDPIY"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Invert Image</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Invert Image</mat-label>
             <mat-checkbox class="form-control" formControlName="imageInvert"></mat-checkbox>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Dither</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Dither</mat-label>
             <mat-select formControlName="dither" class="form-control" [compareWith]="compareWithEnum">
               <mat-option *ngFor="let key of keysDitherFilter" [value]="key">{{DitherFilter[key]}}</mat-option>
             </mat-select>
           </div>
 
           <div *ngIf="isNewspaperDither()" class="form-group input-group">
-            <span class="input-group-addon">Newspaper Dither Size</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Newspaper Dither Size</mat-label>
             <input matInput class="form-control" formControlName="newspaperDitherSize"/>
           </div>
 
@@ -165,38 +165,38 @@
           <h3 *ngIf="isImageOrImageHole()">Laser</h3>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Move Speed (mm/min)</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Move Speed (mm/min)</mat-label>
             <input matInput class="form-control" formControlName="moveSpeed"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Laser First On Command</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Laser First On Command</mat-label>
             <input matInput class="form-control" formControlName="laserFirstOnCommand"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Laser On Command</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Laser On Command</mat-label>
             <input matInput class="form-control" formControlName="laserOnCommand"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Laser Off Command</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Laser Off Command</mat-label>
             <input matInput class="form-control" formControlName="laserOffCommand"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Laser Last Off Command</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Laser Last Off Command</mat-label>
             <input matInput class="form-control" formControlName="laserLastOffCommand"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Laser Size (mm)</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Laser Size (mm)</mat-label>
             <input matInput class="form-control" formControlName="laserSize"/>
           </div>
 
           <div *ngIf="isImage()">
             <div class="form-group input-group">
-              <span class="input-group-addon">Laser Acc Dist (mm)</span>
+              <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Laser Acc Dist (mm)</mat-label>
               <input matInput class="form-control" formControlName="laserAccDist"/>
             </div>
           </div>
@@ -208,27 +208,27 @@
           <h3>Pen Up/Down: Commands(Laser)</h3>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Move Speed (mm/min)</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Move Speed (mm/min)</mat-label>
             <input matInput class="form-control" formControlName="moveSpeed"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">First Pen Down Command</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">First Pen Down Command</mat-label>
             <input matInput class="form-control" formControlName="laserFirstOnCommand"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Pen Down Command</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Pen Down Command</mat-label>
             <input matInput class="form-control" formControlName="laserOnCommand"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Pen Up Command</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Pen Up Command</mat-label>
             <input matInput class="form-control" formControlName="laserOffCommand"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Last Pen Down Command</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Last Pen Down Command</mat-label>
             <input matInput class="form-control" formControlName="laserLastOffCommand"/>
           </div>
 
@@ -239,27 +239,27 @@
           <h3>Pen Up/Down: Z-Move</h3>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Move Speed (mm/min)</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Move Speed (mm/min)</mat-label>
             <input matInput class="form-control" formControlName="moveSpeed"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Z-Down Speed (mm/min)</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Z-Down Speed (mm/min)</mat-label>
             <input matInput class="form-control" formControlName="engraveDownSpeed"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Z-Position In G-Parameter</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Z-Position In G-Parameter</mat-label>
             <mat-checkbox class="form-control" formControlName="engravePosInParameter"></mat-checkbox>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Z-Position Up</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Z-Position Up</mat-label>
             <input matInput class="form-control" formControlName="engravePosUp"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Z-Position Down</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Z-Position Down</mat-label>
             <input matInput class="form-control" formControlName="engravePosDown"/>
           </div>
 
@@ -270,32 +270,32 @@
           <h3>Auto Scale</h3>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Keep Ratio</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Keep Ratio</mat-label>
             <mat-checkbox class="form-control" formControlName="autoScaleKeepRatio"></mat-checkbox>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Center</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Center</mat-label>
             <mat-checkbox class="form-control" formControlName="autoScaleCenter"></mat-checkbox>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Size X (mm)</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Size X (mm)</mat-label>
             <input matInput class="form-control" formControlName="autoScaleSizeX"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Size Y (mm)</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Size Y (mm)</mat-label>
             <input matInput class="form-control" formControlName="autoScaleSizeY"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Margin X (mm)</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Margin X (mm)</mat-label>
             <input matInput class="form-control" formControlName="autoScaleBorderDistX"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Margin Y (mm)</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Margin Y (mm)</mat-label>
             <input matInput class="form-control" formControlName="autoScaleBorderDistY"/>
           </div>
 
@@ -306,22 +306,22 @@
           <h3>Scale</h3>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Scale X</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Scale X</mat-label>
             <input matInput class="form-control" formControlName="scaleX"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Scale Y</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Scale Y</mat-label>
             <input matInput class="form-control" formControlName="scaleY"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Offset X</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Offset X</mat-label>
             <input matInput class="form-control" formControlName="ofsX"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Offset Y</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Offset Y</mat-label>
             <input matInput class="form-control" formControlName="ofsY"/>
           </div>
 
@@ -332,17 +332,17 @@
           <h3>Smooth</h3>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Min Angle (rad)</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Min Angle (rad)</mat-label>
             <input matInput class="form-control" formControlName="smoothMinAngle"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Min Line Length (mm)</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Min Line Length (mm)</mat-label>
             <input matInput class="form-control" formControlName="smoothMinLineLength"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Max Error (mm)</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Max Error (mm)</mat-label>
             <input matInput class="form-control" formControlName="smoothMaxError"/>
           </div>
 
@@ -353,7 +353,7 @@
           <h3>Convert Line</h3>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Cutter Size (mm)</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Cutter Size (mm)</mat-label>
             <input matInput class="form-control" formControlName="cutterSize"/>
           </div>
 
@@ -364,39 +364,39 @@
           <h3>Hole</h3>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Hole Type</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Hole Type</mat-label>
             <mat-select formControlName="holeType" class="form-control" [compareWith]="compareWithEnum">
               <mat-option *ngFor="let key of keysEHoleType" [value]="key">{{EHoleType[key]}}</mat-option>
             </mat-select>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">DotDist X</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">DotDist X</mat-label>
             <input matInput class="form-control" formControlName="dotDistX"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">DotDist Y</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">DotDist Y</mat-label>
             <input matInput class="form-control" formControlName="dotDistY"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">DotSize X</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">DotSize X</mat-label>
             <input matInput class="form-control" formControlName="dotSizeX"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">DotSize Y</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">DotSize Y</mat-label>
             <input matInput class="form-control" formControlName="dotSizeY"/>
           </div>
 
           <div class="form-group input-group">
-            <span class="input-group-addon">Y Shift</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">Y Shift</mat-label>
             <mat-checkbox class="form-control" formControlName="useYShift"></mat-checkbox>
           </div>
 
           <div *ngIf="isHoleHeart()" class="form-group input-group">
-            <span class="input-group-addon">RotateHeart</span>
+            <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="">RotateHeart</mat-label>
             <mat-checkbox class="form-control" formControlName="rotateHeart"></mat-checkbox>
           </div>
 

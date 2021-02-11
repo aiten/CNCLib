@@ -5,6 +5,7 @@
 <div *ngIf="!isLoading">
   <div *ngIf="!isConnected()">
     <p>NOT Connected...</p>
+    <p>Please connect to machine using the "Machines" tab.</p>
   </div>
   <div *ngIf="isConnected()">
     <div class="container-fluid">
