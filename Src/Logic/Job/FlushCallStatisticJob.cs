@@ -18,7 +18,6 @@ namespace CNCLib.Logic.Job
 {
     using System;
     using System.Linq;
-    using System.Reflection.Metadata;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -27,7 +26,6 @@ namespace CNCLib.Logic.Job
     using CNCLib.Repository.Abstraction;
 
     using Framework.Repository.Abstraction;
-    using Framework.Schedule.Abstraction;
 
     using Microsoft.Extensions.Logging;
 

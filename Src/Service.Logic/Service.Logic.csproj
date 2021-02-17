@@ -8,5 +8,6 @@
     <ProjectReference Include="..\Logic.Abstraction.DTO\Logic.Abstraction.DTO.csproj">    </ProjectReference>
     <ProjectReference Include="..\Logic.Abstraction\Logic.Abstraction.csproj">    </ProjectReference>
     <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
+    <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 </Project>

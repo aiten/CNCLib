@@ -17,15 +17,20 @@
 namespace CNCLib.Service.Logic
 {
     using Framework.Dependency;
+    using Framework.Localization.Abstraction;
+    using Framework.Startup.Abstraction;
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public static class LiveServiceCollectionExtensions
+    public class ModuleInitializer : IModuleInitializer
     {
-        public static IServiceCollection AddServiceAsLogic(this IServiceCollection services)
+        public void AddServices(IServiceCollection services)
         {
             services.AddAssemblyIncludingInternals(ServiceLifetime.Transient, typeof(MachineService).Assembly);
-            return services;
+        }
+
+        public void AddTranslationResources(ILocalizationCollector localisation)
+        {
         }
     }
 }

@@ -16,7 +16,6 @@
 
 namespace CNCLib.Logic
 {
-    using CNCLib.Logic.Job;
     using CNCLib.Logic.Statistics;
 
     using Framework.Dependency;

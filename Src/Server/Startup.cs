@@ -18,20 +18,15 @@ namespace CNCLib.Server
 {
     using System;
     using System.Reflection;
-    using System.Security.Claims;
     using System.Threading;
 
     using AutoMapper;
 
     using CNCLib.Logic;
     using CNCLib.Logic.Abstraction;
-    using CNCLib.Logic.Client;
-    using CNCLib.Logic.Job;
     using CNCLib.Logic.Manager;
-    using CNCLib.Repository;
     using CNCLib.Repository.Context;
     using CNCLib.Repository.SqLite;
-    using CNCLib.Service.Logic;
     using CNCLib.Shared;
     using CNCLib.WebAPI;
     using CNCLib.WebAPI.Controllers;
@@ -41,7 +36,6 @@ namespace CNCLib.Server
     using Framework.Dependency;
     using Framework.Localization;
     using Framework.Localization.Abstraction;
-    using Framework.Logic;
     using Framework.Logic.Abstraction;
     using Framework.Schedule;
     using Framework.Schedule.Abstraction;
@@ -93,17 +87,21 @@ namespace CNCLib.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var moduleInit = new InitializationManager();
+            var localizationCollector = new LocalizationCollector();
+            var moduleInit            = new InitializationManager();
 
             moduleInit.Add(new CNCLib.Logic.ModuleInitializer());
+            moduleInit.Add(new CNCLib.Logic.Client.ModuleInitializer());
             moduleInit.Add(new CNCLib.Repository.ModuleInitializer() { OptionsAction = SqliteDatabaseTools.OptionBuilder });
+            moduleInit.Add(new CNCLib.Service.Logic.ModuleInitializer());
             moduleInit.Add(new Framework.Tools.ModuleInitializer());
+            moduleInit.Add(new Framework.Schedule.ModuleInitializer());
+            moduleInit.Add(new Framework.Logic.ModuleInitializer()
+            {
+                MapperConfiguration = new MapperConfiguration(cfg => { cfg.AddProfile<LogicAutoMapperProfile>(); })
+            });
 
             var controllerAssembly = typeof(CambamController).Assembly;
-
-            var localizationCollector = new LocalizationCollector();
-            localizationCollector.Resources.Add(Framework.Logic.ErrorMessages.ResourceManager);
-            localizationCollector.Resources.Add(Framework.Repository.ErrorMessages.ResourceManager);
 
             services.AddSingleton<ILocalizationCollector>(localizationCollector);
 
@@ -172,12 +170,7 @@ namespace CNCLib.Server
 
             moduleInit.Initialize(services, localizationCollector);
 
-            services
-                .AddJobScheduler()
-                .AddLogicClient()
-                .AddServiceAsLogic() // used for Logic.Client
-                .AddScoped<ICNCLibUserContext, CNCLibUserContext>()
-                .AddMapper(new MapperConfiguration(cfg => { cfg.AddProfile<LogicAutoMapperProfile>(); }));
+            services.AddScoped<ICNCLibUserContext, CNCLibUserContext>();
 
             AppService.ServiceCollection = services;
             AppService.BuildServiceProvider();

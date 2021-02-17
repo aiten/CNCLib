@@ -17,7 +17,6 @@
 namespace CNCLib.Repository.Migrations.Startup
 {
     using CNCLib.Repository.Context;
-    using CNCLib.Repository.SqLite;
     using CNCLib.Repository.SqlServer;
 
     using Microsoft.AspNetCore.Builder;

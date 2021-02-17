@@ -43,6 +43,13 @@ namespace CNCLib.Service.WebAPI
                 .FirstOrDefault();
         }
 
+        public async Task<User> GetCurrentUser()
+        {
+            return await Read<User>(
+                CreatePathBuilder()
+                    .AddPath("currentUser"));
+        }
+
         public async Task<bool> IsValidUser(string username, string password)
         {
             using (var scope = CreateScope())

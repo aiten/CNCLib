@@ -21,21 +21,29 @@ namespace CNCLib.Service.Logic
     using CNCLib.Logic.Abstraction;
     using CNCLib.Logic.Abstraction.DTO;
     using CNCLib.Service.Abstraction;
+    using CNCLib.Shared;
 
     using Framework.Service.Logic;
 
     public class UserService : CrudService<User, int>, IUserService
     {
-        readonly IUserManager _manager;
+        readonly         IUserManager       _manager;
+        private readonly ICNCLibUserContext _userContext;
 
-        public UserService(IUserManager manager) : base(manager)
+        public UserService(IUserManager manager, ICNCLibUserContext userContext) : base(manager)
         {
-            _manager = manager;
+            _manager     = manager;
+            _userContext = userContext;
         }
 
         public async Task<User> GetByName(string username)
         {
             return await _manager.GetByName(username);
+        }
+
+        public async Task<User> GetCurrentUser()
+        {
+            return await _manager.Get(_userContext.UserId);
         }
 
         public async Task<bool> IsValidUser(string username, string password)

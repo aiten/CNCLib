@@ -16,6 +16,7 @@
 
 namespace CNCLib.WpfClient.Views
 {
+    using System;
     using System.Threading.Tasks;
     using System.Windows.Controls;
 
@@ -90,7 +91,7 @@ namespace CNCLib.WpfClient.Views
                     viewModel.UserName = vm.UserName;
                     if (dlg.ShowDialog() ?? false)
                     {
-                        return viewModel.UserName;
+                        return new Tuple<string, string>(viewModel.UserName,viewModel.Password);
                     }
 
                     return null;

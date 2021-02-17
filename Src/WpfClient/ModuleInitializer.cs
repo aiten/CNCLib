@@ -14,20 +14,21 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-using Framework.Tools.Password;
-
 namespace CNCLib.WpfClient
 {
     using CNCLib.Service.Abstraction;
 
     using Framework.Dependency;
+    using Framework.Localization.Abstraction;
     using Framework.Pattern;
+    using Framework.Startup.Abstraction;
+    using Framework.Tools.Password;
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public static class LiveServiceCollectionExtensions
+    public class ModuleInitializer : IModuleInitializer
     {
-        public static IServiceCollection AddCNCLibWpf(this IServiceCollection services)
+        public void AddServices(IServiceCollection services)
         {
             services.AddSingleton<Global>()
                 .AddTransient<IFactory<IJoystickService>, FactoryResolve<IJoystickService>>()
@@ -41,8 +42,10 @@ namespace CNCLib.WpfClient
                     ServiceLifetime.Transient,
                     typeof(ViewModels.MachineViewModel).Assembly,
                     typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
+        }
 
-            return services;
+        public void AddTranslationResources(ILocalizationCollector localisation)
+        {
         }
     }
 }

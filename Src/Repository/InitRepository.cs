@@ -17,7 +17,6 @@
 namespace CNCLib.Repository
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
 
     using CNCLib.Repository.Abstraction;
@@ -25,8 +24,6 @@ namespace CNCLib.Repository
     using CNCLib.Repository.Context;
 
     using Framework.Repository;
-
-    using Microsoft.EntityFrameworkCore;
 
     public class InitRepository : RepositoryBase<CNCLibContext>, IInitRepository
     {

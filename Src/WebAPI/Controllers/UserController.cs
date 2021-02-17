@@ -59,6 +59,12 @@ namespace CNCLib.WebAPI.Controllers
             return await this.GetAll(_manager);
         }
 
+        [HttpGet("currentUser")]
+        public async Task<ActionResult<User>> CurrentUser()
+        {
+            return Ok(await _manager.GetByName(_userContext.UserName));
+        }
+
         [AllowAnonymous]
         [HttpGet("isValidUser")]
         public async Task<ActionResult> IsValidUser(string userName, string password)
@@ -82,12 +88,6 @@ namespace CNCLib.WebAPI.Controllers
             }
 
             return Ok(result);
-        }
-
-        [HttpGet("currentUser")]
-        public async Task<ActionResult<string>> CurrentUser()
-        {
-            return Ok(await Task.FromResult(_userContext.UserName));
         }
 
         [AllowAnonymous]

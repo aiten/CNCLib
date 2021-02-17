@@ -27,17 +27,12 @@ namespace CNCLib.WpfClient.Sql.Start
 
     using CNCLib.GCode.GUI;
     using CNCLib.Logic;
-    using CNCLib.Logic.Client;
-    using CNCLib.Repository;
     using CNCLib.Repository.Context;
     using CNCLib.Repository.SqlServer;
-    using CNCLib.Service.Logic;
     using CNCLib.Shared;
 
-    using Framework.Arduino.SerialCommunication;
     using Framework.Dependency;
     using Framework.Localization;
-    using Framework.Logic;
     using Framework.Startup;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -53,13 +48,27 @@ namespace CNCLib.WpfClient.Sql.Start
 
         private void AppStartup(object sender, StartupEventArgs e)
         {
-            var moduleInit = new InitializationManager();
+            var localizationCollector = new LocalizationCollector();
+            var moduleInit            = new InitializationManager();
 
             moduleInit.Add(new Framework.Tools.ModuleInitializer());
+            moduleInit.Add(new Framework.Arduino.SerialCommunication.ModuleInitializer());
+            moduleInit.Add(new Framework.Logic.ModuleInitializer()
+            {
+                MapperConfiguration =
+                    new MapperConfiguration(
+                        cfg =>
+                        {
+                            cfg.AddProfile<LogicAutoMapperProfile>();
+                            cfg.AddProfile<WpfAutoMapperProfile>();
+                            cfg.AddProfile<GCodeGUIAutoMapperProfile>();
+                        })
+            });
             moduleInit.Add(new CNCLib.Logic.ModuleInitializer());
+            moduleInit.Add(new CNCLib.Logic.Client.ModuleInitializer());
             moduleInit.Add(new CNCLib.Repository.ModuleInitializer() { OptionsAction = SqlServerDatabaseTools.OptionBuilder });
-
-            var localizationCollector = new LocalizationCollector();
+            moduleInit.Add(new CNCLib.Service.Logic.ModuleInitializer());
+            moduleInit.Add(new CNCLib.WpfClient.ModuleInitializer());
 
             string connectString = SqlServerDatabaseTools.ConnectString;
 
@@ -91,18 +100,6 @@ namespace CNCLib.WpfClient.Sql.Start
             AppService.ServiceCollection
                 .AddTransient<ILoggerFactory, LoggerFactory>()
                 .AddTransient(typeof(ILogger<>), typeof(Logger<>))
-                .AddLogicClient()
-                .AddSerialCommunication()
-                .AddServiceAsLogic()
-                .AddCNCLibWpf()
-                .AddMapper(
-                    new MapperConfiguration(
-                        cfg =>
-                        {
-                            cfg.AddProfile<LogicAutoMapperProfile>();
-                            cfg.AddProfile<WpfAutoMapperProfile>();
-                            cfg.AddProfile<GCodeGUIAutoMapperProfile>();
-                        }))
                 .AddSingleton((ICNCLibUserContext)userContext);
 
             moduleInit.Initialize(AppService.ServiceCollection, localizationCollector);

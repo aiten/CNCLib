@@ -114,10 +114,11 @@ namespace CNCLib.WpfClient.ViewModels
 
         #region GUI-forward
 
-        public Action<int>  EditMachine  { get; set; }
-        public Action       EditJoystick { get; set; }
-        public Action       ShowEeprom   { get; set; }
-        public Func<string> Login        { get; set; }
+        public Action<int> EditMachine  { get; set; }
+        public Action      EditJoystick { get; set; }
+        public Action      ShowEeprom   { get; set; }
+
+        public Func<Tuple<string, string>> Login { get; set; }
 
         #endregion
 
@@ -340,10 +341,10 @@ namespace CNCLib.WpfClient.ViewModels
         public async Task<bool> LoginUser(CancellationToken tx)
         {
             var newUser = Login?.Invoke();
-            if (!string.IsNullOrEmpty(newUser))
+            if (newUser!= null && !string.IsNullOrEmpty(newUser.Item1))
             {
                 var userContextRW = _userContext as CNCLibUserContext;
-                await userContextRW.InitUserContext(newUser);
+                await userContextRW.InitUserContext(newUser.Item1, newUser.Item2);
                 await LoadMachines(-1);
                 RaisePropertyChanged(nameof(UserName));
             }

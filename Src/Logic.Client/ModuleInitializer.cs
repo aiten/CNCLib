@@ -17,15 +17,20 @@
 namespace CNCLib.Logic.Client
 {
     using Framework.Dependency;
+    using Framework.Localization.Abstraction;
+    using Framework.Startup.Abstraction;
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public static class LiveServiceCollectionExtensions
+    public class ModuleInitializer : IModuleInitializer
     {
-        public static IServiceCollection AddLogicClient(this IServiceCollection services)
+        public void AddServices(IServiceCollection services)
         {
             services.AddAssemblyIncludingInternals(ServiceLifetime.Transient, typeof(Logic.Client.DynItemController).Assembly);
-            return services;
+        }
+
+        public void AddTranslationResources(ILocalizationCollector localisation)
+        {
         }
     }
 }

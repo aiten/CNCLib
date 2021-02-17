@@ -76,15 +76,19 @@ namespace CNCLib.WpfClient
             await InitUserContext(UserName);
         }
 
-        public async Task InitUserContext(string userName)
+        public async Task InitUserContext(string userName, string password = null)
         {
             try
             {
-                UserName = userName;
+                UserName          = userName;
+                EncryptedPassword = Base64Helper.StringToBase64(password ?? UserName);
+
                 using (var scope = AppService.ServiceProvider.CreateScope())
                 {
                     var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
-                    var user        = await userService.GetByName(UserName);
+
+                    var userOk = await userService.IsValidUser(userName, Password);
+                    var user   = await userService.GetCurrentUser();
 
                     if (user == null)
                     {
@@ -93,9 +97,13 @@ namespace CNCLib.WpfClient
                         user.UserId = await userService.Add(user);
                     }
 
-                    UserId            = user.UserId;
-                    User              = CreatePrincipal(UserName, UserId);
-                    EncryptedPassword = Base64Helper.StringToBase64(UserName);
+                    UserId = user.UserId;
+                    User   = CreatePrincipal(UserName, UserId);
+
+                    if (password == null)
+                    {
+                        EncryptedPassword = Base64Helper.StringToBase64(UserName);
+                    }
                 }
             }
             catch (Exception exception)

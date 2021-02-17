@@ -26,15 +26,11 @@ namespace CNCLib.WpfClient.WebAPI.Start
     using AutoMapper;
 
     using CNCLib.GCode.GUI;
-    using CNCLib.Logic.Client;
     using CNCLib.Service.Abstraction;
-    using CNCLib.Service.WebAPI;
     using CNCLib.Shared;
 
-    using Framework.Arduino.SerialCommunication;
     using Framework.Dependency;
     using Framework.Localization;
-    using Framework.Logic;
     using Framework.Service.WebAPI;
     using Framework.Startup;
     using Framework.Tools;
@@ -52,42 +48,46 @@ namespace CNCLib.WpfClient.WebAPI.Start
 
         private void AppStartup(object sender, StartupEventArgs e)
         {
-            var moduleInit = new InitializationManager();
-
-            moduleInit.Add(new Framework.Tools.ModuleInitializer());
+            var                userContextRW = new CNCLibUserContext();
+            ICNCLibUserContext userContext   = userContextRW;
 
             var localizationCollector = new LocalizationCollector();
+            var moduleInit            = new InitializationManager();
+
+            moduleInit.Add(new Framework.Tools.ModuleInitializer());
+            moduleInit.Add(new Framework.Arduino.SerialCommunication.ModuleInitializer());
+            moduleInit.Add(new Framework.Logic.ModuleInitializer()
+            {
+                MapperConfiguration =
+                    new MapperConfiguration(
+                        cfg =>
+                        {
+                            cfg.AddProfile<WpfAutoMapperProfile>();
+                            cfg.AddProfile<GCodeGUIAutoMapperProfile>();
+                        })
+            });
+            moduleInit.Add(new CNCLib.Logic.Client.ModuleInitializer());
+            moduleInit.Add(new CNCLib.WpfClient.ModuleInitializer());
+            moduleInit.Add(new CNCLib.Service.WebAPI.ModuleInitializer()
+            {
+                ConfigureHttpClient = httpClient =>
+                {
+                    HttpClientHelper.PrepareHttpClient(httpClient, @"https://cnclib.azurewebsites.net");
+                    httpClient.DefaultRequestHeaders.Authorization =
+                        new AuthenticationHeaderValue(
+                            "Basic", Base64Helper.StringToBase64($"{userContextRW.UserName}:{userContextRW.Password}"));
+                }
+            });
 
             GlobalDiagnosticsContext.Set("logDir", $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib.Web/logs");
 
             _logger.Info(@"Starting ...");
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
-            var                userContextRW = new CNCLibUserContext();
-            ICNCLibUserContext userContext   = userContextRW;
-
             AppService.ServiceCollection = new ServiceCollection();
             AppService.ServiceCollection
                 .AddTransient<ILoggerFactory, LoggerFactory>()
                 .AddTransient(typeof(ILogger<>), typeof(Logger<>))
-                .AddLogicClient()
-                .AddSerialCommunication()
-                .AddServiceAsWebAPI(httpClient =>
-                {
-                    HttpClientHelper.PrepareHttpClient(httpClient, @"https://cnclib.azurewebsites.net");
-                    httpClient.DefaultRequestHeaders.Authorization =
-                        new AuthenticationHeaderValue(
-                            "Basic", Base64Helper.StringToBase64($"{userContextRW.UserName}:{userContextRW.Password}"));
-                })
-                //.AddServiceAsWebAPI(httpClient => HttpClientHelper.PrepareHttpClient(httpClient, @"http://localhost:55149"))
-                .AddCNCLibWpf()
-                .AddMapper(
-                    new MapperConfiguration(
-                        cfg =>
-                        {
-                            cfg.AddProfile<WpfAutoMapperProfile>();
-                            cfg.AddProfile<GCodeGUIAutoMapperProfile>();
-                        }))
                 .AddSingleton(userContext);
 
             moduleInit.Initialize(AppService.ServiceCollection, localizationCollector);
