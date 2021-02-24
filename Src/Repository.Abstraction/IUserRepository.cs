@@ -22,8 +22,10 @@ namespace CNCLib.Repository.Abstraction
 
     using Framework.Repository.Abstraction;
 
-    public interface IUserRepository : ICrudRepository<User, int>
+    public interface IUserRepository : ICrudRepository<UserEntity, int>
     {
-        Task<User> GetByName(string username);
+        Task<UserEntity> GetByName(string username);
+
+        Task<UserEntity> GetByNameTracking(string username);
     }
 }

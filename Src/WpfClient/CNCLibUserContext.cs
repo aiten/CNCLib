@@ -30,7 +30,7 @@ namespace CNCLib.WpfClient
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public class CNCLibUserContext : ICNCLibUserContextRW
+    public class CNCLibUserContext : ICNCLibUserContext
     {
         public CNCLibUserContext(string userName = null)
         {
@@ -53,7 +53,7 @@ namespace CNCLib.WpfClient
             {
                 new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
                 new Claim(ClaimTypes.Name,           userName),
-                new Claim(CNCLibClaims.IsAdmin,      "true"),
+                new Claim(CNCLibClaimTypes.IsAdmin,      "true"),
             };
             var identity = new ClaimsIdentity(claims, "BasicAuthentication");
 
@@ -66,7 +66,7 @@ namespace CNCLib.WpfClient
 
         public string EncryptedPassword { get; private set; }
 
-        public string Password => Base64Helper.StringFromBase64(EncryptedPassword);
+        public string Password => Base64Helper.StringFromBase64(EncryptedPassword??"");
 
         public int  UserId  { get; private set; }
         public bool IsAdmin { get; private set; }

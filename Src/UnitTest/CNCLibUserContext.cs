@@ -21,7 +21,7 @@ namespace CNCLib.UnitTest
     using CNCLib.Logic.Abstraction;
     using CNCLib.Shared;
 
-    public class CNCLibUserContext : ICNCLibUserContextRW
+    public class CNCLibUserContext : ICNCLibUserContext
     {
         public int    UserId   { get; private set; }
         public string UserName { get; private set; }
@@ -39,7 +39,7 @@ namespace CNCLib.UnitTest
             {
                 new Claim(ClaimTypes.NameIdentifier, UserId.ToString()),
                 new Claim(ClaimTypes.Name,           UserName),
-                new Claim(CNCLibClaims.IsAdmin,      "true"),
+                new Claim(CNCLibClaimTypes.IsAdmin,      "true"),
             };
             var identity = new ClaimsIdentity(claims, "BasicAuthentication");
 

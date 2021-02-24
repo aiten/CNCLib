@@ -42,16 +42,16 @@ namespace CNCLib.UnitTest.Repository
         {
         }
 
-        protected CrudRepositoryTests<CNCLibContext, User, int, IUserRepository> CreateTestContext()
+        protected CrudRepositoryTests<CNCLibContext, UserEntity, int, IUserRepository> CreateTestContext()
         {
-            return new CrudRepositoryTests<CNCLibContext, User, int, IUserRepository>()
+            return new CrudRepositoryTests<CNCLibContext, UserEntity, int, IUserRepository>()
             {
                 CreateTestDbContext = () =>
                 {
                     var context = TestFixture.CreateDbContext();
                     var uow     = new UnitOfWork<CNCLibContext>(context);
                     var rep     = new UserRepository(context);
-                    return new CrudTestDbContext<CNCLibContext, User, int, IUserRepository>(context, uow, rep);
+                    return new CrudTestDbContext<CNCLibContext, UserEntity, int, IUserRepository>(context, uow, rep);
                 },
                 GetEntityKey  = (entity) => entity.UserId,
                 SetEntityKey  = (entity,  id) => entity.UserId = id,
@@ -94,13 +94,13 @@ namespace CNCLib.UnitTest.Repository
         [Fact]
         public async Task AddUpdateDeleteTest()
         {
-            await CreateTestContext().AddUpdateDelete(() => new User() { Name = "Hallo", Password = "1234" }, (entity) => entity.Password = "3456");
+            await CreateTestContext().AddUpdateDelete(() => new UserEntity() { Name = "Hallo", Password = "1234" }, (entity) => entity.Password = "3456");
         }
 
         [Fact]
         public async Task AddRollbackTest()
         {
-            await CreateTestContext().AddRollBack(() => new User() { Name = "Hallo", Password = "1234" });
+            await CreateTestContext().AddRollBack(() => new UserEntity() { Name = "Hallo", Password = "1234" });
         }
 
         #endregion
@@ -142,7 +142,7 @@ namespace CNCLib.UnitTest.Repository
 
             using (var ctx = CreateTestContext().CreateTestDbContext())
             {
-                var entityToAdd = new User() { Name = existingUserName };
+                var entityToAdd = new UserEntity() { Name = existingUserName };
                 ctx.Repository.Add(entityToAdd);
 
                 //[SkippableFact(typeof(DbUpdateException))]

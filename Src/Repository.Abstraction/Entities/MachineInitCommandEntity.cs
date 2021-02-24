@@ -16,16 +16,12 @@
 
 namespace CNCLib.Repository.Abstraction.Entities
 {
-    using System;
-
-    public class UserFile
+    public class MachineInitCommandEntity
     {
-        public int      UserFileId { get; set; }
-        public int      UserId     { get; set; }
-        public User     User       { get; set; }
-        public string   FileName   { get; set; }
-        public byte[]   Content    { get; set; }
-        public DateTime UploadTime { get; set; }
-        public bool     IsSystem   { get; set; }
+        public int     MachineInitCommandId { get; set; }
+        public int     SeqNo                { get; set; }
+        public string  CommandString        { get; set; }
+        public int     MachineId            { get; set; }
+        public MachineEntity Machine              { get; set; }
     }
 }

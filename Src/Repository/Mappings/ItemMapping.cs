@@ -23,7 +23,7 @@ namespace CNCLib.Repository.Mappings
 
     public static class ItemMapping
     {
-        public static void Map(this EntityTypeBuilder<Item> entity)
+        public static void Map(this EntityTypeBuilder<ItemEntity> entity)
         {
             entity.ToTable("Item");
 

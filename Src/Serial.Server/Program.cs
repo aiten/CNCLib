@@ -64,7 +64,7 @@ namespace CNCLib.Serial.Server
             try
             {
                 logger.Info("Starting (Main)");
-                ProgramUtilities.StartWebService(args, BuildHost);
+                ProgramUtilities.StartWebService(args, CreateHostBuilder);
             }
             catch (Exception e)
             {
@@ -73,7 +73,7 @@ namespace CNCLib.Serial.Server
             }
         }
 
-        private static IHostBuilder BuildHost(string[] args)
+        private static IHostBuilder CreateHostBuilder(string[] args)
         {
             var hostConfig = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())

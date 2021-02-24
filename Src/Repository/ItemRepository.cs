@@ -28,7 +28,7 @@ namespace CNCLib.Repository
 
     using Microsoft.EntityFrameworkCore;
 
-    public class ItemRepository : CrudRepository<CNCLibContext, Item, int>, IItemRepository
+    public class ItemRepository : CrudRepository<CNCLibContext, ItemEntity, int>, IItemRepository
     {
         #region ctr/default/overrides
 
@@ -36,19 +36,19 @@ namespace CNCLib.Repository
         {
         }
 
-        protected override FilterBuilder<Item, int> FilterBuilder =>
-            new FilterBuilder<Item, int>()
+        protected override FilterBuilder<ItemEntity, int> FilterBuilder =>
+            new FilterBuilder<ItemEntity, int>()
             {
                 PrimaryWhere   = (query, key) => query.Where(item => item.ItemId == key),
                 PrimaryWhereIn = (query, keys) => query.Where(item => keys.Contains(item.ItemId))
             };
 
-        protected override IQueryable<Item> AddInclude(IQueryable<Item> query)
+        protected override IQueryable<ItemEntity> AddInclude(IQueryable<ItemEntity> query)
         {
             return query.Include(x => x.ItemProperties).Include(x => x.User);
         }
 
-        protected override void AssignValuesGraph(Item trackingEntity, Item values)
+        protected override void AssignValuesGraph(ItemEntity trackingEntity, ItemEntity values)
         {
             base.AssignValuesGraph(trackingEntity, values);
             Sync(trackingEntity.ItemProperties,
@@ -61,7 +61,7 @@ namespace CNCLib.Repository
 
         #region extra Queries
 
-        public async Task<IList<Item>> GetByUser(int userId)
+        public async Task<IList<ItemEntity>> GetByUser(int userId)
         {
             return await QueryWithInclude.Where(m => m.UserId == userId).ToListAsync();
         }
@@ -77,7 +77,7 @@ namespace CNCLib.Repository
             DeleteEntities(items);
         }
 
-        public async Task<IList<Item>> Get(int userId, string typeIdString)
+        public async Task<IList<ItemEntity>> Get(int userId, string typeIdString)
         {
             return await QueryWithInclude
                 .Where(i => i.UserId == userId && i.ClassName == typeIdString)

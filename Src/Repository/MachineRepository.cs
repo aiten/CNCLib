@@ -28,7 +28,7 @@ namespace CNCLib.Repository
 
     using Microsoft.EntityFrameworkCore;
 
-    public class MachineRepository : CrudRepository<CNCLibContext, Machine, int>, IMachineRepository
+    public class MachineRepository : CrudRepository<CNCLibContext, MachineEntity, int>, IMachineRepository
     {
         #region ctr/default/overrides
 
@@ -36,19 +36,19 @@ namespace CNCLib.Repository
         {
         }
 
-        protected override FilterBuilder<Machine, int> FilterBuilder =>
-            new FilterBuilder<Machine, int>()
+        protected override FilterBuilder<MachineEntity, int> FilterBuilder =>
+            new FilterBuilder<MachineEntity, int>()
             {
                 PrimaryWhere   = (query, key) => query.Where(item => item.MachineId == key),
                 PrimaryWhereIn = (query, keys) => query.Where(item => keys.Contains(item.MachineId))
             };
 
-        protected override IQueryable<Machine> AddInclude(IQueryable<Machine> query)
+        protected override IQueryable<MachineEntity> AddInclude(IQueryable<MachineEntity> query)
         {
             return query.Include(x => x.MachineCommands).Include(x => x.MachineInitCommands).Include(x => x.User);
         }
 
-        protected override void AssignValuesGraph(Machine trackingEntity, Machine values)
+        protected override void AssignValuesGraph(MachineEntity trackingEntity, MachineEntity values)
         {
             base.AssignValuesGraph(trackingEntity, values);
             Sync(trackingEntity.MachineCommands,
@@ -65,7 +65,7 @@ namespace CNCLib.Repository
 
         #region extra Queries
 
-        public async Task<IList<Machine>> GetByUser(int userId)
+        public async Task<IList<MachineEntity>> GetByUser(int userId)
         {
             return await QueryWithInclude.Where(m => m.UserId == userId).ToListAsync();
         }
@@ -81,14 +81,14 @@ namespace CNCLib.Repository
             DeleteEntities(machines);
         }
 
-        public async Task<IList<MachineCommand>> GetMachineCommands(int machineId)
+        public async Task<IList<MachineCommandEntity>> GetMachineCommands(int machineId)
         {
-            return await Context.Set<MachineCommand>().Where(c => c.MachineId == machineId).ToListAsync();
+            return await Context.Set<MachineCommandEntity>().Where(c => c.MachineId == machineId).ToListAsync();
         }
 
-        public async Task<IList<MachineInitCommand>> GetMachineInitCommands(int machineId)
+        public async Task<IList<MachineInitCommandEntity>> GetMachineInitCommands(int machineId)
         {
-            return await Context.Set<MachineInitCommand>().Where(c => c.MachineId == machineId).ToListAsync();
+            return await Context.Set<MachineInitCommandEntity>().Where(c => c.MachineId == machineId).ToListAsync();
         }
 
         #endregion

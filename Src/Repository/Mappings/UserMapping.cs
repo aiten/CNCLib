@@ -23,7 +23,7 @@ namespace CNCLib.Repository.Mappings
 
     public static class UserMapping
     {
-        public static void Map(this EntityTypeBuilder<User> entity)
+        public static void Map(this EntityTypeBuilder<UserEntity> entity)
         {
             entity.ToTable("User");
 

@@ -19,6 +19,7 @@ namespace CNCLib.Logic.Manager
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Authentication;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
@@ -28,14 +29,13 @@ namespace CNCLib.Logic.Manager
     using CNCLib.Logic.Abstraction.DTO;
     using CNCLib.Logic.Statistics;
     using CNCLib.Repository.Abstraction;
+    using CNCLib.Repository.Abstraction.Entities;
     using CNCLib.Shared;
 
     using Framework.Logic;
     using Framework.Repository.Abstraction;
     using Framework.Tools.Abstraction;
     using Framework.Tools.Password;
-
-    using UserEntity = CNCLib.Repository.Abstraction.Entities.User;
 
     public class UserManager : CrudManager<User, int, UserEntity>, IUserManager
     {
@@ -104,7 +104,7 @@ namespace CNCLib.Logic.Manager
 
                 if (userName == CNCLibConst.AdminUser)
                 {
-                    claims.Add(new Claim(CNCLibClaims.IsAdmin, "true"));
+                    claims.Add(new Claim(CNCLibClaimTypes.IsAdmin, "true"));
                 }
 
                 var identity  = new ClaimsIdentity(claims, "BasicAuthentication");
@@ -149,6 +149,24 @@ namespace CNCLib.Logic.Manager
                 await CommitTransaction(trans);
 
                 return userEntity.UserId.ToString();
+            }
+        }
+
+        public async Task ChangePassword(string userName, string passwordOld, string passwordNew)
+        {
+            using (var trans = _unitOfWork.BeginTransaction())
+            {
+                var authUser = Authenticate(userName, passwordOld);
+
+                if (authUser == null)
+                {
+                    throw new AuthenticationException();
+                }
+
+                var userEntity = await _repository.GetByNameTracking(userName);
+                userEntity.Password = _passwordProvider.GetPasswordHash(passwordNew);
+
+                await CommitTransaction(trans);
             }
         }
 

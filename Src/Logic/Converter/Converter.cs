@@ -21,30 +21,31 @@ namespace CNCLib.Logic.Converter
     using AutoMapper;
 
     using CNCLib.Logic.Abstraction.DTO;
+    using CNCLib.Repository.Abstraction.Entities;
 
     internal static class Converter
     {
-        public static Machine ToDto(this Repository.Abstraction.Entities.Machine from, IMapper mapper)
+        public static Machine ToDto(this MachineEntity from, IMapper mapper)
         {
             return mapper.Map<Machine>(from);
         }
 
-        public static Repository.Abstraction.Entities.Machine ToEntity(this Machine from, IMapper mapper)
+        public static MachineEntity ToEntity(this Machine from, IMapper mapper)
         {
-            return mapper.Map<Repository.Abstraction.Entities.Machine>(from);
+            return mapper.Map<MachineEntity>(from);
         }
 
-        public static Item ToDto(this Repository.Abstraction.Entities.Item from, IMapper mapper)
+        public static Item ToDto(this ItemEntity from, IMapper mapper)
         {
             return mapper.Map<Item>(from);
         }
 
-        public static Repository.Abstraction.Entities.Item ToEntity(this Item from, IMapper mapper)
+        public static ItemEntity ToEntity(this Item from, IMapper mapper)
         {
-            return mapper.Map<Repository.Abstraction.Entities.Item>(from);
+            return mapper.Map<ItemEntity>(from);
         }
 
-        public static IEnumerable<Item> ToDto(this IEnumerable<Repository.Abstraction.Entities.Item> items, IMapper mapper)
+        public static IEnumerable<Item> ToDto(this IEnumerable<ItemEntity> items, IMapper mapper)
         {
             return mapper.Map<IEnumerable<Item>>(items);
         }

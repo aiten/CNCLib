@@ -25,6 +25,7 @@ namespace CNCLib.Logic.Manager
     using CNCLib.Logic.Abstraction;
     using CNCLib.Logic.Abstraction.DTO;
     using CNCLib.Repository.Abstraction;
+    using CNCLib.Repository.Abstraction.Entities;
     using CNCLib.Shared;
 
     using Framework.Localization;
@@ -33,7 +34,6 @@ namespace CNCLib.Logic.Manager
     using Framework.Tools.Abstraction;
 
     using ErrorMessagesLogic = CNCLib.Logic.ErrorMessages;
-    using UserFileEntity = CNCLib.Repository.Abstraction.Entities.UserFile;
 
     public class UserFileManager : CrudManager<UserFile, int, UserFileEntity>, IUserFileManager
     {

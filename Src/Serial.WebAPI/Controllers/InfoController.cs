@@ -25,12 +25,39 @@ namespace CNCLib.Serial.WebAPI.Controllers
     [Route("api/[controller]")]
     public class InfoController : Controller
     {
-        protected string CurrentUri => $"{Request.Scheme}://{Request.Host}{Request.Path}{Request.QueryString}";
-
         #region Query/Info
 
         [HttpGet]
         public Info Get()
+        {
+            return Info();
+        }
+
+        [HttpGet("version")]
+        public string GetVersion()
+        {
+            return Info().Version.ToString();
+        }
+
+        [HttpGet("name")]
+        public string GetName()
+        {
+            return Info().Name;
+        }
+
+        [HttpGet("fullname")]
+        public string GetFullName()
+        {
+            return Info().FullName;
+        }
+
+        [HttpGet("copyright")]
+        public string GetCopyright()
+        {
+            return Info().Copyright;
+        }
+
+        private static Info Info()
         {
             return new Info()
             {
@@ -39,30 +66,6 @@ namespace CNCLib.Serial.WebAPI.Controllers
                 FullName  = Assembly.GetExecutingAssembly().GetName().FullName,
                 Copyright = ((AssemblyCopyrightAttribute)Assembly.GetExecutingAssembly().GetCustomAttribute(typeof(AssemblyCopyrightAttribute))).Copyright
             };
-        }
-
-        [HttpGet("version")]
-        public string GetVersion()
-        {
-            return Assembly.GetExecutingAssembly().GetName().Version.ToString();
-        }
-
-        [HttpGet("name")]
-        public string GetName()
-        {
-            return Assembly.GetExecutingAssembly().GetName().Name;
-        }
-
-        [HttpGet("fullname")]
-        public string GetFullName()
-        {
-            return Assembly.GetExecutingAssembly().GetName().FullName;
-        }
-
-        [HttpGet("copyright")]
-        public string GetCopyright()
-        {
-            return ((AssemblyCopyrightAttribute)Assembly.GetExecutingAssembly().GetCustomAttribute(typeof(AssemblyCopyrightAttribute))).Copyright;
         }
 
         #endregion

@@ -22,10 +22,10 @@ namespace CNCLib.Repository.Abstraction
 
     using Framework.Repository.Abstraction;
 
-    public interface IConfigurationRepository : ICrudRepository<Configuration, int>
+    public interface IConfigurationRepository : ICrudRepository<ConfigurationEntity, int>
     {
-        Task<Configuration> Get(int userId, string group, string name);
+        Task<ConfigurationEntity> Get(int userId, string group, string name);
 
-        Task Store(Configuration cfg);
+        Task Store(ConfigurationEntity cfg);
     }
 }

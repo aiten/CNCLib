@@ -41,16 +41,16 @@ namespace CNCLib.UnitTest.Repository
         {
         }
 
-        protected CrudRepositoryTests<CNCLibContext, Item, int, IItemRepository> CreateTestContext()
+        protected CrudRepositoryTests<CNCLibContext, ItemEntity, int, IItemRepository> CreateTestContext()
         {
-            return new CrudRepositoryTests<CNCLibContext, Item, int, IItemRepository>()
+            return new CrudRepositoryTests<CNCLibContext, ItemEntity, int, IItemRepository>()
             {
                 CreateTestDbContext = () =>
                 {
                     var context = TestFixture.CreateDbContext();
                     var uow     = new UnitOfWork<CNCLibContext>(context);
                     var rep     = new ItemRepository(context);
-                    return new CrudTestDbContext<CNCLibContext, Item, int, IItemRepository>(context, uow, rep);
+                    return new CrudTestDbContext<CNCLibContext, ItemEntity, int, IItemRepository>(context, uow, rep);
                 },
                 GetEntityKey = (entity) => entity.ItemId,
                 SetEntityKey = (entity, key) =>
@@ -115,7 +115,7 @@ namespace CNCLib.UnitTest.Repository
                     entity.ItemProperties.Remove(entity.ItemProperties.First());
                     entity.ItemProperties.First().Value = "NewValue";
                     entity.ItemProperties.Add(
-                        new ItemProperty()
+                        new ItemPropertyEntity()
                         {
                             Name  = @"NewItemProperty",
                             Value = @"Hallo"
@@ -131,25 +131,25 @@ namespace CNCLib.UnitTest.Repository
 
         #endregion
 
-        private static Item CreateItem(string name)
+        private static ItemEntity CreateItem(string name)
         {
-            var e = new Item
+            var e = new ItemEntity
             {
                 Name           = name,
                 ClassName      = "Dummy",
-                ItemProperties = new List<ItemProperty>(),
+                ItemProperties = new List<ItemPropertyEntity>(),
                 UserId         = 1
             };
             return e;
         }
 
-        private static Item AddItemProperties(Item e)
+        private static ItemEntity AddItemProperties(ItemEntity e)
         {
-            e.ItemProperties = new List<ItemProperty>
+            e.ItemProperties = new List<ItemPropertyEntity>
             {
-                new ItemProperty { Name = "Name1", Value = "Test1", Item = e },
-                new ItemProperty { Name = "Name2", Value = "Test2", Item = e },
-                new ItemProperty { Name = "Name3", Item  = e }
+                new ItemPropertyEntity { Name = "Name1", Value = "Test1", Item = e },
+                new ItemPropertyEntity { Name = "Name2", Value = "Test2", Item = e },
+                new ItemPropertyEntity { Name = "Name3", Item  = e }
             };
             return e;
         }

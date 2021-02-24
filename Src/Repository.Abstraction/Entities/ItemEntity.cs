@@ -18,14 +18,14 @@ namespace CNCLib.Repository.Abstraction.Entities
 {
     using System.Collections.Generic;
 
-    public class Item
+    public class ItemEntity
     {
         public int    ItemId    { get; set; }
         public int    UserId    { get; set; }
-        public User   User      { get; set; }
+        public UserEntity   User      { get; set; }
         public string Name      { get; set; }
         public string ClassName { get; set; }
 
-        public ICollection<ItemProperty> ItemProperties { get; set; }
+        public ICollection<ItemPropertyEntity> ItemProperties { get; set; }
     }
 }

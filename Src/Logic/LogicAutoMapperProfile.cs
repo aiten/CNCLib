@@ -18,23 +18,23 @@ namespace CNCLib.Logic
 {
     using AutoMapper;
 
+    using CNCLib.Logic.Abstraction.DTO;
     using CNCLib.Repository.Abstraction.Entities;
-    using CNCLib.Repository.Abstraction.QueryResult;
 
     public sealed class LogicAutoMapperProfile : Profile
     {
         public LogicAutoMapperProfile()
         {
-            CreateMap<Machine, Abstraction.DTO.Machine>().ReverseMap();
-            CreateMap<MachineInitCommand, Abstraction.DTO.MachineInitCommand>().ReverseMap();
-            CreateMap<MachineCommand, Abstraction.DTO.MachineCommand>().ReverseMap();
+            CreateMap<MachineEntity, Machine>().ReverseMap();
+            CreateMap<MachineInitCommandEntity, MachineInitCommand>().ReverseMap();
+            CreateMap<MachineCommandEntity, MachineCommand>().ReverseMap();
 
-            CreateMap<Item, Abstraction.DTO.Item>().ReverseMap();
-            CreateMap<ItemProperty, Abstraction.DTO.ItemProperty>().ReverseMap();
+            CreateMap<ItemEntity, Item>().ReverseMap();
+            CreateMap<ItemPropertyEntity, ItemProperty>().ReverseMap();
 
-            CreateMap<User, Abstraction.DTO.User>().ReverseMap();
-            CreateMap<UserFile, Abstraction.DTO.UserFile>().ReverseMap();
-            CreateMap<UserFileInfo, Abstraction.DTO.UserFileInfo>().ReverseMap();
+            CreateMap<UserEntity, User>().ReverseMap();
+            CreateMap<UserFileEntity, UserFile>().ReverseMap();
+            CreateMap<UserFileInfo, UserFileInfo>().ReverseMap();
         }
     }
 }

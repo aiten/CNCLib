@@ -26,13 +26,11 @@ namespace CNCLib.Logic.Manager
     using CNCLib.Logic.Abstraction;
     using CNCLib.Logic.Abstraction.DTO;
     using CNCLib.Repository.Abstraction;
+    using CNCLib.Repository.Abstraction.Entities;
     using CNCLib.Shared;
 
     using Framework.Logic;
     using Framework.Repository.Abstraction;
-
-    using ConfigurationEntity = CNCLib.Repository.Abstraction.Entities.Configuration;
-    using MachineEntity = CNCLib.Repository.Abstraction.Entities.Machine;
 
     public class MachineManager : CrudManager<Machine, int, MachineEntity>, IMachineManager
     {

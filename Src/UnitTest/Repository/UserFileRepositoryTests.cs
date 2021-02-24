@@ -41,16 +41,16 @@ namespace CNCLib.UnitTest.Repository
         {
         }
 
-        protected CrudRepositoryTests<CNCLibContext, UserFile, int, IUserFileRepository> CreateTestContext()
+        protected CrudRepositoryTests<CNCLibContext, UserFileEntity, int, IUserFileRepository> CreateTestContext()
         {
-            return new CrudRepositoryTests<CNCLibContext, UserFile, int, IUserFileRepository>()
+            return new CrudRepositoryTests<CNCLibContext, UserFileEntity, int, IUserFileRepository>()
             {
                 CreateTestDbContext = () =>
                 {
                     var context = TestFixture.CreateDbContext();
                     var uow     = new UnitOfWork<CNCLibContext>(context);
                     var rep     = new UserFileRepository(context);
-                    return new CrudTestDbContext<CNCLibContext, UserFile, int, IUserFileRepository>(context, uow, rep);
+                    return new CrudTestDbContext<CNCLibContext, UserFileEntity, int, IUserFileRepository>(context, uow, rep);
                 },
                 GetEntityKey  = (entity) => entity.UserFileId,
                 SetEntityKey  = (entity,  id) => entity.UserFileId = id,
@@ -93,13 +93,13 @@ namespace CNCLib.UnitTest.Repository
         [Fact]
         public async Task AddUpdateDeleteTest()
         {
-            await CreateTestContext().AddUpdateDelete(() => new UserFile() { FileName = "Hallo", UserId = 1, Content = new byte[] { 10 } }, (entity) => entity.FileName = "Hallo2");
+            await CreateTestContext().AddUpdateDelete(() => new UserFileEntity() { FileName = "Hallo", UserId = 1, Content = new byte[] { 10 } }, (entity) => entity.FileName = "Hallo2");
         }
 
         [Fact]
         public async Task AddRollbackTest()
         {
-            await CreateTestContext().AddRollBack(() => new UserFile() { FileName = "Hallo", UserId = 1 });
+            await CreateTestContext().AddRollBack(() => new UserFileEntity() { FileName = "Hallo", UserId = 1 });
         }
 
         #endregion
@@ -128,7 +128,7 @@ namespace CNCLib.UnitTest.Repository
 
             using (var ctx = CreateTestContext().CreateTestDbContext())
             {
-                var entityToAdd = new UserFile() { FileName = existingUserName, UserId = 1, Content = new byte[] { 1 } };
+                var entityToAdd = new UserFileEntity() { FileName = existingUserName, UserId = 1, Content = new byte[] { 1 } };
                 ctx.Repository.Add(entityToAdd);
 
                 //[SkippableFact(typeof(DbUpdateException))]

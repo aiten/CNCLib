@@ -77,6 +77,13 @@ namespace CNCLib.WebAPI.Controllers
             return Ok();
         }
 
+        [HttpPut("changePassword")]
+        public async Task<ActionResult> ChangePassword(string userName, string passwordOld, string passwordNew)
+        {
+            await _manager.ChangePassword(userName, passwordOld, passwordNew);
+            return Ok();
+        }
+
         [AllowAnonymous]
         [HttpPost("register")]
         public async Task<ActionResult<string>> Register(string userName, string password)
@@ -103,14 +110,14 @@ namespace CNCLib.WebAPI.Controllers
             await _manager.InitData();
             return Ok();
         }
-        
+
         [HttpPut("initMachines")]
         public async Task<ActionResult> InitMachines()
         {
             await _manager.InitMachines();
             return Ok();
         }
-        
+
         [HttpPut("initItems")]
         public async Task<ActionResult> InitItems()
         {

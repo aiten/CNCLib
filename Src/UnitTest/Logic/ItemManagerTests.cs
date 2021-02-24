@@ -44,7 +44,7 @@ namespace CNCLib.UnitTest.Logic
 
             var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Mapper);
 
-            var itemEntity = new Item[0];
+            var itemEntity = new ItemEntity[0];
             rep.GetAll().Returns(itemEntity);
 
             var all = (await ctrl.GetAll()).ToArray();
@@ -62,7 +62,7 @@ namespace CNCLib.UnitTest.Logic
 
             var itemEntity = new[]
             {
-                new Item { ItemId = 1, Name = "Test1", UserId = userContext.UserId }, new Item { ItemId = 2, Name = "Test2", UserId = userContext.UserId }
+                new ItemEntity { ItemId = 1, Name = "Test1", UserId = userContext.UserId }, new ItemEntity { ItemId = 2, Name = "Test2", UserId = userContext.UserId }
             };
             rep.GetByUser(userContext.UserId).Returns(itemEntity);
 
@@ -84,7 +84,7 @@ namespace CNCLib.UnitTest.Logic
 
             var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Mapper);
 
-            rep.Get(1).Returns(new Item { ItemId = 1, Name = "Test1" });
+            rep.Get(1).Returns(new ItemEntity { ItemId = 1, Name = "Test1" });
 
             var all = await ctrl.Get(1);
 
@@ -125,7 +125,7 @@ namespace CNCLib.UnitTest.Logic
             await ctrl.Delete(item);
 
             //assert
-            rep.Received().DeleteRange(Arg.Is<IEnumerable<Item>>(x => x.First().ItemId == item.ItemId));
+            rep.Received().DeleteRange(Arg.Is<IEnumerable<ItemEntity>>(x => x.First().ItemId == item.ItemId));
         }
     }
 }

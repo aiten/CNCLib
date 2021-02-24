@@ -25,12 +25,11 @@ namespace CNCLib.Logic.Manager
     using CNCLib.Logic.Abstraction.DTO;
     using CNCLib.Logic.Converter;
     using CNCLib.Repository.Abstraction;
+    using CNCLib.Repository.Abstraction.Entities;
     using CNCLib.Shared;
 
     using Framework.Logic;
     using Framework.Repository.Abstraction;
-
-    using ItemEntity = CNCLib.Repository.Abstraction.Entities.Item;
 
     public class ItemManager : CrudManager<Item, int, ItemEntity>, IItemManager
     {

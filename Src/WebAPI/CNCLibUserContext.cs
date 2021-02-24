@@ -23,7 +23,7 @@ namespace CNCLib.WebAPI
 
     using Microsoft.AspNetCore.Mvc;
 
-    public class CNCLibUserContext : ICNCLibUserContextRW
+    public class CNCLibUserContext : ICNCLibUserContext
     {
         public ClaimsPrincipal User { get; private set; }
 
@@ -42,7 +42,7 @@ namespace CNCLib.WebAPI
             }
 
             UserName = controller.User.FindFirst(ClaimTypes.Name)?.Value;
-            IsAdmin  = controller.User.HasClaim(CNCLibClaims.IsAdmin,"true");
+            IsAdmin  = controller.User.HasClaim(CNCLibClaimTypes.IsAdmin,"true");
         }
     }
 }

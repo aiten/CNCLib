@@ -27,7 +27,7 @@ namespace CNCLib.Repository
 
     using Microsoft.EntityFrameworkCore;
 
-    public class UserRepository : CrudRepository<CNCLibContext, User, int>, IUserRepository
+    public class UserRepository : CrudRepository<CNCLibContext, UserEntity, int>, IUserRepository
     {
         #region ctr/default/overrides
 
@@ -35,27 +35,22 @@ namespace CNCLib.Repository
         {
         }
 
-        protected override FilterBuilder<User, int> FilterBuilder =>
-            new FilterBuilder<User, int>()
+        protected override FilterBuilder<UserEntity, int> FilterBuilder =>
+            new FilterBuilder<UserEntity, int>()
             {
                 PrimaryWhere   = (query, key) => query.Where(item => item.UserId == key),
                 PrimaryWhereIn = (query, keys) => query.Where(item => keys.Contains(item.UserId))
             };
 
-        protected override IQueryable<User> AddInclude(IQueryable<User> query)
+        public async Task Store(UserEntity user)
         {
-            return query;
-        }
-
-        public async Task Store(User user)
-        {
-            // search und update User
+            // search und update UserEntity
 
             int id = user.UserId;
 
             var userInDb = await Query.Where(m => m.UserId == id).FirstOrDefaultAsync();
 
-            if (userInDb == default(User))
+            if (userInDb == default(UserEntity))
             {
                 // add new
 
@@ -67,7 +62,7 @@ namespace CNCLib.Repository
 
                 SetValue(userInDb, user);
 
-                // search und update User Commands (add and delete)
+                // search und update UserEntity Commands (add and delete)
             }
         }
 
@@ -75,9 +70,14 @@ namespace CNCLib.Repository
 
         #region extra Queries
 
-        public async Task<User> GetByName(string username)
+        public async Task<UserEntity> GetByName(string username)
         {
             return await AddInclude(Query).Where(u => u.Name == username).FirstOrDefaultAsync();
+        }
+
+        public async Task<UserEntity> GetByNameTracking(string username)
+        {
+            return await AddInclude(TrackingQuery).Where(u => u.Name == username).FirstOrDefaultAsync();
         }
 
         #endregion

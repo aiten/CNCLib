@@ -16,15 +16,11 @@
 
 namespace CNCLib.Repository.Abstraction.Entities
 {
-    public class MachineCommand
+    public class ItemPropertyEntity
     {
-        public int     MachineCommandId { get; set; }
-        public string  CommandName      { get; set; }
-        public string  CommandString    { get; set; }
-        public int     MachineId        { get; set; }
-        public int?    PosX             { get; set; }
-        public int?    PosY             { get; set; }
-        public string  JoystickMessage  { get; set; }
-        public Machine Machine          { get; set; }
+        public int    ItemId { get; set; }
+        public string Name   { get; set; }
+        public string Value  { get; set; }
+        public ItemEntity   Item   { get; set; }
     }
 }

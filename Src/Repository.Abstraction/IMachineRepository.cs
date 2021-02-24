@@ -23,16 +23,16 @@ namespace CNCLib.Repository.Abstraction
 
     using Framework.Repository.Abstraction;
 
-    public interface IMachineRepository : ICrudRepository<Machine, int>
+    public interface IMachineRepository : ICrudRepository<MachineEntity, int>
     {
-        Task<IList<Machine>> GetByUser(int userId);
+        Task<IList<MachineEntity>> GetByUser(int userId);
         
         Task<IList<int>> GetIdByUser(int userId);
 
         Task DeleteByUser(int userId);
 
-        Task<IList<MachineCommand>> GetMachineCommands(int machineId);
+        Task<IList<MachineCommandEntity>> GetMachineCommands(int machineId);
 
-        Task<IList<MachineInitCommand>> GetMachineInitCommands(int machineId);
+        Task<IList<MachineInitCommandEntity>> GetMachineInitCommands(int machineId);
     }
 }

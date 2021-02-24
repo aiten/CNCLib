@@ -41,16 +41,16 @@ namespace CNCLib.UnitTest.Repository
         {
         }
 
-        protected CrudRepositoryTests<CNCLibContext, Machine, int, IMachineRepository> CreateTestContext()
+        protected CrudRepositoryTests<CNCLibContext, MachineEntity, int, IMachineRepository> CreateTestContext()
         {
-            return new CrudRepositoryTests<CNCLibContext, Machine, int, IMachineRepository>()
+            return new CrudRepositoryTests<CNCLibContext, MachineEntity, int, IMachineRepository>()
             {
                 CreateTestDbContext = () =>
                 {
                     var context = TestFixture.CreateDbContext();
                     var uow     = new UnitOfWork<CNCLibContext>(context);
                     var rep     = new MachineRepository(context);
-                    return new CrudTestDbContext<CNCLibContext, Machine, int, IMachineRepository>(context, uow, rep);
+                    return new CrudTestDbContext<CNCLibContext, MachineEntity, int, IMachineRepository>(context, uow, rep);
                 },
                 GetEntityKey = (entity) => entity.MachineId,
                 SetEntityKey = (entity, key) =>
@@ -119,7 +119,7 @@ namespace CNCLib.UnitTest.Repository
                     entity.Name = "DummyNameUpdate";
                     entity.MachineInitCommands.Remove(entity.MachineInitCommands.First());
                     entity.MachineInitCommands.Add(
-                        new MachineInitCommand()
+                        new MachineInitCommandEntity()
                         {
                             CommandString = @"CommandStr",
                             SeqNo         = 2
@@ -127,7 +127,7 @@ namespace CNCLib.UnitTest.Repository
 
                     entity.MachineCommands.Remove(entity.MachineCommands.Last());
                     entity.MachineCommands.Add(
-                        new MachineCommand()
+                        new MachineCommandEntity()
                         {
                             CommandString   = @"CommandStr",
                             CommandName     = "NewName",
@@ -177,9 +177,9 @@ namespace CNCLib.UnitTest.Repository
 
         #endregion
 
-        private static Machine CreateMachine(string name)
+        private static MachineEntity CreateMachine(string name)
         {
-            var machine = new Machine
+            var machine = new MachineEntity
             {
                 UserId              = 1,
                 ComPort             = "com47",
@@ -201,28 +201,28 @@ namespace CNCLib.UnitTest.Repository
                 ProbeDistUp         = 1m,
                 ProbeDist           = 1m,
                 ProbeFeed           = 1m,
-                MachineInitCommands = new HashSet<MachineInitCommand>(),
-                MachineCommands     = new HashSet<MachineCommand>()
+                MachineInitCommands = new HashSet<MachineInitCommandEntity>(),
+                MachineCommands     = new HashSet<MachineCommandEntity>()
             };
             return machine;
         }
 
-        private static Machine AddMachineCommands(Machine machine)
+        private static MachineEntity AddMachineCommands(MachineEntity machine)
         {
-            machine.MachineCommands = new List<MachineCommand>
+            machine.MachineCommands = new List<MachineCommandEntity>
             {
-                new MachineCommand { CommandName = "Name1", CommandString = "Test1", Machine = machine },
-                new MachineCommand { CommandName = "Name1", CommandString = "Test2", Machine = machine }
+                new MachineCommandEntity { CommandName = "Name1", CommandString = "Test1", Machine = machine },
+                new MachineCommandEntity { CommandName = "Name1", CommandString = "Test2", Machine = machine }
             };
             return machine;
         }
 
-        private static Machine AddMachineInitCommands(Machine machine)
+        private static MachineEntity AddMachineInitCommands(MachineEntity machine)
         {
-            machine.MachineInitCommands = new List<MachineInitCommand>
+            machine.MachineInitCommands = new List<MachineInitCommandEntity>
             {
-                new MachineInitCommand { SeqNo = 0, CommandString = "Test1", Machine = machine },
-                new MachineInitCommand { SeqNo = 1, CommandString = "Test2", Machine = machine }
+                new MachineInitCommandEntity { SeqNo = 0, CommandString = "Test1", Machine = machine },
+                new MachineInitCommandEntity { SeqNo = 1, CommandString = "Test2", Machine = machine }
             };
             return machine;
         }

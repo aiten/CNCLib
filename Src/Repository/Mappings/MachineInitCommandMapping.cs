@@ -23,7 +23,7 @@ namespace CNCLib.Repository.Mappings
 
     public static class MachineItemMapping
     {
-        public static void Map(this EntityTypeBuilder<MachineInitCommand> entity)
+        public static void Map(this EntityTypeBuilder<MachineInitCommandEntity> entity)
         {
             entity.ToTable("MachineInitCommand");
 

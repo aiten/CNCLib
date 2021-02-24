@@ -14,13 +14,10 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository.Abstraction.Entities
-{
-    public class ItemProperty
+namespace CNCLib.Logic.Abstraction
+{ 
+    public static class CNCLibClaimTypes
     {
-        public int    ItemId { get; set; }
-        public string Name   { get; set; }
-        public string Value  { get; set; }
-        public Item   Item   { get; set; }
+        public const string IsAdmin = nameof(IsAdmin);
     }
 }

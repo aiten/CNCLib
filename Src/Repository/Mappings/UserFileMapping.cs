@@ -23,7 +23,7 @@ namespace CNCLib.Repository.Mappings
 
     public static class UserFileMapping
     {
-        public static void Map(this EntityTypeBuilder<UserFile> entity)
+        public static void Map(this EntityTypeBuilder<UserFileEntity> entity)
         {
             entity.ToTable("UserFile");
 

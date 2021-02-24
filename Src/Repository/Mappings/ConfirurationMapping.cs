@@ -23,7 +23,7 @@ namespace CNCLib.Repository.Mappings
 
     public static class ConfigurationMapping
     {
-        public static void Map(this EntityTypeBuilder<Configuration> entity)
+        public static void Map(this EntityTypeBuilder<ConfigurationEntity> entity)
         {
             entity.ToTable("Configuration");
 

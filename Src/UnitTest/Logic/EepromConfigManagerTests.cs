@@ -42,7 +42,7 @@ namespace CNCLib.UnitTest.Logic
             // no repository is needed
             //var rep = CreateMock<IItemXXX>();
             //    
-            //var itemEntity = new Item[0];
+            //var itemEntity = new ItemEntity[0];
             //rep.Get().Returns(itemEntity);
 
             var ctrl = new EepromConfigurationManager();

@@ -30,36 +30,36 @@ namespace CNCLib.Repository.Context
             CsvDir = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\DefaultData";
         }
 
-        public IList<Machine> GetDefaultMachines()
+        public IList<MachineEntity> GetDefaultMachines()
         {
-            return Read<Machine>("Machine.csv");
+            return Read<MachineEntity>("Machine.csv");
         }
 
-        public IList<Item> GetDefaultItems()
+        public IList<ItemEntity> GetDefaultItems()
         {
-            return Read<Item>("Item.csv");
+            return Read<ItemEntity>("Item.csv");
         }
 
-        public IList<UserFile> GetDefaultFiles()
+        public IList<UserFileEntity> GetDefaultFiles()
         {
-            return Read<UserFile>("UserFile.csv");
+            return Read<UserFileEntity>("UserFile.csv");
         }
 
         public void ImportForUserMachine(int userId)
         {
-            _machineMap = ImportCsv<int, Machine>("Machine.csv", m => m.MachineId, (m, key) =>
+            _machineMap = ImportCsv<int, MachineEntity>("Machine.csv", m => m.MachineId, (m, key) =>
             {
                 m.MachineId = key;
                 m.User      = null;
                 m.UserId    = userId;
             });
-            _machineCommandMap = ImportCsv<int, MachineCommand>("MachineCommand.csv", mc => mc.MachineCommandId, (mc, key) =>
+            _machineCommandMap = ImportCsv<int, MachineCommandEntity>("MachineCommand.csv", mc => mc.MachineCommandId, (mc, key) =>
             {
                 mc.MachineCommandId = key;
                 mc.Machine          = _machineMap[mc.MachineId];
                 mc.MachineId        = 0;
             });
-            _machineInitMap = ImportCsv<int, MachineInitCommand>("MachineInitCommand.csv", mic => mic.MachineInitCommandId, (mic, key) =>
+            _machineInitMap = ImportCsv<int, MachineInitCommandEntity>("MachineInitCommand.csv", mic => mic.MachineInitCommandId, (mic, key) =>
             {
                 mic.MachineInitCommandId = key;
                 mic.Machine              = _machineMap[mic.MachineId];
@@ -69,13 +69,13 @@ namespace CNCLib.Repository.Context
 
         public void ImportForUserItem(int userId)
         {
-            _itemMap = ImportCsv<int, Item>("Item.csv", i => i.ItemId, (i, key) =>
+            _itemMap = ImportCsv<int, ItemEntity>("Item.csv", i => i.ItemId, (i, key) =>
             {
                 i.ItemId = key;
                 i.User   = null;
                 i.UserId = userId;
             });
-            _itemPropertyMap = ImportCsv<Tuple<int, string>, ItemProperty>("ItemProperty.csv", ip => new Tuple<int, string>(ip.ItemId, ip.Name), (ip, key) =>
+            _itemPropertyMap = ImportCsv<Tuple<int, string>, ItemPropertyEntity>("ItemProperty.csv", ip => new Tuple<int, string>(ip.ItemId, ip.Name), (ip, key) =>
             {
                 ip.Item   = _itemMap[ip.ItemId];
                 ip.ItemId = 0;
@@ -84,7 +84,7 @@ namespace CNCLib.Repository.Context
 
         public void ImportForUserFile(int userId)
         {
-            _userFileMap = ImportCsv<int, UserFile>("UserFile.csv", uf => uf.UserFileId, (uf, key) =>
+            _userFileMap = ImportCsv<int, UserFileEntity>("UserFile.csv", uf => uf.UserFileId, (uf, key) =>
             {
                 uf.UserFileId = key;
                 uf.User       = null;
@@ -101,47 +101,47 @@ namespace CNCLib.Repository.Context
 
         public void Import()
         {
-            _userMap = ImportCsv<int, User>("User.csv", u => u.UserId, (u, key) => u.UserId = key);
+            _userMap = ImportCsv<int, UserEntity>("User.csv", u => u.UserId, (u, key) => u.UserId = key);
 
-            _machineMap = ImportCsv<int, Machine>("Machine.csv", m => m.MachineId, (m, key) =>
+            _machineMap = ImportCsv<int, MachineEntity>("Machine.csv", m => m.MachineId, (m, key) =>
             {
                 m.MachineId = key;
                 m.User      = _userMap[m.UserId];
                 m.UserId    = 0;
             });
-            _machineCommandMap = ImportCsv<int, MachineCommand>("MachineCommand.csv", mc => mc.MachineCommandId, (mc, key) =>
+            _machineCommandMap = ImportCsv<int, MachineCommandEntity>("MachineCommand.csv", mc => mc.MachineCommandId, (mc, key) =>
             {
                 mc.MachineCommandId = key;
                 mc.Machine          = _machineMap[mc.MachineId];
                 mc.MachineId        = 0;
             });
-            _machineInitMap = ImportCsv<int, MachineInitCommand>("MachineInitCommand.csv", mic => mic.MachineInitCommandId, (mic, key) =>
+            _machineInitMap = ImportCsv<int, MachineInitCommandEntity>("MachineInitCommand.csv", mic => mic.MachineInitCommandId, (mic, key) =>
             {
                 mic.MachineInitCommandId = key;
                 mic.Machine              = _machineMap[mic.MachineId];
                 mic.MachineId            = 0;
             });
 
-            _itemMap = ImportCsv<int, Item>("Item.csv", i => i.ItemId, (i, key) =>
+            _itemMap = ImportCsv<int, ItemEntity>("Item.csv", i => i.ItemId, (i, key) =>
             {
                 i.ItemId = key;
                 i.User   = _userMap[i.UserId];
                 i.UserId = 0;
             });
-            _itemPropertyMap = ImportCsv<Tuple<int, string>, ItemProperty>("ItemProperty.csv", ip => new Tuple<int, string>(ip.ItemId, ip.Name), (ip, key) =>
+            _itemPropertyMap = ImportCsv<Tuple<int, string>, ItemPropertyEntity>("ItemProperty.csv", ip => new Tuple<int, string>(ip.ItemId, ip.Name), (ip, key) =>
             {
                 ip.Item   = _itemMap[ip.ItemId];
                 ip.ItemId = 0;
             });
 
-            _configurationMap = ImportCsv<int, Configuration>("Configuration.csv", c => c.ConfigurationId, (c, key) =>
+            _configurationMap = ImportCsv<int, ConfigurationEntity>("Configuration.csv", c => c.ConfigurationId, (c, key) =>
             {
                 c.ConfigurationId = key;
                 c.User            = _userMap[c.UserId];
                 c.UserId          = 0;
             });
 
-            _userFileMap = ImportCsv<int, UserFile>("UserFile.csv", uf => uf.UserFileId, (uf, key) =>
+            _userFileMap = ImportCsv<int, UserFileEntity>("UserFile.csv", uf => uf.UserFileId, (uf, key) =>
             {
                 uf.UserFileId = key;
                 uf.User       = _userMap[uf.UserId];

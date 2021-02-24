@@ -32,9 +32,9 @@ namespace CNCLib.UnitTest.Repository
         public void Import()
         {
             // default data already in db
-            _userMap = ReadFromDb<int, User>(u => u.UserId);
+            _userMap = ReadFromDb<int, UserEntity>(u => u.UserId);
 
-            _configurationMap = ImportCsv<int, Configuration>("ConfigurationTest.csv", c => c.ConfigurationId, (c, key) =>
+            _configurationMap = ImportCsv<int, ConfigurationEntity>("ConfigurationTest.csv", c => c.ConfigurationId, (c, key) =>
             {
                 c.ConfigurationId = key;
                 c.User            = _userMap[c.UserId];

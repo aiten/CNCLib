@@ -23,14 +23,14 @@ namespace CNCLib.Repository.Abstraction
 
     using Framework.Repository.Abstraction;
 
-    public interface IItemRepository : ICrudRepository<Item, int>
+    public interface IItemRepository : ICrudRepository<ItemEntity, int>
     {
-        Task<IList<Item>> GetByUser(int userId);
+        Task<IList<ItemEntity>> GetByUser(int userId);
 
         Task<IList<int>> GetIdByUser(int userId);
 
         Task DeleteByUser(int userId);
 
-        Task<IList<Item>> Get(int userId, string typeIdString);
+        Task<IList<ItemEntity>> Get(int userId, string typeIdString);
     }
 }

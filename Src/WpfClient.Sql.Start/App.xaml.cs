@@ -110,7 +110,7 @@ namespace CNCLib.WpfClient.Sql.Start
 
             try
             {
-                CNCLibContext.InitializeDatabase2();
+                CNCLibContext.InitializeDatabase(AppService.ServiceProvider);
             }
             catch (Exception ex)
             {

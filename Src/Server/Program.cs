@@ -55,7 +55,7 @@ namespace CNCLib.Server
 #endif
             try
             {
-                ProgramUtilities.StartWebService(args, BuildHost);
+                ProgramUtilities.StartWebService(args, CreateHostBuilder);
             }
             catch (Exception e)
             {
@@ -64,7 +64,7 @@ namespace CNCLib.Server
             }
         }
 
-        private static IHostBuilder BuildHost(string[] args)
+        private static IHostBuilder CreateHostBuilder(string[] args)
         {
             var hostConfig = new ConfigurationBuilder()
                 .AddJsonFile("hosting.json", optional: true)

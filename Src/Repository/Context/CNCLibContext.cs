@@ -16,6 +16,7 @@
 
 namespace CNCLib.Repository.Context
 {
+    using System;
     using System.Linq;
 
     using CNCLib.Repository.Abstraction.Entities;
@@ -41,28 +42,28 @@ namespace CNCLib.Repository.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Machine -------------------------------------
-            // MachineCommand -------------------------------------
-            // MachineInitCommand -------------------------------------
+            // MachineEntity -------------------------------------
+            // MachineCommandEntity -------------------------------------
+            // MachineInitCommandEntity -------------------------------------
 
-            modelBuilder.Entity<Machine>().Map();
-            modelBuilder.Entity<MachineCommand>().Map();
-            modelBuilder.Entity<MachineInitCommand>().Map();
+            modelBuilder.Entity<MachineEntity>().Map();
+            modelBuilder.Entity<MachineCommandEntity>().Map();
+            modelBuilder.Entity<MachineInitCommandEntity>().Map();
 
-            // Configuration -------------------------------------
+            // ConfigurationEntity -------------------------------------
 
-            modelBuilder.Entity<Configuration>().Map();
+            modelBuilder.Entity<ConfigurationEntity>().Map();
 
-            // Item -------------------------------------
-            // ItemProperty -------------------------------------
+            // ItemEntity -------------------------------------
+            // ItemPropertyEntity -------------------------------------
 
-            modelBuilder.Entity<Item>().Map();
-            modelBuilder.Entity<ItemProperty>().Map();
+            modelBuilder.Entity<ItemEntity>().Map();
+            modelBuilder.Entity<ItemPropertyEntity>().Map();
 
-            // User -------------------------------------
+            // UserEntity -------------------------------------
 
-            modelBuilder.Entity<User>().Map();
-            modelBuilder.Entity<UserFile>().Map();
+            modelBuilder.Entity<UserEntity>().Map();
+            modelBuilder.Entity<UserFileEntity>().Map();
 
             // -------------------------------------
 
@@ -77,7 +78,7 @@ namespace CNCLib.Repository.Context
 
         protected void InitOrUpdateDatabase()
         {
-            if (Set<Machine>().Any())
+            if (Set<MachineEntity>().Any())
             {
                 ModifyWrongData();
                 SaveChanges();
@@ -92,21 +93,21 @@ namespace CNCLib.Repository.Context
         private void ModifyWrongData()
         {
             // Contracts => Contract
-            foreach (var item in Set<Item>().Where(i => i.ClassName == @"CNCLib.Logic.Contracts.DTO.LoadOptions,CNCLib.Logic.Contracts.DTO"))
+            foreach (var item in Set<ItemEntity>().Where(i => i.ClassName == @"CNCLib.Logic.Contracts.DTO.LoadOptions,CNCLib.Logic.Contracts.DTO"))
             {
                 item.ClassName = @"CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO";
             }
 
             // Contract => Abstraction
-            foreach (var item in Set<Item>().Where(i => i.ClassName == @"CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO"))
+            foreach (var item in Set<ItemEntity>().Where(i => i.ClassName == @"CNCLib.Logic.Contract.DTO.LoadOptions,CNCLib.Logic.Contract.DTO"))
             {
                 item.ClassName = @"CNCLib.Logic.Abstraction.DTO.LoadOptions,CNCLib.Logic.Abstraction.DTO";
             }
         }
 
-        public static void InitializeDatabase2()
+        public static void InitializeDatabase(IServiceProvider serviceProvider)
         {
-            using (var scope = AppService.ServiceProvider.CreateScope())
+            using (var scope = serviceProvider.CreateScope())
             {
                 var ctx = scope.ServiceProvider.GetRequiredService<CNCLibContext>();
                 ctx.InitializeDatabase();

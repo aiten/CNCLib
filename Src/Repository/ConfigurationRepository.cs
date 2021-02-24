@@ -27,7 +27,7 @@ namespace CNCLib.Repository
 
     using Microsoft.EntityFrameworkCore;
 
-    public class ConfigurationRepository : CrudRepository<CNCLibContext, Configuration, int>, IConfigurationRepository
+    public class ConfigurationRepository : CrudRepository<CNCLibContext, ConfigurationEntity, int>, IConfigurationRepository
     {
         #region ctr/default/overrides
 
@@ -35,25 +35,25 @@ namespace CNCLib.Repository
         {
         }
 
-        protected override FilterBuilder<Configuration, int> FilterBuilder =>
-            new FilterBuilder<Configuration, int>()
+        protected override FilterBuilder<ConfigurationEntity, int> FilterBuilder =>
+            new FilterBuilder<ConfigurationEntity, int>()
             {
                 PrimaryWhere   = (query, key) => query.Where(c => c.ConfigurationId == key),
                 PrimaryWhereIn = (query, keys) => query.Where(item => keys.Contains(item.ConfigurationId))
             };
 
-        protected override IQueryable<Configuration> AddInclude(IQueryable<Configuration> query)
+        protected override IQueryable<ConfigurationEntity> AddInclude(IQueryable<ConfigurationEntity> query)
         {
             return query;
         }
 
-        public async Task Store(Configuration configuration)
+        public async Task Store(ConfigurationEntity configuration)
         {
             // search und update machine
 
             var cInDb = await AddOptionalWhere(TrackingQuery).Where(c => c.UserId == configuration.UserId && c.Group == configuration.Group && c.Name == configuration.Name).FirstOrDefaultAsync();
 
-            if (cInDb == default(Configuration))
+            if (cInDb == default(ConfigurationEntity))
             {
                 // add new
 
@@ -74,7 +74,7 @@ namespace CNCLib.Repository
 
         #region extra queries
 
-        public async Task<Configuration> Get(int userId, string group, string name)
+        public async Task<ConfigurationEntity> Get(int userId, string group, string name)
         {
             return await AddOptionalWhere(Query).Where(c => c.UserId == userId && c.Group == group && c.Name == name).FirstOrDefaultAsync();
         }

@@ -132,7 +132,7 @@ namespace CNCLib.Server
             services.AddAuthentication(AuthenticationScheme)
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>(AuthenticationScheme, null);
 
-            services.AddAuthorization(options => { options.AddPolicy(Policies.IsAdmin, policy => policy.RequireClaim(CNCLibClaims.IsAdmin)); });
+            services.AddAuthorization(options => { options.AddPolicy(Policies.IsAdmin, policy => policy.RequireClaim(CNCLibClaimTypes.IsAdmin)); });
 
             services.AddScoped<IAuthenticationManager, UserManager>();
             services.AddTransient<IOneWayPasswordProvider, Pbkdf2PasswordProvider>();
@@ -188,7 +188,7 @@ namespace CNCLib.Server
 
             Services = app.ApplicationServices;
 
-            CNCLibContext.InitializeDatabase2();
+            CNCLibContext.InitializeDatabase(Services);
 
             if (env.IsDevelopment())
             {

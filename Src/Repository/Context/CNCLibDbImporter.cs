@@ -25,14 +25,14 @@ namespace CNCLib.Repository.Context
 
     public class CNCLibDbImporter : DbImporter
     {
-        protected Dictionary<int, User>                        _userMap;
-        protected Dictionary<int, UserFile>                    _userFileMap;
-        protected Dictionary<int, Machine>                     _machineMap;
-        protected Dictionary<int, MachineCommand>              _machineCommandMap;
-        protected Dictionary<int, MachineInitCommand>          _machineInitMap;
-        protected Dictionary<int, Item>                        _itemMap;
-        protected Dictionary<Tuple<int, string>, ItemProperty> _itemPropertyMap;
-        protected Dictionary<int, Configuration>               _configurationMap;
+        protected Dictionary<int, UserEntity>                        _userMap;
+        protected Dictionary<int, UserFileEntity>                    _userFileMap;
+        protected Dictionary<int, MachineEntity>                     _machineMap;
+        protected Dictionary<int, MachineCommandEntity>              _machineCommandMap;
+        protected Dictionary<int, MachineInitCommandEntity>          _machineInitMap;
+        protected Dictionary<int, ItemEntity>                        _itemMap;
+        protected Dictionary<Tuple<int, string>, ItemPropertyEntity> _itemPropertyMap;
+        protected Dictionary<int, ConfigurationEntity>               _configurationMap;
 
         public CNCLibDbImporter(CNCLibContext context) : base(context)
         {

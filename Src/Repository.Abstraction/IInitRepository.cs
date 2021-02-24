@@ -31,8 +31,8 @@ namespace CNCLib.Repository.Abstraction
         Task AddDefaultItems(int    userId);
         Task AddDefaultFiles(int    userId);
 
-        IList<Machine>  GetDefaultMachines();
-        IList<Item>     GetDefaultItems();
-        IList<UserFile> GetDefaultFiles();
+        IList<MachineEntity>  GetDefaultMachines();
+        IList<ItemEntity>     GetDefaultItems();
+        IList<UserFileEntity> GetDefaultFiles();
     }
 }

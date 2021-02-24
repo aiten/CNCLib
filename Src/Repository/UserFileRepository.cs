@@ -29,7 +29,7 @@ namespace CNCLib.Repository
 
     using Microsoft.EntityFrameworkCore;
 
-    public class UserFileRepository : CrudRepository<CNCLibContext, UserFile, int>, IUserFileRepository
+    public class UserFileRepository : CrudRepository<CNCLibContext, UserFileEntity, int>, IUserFileRepository
     {
         #region ctr/default/overrides
 
@@ -37,23 +37,18 @@ namespace CNCLib.Repository
         {
         }
 
-        protected override FilterBuilder<UserFile, int> FilterBuilder =>
-            new FilterBuilder<UserFile, int>()
+        protected override FilterBuilder<UserFileEntity, int> FilterBuilder =>
+            new FilterBuilder<UserFileEntity, int>()
             {
                 PrimaryWhere   = (query, key) => query.Where(item => item.UserFileId == key),
                 PrimaryWhereIn = (query, keys) => query.Where(item => keys.Contains(item.UserFileId))
             };
 
-        protected override IQueryable<UserFile> AddInclude(IQueryable<UserFile> query)
-        {
-            return query;
-        }
-
         #endregion
 
         #region extra Queries
 
-        public async Task<IList<UserFile>> GetByUser(int userId)
+        public async Task<IList<UserFileEntity>> GetByUser(int userId)
         {
             return await QueryWithInclude.Where(f => f.UserId == userId).ToListAsync();
         }
@@ -69,7 +64,7 @@ namespace CNCLib.Repository
             DeleteEntities(userFiles);
         }
 
-        private static UserFileInfo WithNoImage(UserFile userFile)
+        private static UserFileInfo WithNoImage(UserFileEntity userFile)
         {
             return new UserFileInfo()
             {
@@ -101,7 +96,7 @@ namespace CNCLib.Repository
             return await Query.Where(f => f.UserId == userId && f.FileName == fileName).Select(f => f.UserFileId).FirstOrDefaultAsync();
         }
 
-        public async Task<UserFile> GetByName(int userId, string fileName)
+        public async Task<UserFileEntity> GetByName(int userId, string fileName)
         {
             return await QueryWithInclude.FirstOrDefaultAsync(f => f.UserId == userId && f.FileName == fileName);
         }

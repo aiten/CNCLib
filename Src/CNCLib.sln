@@ -41,11 +41,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI.Test", "WebAPI.Test\WebAPI.Test.csproj", "{6D3326B2-794C-48FD-B351-483D721BD0F9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{A7A23498-5B70-4D17-A723-0CE3E0FB2096}"
-	ProjectSection(SolutionItems) = preProject
-		PublishScripts\Scripts\Deploy-AzureResourceGroup.ps1 = PublishScripts\Scripts\Deploy-AzureResourceGroup.ps1
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "Framework\WebAPI\WebAPI.csproj", "{2E4BAA13-7562-4336-91A4-B8211816D936}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic.Abstraction.DTO", "Logic.Abstraction.DTO\Logic.Abstraction.DTO.csproj", "{53FDF483-4A15-4069-8B21-E553D58BA742}"

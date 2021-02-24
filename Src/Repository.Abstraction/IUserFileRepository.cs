@@ -24,9 +24,9 @@ namespace CNCLib.Repository.Abstraction
 
     using Framework.Repository.Abstraction;
 
-    public interface IUserFileRepository : ICrudRepository<UserFile, int>
+    public interface IUserFileRepository : ICrudRepository<UserFileEntity, int>
     {
-        Task<IList<UserFile>> GetByUser(int userId);
+        Task<IList<UserFileEntity>> GetByUser(int userId);
 
         Task<IList<int>> GetIdByUser(int userId);
 
@@ -38,7 +38,7 @@ namespace CNCLib.Repository.Abstraction
 
         Task<int> GetFileId(int userId, string fileName);
 
-        Task<UserFile> GetByName(int userId, string fileName);
+        Task<UserFileEntity> GetByName(int userId, string fileName);
 
         Task<long> GetTotalUserFileSize(int userId);
 

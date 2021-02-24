@@ -18,11 +18,11 @@ namespace CNCLib.Repository.Abstraction.Entities
 {
     using System.Collections.Generic;
 
-    public class Machine
+    public class MachineEntity
     {
         public int  MachineId { get; set; }
         public int  UserId    { get; set; }
-        public User User      { get; set; }
+        public UserEntity User      { get; set; }
 
         public string Name                 { get; set; }
         public string SerialServer         { get; set; }
@@ -55,7 +55,7 @@ namespace CNCLib.Repository.Abstraction.Entities
         public int     CommandSyntax  { get; set; }
         public int     WorkOffsets    { get; set; }
 
-        public ICollection<MachineCommand>     MachineCommands     { get; set; }
-        public ICollection<MachineInitCommand> MachineInitCommands { get; set; }
+        public ICollection<MachineCommandEntity>     MachineCommands     { get; set; }
+        public ICollection<MachineInitCommandEntity> MachineInitCommands { get; set; }
     }
 }

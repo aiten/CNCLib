@@ -59,17 +59,17 @@ namespace CNCLib.Repository
             await Task.CompletedTask;
         }
 
-        public IList<Machine> GetDefaultMachines()
+        public IList<MachineEntity> GetDefaultMachines()
         {
             return new CNCLibDefaultData(Context).GetDefaultMachines();
         }
 
-        public IList<Item> GetDefaultItems()
+        public IList<ItemEntity> GetDefaultItems()
         {
             return new CNCLibDefaultData(Context).GetDefaultItems();
         }
 
-        public IList<UserFile> GetDefaultFiles()
+        public IList<UserFileEntity> GetDefaultFiles()
         {
             return new CNCLibDefaultData(Context).GetDefaultFiles();
         }
