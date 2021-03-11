@@ -38,7 +38,7 @@ namespace CNCLib.Repository
         }
 
         protected override FilterBuilder<UserFileEntity, int> FilterBuilder =>
-            new FilterBuilder<UserFileEntity, int>()
+            new()
             {
                 PrimaryWhere   = (query, key) => query.Where(item => item.UserFileId == key),
                 PrimaryWhereIn = (query, keys) => query.Where(item => keys.Contains(item.UserFileId))
@@ -64,9 +64,9 @@ namespace CNCLib.Repository
             DeleteEntities(userFiles);
         }
 
-        private static UserFileInfo WithNoImage(UserFileEntity userFile)
+        private static UserFileInfoQuery WithNoImage(UserFileEntity userFile)
         {
-            return new UserFileInfo()
+            return new UserFileInfoQuery()
             {
                 FileName   = userFile.FileName,
                 UserFileId = userFile.UserFileId,
@@ -76,14 +76,14 @@ namespace CNCLib.Repository
             };
         }
 
-        public async Task<IList<UserFileInfo>> GetFileInfos(int userId)
+        public async Task<IList<UserFileInfoQuery>> GetFileInfos(int userId)
         {
             return await Query
                 .Where(f => f.UserId == userId)
                 .Select(f => WithNoImage(f)).ToListAsync();
         }
 
-        public async Task<UserFileInfo> GetFileInfo(int userFileId)
+        public async Task<UserFileInfoQuery> GetFileInfo(int userFileId)
         {
             return await Query
                 .Where(f => f.UserFileId == userFileId)

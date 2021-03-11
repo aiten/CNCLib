@@ -18,7 +18,7 @@ namespace CNCLib.Repository.Abstraction.QueryResult
 {
     using System;
 
-    public class UserFileInfo
+    public class UserFileInfoQuery
     {
         public int UserFileId { get; set; }
 

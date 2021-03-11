@@ -54,7 +54,7 @@ namespace CNCLib.UnitTest.Repository
                 },
                 GetEntityKey  = (entity) => entity.UserFileId,
                 SetEntityKey  = (entity,  id) => entity.UserFileId = id,
-                CompareEntity = (entity1, entity2) => CompareProperties.AreObjectsPropertiesEqual(entity1, entity2, new[] { @"UserFileId" })
+                CompareEntity = (entity1, entity2) => entity1.ArePropertiesEqual(entity2, new[] { @"UserFileId" })
             };
         }
 

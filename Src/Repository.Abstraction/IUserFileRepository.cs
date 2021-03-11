@@ -32,9 +32,9 @@ namespace CNCLib.Repository.Abstraction
 
         Task DeleteByUser(int userId);
 
-        Task<IList<UserFileInfo>> GetFileInfos(int userId);
+        Task<IList<UserFileInfoQuery>> GetFileInfos(int userId);
 
-        Task<UserFileInfo> GetFileInfo(int userFileId);
+        Task<UserFileInfoQuery> GetFileInfo(int userFileId);
 
         Task<int> GetFileId(int userId, string fileName);
 

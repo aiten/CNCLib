@@ -48,6 +48,29 @@ export class LocalCNCLibUserService implements CNCLibUserService {
     return authentication;
   }
 
+  changePassword(username: string, oldPassword: string, newPassword: string): Promise<void> {
+    const params = new HttpParams()
+      .set('userName', username)
+      .set('passwordNew', newPassword)
+      .set('passwordOld', oldPassword);
+
+    const authentication = this.http
+      .put(`${this.baseUrl}api/user/changepassword`, null, { params })
+      .toPromise()
+      .then((response: Response) => {
+        var user = new User();
+        user.id = 1;
+        user.username = username;
+        user.password = newPassword;
+        user.authData = window.btoa(username + ':' + newPassword);
+        localStorage.setItem('CNCLib.currentUser', JSON.stringify(user));
+      })
+      .catch(this.handleErrorPromise);
+
+    return authentication;
+  }
+ 
+
   initialize(): Promise<void> {
     return this.http
       .put<void>(`${this.baseUrl}api/user/init`, null)

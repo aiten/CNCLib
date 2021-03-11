@@ -23,7 +23,6 @@ namespace CNCLib.Logic.Manager
 
     using CNCLib.Logic.Abstraction;
     using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Logic.Converter;
     using CNCLib.Repository.Abstraction;
     using CNCLib.Repository.Abstraction.Entities;
     using CNCLib.Shared;
@@ -36,14 +35,12 @@ namespace CNCLib.Logic.Manager
         private readonly IUnitOfWork        _unitOfWork;
         private readonly IItemRepository    _repository;
         private readonly ICNCLibUserContext _userContext;
-        private readonly IMapper            _mapper;
 
         public ItemManager(IUnitOfWork unitOfWork, IItemRepository repository, ICNCLibUserContext userContext, IMapper mapper) : base(unitOfWork, repository, mapper)
         {
             _unitOfWork  = unitOfWork;
             _repository  = repository;
             _userContext = userContext;
-            _mapper      = mapper;
         }
 
         protected override int GetKey(ItemEntity entity)
@@ -74,7 +71,7 @@ namespace CNCLib.Logic.Manager
 
         public async Task<IEnumerable<Item>> GetByClassName(string classname)
         {
-            return (await _repository.Get(_userContext.UserId, classname)).ToDto(_mapper);
+            return await MapToDto(await _repository.Get(_userContext.UserId, classname));
         }
     }
 }

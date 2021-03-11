@@ -25,6 +25,8 @@ namespace CNCLib.Logic.Manager
 
     using Framework.Logic;
 
+    using Microsoft.AspNetCore.JsonPatch;
+
     public class LoadOptionsManager : ManagerBase, ILoadOptionsManager
     {
         private readonly IDynItemController _dynItemController;
@@ -101,6 +103,11 @@ namespace CNCLib.Logic.Manager
         }
 
         public Task<IEnumerable<LoadOptions>> Get(IEnumerable<int> key)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task Patch(int key, JsonPatchDocument<LoadOptions> patch)
         {
             throw new System.NotImplementedException();
         }

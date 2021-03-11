@@ -17,20 +17,28 @@
 
 <div *ngIf="cncLibloggedinService.isUserLoggedIn()">
   <p>Login in as : {{cncLibloggedinService.username()}}</p>
-  <button mat-stroked-button (click)="cncLibloggedinService.logout()">Logout</button>
 
-  <button *ngIf="!isMore" mat-button class="menuHide-button" (click)='isMore = true'>
-    <fa-icon icon="chevron-right"></fa-icon>
-  </button>
+  <div *ngIf="isInChangePassword">
+    <change-password></change-password>
+  </div>
+  <div *ngIf="!isInChangePassword">
 
-  <button *ngIf="isMore" mat-stroked-button (click)="initialize()">Initialize(all)</button>
-  <button *ngIf="isMore" mat-stroked-button (click)="initMachines()">Init(machines)</button>
-  <button *ngIf="isMore" mat-stroked-button (click)="initGCodes()">Init(G-Code)</button>
-  <button *ngIf="isMore" mat-stroked-button (click)="cleanup()">Cleanup</button>
-  <button *ngIf="isMore" mat-stroked-button (click)="leave()">Leave</button>
+    <button mat-stroked-button (click)="cncLibloggedinService.logout()">Logout</button>
 
-  <button *ngIf="isMore" mat-button class="menuHide-button" (click)='isMore = false'>
-    <fa-icon icon="chevron-left"></fa-icon>
-  </button>
+    <button *ngIf="!isMore" mat-button class="menuHide-button" (click)='isMore = true'>
+      <fa-icon icon="chevron-right"></fa-icon>
+    </button>
+
+    <button *ngIf="isMore" mat-stroked-button (click)="changePassword()">Change password</button>
+    <button *ngIf="isMore" mat-stroked-button (click)="initialize()">Initialize(all)</button>
+    <button *ngIf="isMore" mat-stroked-button (click)="initMachines()">Init(machines)</button>
+    <button *ngIf="isMore" mat-stroked-button (click)="initGCodes()">Init(G-Code)</button>
+    <button *ngIf="isMore" mat-stroked-button (click)="cleanup()">Cleanup</button>
+    <button *ngIf="isMore" mat-stroked-button (click)="leave()">Leave</button>
+
+    <button *ngIf="isMore" mat-button class="menuHide-button" (click)='isMore = false'>
+      <fa-icon icon="chevron-left"></fa-icon>
+    </button>
+  </div>
 
 </div>

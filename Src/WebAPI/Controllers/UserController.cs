@@ -80,6 +80,10 @@ namespace CNCLib.WebAPI.Controllers
         [HttpPut("changePassword")]
         public async Task<ActionResult> ChangePassword(string userName, string passwordOld, string passwordNew)
         {
+            if (!_userContext.IsAdmin && _userContext.UserName != userName)
+            {
+                return Forbid();
+            }
             await _manager.ChangePassword(userName, passwordOld, passwordNew);
             return Ok();
         }
@@ -133,10 +137,20 @@ namespace CNCLib.WebAPI.Controllers
         }
 
         [HttpDelete("leave")]
-        public async Task<ActionResult> Leave()
+        public async Task<ActionResult> Leave(string userName)
         {
-            await _manager.Leave();
-            return Ok();
+            if (string.IsNullOrEmpty(userName) || _userContext.UserName == userName)
+            {
+                await _manager.Leave();
+                return Ok();
+            }
+
+            if (!_userContext.IsAdmin)
+            {
+                return Forbid();
+            }
+
+            return Forbid();
         }
 
         #region default REST

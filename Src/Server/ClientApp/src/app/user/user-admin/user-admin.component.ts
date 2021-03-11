@@ -33,6 +33,7 @@ import { homeURL } from "../../app.global";
 export class UserAdminComponent {
 
   isInRegister = false;
+  isInChangePassword = false;
   isMore = false;
 
   constructor(
@@ -42,6 +43,10 @@ export class UserAdminComponent {
     private userService: CNCLibUserService,
     @Inject('WEBAPI_URL') public baseUrl: string
   ) {
+  }
+
+  async changePassword() {
+    this.isInChangePassword = true;
   }
 
   async initialize() {
@@ -87,7 +92,6 @@ export class UserAdminComponent {
   }
 
   async cleanup() {
-
     const dialogRef = this.dialog.open(MessageBoxComponent,
       {
         width: '250px',
@@ -111,10 +115,9 @@ export class UserAdminComponent {
     dialogRef.afterClosed().subscribe(async result => {
       if (result.result == MessageBoxResult.Yes) {
         await this.userService.leave();
+        this.cncLibloggedinService.logout();
         await this.router.navigate([homeURL]);
-
       }
     });
   }
-
 }

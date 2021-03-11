@@ -21,6 +21,7 @@ import { CNCLibLoggedinService } from '../services/CNCLib-loggedin.service';
 import { LoginComponent } from "./login/login.component";
 import { RegisterComponent } from "./register/register.component";
 import { UserAdminComponent } from "./user-admin/user-admin.component";
+import { ChangePasswordComponent } from "./change-password/change-password.component";
 
 export const userRoutes =
 [
@@ -41,5 +42,6 @@ export const userComponents =
   UserComponent,
   LoginComponent,
   RegisterComponent,
-  UserAdminComponent
+  UserAdminComponent,
+  ChangePasswordComponent
 ];

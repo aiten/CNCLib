@@ -36,16 +36,11 @@ namespace CNCLib.Repository
         }
 
         protected override FilterBuilder<ConfigurationEntity, int> FilterBuilder =>
-            new FilterBuilder<ConfigurationEntity, int>()
+            new ()
             {
                 PrimaryWhere   = (query, key) => query.Where(c => c.ConfigurationId == key),
                 PrimaryWhereIn = (query, keys) => query.Where(item => keys.Contains(item.ConfigurationId))
             };
-
-        protected override IQueryable<ConfigurationEntity> AddInclude(IQueryable<ConfigurationEntity> query)
-        {
-            return query;
-        }
 
         public async Task Store(ConfigurationEntity configuration)
         {

@@ -156,7 +156,7 @@ namespace CNCLib.Logic.Manager
         {
             using (var trans = _unitOfWork.BeginTransaction())
             {
-                var authUser = Authenticate(userName, passwordOld);
+                var authUser = await Authenticate(userName, passwordOld);
 
                 if (authUser == null)
                 {

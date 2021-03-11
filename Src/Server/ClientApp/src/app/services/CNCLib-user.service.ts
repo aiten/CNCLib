@@ -18,6 +18,8 @@ export abstract class CNCLibUserService {
 
   public abstract register(username: string, password: string): Promise<void>;
 
+  public abstract changePassword(username: string, oldPassword: string, newPassword: string): Promise<void>;
+
   public abstract initialize(): Promise<void>;
 
   public abstract cleanup(): Promise<void>;
