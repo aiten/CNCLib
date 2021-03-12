@@ -39,12 +39,13 @@ namespace CNCLib.Logic.Manager
 
     public class UserManager : CrudManager<User, int, UserEntity>, IUserManager
     {
-        private readonly IUnitOfWork         _unitOfWork;
-        private readonly IUserRepository     _repository;
-        private readonly IMachineRepository  _machineRepository;
-        private readonly IItemRepository     _itemRepository;
-        private readonly IUserFileRepository _userFileRepository;
-        private readonly IInitRepository     _initRepository;
+        private readonly IUnitOfWork              _unitOfWork;
+        private readonly IUserRepository          _repository;
+        private readonly IMachineRepository       _machineRepository;
+        private readonly IItemRepository          _itemRepository;
+        private readonly IUserFileRepository      _userFileRepository;
+        private readonly IInitRepository          _initRepository;
+        private readonly IConfigurationRepository _configRepository;
 
         private readonly ICurrentDateTime   _currentDate;
         private readonly IMapper            _mapper;
@@ -60,6 +61,7 @@ namespace CNCLib.Logic.Manager
             IMachineRepository         machineRepository,
             IItemRepository            itemRepository,
             IUserFileRepository        userFileRepository,
+            IConfigurationRepository   configRepository,
             IInitRepository            initRepository,
             ICNCLibUserContext         userContext,
             ICurrentDateTime           currentDate,
@@ -71,6 +73,7 @@ namespace CNCLib.Logic.Manager
             _repository         = repository;
             _machineRepository  = machineRepository;
             _itemRepository     = itemRepository;
+            _configRepository  = configRepository;
             _userFileRepository = userFileRepository;
             _initRepository     = initRepository;
             _userContext        = userContext;
@@ -201,6 +204,7 @@ namespace CNCLib.Logic.Manager
             await _machineRepository.DeleteByUser(userId);
             await _itemRepository.DeleteByUser(userId);
             await _userFileRepository.DeleteByUser(userId);
+            await _configRepository.DeleteByUser(userId);
         }
 
         public async Task Leave()
@@ -210,6 +214,25 @@ namespace CNCLib.Logic.Manager
                 await DeleteData(_userContext.UserId);
 
                 _repository.Delete(await _repository.GetTracking(_userContext.UserId));
+
+                await CommitTransaction(trans);
+            }
+        }
+
+        public async Task Leave(string userName)
+        {
+            // only as admin
+
+            using (var trans = _unitOfWork.BeginTransaction())
+            {
+                var userEntity = await _repository.GetByName(userName);
+
+                if (userEntity != null && userName != CNCLibConst.AdminUser && _userContext.IsAdmin)
+                {
+                    await DeleteData(userEntity.UserId);
+
+                    _repository.Delete(await _repository.GetTracking(userEntity.UserId));
+                }
 
                 await CommitTransaction(trans);
             }

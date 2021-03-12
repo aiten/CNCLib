@@ -27,5 +27,7 @@ namespace CNCLib.Repository.Abstraction
         Task<ConfigurationEntity> Get(int userId, string group, string name);
 
         Task Store(ConfigurationEntity cfg);
+
+        Task DeleteByUser(int userId);
     }
 }

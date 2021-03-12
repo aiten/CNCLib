@@ -150,7 +150,8 @@ namespace CNCLib.WebAPI.Controllers
                 return Forbid();
             }
 
-            return Forbid();
+            await _manager.Leave(userName);
+            return Ok();
         }
 
         #region default REST

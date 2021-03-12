@@ -65,6 +65,12 @@ namespace CNCLib.Repository
             }
         }
 
+        public async Task DeleteByUser(int userId)
+        {
+            var machines = await TrackingQueryWithInclude.Where(m => m.UserId == userId).ToListAsync();
+            DeleteEntities(machines);
+        }
+
         #endregion
 
         #region extra queries
