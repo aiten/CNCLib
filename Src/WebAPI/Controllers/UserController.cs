@@ -84,6 +84,7 @@ namespace CNCLib.WebAPI.Controllers
             {
                 return Forbid();
             }
+
             await _manager.ChangePassword(userName, passwordOld, passwordNew);
             return Ok();
         }

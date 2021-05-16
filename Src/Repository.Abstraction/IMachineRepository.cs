@@ -26,7 +26,7 @@ namespace CNCLib.Repository.Abstraction
     public interface IMachineRepository : ICrudRepository<MachineEntity, int>
     {
         Task<IList<MachineEntity>> GetByUser(int userId);
-        
+
         Task<IList<int>> GetIdByUser(int userId);
 
         Task DeleteByUser(int userId);

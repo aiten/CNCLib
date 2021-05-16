@@ -18,9 +18,9 @@ namespace CNCLib.Repository.Abstraction.Entities
 {
     public class ItemPropertyEntity
     {
-        public int    ItemId { get; set; }
-        public string Name   { get; set; }
-        public string Value  { get; set; }
-        public ItemEntity   Item   { get; set; }
+        public int        ItemId { get; set; }
+        public string     Name   { get; set; }
+        public string     Value  { get; set; }
+        public ItemEntity Item   { get; set; }
     }
 }

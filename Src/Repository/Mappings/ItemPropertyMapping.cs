@@ -18,6 +18,8 @@ namespace CNCLib.Repository.Mappings
 {
     using CNCLib.Repository.Abstraction.Entities;
 
+    using Framework.Repository.Mappings;
+
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -29,7 +31,7 @@ namespace CNCLib.Repository.Mappings
 
             entity.HasKey(m => new { ItemId = m.ItemId, m.Name });
 
-            entity.Property(m => m.Name).IsRequired().HasMaxLength(255);
+            entity.Property(m => m.Name).AsRequiredText(255);
 
             entity.HasOne(i => i.Item).WithMany(ip => ip.ItemProperties).HasForeignKey(ip => ip.ItemId);
         }

@@ -93,7 +93,7 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
 
             public byte[] FileContent { get; set; }
         }
-        
+
         private async Task<IEnumerable<LoadOptions>> GetAllLoadOptions()
         {
             var client   = GetHttpClient();
@@ -110,7 +110,7 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
             var all = await GetAllLoadOptions();
             all.Should().HaveCountGreaterThan(0);
 
-            var first  = all.First(l => l.SettingName == "laser grave image");
+            var first = all.First(l => l.SettingName == "laser grave image");
 
             var client = GetHttpClient();
 

@@ -36,7 +36,7 @@ namespace CNCLib.Repository
         }
 
         protected override FilterBuilder<ConfigurationEntity, int> FilterBuilder =>
-            new ()
+            new()
             {
                 PrimaryWhere   = (query, key) => query.Where(c => c.ConfigurationId == key),
                 PrimaryWhereIn = (query, keys) => query.Where(item => keys.Contains(item.ConfigurationId))

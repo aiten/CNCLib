@@ -20,8 +20,8 @@ namespace CNCLib.Repository.Abstraction.Entities
 
     public class MachineEntity
     {
-        public int  MachineId { get; set; }
-        public int  UserId    { get; set; }
+        public int        MachineId { get; set; }
+        public int        UserId    { get; set; }
         public UserEntity User      { get; set; }
 
         public string Name                 { get; set; }

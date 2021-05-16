@@ -42,7 +42,7 @@ namespace CNCLib.WebAPI
             }
 
             UserName = controller.User.FindFirst(ClaimTypes.Name)?.Value;
-            IsAdmin  = controller.User.HasClaim(CNCLibClaimTypes.IsAdmin,"true");
+            IsAdmin  = controller.User.HasClaim(CNCLibClaimTypes.IsAdmin, "true");
         }
     }
 }

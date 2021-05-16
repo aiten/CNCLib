@@ -18,6 +18,8 @@ namespace CNCLib.Repository.Mappings
 {
     using CNCLib.Repository.Abstraction.Entities;
 
+    using Framework.Repository.Mappings;
+
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -29,8 +31,8 @@ namespace CNCLib.Repository.Mappings
 
             entity.HasKey(mc => mc.MachineCommandId);
 
-            entity.Property(m => m.CommandString).IsRequired().HasMaxLength(64);
-            entity.Property(m => m.CommandName).IsRequired().HasMaxLength(64);
+            entity.Property(m => m.CommandString).AsRequiredText(64);
+            entity.Property(m => m.CommandName).AsRequiredText(64);
             entity.Property(m => m.JoystickMessage).HasMaxLength(64);
 
             entity.HasOne(mc => mc.Machine).WithMany(m => m.MachineCommands).HasForeignKey(mc => mc.MachineId);

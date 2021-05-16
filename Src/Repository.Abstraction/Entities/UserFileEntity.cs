@@ -20,12 +20,12 @@ namespace CNCLib.Repository.Abstraction.Entities
 
     public class UserFileEntity
     {
-        public int      UserFileId { get; set; }
-        public int      UserId     { get; set; }
-        public UserEntity     User       { get; set; }
-        public string   FileName   { get; set; }
-        public byte[]   Content    { get; set; }
-        public DateTime UploadTime { get; set; }
-        public bool     IsSystem   { get; set; }
+        public int        UserFileId { get; set; }
+        public int        UserId     { get; set; }
+        public UserEntity User       { get; set; }
+        public string     FileName   { get; set; }
+        public byte[]     Content    { get; set; }
+        public DateTime   UploadTime { get; set; }
+        public bool       IsSystem   { get; set; }
     }
 }

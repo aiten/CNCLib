@@ -18,6 +18,8 @@ namespace CNCLib.Repository.Mappings
 {
     using CNCLib.Repository.Abstraction.Entities;
 
+    using Framework.Repository.Mappings;
+
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -31,13 +33,13 @@ namespace CNCLib.Repository.Mappings
 
             entity.HasIndex(c => new { c.UserId, c.Name }).IsUnique();
 
-            entity.Property(m => m.Name).IsRequired().HasMaxLength(64);
+            entity.Property(m => m.Name).AsRequiredText(64);
 
-            entity.Property(m => m.SerialServer).HasMaxLength(128);
-            entity.Property(m => m.SerialServerUser).HasMaxLength(32);
-            entity.Property(m => m.SerialServerPassword).HasMaxLength(64);
+            entity.Property(m => m.SerialServer).AsText(128);
+            entity.Property(m => m.SerialServerUser).AsText(32);
+            entity.Property(m => m.SerialServerPassword).AsText(64);
 
-            entity.Property(m => m.ComPort).IsRequired().HasMaxLength(32);
+            entity.Property(m => m.ComPort).AsRequiredText(32);
 
             entity.Property(m => m.Axis).IsRequired();
 

@@ -341,7 +341,7 @@ namespace CNCLib.WpfClient.ViewModels
         public async Task<bool> LoginUser(CancellationToken tx)
         {
             var newUser = Login?.Invoke();
-            if (newUser!= null && !string.IsNullOrEmpty(newUser.Item1))
+            if (newUser != null && !string.IsNullOrEmpty(newUser.Item1))
             {
                 var userContextRW = _userContext as CNCLibUserContext;
                 await userContextRW.InitUserContext(newUser.Item1, newUser.Item2);

@@ -14,39 +14,17 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository
+namespace CNCLib.Repository.Mappings
 {
-    using System;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    using CNCLib.Repository.Context;
-
-    using Framework.Dependency;
-    using Framework.Localization.Abstraction;
-    using Framework.Repository;
-    using Framework.Repository.Abstraction;
-    using Framework.Startup.Abstraction;
-
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.DependencyInjection;
-
-    public class ModuleInitializer : IModuleInitializer
+    public static class MappingExtensions
     {
-        public Action<DbContextOptionsBuilder> OptionsAction { get; set; }
-
-        public void AddServices(IServiceCollection services)
+/*
+        public static PropertyBuilder<string> AsRequiredText(this PropertyBuilder<string> builder, int maxLength)
         {
-            var options = new DbContextOptionsBuilder<CNCLibContext>();
-            OptionsAction(options);
-
-            services.AddSingleton<DbContextOptions<CNCLibContext>>(options.Options);
-            services.AddScoped<CNCLibContext, CNCLibContext>();
-            services.AddScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
-
-            services.AddAssemblyIncludingInternals(ServiceLifetime.Transient, typeof(Repository.MachineRepository).Assembly);
+            return builder.IsUnicode().IsRequired().HasMaxLength(maxLength);
         }
-
-        public void AddTranslationResources(ILocalizationCollector localisation)
-        {
-        }
+*/
     }
 }

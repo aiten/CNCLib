@@ -73,7 +73,7 @@ namespace CNCLib.Logic.Manager
             _repository         = repository;
             _machineRepository  = machineRepository;
             _itemRepository     = itemRepository;
-            _configRepository  = configRepository;
+            _configRepository   = configRepository;
             _userFileRepository = userFileRepository;
             _initRepository     = initRepository;
             _userContext        = userContext;

@@ -15,7 +15,7 @@
 */
 
 namespace CNCLib.Logic.Abstraction
-{ 
+{
     public static class CNCLibClaimTypes
     {
         public const string IsAdmin = nameof(IsAdmin);

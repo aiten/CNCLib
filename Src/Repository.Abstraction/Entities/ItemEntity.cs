@@ -20,11 +20,11 @@ namespace CNCLib.Repository.Abstraction.Entities
 
     public class ItemEntity
     {
-        public int    ItemId    { get; set; }
-        public int    UserId    { get; set; }
-        public UserEntity   User      { get; set; }
-        public string Name      { get; set; }
-        public string ClassName { get; set; }
+        public int        ItemId    { get; set; }
+        public int        UserId    { get; set; }
+        public UserEntity User      { get; set; }
+        public string     Name      { get; set; }
+        public string     ClassName { get; set; }
 
         public ICollection<ItemPropertyEntity> ItemProperties { get; set; }
     }

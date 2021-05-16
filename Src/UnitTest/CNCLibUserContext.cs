@@ -39,7 +39,7 @@ namespace CNCLib.UnitTest
             {
                 new Claim(ClaimTypes.NameIdentifier, UserId.ToString()),
                 new Claim(ClaimTypes.Name,           UserName),
-                new Claim(CNCLibClaimTypes.IsAdmin,      "true"),
+                new Claim(CNCLibClaimTypes.IsAdmin,  "true"),
             };
             var identity = new ClaimsIdentity(claims, "BasicAuthentication");
 

@@ -45,8 +45,8 @@ namespace CNCLib.GCode.Generate
 
         public static void WriteCamBamFile(this LoadBase load, StreamWriter writer)
         {
-                var x = new XmlSerializer(typeof(CamBam.CamBam));
-                x.Serialize(writer, load.CamBam);
+            var x = new XmlSerializer(typeof(CamBam.CamBam));
+            x.Serialize(writer, load.CamBam);
         }
 
         public static void WriteImportInfoFile(this LoadBase load, StreamWriter writer)

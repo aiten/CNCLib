@@ -31,7 +31,7 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
     public class MachineWebApiTest : AzureWebApiTest
     {
         private readonly string api = @"api/Machine";
-        
+
         private async Task<IEnumerable<Machine>> GetAll()
         {
             var client   = GetHttpClient();

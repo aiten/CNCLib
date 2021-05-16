@@ -27,7 +27,7 @@ namespace CNCLib.Logic.Abstraction
         Task<string> CreatePasswordHash(string password);
 
         Task<string> Register(string username, string password);
-        
+
         Task ChangePassword(string username, string passwordOld, string passwordNew);
 
         Task Leave();
@@ -39,7 +39,7 @@ namespace CNCLib.Logic.Abstraction
         Task Cleanup();
 
         Task InitMachines();
-        
+
         Task InitItems();
     }
 }

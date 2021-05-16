@@ -34,7 +34,7 @@ namespace CNCLib.WebAPI.Test.AzureWebApi
 
         private async Task<IEnumerable<LoadOptions>> GetAll()
         {
-            var client = GetHttpClient();
+            var client   = GetHttpClient();
             var response = await client.GetAsync(api);
 
             response.EnsureSuccessStatusCode();

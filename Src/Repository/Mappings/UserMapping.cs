@@ -18,6 +18,8 @@ namespace CNCLib.Repository.Mappings
 {
     using CNCLib.Repository.Abstraction.Entities;
 
+    using Framework.Repository.Mappings;
+
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -31,12 +33,9 @@ namespace CNCLib.Repository.Mappings
 
             entity.HasIndex(e => e.Name).IsUnique();
 
-            entity.Property(m => m.Name).IsRequired().IsUnicode().HasMaxLength(128);
-
-            entity.Property(m => m.Password).IsUnicode().HasMaxLength(255);
-
+            entity.Property(m => m.Name).AsRequiredText(128);
+            entity.Property(m => m.Password).AsText(255);
             entity.Property(e => e.Created);
-
             entity.Property(e => e.LastLogin);
         }
     }

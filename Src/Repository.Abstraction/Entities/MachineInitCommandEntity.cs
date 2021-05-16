@@ -18,10 +18,10 @@ namespace CNCLib.Repository.Abstraction.Entities
 {
     public class MachineInitCommandEntity
     {
-        public int     MachineInitCommandId { get; set; }
-        public int     SeqNo                { get; set; }
-        public string  CommandString        { get; set; }
-        public int     MachineId            { get; set; }
+        public int           MachineInitCommandId { get; set; }
+        public int           SeqNo                { get; set; }
+        public string        CommandString        { get; set; }
+        public int           MachineId            { get; set; }
         public MachineEntity Machine              { get; set; }
     }
 }

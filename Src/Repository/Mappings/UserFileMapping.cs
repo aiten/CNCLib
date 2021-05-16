@@ -18,6 +18,8 @@ namespace CNCLib.Repository.Mappings
 {
     using CNCLib.Repository.Abstraction.Entities;
 
+    using Framework.Repository.Mappings;
+
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -31,7 +33,7 @@ namespace CNCLib.Repository.Mappings
 
             entity.HasIndex(e => new { e.UserId, e.FileName }).IsUnique();
 
-            entity.Property(m => m.FileName).IsRequired().IsUnicode().HasMaxLength(1024);
+            entity.Property(m => m.FileName).AsRequiredText(1024);
 
             entity.HasOne(mic => mic.User)
                 .WithMany()

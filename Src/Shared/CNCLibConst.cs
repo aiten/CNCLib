@@ -15,7 +15,7 @@
 */
 
 namespace CNCLib.Shared
-{ 
+{
     public static class CNCLibConst
     {
         public const string AdminUser = @"CNCLibGlobal";

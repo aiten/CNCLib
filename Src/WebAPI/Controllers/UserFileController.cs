@@ -65,7 +65,7 @@ namespace CNCLib.WebAPI.Controllers
             }
 
             var memoryStream = new MemoryStream(dto.Content);
-            var name     = Path.GetFileName(dto.FileName);
+            var name         = Path.GetFileName(dto.FileName);
             memoryStream.Position = 0;
             return File(memoryStream, this.GetContentType(name), name);
         }
@@ -85,7 +85,7 @@ namespace CNCLib.WebAPI.Controllers
             if (userFileDto != null)
             {
                 var userFile     = await this.Add(_manager, userFileDto);
-                var userFileInfo = await _manager.GetFileInfo((UserFileDto) ((CreatedResult) userFile.Result).Value);
+                var userFileInfo = await _manager.GetFileInfo((UserFileDto)((CreatedResult)userFile.Result).Value);
                 var newUri       = this.GetCurrentUri() + "/" + userFileDto.FileName;
                 return Created(newUri, userFileInfo);
             }
