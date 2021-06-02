@@ -65,12 +65,15 @@ namespace CNCLib.WebAPI.Controllers
 
         private static Info Info()
         {
+            var ass     = Assembly.GetExecutingAssembly();
+            var assName = ass.GetName();
+
             return new Info()
             {
-                Version   = Assembly.GetExecutingAssembly().GetName().Version.ToString(),
-                Name      = Assembly.GetExecutingAssembly().GetName().Name,
-                FullName  = Assembly.GetExecutingAssembly().GetName().FullName,
-                Copyright = ((AssemblyCopyrightAttribute)Assembly.GetExecutingAssembly().GetCustomAttribute(typeof(AssemblyCopyrightAttribute))).Copyright
+                Version   = ass.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion,
+                Copyright = ass.GetCustomAttribute<AssemblyCopyrightAttribute>()?.Copyright,
+                Name      = assName.Name,
+                FullName  = assName.FullName,
             };
         }
 
