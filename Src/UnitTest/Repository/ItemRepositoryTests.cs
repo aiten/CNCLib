@@ -73,7 +73,7 @@ namespace CNCLib.UnitTest.Repository
         public async Task GetAllTest()
         {
             var entities = await CreateTestContext().GetAll();
-            entities.Count().Should().BeGreaterThan(1);
+            entities.Should().HaveCountGreaterThan(1);
             entities.Count(i => i.Name == "laser cut 160mg paper").Should().Be(1);
             entities.Count(i => i.Name == "laser cut hole 130mg black").Should().Be(1);
         }

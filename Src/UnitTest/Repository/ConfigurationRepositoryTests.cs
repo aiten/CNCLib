@@ -66,9 +66,10 @@ namespace CNCLib.UnitTest.Repository
         public async Task GetAllTest()
         {
             var entities = (await CreateTestContext().GetAll()).OrderBy(cfg => cfg.Name);
-            entities.Count().Should().BeGreaterThan(3);
-            entities.ElementAt(0).Group.Should().Be("TestGroup");
-            entities.ElementAt(0).Name.Should().Be("TestBool");
+            entities.Should().HaveCountGreaterOrEqualTo(3);
+            var entity = entities.First();
+            entity.Group.Should().Be("TestGroup");
+            entity.Name.Should().Be("TestBool");
         }
 
         [Fact]

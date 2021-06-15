@@ -78,7 +78,7 @@ namespace CNCLib.UnitTest.Repository
         public async Task GetAllTest()
         {
             var entities = await CreateTestContext().GetAll();
-            entities.Count().Should().BeGreaterThan(1);
+            entities.Should().HaveCountGreaterThan(1);
             entities.Count(i => i.Name == "DC-K40-Laser").Should().Be(1);
             entities.Count(i => i.Name == "Laser").Should().Be(1);
         }
