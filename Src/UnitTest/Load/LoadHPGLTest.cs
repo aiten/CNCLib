@@ -46,7 +46,7 @@ namespace CNCLib.UnitTest.Load
 
             var list = load.Commands.Where(e => e is G00Command || e is G01Command);
 
-            list.Count().Should().Be(2);
+            list.Should().HaveCount(2);
 
             list.First().Should().BeOfType<G01Command>();      // G0 F500
             list.ElementAt(1).Should().BeOfType<G00Command>(); // G0 z1
@@ -230,7 +230,7 @@ namespace CNCLib.UnitTest.Load
 
         private static void CheckGCode(IEnumerable<Command> list, string[] expectGcode)
         {
-            list.Count().Should().Be(expectGcode.Length);
+            list.Should().HaveCount(expectGcode.Length);
 
             int idx = 0;
             foreach (var command in list)

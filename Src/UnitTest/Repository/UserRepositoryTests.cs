@@ -67,7 +67,7 @@ namespace CNCLib.UnitTest.Repository
         public async Task GetAllTest()
         {
             var entities = (await CreateTestContext().GetAll()).OrderBy(u => u.Name);
-            entities.Count().Should().BeGreaterOrEqualTo(1);
+            entities.Should().HaveCountGreaterOrEqualTo(1);
             entities.ElementAt(0).Name.Should().Be(CNCLibConst.AdminUser);
         }
 

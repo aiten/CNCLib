@@ -148,7 +148,7 @@ namespace CNCLib.UnitTest.Logic
             rep.GetAll().Returns(machineEntity);
 
             var machines = (await ctrl.GetAll()).ToArray();
-            machines.Length.Should().Be(0);
+            machines.Should().HaveCount(0);
         }
 
         [Fact]
@@ -176,14 +176,14 @@ namespace CNCLib.UnitTest.Logic
             rep.GetByUser(userContext.UserId).Returns(machineEntity);
 
             var machines = (await ctrl.GetAll()).ToArray();
-            machines.Length.Should().Be(1);
+            machines.Should().HaveCount(1);
             machines[0].MachineId.Should().Be(1);
             machines[0].Name.Should().Be("Maxi");
             machines[0].BufferSize.Should().Be(115200);
             machines[0].MachineCommands.Should().NotBeNull();
             machines[0].MachineInitCommands.Should().NotBeNull();
-            machines[0].MachineCommands.Count().Should().Be(0);
-            machines[0].MachineInitCommands.Count().Should().Be(0);
+            machines[0].MachineCommands.Should().HaveCount(0);
+            machines[0].MachineInitCommands.Should().HaveCount(0);
         }
 
         [Fact]
@@ -239,14 +239,14 @@ namespace CNCLib.UnitTest.Logic
             rep.GetByUser(userContext.UserId).Returns(machineEntity);
 
             var machines = (await ctrl.GetAll()).ToArray();
-            machines.Length.Should().Be(2);
+            machines.Should().HaveCount(2);
             machines[0].MachineId.Should().Be(1);
             machines[0].Name.Should().Be("Maxi");
             machines[0].BufferSize.Should().Be(115200);
-            machines[1].MachineCommands.Count().Should().Be(1);
-            machines[1].MachineInitCommands.Count().Should().Be(1);
-            machines[0].MachineCommands.Count().Should().Be(0);
-            machines[0].MachineInitCommands.Count().Should().Be(0);
+            machines[1].MachineCommands.Should().HaveCount(1);
+            machines[1].MachineInitCommands.Should().HaveCount(1);
+            machines[0].MachineCommands.Should().HaveCount(0);
+            machines[0].MachineInitCommands.Should().HaveCount(0);
             machines[1].MachineCommands.First().CommandName.Should().Be("Test");
             machines[1].MachineCommands.First().CommandString.Should().Be("f");
             machines[1].MachineInitCommands.First().SeqNo.Should().Be(0);
@@ -284,8 +284,8 @@ namespace CNCLib.UnitTest.Logic
             machineEntity1.MachineId.Should().Be(machine.MachineId);
             machine.MachineCommands.Should().NotBeNull();
             machine.MachineInitCommands.Should().NotBeNull();
-            machine.MachineCommands.Count().Should().Be(0);
-            machine.MachineInitCommands.Count().Should().Be(0);
+            machine.MachineCommands.Should().HaveCount(0);
+            machine.MachineInitCommands.Should().HaveCount(0);
         }
 
         [Fact]
