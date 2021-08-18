@@ -28,9 +28,15 @@
 .detail-card {
   margin-left: 10px;
   margin-bottom: 10px;
+  width: fit-content;
 }
 
 .menu-card {
   margin-left: 10px;
   margin-bottom: 10px;
+  width: fit-content;
+}
+
+.colWorkOfs {
+  padding: 0px;
 }

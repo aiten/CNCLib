@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid minPadding">
   <div class="row">
     <button mat-stroked-button class="select-button" (click)="machineControlState.selectWOfs(offsetId)">Select: {{offsetId+1}}</button>
   </div>
@@ -14,9 +14,13 @@
     <span class="lable-axis">Z:</span>
     <input class="ofsValue" type="number" [value]="machineControlState.machineControlGlobal.workOfsZ[offsetId]" (input)="machineControlState.machineControlGlobal.workOfsZ[offsetId]=$event.target.value"/>
   </div>
-  <div class="row">
+  <div class="row btnRow">
     <button mat-stroked-button class="setget-button" (click)='machineControlState.getWOfs(offsetId)'>get</button>
+  </div>
+  <div class="row btnRow">
     <button mat-stroked-button class="setget-button" (click)='machineControlState.setWOfs(offsetId)'>set</button>
+  </div>
+  <div class="row btnRow">
     <button mat-stroked-button class="setget-button" (click)='machineControlState.relWOfs(offsetId)'>rel</button>
   </div>
 </div>
