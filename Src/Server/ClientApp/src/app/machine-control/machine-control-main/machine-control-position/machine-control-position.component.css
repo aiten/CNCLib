@@ -4,14 +4,16 @@
   width: 60px;
   text-align: center;
   padding: 0px;
-  height: 30px;
 }
 
 .ofsRow { height: 30px; }
 
 .row {
-  width: 135px;
   padding: 0px;
 }
 
-.lable-axis { width: 15px; }
+.lable-axis 
+{ 
+  width: 20px; 
+  text-align: start;
+}

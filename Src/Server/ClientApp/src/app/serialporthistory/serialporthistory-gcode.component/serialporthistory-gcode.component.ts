@@ -17,8 +17,8 @@
 import { Component, Input, OnChanges, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { SerialCommand } from '../../models/serial.command';
 import { SerialServerService } from '../../services/serial-server.service';
-import { HubConnection } from '@aspnet/signalr';
-import { HubConnectionBuilder } from '@aspnet/signalr';
+import { HubConnection } from '@microsoft/signalr';
+import { HubConnectionBuilder } from '@microsoft/signalr';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 

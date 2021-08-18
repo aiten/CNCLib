@@ -131,7 +131,7 @@
           <mat-card-content>
             <div class="container-fluid">
               <div class="row">
-                <div *ngFor="let item of [].constructor(serialServer.getMachine().workOffsets); let i = index">
+                <div class="col colWorkOfs" *ngFor="let item of [].constructor(serialServer.getMachine().workOffsets); let i = index">
                   <machinecontrolworkoffset [machineControlState]="machineControlState" [offsetId]=i></machinecontrolworkoffset>
                 </div>
               </div>

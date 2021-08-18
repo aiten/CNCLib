@@ -23,8 +23,8 @@ import { JoystickServerService } from "../services/joystick-server.service";
 import { CNCLibJoystickService } from "../services/CNCLib-joystick.service";
 import { CNCLibMachineService } from '../services/CNCLib-machine.service';
 
-import { HubConnection } from '@aspnet/signalr';
-import { HubConnectionBuilder } from '@aspnet/signalr';
+import { HubConnection } from '@microsoft/signalr';
+import { HubConnectionBuilder } from '@microsoft/signalr';
 
 import { SerialServerConnection } from '../serial-server/serial-server-connection';
 import { JoystickServerConnection } from '../serial-server/joystick-server-connection';
