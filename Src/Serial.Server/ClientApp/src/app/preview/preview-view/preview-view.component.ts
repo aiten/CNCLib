@@ -19,7 +19,7 @@ import { Component, OnInit, Inject, Input, AfterViewInit, ViewChild, ElementRef 
 import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
 
 import { SerialServerService } from '../../services/serial-server.service';
-import { HubConnection, HubConnectionBuilder, LogLevel } from '@aspnet/signalr';
+import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 
 import { PreviewGlobal } from '../preview.global';
 import { PreviewGCode } from '../../models/preview-input';

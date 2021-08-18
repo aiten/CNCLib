@@ -19,7 +19,7 @@ import { Component, Inject, Input, Output, OnChanges, OnInit, OnDestroy, ViewChi
 import { SerialCommand } from '../models/serial.command';
 import { SerialPortDefinition } from '../models/serial.port.definition';
 import { SerialServerService } from '../services/serial-server.service';
-import { HubConnection, HubConnectionBuilder, HttpTransportType, LogLevel } from '@aspnet/signalr';
+import { HubConnection, HubConnectionBuilder, HttpTransportType, LogLevel } from '@microsoft/signalr';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 

@@ -19,7 +19,7 @@ import { Component, OnInit, OnDestroy, Inject, AfterViewInit, ViewChild, Element
 import { ActivatedRoute } from '@angular/router';
 
 import { SerialServerService } from '../../services/serial-server.service';
-import { HubConnection, HubConnectionBuilder, LogLevel } from '@aspnet/signalr';
+import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 
 import { SerialPortHistoryPreviewGlobal } from '../models/serialporthistory.global';
 import { SerialPortHistoryInput } from '../models/serialporthistory.input';

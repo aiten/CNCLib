@@ -20,8 +20,8 @@ import { CNCLibInfoService } from '../services/CNCLib-Info.service';
 
 import { CNCLibLoggedinService } from '../services/CNCLib-loggedin.service';
 
-import { HubConnection } from '@aspnet/signalr';
-import { HubConnectionBuilder } from '@aspnet/signalr';
+import { HubConnection } from '@microsoft/signalr';
+import { HubConnectionBuilder } from '@microsoft/signalr';
 
 @Component({
   selector: 'home',
