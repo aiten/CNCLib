@@ -1,11 +1,8 @@
 .container { width: 100px; }
 
-.spindle-button {
-  width: 100px;
+.nopadding {
   padding: 0px;
+  margin: 0px;
 }
 
-.ofsRow {
-  width: 100px;
-  padding: 0px;
-}
+.spindle-button { padding: 0px; }

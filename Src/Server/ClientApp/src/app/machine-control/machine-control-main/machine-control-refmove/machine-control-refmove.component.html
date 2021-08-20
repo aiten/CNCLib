@@ -1,8 +1,8 @@
-<div class="container-fluid">
-  <div class="row ofsRow">
-    <div *ngFor="let item of [].constructor(machineControlState.serialServer.getMachine().axis); let i = index">
-      <button mat-stroked-button class="ref-button" (click)='machineControlState.refMove(i)'>{{machineControlState.toAxisName(i)}}</button>
-    </div>
+<div class="container-fluid nopadding">
+  <div *ngFor="let item of [].constructor(machineControlState.serialServer.getMachine().axis); let i = index" class="row nopadding">
+    <button mat-stroked-button class="ref-button" (click)='machineControlState.refMove(i)'>{{machineControlState.toAxisName(i)}}</button>
+  </div>
+  <div class="ros nopadding">
     <button mat-stroked-button class="ref-button" (click)='machineControlState.rebootMachine()'>Reset</button>
   </div>
 </div>

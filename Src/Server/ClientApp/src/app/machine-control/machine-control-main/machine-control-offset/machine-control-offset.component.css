@@ -1,6 +1,4 @@
-.container { 
-  width: 175px; 
-}
+.container { width: 175px; }
 
 .nopadding {
   padding: 0px;
@@ -31,11 +29,9 @@
   height: 30px;
 }
 
-.ofsRow {
-  padding: 0px;
-}
+.ofsRow { padding: 0px; }
 
-.lable-axis { 
+.lable-axis {
   width: 20px;
   padding: 0px;
 }

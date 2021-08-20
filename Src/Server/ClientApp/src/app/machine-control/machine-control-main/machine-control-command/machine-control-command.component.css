@@ -1,11 +1,8 @@
-.command-row {
-  width: 175px;
-}
+.command-row { width: 175px; }
+
 .nopadding {
   padding: 0px;
   margin: 0px;
 }
 
-.intupGCode {
-  width: 100%;
-}
+.intupGCode { width: 100%; }
