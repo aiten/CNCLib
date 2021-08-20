@@ -1,21 +1,11 @@
-.container { width: 150px; }
+.command-row {
+  width: 175px;
+}
+.nopadding {
+  padding: 0px;
+  margin: 0px;
+}
 
 .intupGCode {
-  width: 150px;
-  padding: 0px;
-}
-
-.go-button {
-  width: 150px;
-  padding: 0px;
-}
-
-.resend-button {
-  width: 150px;
-  padding: 0px;
-}
-
-.commandRow {
-  width: 150px;
-  padding: 0px;
+  width: 100%;
 }

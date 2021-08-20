@@ -1,10 +1,8 @@
-<div class="container-fluid">
-  <div class="row commandRow">
+<div class="container-fluid nopadding">
+  <div class="row command-row nopadding">
     <label>G-Command:</label>
-    <input  class="inputGCode" #gCode (keyup.enter)="sendcommand(gCode.value); gCode.value=''"/>
-    <button mat-stroked-button class="go-button" (click)="sendcommand(gCode.value); gCode.value=''">send ...</button>
-    <div *ngFor="let cmd of machineControlState.machineControlGlobal.lastCommands">
-      <button mat-stroked-button class="resend-button" (click)='machineControlState.postcommand(cmd)'>{{cmd}}</button>
-    </div>
+    <input  class="inputGCode nopadding" #gCode (keyup.enter)="sendcommand(gCode.value); gCode.value=''"/>
+    <button mat-stroked-button (click)="sendcommand(gCode.value); gCode.value=''">send ...</button>
+    <button *ngFor="let cmd of machineControlState.machineControlGlobal.lastCommands" mat-stroked-button (click)='machineControlState.postcommand(cmd)'>{{cmd}}</button>
   </div>
 </div>

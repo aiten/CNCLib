@@ -1,4 +1,11 @@
-.container { width: 175px; }
+.container { 
+  width: 175px; 
+}
+
+.nopadding {
+  padding: 0px;
+  margin: 0px;
+}
 
 .set-button {
   width: 40px !important;
@@ -28,4 +35,7 @@
   padding: 0px;
 }
 
-.lable-axis { width: 15px; }
+.lable-axis { 
+  width: 20px;
+  padding: 0px;
+}
