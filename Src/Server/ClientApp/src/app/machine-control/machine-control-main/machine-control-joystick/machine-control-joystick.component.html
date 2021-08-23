@@ -1,6 +1,6 @@
-<div class="container-fluid">
-  <div class="row ofsRow" *ngIf="!machineControlState.isJoystickConnect">
-    <span class="lable-server">Server:</span>
+<div class="container-fluid nopadding">
+  <div class="row nopadding" *ngIf="!machineControlState.isJoystickConnect">
+    <span class="lable-server nopadding">Server:</span>
     <button mat-stroked-button class="save-button" (click)='machineControlState.joystickSave()'>Save</button>
     <input [value]="machineControlState.joystickServerName" (input)="machineControlState.joystickServerName=$event.target.value"/>
     <input [value]="machineControlState.joystickPort" (input)="machineControlState.joystickPort=$event.target.value"/>
@@ -8,7 +8,7 @@
     <input type='password' [value]="machineControlState.joystickPassword" (input)="machineControlState.joystickPassword=$event.target.value"/>
     <button mat-stroked-button class="joystick-button" (click)='machineControlState.joystickConnect()'>Connect</button>
   </div>
-  <div class="row ofsRow" *ngIf="machineControlState.isJoystickConnect">
-    <button mat-stroked-button class="joystick-button" (click)='machineControlState.joystickDisconnect()'>Disconnect</button>
+  <div class="row nopadding" *ngIf="machineControlState.isJoystickConnect">
+    <button mat-stroked-button (click)='machineControlState.joystickDisconnect()'>Disconnect</button>
   </div>
 </div>

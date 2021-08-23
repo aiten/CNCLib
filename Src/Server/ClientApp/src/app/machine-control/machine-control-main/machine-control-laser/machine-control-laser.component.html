@@ -1,8 +1,8 @@
-<div class="container-fluid">
-  <div class="row ofsRow">
-    <button mat-stroked-button class="laser-button" (click)='machineControlState.postcommand("m3")'>on</button>
-    <button mat-stroked-button class="laser-button" (click)='machineControlState.postcommand("m3 s1")'>on(min)</button>
-    <button mat-stroked-button class="laser-button" (click)='machineControlState.postcommand("m3 s255")'>on(max)</button>
-    <button mat-stroked-button class="laser-button" (click)='machineControlState.postcommand("m5")'>off</button>
+<div class="container-fluid nopadding">
+  <div class="row laser-row nopadding">
+    <button mat-stroked-button (click)='machineControlState.postcommand("m3")'>on</button>
+    <button mat-stroked-button (click)='machineControlState.postcommand("m3 s1")'>on(min)</button>
+    <button mat-stroked-button (click)='machineControlState.postcommand("m3 s255")'>on(max)</button>
+    <button mat-stroked-button (click)='machineControlState.postcommand("m5")'>off</button>
   </div>
 </div>
