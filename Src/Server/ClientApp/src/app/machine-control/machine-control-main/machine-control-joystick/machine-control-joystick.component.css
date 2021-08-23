@@ -1,8 +1,10 @@
-.container { width: 100px; }
+.container { width: 150px; }
 
-.joystick-button {
-  width: 100px;
+.row { width: 150px; }
+
+.nopadding {
   padding: 0px;
+  margin: 0px;
 }
 
 .save-button {
@@ -10,11 +12,6 @@
   min-width: unset !important;
   padding: 0px;
   float: right;
-}
-
-.ofsRow {
-  width: 100px;
-  padding: 0px;
 }
 
 .lable-server { width: 60px; }

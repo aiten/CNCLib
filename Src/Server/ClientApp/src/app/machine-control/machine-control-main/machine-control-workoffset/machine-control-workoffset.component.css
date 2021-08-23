@@ -17,18 +17,12 @@
   height: 30px;
 }
 
-.ofsRow { 
-}
+.ofsRow { }
 
-.btnRow { 
-}
+.btnRow { }
 
-.row {
-  padding: 0px;
-}
+.row { padding: 0px; }
 
-.minPadding {
-  padding-right: 15px;
-}
+.minPadding { padding-right: 15px; }
 
 .lable-axis { width: 10px; }

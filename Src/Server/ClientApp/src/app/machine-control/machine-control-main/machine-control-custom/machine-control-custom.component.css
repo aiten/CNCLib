@@ -1,11 +1,9 @@
 .container { width: 100px; }
 
-.custom-button {
-  width: 100px;
+.nopadding {
   padding: 0px;
+  margin: 0px;
 }
-
-.custom-row {
-  width: 100px;
+.custom-button {
   padding: 0px;
 }

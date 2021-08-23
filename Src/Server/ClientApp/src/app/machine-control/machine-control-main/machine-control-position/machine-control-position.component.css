@@ -1,19 +1,20 @@
-.container { width: 135px; }
+.container { width: 150px; }
+
+.nopadding {
+  padding: 0px;
+  margin: 0px;
+}
 
 .ofsValue {
-  width: 60px;
+  width: 65px;
   text-align: center;
   padding: 0px;
 }
 
 .ofsRow { height: 30px; }
 
-.row {
-  padding: 0px;
-}
-
-.lable-axis 
-{ 
-  width: 20px; 
+.lable-axis {
+  width: 20px;
   text-align: start;
+  padding: 0px;
 }

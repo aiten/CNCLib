@@ -15,6 +15,7 @@
 */
 
 import { MachineControlMainComponent } from "./machine-control-main/machine-control-main.component";
+import { MachineControlMenuComponent } from './machine-control-main/machine-control-menu/machine-control-menu.component';
 import { MachineControlMoveComponent } from './machine-control-main/machine-control-move/machine-control-move.component';
 import { MachineControlWorkOffsetComponent } from './machine-control-main/machine-control-workoffset/machine-control-workoffset.component';
 import { MachineControlOffsetComponent } from './machine-control-main/machine-control-offset/machine-control-offset.component';
@@ -56,6 +57,7 @@ export const machineControlComponents =
   MachineControlComponent,
   MachineControlMainComponent,
   MachineControlMoveComponent,
+  MachineControlMenuComponent,
   MachineControlOffsetComponent,
   MachineControlWorkOffsetComponent,
   MachineControlRotateComponent,

@@ -1,5 +1,10 @@
 .container { width: 175px; }
 
+.nopadding {
+  padding: 0px;
+  margin: 0px;
+}
+
 .set-button {
   width: 40px !important;
   min-width: unset !important;
@@ -24,8 +29,9 @@
   height: 30px;
 }
 
-.ofsRow {
+.ofsRow { padding: 0px; }
+
+.lable-axis {
+  width: 20px;
   padding: 0px;
 }
-
-.lable-axis { width: 15px; }

@@ -1,13 +1,10 @@
-.container { width: 150px; }
-
-.sd-button {
-  width: 150px;
+.nopadding {
   padding: 0px;
+  margin: 0px;
 }
 
 .ofsRow {
   width: 150px;
-  padding: 0px;
 }
 
 .fileName {

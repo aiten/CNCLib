@@ -11,6 +11,11 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
+  "browserslist": [
+    "defaults",
+    "not IE 11",
+    "maintained node versions"
+  ],
   "private": true,
   "dependencies": {
     "@angular/animations": "^12.2.1",

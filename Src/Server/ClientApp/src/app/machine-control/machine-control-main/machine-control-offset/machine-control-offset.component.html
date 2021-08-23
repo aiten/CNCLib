@@ -1,13 +1,12 @@
-<div class="container-fluid">
-  <div *ngFor="let item of [].constructor(machineControlState.serialServer.getMachine().axis); let i = index">
-    <div class="row ofsRow">
-      <span class="lable-axis">{{machineControlState.toAxisName(i)}}:</span>
-      <input class="ofsValue" type="number" [value]="machineControlState.machineControlGlobal.offsetG92[i]" (input)="machineControlState.machineControlGlobal.offsetG92[i]=$event.target.value"/>
-      <button mat-stroked-button class="set-button" (click)='machineControlState.setOfs(i)'>set</button>
-      <button mat-stroked-button *ngIf="i < 3" class="probe-button" (click)='machineControlState.probe(i)'>probe</button>
-    </div>
+<div class="container-fluid nopadding">
+  <div *ngFor="let item of [].constructor(machineControlState.serialServer.getMachine().axis); let i = index" class="row ofsRow nopadding">
+
+    <span class="lable-axis">{{machineControlState.toAxisName(i)}}:</span>
+    <input class="ofsValue" type="number" [value]="machineControlState.machineControlGlobal.offsetG92[i]" (input)="machineControlState.machineControlGlobal.offsetG92[i]=$event.target.value"/>
+    <button mat-stroked-button class="set-button" (click)='machineControlState.setOfs(i)'>set</button>
+    <button mat-stroked-button *ngIf="i < 3" class="probe-button" (click)='machineControlState.probe(i)'>probe</button>
   </div>
-  <div class="row ofsRow">
+  <div class="row ofsRow nopadding">
     <button mat-stroked-button class="clear-button" (click)='machineControlState.clearOfs()'>clear (all)</button>
   </div>
 </div>
