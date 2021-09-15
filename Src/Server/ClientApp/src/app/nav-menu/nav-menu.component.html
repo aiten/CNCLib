@@ -1,31 +1,33 @@
 <nav class='navbar navbar-expand-lg navbar-dark bg-dark'>
-  <a class='navbar-brand' href="#">CNCLib</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class='collapse navbar-collapse' id="navbarSupportedContent">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/home"><fa-icon icon="home"></fa-icon> Home</a>
-      </li>
-      <li *ngIf="cncLibloggedinService.isUserLoggedIn()" class="nav-item">
-        <a class="nav-link" routerLink="/machine"><fa-icon icon="toolbox"></fa-icon> Machines</a>
-      </li>
-      <li *ngIf="cncLibloggedinService.isUserLoggedIn()" class="nav-item">
-        <a class="nav-link" routerLink="/machinecontrol"><fa-icon icon="sync"></fa-icon> Machinecontrol</a>
-      </li>
-      <li *ngIf="cncLibloggedinService.isUserLoggedIn()" class="nav-item">
-        <a class="nav-link" routerLink="/gcode"><fa-icon icon="cogs"></fa-icon> G-Code</a>
-      </li>
-      <li *ngIf="cncLibloggedinService.isUserLoggedIn()" class="nav-item">
-        <a class="nav-link" routerLink="/preview"><fa-icon icon="draw-polygon"></fa-icon> Preview</a>
-      </li>
-      <li *ngIf="cncLibloggedinService.isUserLoggedIn()" class="nav-item">
-        <a class="nav-link" routerLink="/file"><fa-icon icon="database"></fa-icon> File</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/eepromconfig"><fa-icon icon="calculator"></fa-icon> Eeprom-Config</a>
-      </li>
-    </ul>
+  <div class="container-fluid">
+    <a class='navbar-brand' href="#">CNCLib</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class='collapse navbar-collapse' id="navbarSupportedContent">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/home"><fa-icon icon="home"></fa-icon> Home</a>
+        </li>
+        <li *ngIf="cncLibloggedinService.isUserLoggedIn()" class="nav-item">
+          <a class="nav-link" routerLink="/machine"><fa-icon icon="toolbox"></fa-icon> Machines</a>
+        </li>
+        <li *ngIf="cncLibloggedinService.isUserLoggedIn()" class="nav-item">
+          <a class="nav-link" routerLink="/machinecontrol"><fa-icon icon="sync"></fa-icon> Machinecontrol</a>
+        </li>
+        <li *ngIf="cncLibloggedinService.isUserLoggedIn()" class="nav-item">
+          <a class="nav-link" routerLink="/gcode"><fa-icon icon="cogs"></fa-icon> G-Code</a>
+        </li>
+        <li *ngIf="cncLibloggedinService.isUserLoggedIn()" class="nav-item">
+          <a class="nav-link" routerLink="/preview"><fa-icon icon="draw-polygon"></fa-icon> Preview</a>
+        </li>
+        <li *ngIf="cncLibloggedinService.isUserLoggedIn()" class="nav-item">
+          <a class="nav-link" routerLink="/file"><fa-icon icon="database"></fa-icon> File</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/eepromconfig"><fa-icon icon="calculator"></fa-icon> Eeprom-Config</a>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>
