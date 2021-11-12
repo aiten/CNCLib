@@ -14,7 +14,7 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.Controls
+namespace CNCLib.GCode.GUI.Controls
 {
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
