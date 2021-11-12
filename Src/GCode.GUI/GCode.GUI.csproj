@@ -31,4 +31,9 @@
       <Version>2.4.9</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\MoveUserControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+  </ItemGroup>
 </Project>
