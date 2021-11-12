@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <DocumentationFile>CNCLib.Serial.WebAPI.xml</DocumentationFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
