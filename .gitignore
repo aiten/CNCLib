@@ -48,3 +48,5 @@ obj
 /Src/Serial.Server/.config/dotnet-tools.json
 /Src/Server/.config/dotnet-tools.json
 /Src/Serial.WebAPI/CNCLib.Serial.WebAPI.xml
+/Src/Server/ClientApp/.angular
+/Src/Serial.Server/ClientApp/.angular
