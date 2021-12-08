@@ -38,7 +38,7 @@
     <ProjectReference Include="..\WpfClient\WpfClient.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NLog.WindowsIdentity" Version="4.7.12" />
+    <PackageReference Include="NLog.WindowsIdentity" Version="4.7.13" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
     <PackageReference Include="System.Management" Version="6.0.0" />
   </ItemGroup>
