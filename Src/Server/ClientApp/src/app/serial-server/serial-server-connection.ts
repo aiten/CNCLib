@@ -136,4 +136,16 @@ export class SerialServerConnection {
 
     return this.serialServerUrl;
   }
+
+  async abort(): Promise<void> {
+    console.log(this.machine);
+    console.log("abort:" + this.machine.baudRate + this.machine.dtrIsReset);
+    await this.serialServerService.abort(this.serialServerPortId);
+  }
+
+  async resume(): Promise<void> {
+    console.log(this.machine);
+    console.log("resume:" + this.machine.baudRate + this.machine.dtrIsReset);
+    await this.serialServerService.resume(this.serialServerPortId);
+  }
 };

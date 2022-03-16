@@ -36,4 +36,9 @@ export class MachineControlMenuComponent {
   public machineControlGlobal: MachineControlGlobal
   @Input()
   public serialServer: SerialServerConnection 
+  
+  async emergencyStop() {
+    await this.serialServer.abort();
+    await this.serialServer.resume();
+  }
 }

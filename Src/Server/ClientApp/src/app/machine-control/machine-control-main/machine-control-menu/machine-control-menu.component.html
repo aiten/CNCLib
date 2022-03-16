@@ -1,5 +1,6 @@
 <div class="container-fluid nopadding">
   <div class="row menu-row nopadding">
+    <button mat-stroked-button class="menuShow-button" (click)='emergencyStop()'>E-Stop</button>
     <button *ngIf="!machineControlGlobal.showMove" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showMove = true'>Move</button>
     <button *ngIf="!machineControlGlobal.showInfo" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showInfo = true'>Info</button>
     <button *ngIf="!machineControlGlobal.showCommand" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showCommand = true'>Command</button>
