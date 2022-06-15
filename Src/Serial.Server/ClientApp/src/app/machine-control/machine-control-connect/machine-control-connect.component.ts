@@ -15,7 +15,7 @@
 */
 
 import { Component, Inject, Input, OnInit } from '@angular/core';
-import { FormGroup, FormArray, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, FormArray, FormControl, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SerialPortDefinition } from '../../models/serial.port.definition';
 import { SerialConnect } from '../../models/serial.connect';
@@ -34,12 +34,12 @@ export class MachineControlConnectComponent {
   isLoaded: boolean = false;
   connectOptions: SerialConnect = new SerialConnect();
 
-  setupForm: FormGroup;
+  setupForm: UntypedFormGroup;
 
   constructor(
     private serialServerService: SerialServerService,
     public router: Router,
-    private fb: FormBuilder
+    private fb: UntypedFormBuilder
   ) {
     this.setupForm = fb.group(
       {

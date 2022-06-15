@@ -16,7 +16,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
+import { FormBuilder, UntypedFormGroup, Validators, ValidatorFn } from '@angular/forms';
 
 import { AuthenticationService } from '../../services/authentication.service';
 import { CNCLibUserService } from "../../services/CNCLib-user.service";
@@ -24,7 +24,7 @@ import { CNCLibLoggedinService } from '../../services/CNCLib-loggedin.service';
 
 import { homeURL } from "../../app.global";
 
-const passwordValidator: ValidatorFn = (fg: FormGroup) => {
+const passwordValidator: ValidatorFn = (fg: UntypedFormGroup) => {
   const start = fg.get('password').value;
   const end = fg.get('password2').value;
   return start !== null && end !== null && start === end
@@ -38,7 +38,7 @@ const passwordValidator: ValidatorFn = (fg: FormGroup) => {
 
 })
 export class ChangePasswordComponent implements OnInit {
-  changePasswordForm: FormGroup;
+  changePasswordForm: UntypedFormGroup;
   loading = false;
   submitted = false;
   finished = false;

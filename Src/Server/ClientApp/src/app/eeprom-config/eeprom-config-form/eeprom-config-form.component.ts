@@ -15,7 +15,7 @@
 */
 
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, FormBuilder, Validators } from '@angular/forms';
 import { EepromConfigInput } from '../../models/eeprom-config-input';
 
 @Component({
@@ -26,7 +26,7 @@ import { EepromConfigInput } from '../../models/eeprom-config-input';
 export class EepromConfigFormComponent implements OnInit {
   @Input()
   eepromConfigInput: EepromConfigInput;
-  eepromConfigForm: FormGroup;
+  eepromConfigForm: UntypedFormGroup;
 
   constructor(
     private fb: FormBuilder

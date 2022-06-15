@@ -15,7 +15,7 @@
 */
 
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormArray, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, FormArray, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { MatDialog } from "@angular/material/dialog";
@@ -44,7 +44,7 @@ export class MachineFormComponent implements OnInit {
   isLoaded: boolean = false;
   isMore = false;
 
-  machineForm: FormGroup;
+  machineForm: UntypedFormGroup;
   commandsArray: FormArray;
   initCommandsArray: FormArray;
 
@@ -112,7 +112,7 @@ export class MachineFormComponent implements OnInit {
     this.initCommandsArray = <FormArray>this.machineForm.controls['initCommands'];
   }
 
-  createCommandsControl(): FormGroup {
+  createCommandsControl(): UntypedFormGroup {
     return this.fb.group({
       commandName: new FormControl('', [Validators.required, Validators.maxLength(64)]),
       commandString: new FormControl('', [Validators.required, Validators.maxLength(64)]),
@@ -123,7 +123,7 @@ export class MachineFormComponent implements OnInit {
     });
   }
 
-  createInitCommandsControl(): FormGroup {
+  createInitCommandsControl(): UntypedFormGroup {
     return this.fb.group({
       commandString: new FormControl('', [Validators.required, Validators.maxLength(64)]),
       seqNo: new FormControl(0, [Validators.required])

@@ -15,7 +15,7 @@
 */
 
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SerialPortHistoryInput } from '../models/serialporthistory.input';
 
 @Component(
@@ -27,7 +27,7 @@ import { SerialPortHistoryInput } from '../models/serialporthistory.input';
 export class SerialPortHistoryPreviewInputComponent implements OnInit {
   @Input()
   previewOpt: SerialPortHistoryInput;
-  previewOptForm: FormGroup;
+  previewOptForm: UntypedFormGroup;
 
   public isMore: boolean = false;
 

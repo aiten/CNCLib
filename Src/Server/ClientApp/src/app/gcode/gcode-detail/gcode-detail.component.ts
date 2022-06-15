@@ -16,7 +16,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { LoadOptions, EHoleType, ELoadType, PenType, SmoothTypeEnum, ConvertTypeEnum, DitherFilter } from "../../models/load-options";
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CNCLibLoadOptionService } from '../../services/CNCLib-load-option.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from "@angular/material/dialog";
@@ -38,7 +38,7 @@ export class GcodeDetailComponent implements OnInit {
   errorMessage: string = '';
   isLoading: boolean = true;
   isLoaded: boolean = false;
-  gCodeForm: FormGroup;
+  gCodeForm: UntypedFormGroup;
   keysELoadType: any[];
   keysPenType: any[];
   keysSmoothTypeEnum: any[];

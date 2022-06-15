@@ -15,7 +15,7 @@
 */
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormArray, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, FormArray, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from "@angular/material/dialog";
 
 import { SerialServerConnection } from '../../serial-server/serial-server-connection';
@@ -45,7 +45,7 @@ export class EepromComponent implements OnInit, OnDestroy {
 
   eeprom: Eeprom = new Eeprom();
 
-  eepromForm: FormGroup;
+  eepromForm: UntypedFormGroup;
   axisFormArray: FormArray;
 
   ECommandSyntax: typeof ECommandSyntax = ECommandSyntax;
@@ -156,10 +156,10 @@ export class EepromComponent implements OnInit, OnDestroy {
   get f() { return this.eepromForm.controls; }
 
   ff(axis: number) {
-    return (this.axisFormArray.at(axis) as FormGroup).controls;
+    return (this.axisFormArray.at(axis) as UntypedFormGroup).controls;
   }
 
-  createAxisControl(): FormGroup {
+  createAxisControl(): UntypedFormGroup {
     return this.fb.group({
       size: new FormControl(0, [Validators.required]),
       refMove: new FormControl(0, [Validators.required]),

@@ -16,7 +16,7 @@
 
 import { Component, OnInit, Input } from '@angular/core';
 import { LoadOptions, ELoadType, PenType, ConvertTypeEnum, SmoothTypeEnum } from '../../models/load-options';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { UserFile } from "../../models/userFile";
 import { CNCLibUserFileService } from '../../services/CNCLib-userFile.service';
@@ -30,7 +30,7 @@ import { CNCLibUserFileService } from '../../services/CNCLib-userFile.service';
 export class GcodeRunInputComponent implements OnInit {
   @Input()
   entry: LoadOptions;
-  gCodeForm: FormGroup;
+  gCodeForm: UntypedFormGroup;
 
   constructor(
     public userFileService: CNCLibUserFileService,

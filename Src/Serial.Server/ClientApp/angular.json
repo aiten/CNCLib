@@ -129,7 +129,6 @@
       }
     }
   },
-  "defaultProject": "CNCLib.Serial.Server",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",

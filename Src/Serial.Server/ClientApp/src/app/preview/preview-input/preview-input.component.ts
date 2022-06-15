@@ -15,7 +15,7 @@
 */
 
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormArray, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, FormArray, FormControl, UntypedFormBuilder, Validators } from '@angular/forms';
 import { PreviewGCode } from '../../models/preview-input';
 
 @Component(
@@ -27,12 +27,12 @@ import { PreviewGCode } from '../../models/preview-input';
 export class PreviewInputComponent implements OnInit {
   @Input()
   previewOpt: PreviewGCode;
-  public previewOptForm: FormGroup;
+  public previewOptForm: UntypedFormGroup;
 
   public isMore: boolean = false;
 
   constructor(
-    private fb: FormBuilder
+    private fb: UntypedFormBuilder
   ) {
 
     this.previewOptForm = fb.group(
