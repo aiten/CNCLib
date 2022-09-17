@@ -199,8 +199,8 @@ namespace CNCLib.Serial.WebAPI.Controllers
         [HttpPost("fromEeprom")]
         public ActionResult<UInt32[]> GetEepromInfo([FromBody] Eeprom eeprom)
         {
-            var eePromV1 = new EepromV1() { Values = eeprom.Values };
-            eeprom.WriteTo(eePromV1);
+            var eePromV0 = EepromExtensions.CreateMachineEeprom(eeprom.Values);
+            eePromV0.WriteTo(eeprom);
             return Ok(eeprom.Values);
         }
 

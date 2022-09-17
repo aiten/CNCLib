@@ -68,7 +68,7 @@
     <PackageReference Include="MahApps.Metro">
       <Version>2.4.9</Version>
     </PackageReference>
-    <PackageReference Include="NLog" Version="5.0.2" />
+    <PackageReference Include="NLog" Version="5.0.4" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controls\" />

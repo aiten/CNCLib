@@ -83,7 +83,7 @@ namespace CNCLib.GCode.Serial
             return null;
         }
 
-        public static async Task WriteEepromValues(this ISerial serial, EepromV1 ee)
+        public static async Task WriteEepromValues(this ISerial serial, EepromV0 ee)
         {
             await serial.SendCommandAsync(@"$!", GCodeSerial.DefaultEpromTimeout);
             await serial.SendCommandsAsync(ee.ToGCode(), GCodeSerial.DefaultEpromTimeout);
@@ -103,18 +103,17 @@ namespace CNCLib.GCode.Serial
 
         public static async Task<bool> WriteEeprom(this ISerial serial, Eeprom eepromValue)
         {
-            var ee = new EepromV1 { Values = eepromValue.Values };
+            var ee = EepromExtensions.CreateMachineEeprom(eepromValue.Values);
 
             if (ee.IsValid)
             {
-                eepromValue.WriteTo(ee);
+                ee.WriteTo(eepromValue);
 
                 await File.WriteAllLinesAsync(Environment.ExpandEnvironmentVariables(@"%TEMP%\EepromWrite.nc"), ee.ToGCode());
 
                 await serial.WriteEepromValues(ee);
                 return true;
             }
-
             return false;
         }
 

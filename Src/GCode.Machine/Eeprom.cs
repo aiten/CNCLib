@@ -112,6 +112,11 @@ namespace CNCLib.GCode.Machine
         [Description("Time in ms between incrementing the analog PWM output - e.g. 8ms will result in a 2040ms time between stop an max")]
         public byte SpindleFadeTime { get; set; }
 
+        [Category(CATEGORY_GENERAL)]
+        [DisplayName("StepperOffTimeout")]
+        [Description("Time in sec the stepper remain active (enabled) after a stop")]
+        public ushort StepperOffTimeout { get; set; }
+
         #endregion
 
         #region Info

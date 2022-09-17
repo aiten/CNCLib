@@ -18,7 +18,9 @@ import { SAxis } from "./eeprom-axis";
 
 export enum ESignature {
   SIGNATURE = 0x21436502,
-  SIGNATUREPLOTTER = 0x21438702
+  SIGNATUREPLOTTER = 0x21438702,
+  SIGNATURE_V2 = 0x21436503,
+  SIGNATUREPLOTTER_V2 = 0x21438703
 }
 
 export enum ECommandSyntax {
@@ -56,6 +58,7 @@ export class Eeprom {
   stepsPerMm1000: number;
   maxSpindleSpeed: number;
   spindleFadeTime: number;
+  stepperOffTimeout: number;
 
   info1: number;
   info2: number;

@@ -77,6 +77,7 @@ export class EepromComponent implements OnInit, OnDestroy {
         jerkSpeed: [0, [Validators.required, Validators.min(1), Validators.max(65535)]],
         refMoveStepRate: [0, [Validators.required, Validators.min(0), Validators.max(99999999)]],
         moveAwayFromReference: [0, [Validators.required, Validators.min(0), Validators.max(99999999)]],
+        stepperOffTimeout: [0, [Validators.required, Validators.min(0), Validators.max(65535)]],
         stepsPerMm1000: [0, [Validators.required, Validators.min(0)]],
 
         maxSpindleSpeed: [0, [Validators.required, Validators.min(0), Validators.max(65535)]],
@@ -190,7 +191,11 @@ export class EepromComponent implements OnInit, OnDestroy {
   }
 
   isPlotter() {
-    return this.isEepromLoaded && this.eeprom.signature == ESignature.SIGNATUREPLOTTER;
+    return this.isEepromLoaded && (this.eeprom.signature == ESignature.SIGNATUREPLOTTER || this.eeprom.signature == ESignature.SIGNATUREPLOTTER_V2);
+  }
+
+  isEepromVersion2() {
+    return this.isEepromLoaded && (this.eeprom.signature != ESignature.SIGNATURE && this.eeprom.signature != ESignature.SIGNATUREPLOTTER);
   }
 
   async loadEeprom() {

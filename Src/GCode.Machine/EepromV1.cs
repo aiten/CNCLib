@@ -19,40 +19,21 @@ namespace CNCLib.GCode.Machine
     using System;
     using System.Collections.Generic;
 
-    public class EepromV1
+    public class EepromV1 : EepromV0
     {
         #region Properties
 
+        public override uint VersionSignature => 0x21436502;
+
         public const uint SIGNATURE        = 0x21436502;
-        public const uint SIGNATUREPLOTTER = 0x21438702;
 
-        uint[] _values;
+        public const uint SIZEOFAXIS_EX = ((uint)EAxisOffsets32V1.InitPosition) + 1;
 
-        public uint[] Values
+        public bool IsExtended => DWSizeAxis > EepromV1.SIZEOFAXIS_EX;
+
+        public enum EValueOffsets32V1
         {
-            get => _values;
-            set
-            {
-                _values = value;
-                Analyse();
-            }
-        }
-
-        public bool IsValid => Values?.Length > 0 && (Values[0] == SIGNATURE || Values[0] == SIGNATUREPLOTTER);
-
-        public uint OfsAxis      => _ofsAxis;
-        public uint DWSizeAxis   => _sizeAxis;
-        public uint OfsAfterAxis => _ofsAfterAxis;
-
-        public const uint SIZEOFAXIS_EX = ((uint)EAxisOffsets32.InitPosition) + 1;
-
-        public enum EValueOffsets32
-        {
-            Signature = 0,
-            InfoOffset1,
-            Info1,
-            Info2,
-            Values8Bit1,
+            Values8Bit1 = EValueOffsets32.FirstCustomV0,
             Values16Bit1,
             MaxStepRate,
             OffsetAccDec,
@@ -61,27 +42,22 @@ namespace CNCLib.GCode.Machine
             StepsPerMm1000
         }
 
-        public enum EValueOffsets8
+        public enum EValueOffsets8V1
         {
-            NumAxis    = (EValueOffsets32.InfoOffset1 << 8) + 00,
-            UseAxis    = (EValueOffsets32.InfoOffset1 << 8) + 01,
-            OfsOfAxis  = (EValueOffsets32.InfoOffset1 << 8) + 02,
-            SizeOfAxis = (EValueOffsets32.InfoOffset1 << 8) + 03,
-
-            StepperDirection = (EValueOffsets32.Values8Bit1 << 8) + 0,
-            SpindleFadeTime  = (EValueOffsets32.Values8Bit1 << 8) + 3
+            StepperDirection = (EValueOffsets32V1.Values8Bit1 << 8) + 0,
+            SpindleFadeTime  = (EValueOffsets32V1.Values8Bit1 << 8) + 3
         }
 
         public enum EValueOffsets16
         {
-            MaxSpindleSpeed = (EValueOffsets32.Values16Bit1 << 8) + 00,
-            JerkSpeed       = (EValueOffsets32.Values16Bit1 << 8) + 01,
+            MaxSpindleSpeed = (EValueOffsets32V1.Values16Bit1 << 8) + 00,
+            JerkSpeed       = (EValueOffsets32V1.Values16Bit1 << 8) + 01,
 
-            Acc = (EValueOffsets32.OffsetAccDec << 8) + 00,
-            Dec = (EValueOffsets32.OffsetAccDec << 8) + 01
+            Acc = (EValueOffsets32V1.OffsetAccDec << 8) + 00,
+            Dec = (EValueOffsets32V1.OffsetAccDec << 8) + 01
         }
 
-        public enum EAxisOffsets32
+        public enum EAxisOffsets32V1
         {
             Size = 0,
             Offset1,
@@ -93,304 +69,129 @@ namespace CNCLib.GCode.Machine
             ProbeSize
         }
 
-        public enum EAxisOffsets16
+        public enum EAxisOffsets16V1
         {
-            Acc = (EAxisOffsets32.OffsetAccDec << 8) + 00,
-            Dec = (EAxisOffsets32.OffsetAccDec << 8) + 01
+            Acc = (EAxisOffsets32V1.OffsetAccDec << 8) + 00,
+            Dec = (EAxisOffsets32V1.OffsetAccDec << 8) + 01
         }
 
-        public enum EAxisOffsets8
+        public enum EAxisOffsets8V1
         {
-            EReverenceType        = (EAxisOffsets32.Offset1 << 8) + 00,
-            EReverenceSequence    = (EAxisOffsets32.Offset1 << 8) + 1,
-            EReverenceHitValueMin = (EAxisOffsets32.Offset1 << 8) + 2,
-            EReverenceHitValueMax = (EAxisOffsets32.Offset1 << 8) + 3
-        }
-
-        public enum EValueOffsets32Plotter
-        {
-            EPenDownFeedrate,
-            EPenUpFeedrate,
-
-            EMovePenDownFeedrate,
-            EMovePenUpFeedrate,
-            EMovePenChangeFeedrate,
-
-            EPenDownPos,
-            EPenUpPos,
-
-            EPenChangePosX,
-            EPenChangePosY,
-            EPenChangePosZ,
-
-            EPenChangePosXOfs,
-            EPenChangePosYOfs,
-
-            EPenChangeServoClampPos,
-            EPenChangeServoClampDelay
-        }
-
-        public enum EValueOffsets16Plotter
-        {
-            EPenChangeServoClampOpenPos  = (EValueOffsets32Plotter.EPenChangeServoClampPos << 8) + 00,
-            EPenChangeServoClampClosePos = (EValueOffsets32Plotter.EPenChangeServoClampPos << 8) + 01,
-
-            EPenChangeServoClampOpenDelay  = (EValueOffsets32Plotter.EPenChangeServoClampDelay << 8) + 00,
-            EPenChangeServoClampCloseDelay = (EValueOffsets32Plotter.EPenChangeServoClampDelay << 8) + 01
-        }
-
-        [Flags]
-        public enum EInfo1
-        {
-            EEPROM_INFO_SPINDLE        = (1 << 0),
-            EEPROM_INFO_SPINDLE_ANALOG = (1 << 1),
-            EEPROM_INFO_SPINDLE_DIR    = (1 << 2),
-            EEPROM_INFO_COOLANT        = (1 << 3),
-            EEPROM_INFO_PROBE          = (1 << 4),
-            EEPROM_INFO_LASER          = (1 << 5),
-
-            EEPROM_INFO_COMMANDSYNTAX = (1 << 6), // (3bits)
-
-            EEPROM_INFO_EEPROM = (1 << 9),
-            EEPROM_INFO_SD     = (1 << 10),
-            EEPROM_INFO_ROTATE = (1 << 11),
-
-            EEPROM_INFO_HOLDRESUME = (1 << 12),
-            EEPROM_INFO_HOLD       = (1 << 13),
-            EEPROM_INFO_RESUME     = (1 << 14),
-            EEPROM_INFO_KILL       = (1 << 15),
-
-            EEPROM_INFO_NEED_EEPROM_FLUSH = (1 << 16),
-            EEPROM_INFO_NEED_DTR          = (1 << 17), // deprecated
-            EEPROM_INFO_DTR_IS_RESET      = (1 << 18),
-
-            EEPROM_INFO_WORKOFFSETCOUT = (1 << 19), // 4 bits
-        }
-
-        public static int GetCommandSyntax(uint info1)
-        {
-            return (int)((info1 >> 6) & 7);
-        }
-
-        public static uint GetWorkOffsetCount(uint info1)
-        {
-            return (uint)((info1 >> 19) & 15);
+            EReverenceType        = (EAxisOffsets32V1.Offset1 << 8) + 00,
+            EReverenceSequence    = (EAxisOffsets32V1.Offset1 << 8) + 1,
+            EReverenceHitValueMin = (EAxisOffsets32V1.Offset1 << 8) + 2,
+            EReverenceHitValueMax = (EAxisOffsets32V1.Offset1 << 8) + 3
         }
 
         #endregion
 
-        #region Get/Set
+        #region Read/Write
 
-        public uint this[EValueOffsets32 ofs]
+        public override void ReadFrom(Eeprom eeprom)
         {
-            get => GetValue32(ofs);
-            set => SetValue32(ofs, value);
-        }
+            ReadFromDefault(eeprom);
 
-        public ushort this[EValueOffsets16 ofs]
-        {
-            get => GetValue16(ofs);
-            set => SetValue16(ofs, value);
-        }
+            byte numAxis = GetValue8((uint)EValueOffsets8.NumAxis);
 
-        public byte this[EValueOffsets8 ofs]
-        {
-            get => GetValue8(ofs);
-            set => SetValue8(ofs, value);
-        }
+            eeprom.NumAxis = GetValue8((uint)EValueOffsets8.NumAxis);
+            eeprom.UseAxis = GetValue8((uint)EValueOffsets8.UseAxis);
 
-        public uint this[int axis, EAxisOffsets32 ofs]
-        {
-            get => GetAxisValue32(axis, ofs);
-            set => SetAxisValue32(axis, ofs, value);
-        }
-
-        public ushort this[int axis, EAxisOffsets16 ofs]
-        {
-            get => GetAxisValue16(axis, ofs);
-            set => SetAxisValue16(axis, ofs, value);
-        }
-
-        public byte this[int axis, EAxisOffsets8 ofs]
-        {
-            get => GetAxisValue8(axis, ofs);
-            set => SetAxisValue8(axis, ofs, value);
-        }
-
-        private EValueOffsets32 AddPlotterOfs(EValueOffsets32Plotter ofs)
-        {
-            return (EValueOffsets32)((uint)ofs + _ofsAfterAxis);
-        }
-
-        private EValueOffsets16 AddPlotterOfs(EValueOffsets16Plotter ofs)
-        {
-            return (EValueOffsets16)((uint)ofs + (_ofsAfterAxis << 8));
-        }
-
-        public uint this[EValueOffsets32Plotter ofs]
-        {
-            get => GetValue32(AddPlotterOfs(ofs));
-            set => SetValue32(AddPlotterOfs(ofs), value);
-        }
-
-        public ushort this[EValueOffsets16Plotter ofs]
-        {
-            get => GetValue16(AddPlotterOfs(ofs));
-            set => SetValue16(AddPlotterOfs(ofs), value);
-        }
-
-        public List<string> ToGCode()
-        {
-            var list = new List<string>();
-            for (int slot = 2; slot < Values.Length; slot++)
+            for (int i = 0; i < numAxis; i++)
             {
-                list.Add($"${slot}={Values[slot]}");
+                ReadFromAxis(eeprom, i);
             }
 
-            return list;
+            eeprom.MaxSpindleSpeed = GetValue16((uint)EValueOffsets16.MaxSpindleSpeed);
+            eeprom.SpindleFadeTime = GetValue8((uint)EValueOffsets8V1.SpindleFadeTime);
+
+            eeprom.RefMoveStepRate       = GetValue32((uint)EValueOffsets32V1.RefMoveStepRate);
+            eeprom.MoveAwayFromReference = GetValue32((uint)EValueOffsets32V1.MoveAwayFromReference);
+
+            eeprom.MaxStepRate = GetValue32((uint)EValueOffsets32V1.MaxStepRate);
+            eeprom.Acc         = GetValue16((uint)EValueOffsets16.Acc);
+            eeprom.Dec         = GetValue16((uint)EValueOffsets16.Dec);
+            eeprom.JerkSpeed   = GetValue16((uint)EValueOffsets16.JerkSpeed);
+
+            eeprom.StepsPerMm1000 = BitConverter.ToSingle(BitConverter.GetBytes(GetValue32((uint)EValueOffsets32V1.StepsPerMm1000)), 0);
         }
 
-        Tuple<EValueOffsets32, int> GetIndex(EValueOffsets16 ofsIdx)
+        public virtual void ReadFromAxis(Eeprom eeprom, int axis)
         {
-            return new Tuple<EValueOffsets32, int>((EValueOffsets32)(((int)ofsIdx >> 8) & 0xff), (int)ofsIdx & 0xff);
-        }
+            eeprom.GetAxis(axis).DWEESizeOf     = DWSizeAxis;
+            eeprom.GetAxis(axis).Size           = GetAxisValue32(axis, (uint)EAxisOffsets32.Size);
+            eeprom.GetAxis(axis).RefMove        = (Eeprom.EReverenceType)GetAxisValue8(axis, (uint)EAxisOffsets8V1.EReverenceType);
+            eeprom.GetAxis(axis).RefHitValueMin = GetAxisValue8(axis, (uint)EAxisOffsets8V1.EReverenceHitValueMin);
+            eeprom.GetAxis(axis).RefHitValueMax = GetAxisValue8(axis, (uint)EAxisOffsets8V1.EReverenceHitValueMax);
 
-        Tuple<EValueOffsets32, int> GetIndex(EValueOffsets8 ofsIdx)
-        {
-            return new Tuple<EValueOffsets32, int>((EValueOffsets32)(((int)ofsIdx >> 8) & 0xff), (int)ofsIdx & 0xff);
-        }
+            eeprom.GetAxis(axis).InitPosition = GetAxisValue32(axis, (uint)EAxisOffsets32V1.InitPosition);
 
-        Tuple<EAxisOffsets32, int> GetIndex(EAxisOffsets16 ofsIdx)
-        {
-            return new Tuple<EAxisOffsets32, int>((EAxisOffsets32)(((int)ofsIdx >> 8) & 0xff), (int)ofsIdx & 0xff);
-        }
+            eeprom.GetAxis(axis).StepperDirection = (GetValue8((uint)EValueOffsets8V1.StepperDirection) & (1 << axis)) != 0;
 
-        Tuple<EAxisOffsets32, int> GetIndex(EAxisOffsets8 ofsIdx)
-        {
-            return new Tuple<EAxisOffsets32, int>((EAxisOffsets32)(((int)ofsIdx >> 8) & 0xff), (int)ofsIdx & 0xff);
-        }
+            eeprom[axis] = (Eeprom.EReverenceSequence)GetAxisValue8(axis, (uint)EAxisOffsets8V1.EReverenceSequence);
 
-        #endregion
-
-        #region Read
-
-        public uint GetValue32(EValueOffsets32 ofs)
-        {
-            return Values[(int)ofs];
-        }
-
-        public ushort GetValue16(EValueOffsets16 ofsIdx)
-        {
-            var offsets = GetIndex(ofsIdx);
-
-            uint val = GetValue32(offsets.Item1);
-            return (ushort)((val >> (offsets.Item2 * 16)) & 0xffff);
-        }
-
-        public byte GetValue8(EValueOffsets8 ofsIdx)
-        {
-            var offsets = GetIndex(ofsIdx);
-
-            uint val = GetValue32(offsets.Item1);
-            return (byte)((val >> (offsets.Item2 * 8)) & 0xff);
-        }
-
-        public uint GetAxisValue32(int axis, EAxisOffsets32 ofs)
-        {
-            return Values[_ofsAxis + axis * _sizeAxis + (int)ofs];
-        }
-
-        public ushort GetAxisValue16(int axis, EAxisOffsets16 ofsIdx)
-        {
-            var offsets = GetIndex(ofsIdx);
-
-            uint val = GetAxisValue32(axis, offsets.Item1);
-            return (ushort)((val >> (offsets.Item2 * 16)) & 0xffff);
-        }
-
-        public byte GetAxisValue8(int axis, EAxisOffsets8 ofsIdx)
-        {
-            var offsets = GetIndex(ofsIdx);
-
-            uint val = GetAxisValue32(axis, offsets.Item1);
-            return (byte)((val >> (offsets.Item2 * 8)) & 0xff);
-        }
-
-        #endregion
-
-        #region Write
-
-        public void SetValue32(EValueOffsets32 ofs, uint value)
-        {
-            Values[(int)ofs] = value;
-        }
-
-        public void SetValue8(EValueOffsets8 ofsIdx, byte value)
-        {
-            var offsets = GetIndex(ofsIdx);
-
-            uint mask = ((uint)0xff) << (offsets.Item2 * 8);
-            uint val  = GetValue32(offsets.Item1) & (~mask);
-
-            SetValue32(offsets.Item1, val + ((uint)value << (offsets.Item2 * 8)));
-        }
-
-        public void SetValue16(EValueOffsets16 ofsIdx, ushort value)
-        {
-            var offsets = GetIndex(ofsIdx);
-
-            uint mask = ((uint)0xffff) << (offsets.Item2 * 16);
-            uint val  = GetValue32(offsets.Item1) & (~mask);
-
-            SetValue32(offsets.Item1, val + ((uint)value << (offsets.Item2 * 16)));
-        }
-
-        public void SetAxisValue32(int axis, EAxisOffsets32 ofs, uint value)
-        {
-            Values[_ofsAxis + axis * _sizeAxis + (int)ofs] = value;
-        }
-
-        public void SetAxisValue16(int axis, EAxisOffsets16 ofsIdx, ushort value)
-        {
-            var offsets = GetIndex(ofsIdx);
-
-            uint mask = ((uint)0xffff) << (offsets.Item2 * 16);
-            uint val  = GetAxisValue32(axis, offsets.Item1) & (~mask);
-
-            SetAxisValue32(axis, offsets.Item1, val + ((uint)value << (offsets.Item2 * 16)));
-        }
-
-        public void SetAxisValue8(int axis, EAxisOffsets8 ofsIdx, byte value)
-        {
-            var offsets = GetIndex(ofsIdx);
-
-            uint mask = ((uint)0xff) << (offsets.Item2 * 8);
-            uint val  = GetAxisValue32(axis, offsets.Item1) & (~mask);
-            SetAxisValue32(axis, offsets.Item1, val + ((uint)value << (offsets.Item2 * 8)));
-        }
-
-        #endregion
-
-        #region Analyse
-
-        uint _numAxis;
-        uint _usedAxis;
-        uint _ofsAxis;
-        uint _sizeAxis;
-        uint _ofsAfterAxis;
-
-        private void Analyse()
-        {
-            if (Values?.Length > 0)
+            if (IsExtended)
             {
-                _numAxis      = (Values[1] >> 0) & 0xff;
-                _usedAxis     = (Values[1] >> 8) & 0xff;
-                _ofsAxis      = ((Values[1] >> 16) & 0xff) / sizeof(uint);
-                _sizeAxis     = ((Values[1] >> 24) & 0xff) / sizeof(uint);
-                _ofsAfterAxis = _ofsAxis + _sizeAxis * _numAxis;
+                eeprom.GetAxis(axis).MaxStepRate     = GetAxisValue32(axis, (uint)EAxisOffsets32V1.MaxStepRate);
+                eeprom.GetAxis(axis).Acc             = GetAxisValue16(axis, (uint)EAxisOffsets16V1.Acc);
+                eeprom.GetAxis(axis).Dec             = GetAxisValue16(axis, (uint)EAxisOffsets16V1.Dec);
+                eeprom.GetAxis(axis).StepsPerMm1000  = BitConverter.ToSingle(BitConverter.GetBytes(GetAxisValue32(axis, (uint)EAxisOffsets32V1.StepsPerMm1000)), 0);
+                eeprom.GetAxis(axis).ProbeSize       = GetAxisValue32(axis, (uint)EAxisOffsets32V1.ProbeSize);
+                eeprom.GetAxis(axis).RefMoveStepRate = GetAxisValue32(axis, (uint)EAxisOffsets32V1.RefMoveStepRate);
             }
         }
 
-        #endregion
+        public override void WriteTo(Eeprom eeprom)
+        {
+            byte numAxis = GetValue8((uint)EValueOffsets8.NumAxis);
+
+            for (int i = 0; i < numAxis; i++)
+            {
+                WriteToAxis(eeprom, i);
+            }
+
+            SetValue16((uint)EValueOffsets16.MaxSpindleSpeed, eeprom.MaxSpindleSpeed);
+            SetValue8((uint)EValueOffsets8V1.SpindleFadeTime, eeprom.SpindleFadeTime);
+
+            SetValue32((uint)EValueOffsets32V1.RefMoveStepRate,       eeprom.RefMoveStepRate);
+            SetValue32((uint)EValueOffsets32V1.MoveAwayFromReference, eeprom.MoveAwayFromReference);
+
+            SetValue32((uint)EValueOffsets32V1.MaxStepRate, eeprom.MaxStepRate);
+            SetValue16((uint)EValueOffsets16.Acc,       eeprom.Acc);
+            SetValue16((uint)EValueOffsets16.Dec,       eeprom.Dec);
+            SetValue16((uint)EValueOffsets16.JerkSpeed, eeprom.JerkSpeed);
+
+            SetValue32((uint)EValueOffsets32V1.StepsPerMm1000, BitConverter.ToUInt32(BitConverter.GetBytes(eeprom.StepsPerMm1000), 0));
+        }
+
+        public void WriteToAxis(Eeprom eeprom, int i)
+        {
+            SetAxisValue32(i, (uint)EAxisOffsets32.Size, eeprom.GetAxis(i).Size);
+            SetAxisValue8(i, (uint)EAxisOffsets8V1.EReverenceType,        (byte)eeprom.GetAxis(i).RefMove);
+            SetAxisValue8(i, (uint)EAxisOffsets8V1.EReverenceSequence,    (byte)(Eeprom.EReverenceSequence)eeprom[i]);
+            SetAxisValue8(i, (uint)EAxisOffsets8V1.EReverenceHitValueMin, eeprom.GetAxis(i).RefHitValueMin);
+            SetAxisValue8(i, (uint)EAxisOffsets8V1.EReverenceHitValueMax, eeprom.GetAxis(i).RefHitValueMax);
+
+            int direction = GetValue8((uint)EValueOffsets8V1.StepperDirection) & (~(1 << i));
+            if (eeprom.GetAxis(i).StepperDirection)
+            {
+                direction += 1 << i;
+            }
+
+            SetValue8((uint)EValueOffsets8V1.StepperDirection, (byte)direction);
+
+            SetAxisValue32(i, (uint)EAxisOffsets32V1.InitPosition, eeprom.GetAxis(i).InitPosition);
+
+            if (IsExtended)
+            {
+                SetAxisValue32(i, (uint)EAxisOffsets32V1.MaxStepRate, eeprom.GetAxis(i).MaxStepRate);
+                SetAxisValue16(i, (uint)EAxisOffsets16V1.Acc, eeprom.GetAxis(i).Acc);
+                SetAxisValue16(i, (uint)EAxisOffsets16V1.Dec, eeprom.GetAxis(i).Dec);
+                SetAxisValue32(i, (uint)EAxisOffsets32V1.StepsPerMm1000,  BitConverter.ToUInt32(BitConverter.GetBytes(eeprom.GetAxis(i).StepsPerMm1000), 0));
+                SetAxisValue32(i, (uint)EAxisOffsets32V1.ProbeSize,       eeprom.GetAxis(i).ProbeSize);
+                SetAxisValue32(i, (uint)EAxisOffsets32V1.RefMoveStepRate, eeprom.GetAxis(i).RefMoveStepRate);
+            }
+        }
     }
+
+    #endregion
 }

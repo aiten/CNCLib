@@ -131,12 +131,12 @@
 
         <div class="form-group input-group">
           <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Maximum steprate in Hz (AVR 8bit max 16bit, e.g. 25000)">Max StepRate</mat-label>
-          <input matInput class="form-control" formControlName="maxStepRate"/>
+          <input matInput class="form-control" formControlName="maxStepRate" />
           <div *ngIf="f.maxStepRate && f.maxStepRate.invalid" class="alert alert-danger">Error</div>
         </div>
         <div class="form-group input-group">
           <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Acceleration factor (e.g. 350)], must be > 61">Acc</mat-label>
-          <input matInput class="form-control" formControlName="acc"/>
+          <input matInput class="form-control" formControlName="acc" />
           <div *ngIf="f.acc && f.acc.invalid" class="alert alert-danger">
             <div *ngIf="f.acc.errors.required">Number is required.</div>
             <div *ngIf="f.acc.errors.min">Min.</div>
@@ -144,38 +144,43 @@
         </div>
         <div class="form-group input-group">
           <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Deceleration factor (e.g. 400), must be > 61">Dec</mat-label>
-          <input matInput class="form-control" formControlName="dec"/>
+          <input matInput class="form-control" formControlName="dec" />
           <div *ngIf="f.dec && f.dec.invalid" class="alert alert-danger">Error</div>
         </div>
         <div class="form-group input-group">
           <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Maximum Jerkspeed - speed difference without acceleration - in Hz (e.g. 1000)">Jerk Speed</mat-label>
-          <input matInput class="form-control" formControlName="jerkSpeed"/>
+          <input matInput class="form-control" formControlName="jerkSpeed" />
           <div *ngIf="f.jerkSpeed && f.jerkSpeed.invalid" class="alert alert-danger">Error</div>
         </div>
         <div class="form-group input-group">
           <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Steprate for reference-move (AVR 8bit max 16bit, less than 'MaxStepRate')">RefMove StepRate</mat-label>
-          <input matInput class="form-control" formControlName="refMoveStepRate"/>
+          <input matInput class="form-control" formControlName="refMoveStepRate" />
           <div *ngIf="f.refMoveStepRate && f.refMoveStepRate.invalid" class="alert alert-danger">Error</div>
         </div>
         <div class="form-group input-group">
           <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Distance between refmove hit and 0 (in mm1000)">Move Away from Reference</mat-label>
-          <input matInput class="form-control" formControlName="moveAwayFromReference"/>
+          <input matInput class="form-control" formControlName="moveAwayFromReference" />
           <div *ngIf="f.moveAwayFromReference && f.moveAwayFromReference.invalid" class="alert alert-danger">Error</div>
         </div>
         <div class="form-group input-group">
           <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Steps for 1/1000mm => steps to go for 1/1000mm">Steps Per Mm1000</mat-label>
-          <input matInput class="form-control" formControlName="stepsPerMm1000"/>
+          <input matInput class="form-control" formControlName="stepsPerMm1000" />
           <div *ngIf="f.stepsPerMm1000 && f.stepsPerMm1000.invalid" class="alert alert-danger">Error</div>
         </div>
         <div class="form-group input-group">
           <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Max speed (rpm) of spindle or laser power (1-255)">Max Spindle Speed</mat-label>
-          <input matInput class="form-control" formControlName="maxSpindleSpeed"/>
+          <input matInput class="form-control" formControlName="maxSpindleSpeed" />
           <div *ngIf="f.maxSpindleSpeed && f.maxSpindleSpeed.invalid" class="alert alert-danger">Error</div>
         </div>
         <div class="form-group input-group">
           <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Time in ms between incrementing the analog PWM output - e.g. 8ms will result in a 2040ms time between stop an max">Spindle Fade Time</mat-label>
-          <input matInput class="form-control" formControlName="spindleFadeTime"/>
+          <input matInput class="form-control" formControlName="spindleFadeTime" />
           <div *ngIf="f.spindleFadeTime && f.spindleFadeTime.invalid" class="alert alert-danger">Error</div>
+        </div>
+        <div *ngIf="isEepromVersion2()" class="form-group input-group">
+          <mat-label class="input-group-addon" matTooltipPosition="after" matTooltip="Time in sec the stepper remain active (enabled) after a stop">Stepper Off Timeout</mat-label>
+          <input matInput class="form-control" formControlName="stepperOffTimeout" />
+          <div *ngIf="f.stepperOffTimeout && f.stepperOffTimeout.invalid" class="alert alert-danger">Error</div>
         </div>
 
         <div *ngFor="let item of [].constructor(eeprom.numAxis); let i = index">
