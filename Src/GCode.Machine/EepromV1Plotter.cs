@@ -20,9 +20,9 @@ namespace CNCLib.GCode.Machine
     {
         #region Properties
 
-        public const uint SIGNATUREPLOTTER = 0x21438702;
+        public const uint SIGNATUREPLOTTER_V1 = 0x21438702;
 
-        public override uint VersionSignature => SIGNATUREPLOTTER;
+        public override uint VersionSignature => SIGNATUREPLOTTER_V1;
 
         #endregion
 

@@ -25,7 +25,7 @@ namespace CNCLib.GCode.Machine
 
         public override uint VersionSignature => 0x21436502;
 
-        public const uint SIGNATURE        = 0x21436502;
+        public const uint SIGNATURE_V1 = 0x21436502;
 
         public const uint SIZEOFAXIS_EX = ((uint)EAxisOffsets32V1.InitPosition) + 1;
 

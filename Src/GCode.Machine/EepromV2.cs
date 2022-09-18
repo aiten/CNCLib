@@ -20,7 +20,7 @@ namespace CNCLib.GCode.Machine
 
     public class EepromV2 : EepromV1
     {
-        public const uint SIGNATURE = 0x21436503;
+        public const uint SIGNATURE_V2 = 0x21436503;
 
         #region Properties
 

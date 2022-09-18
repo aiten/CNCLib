@@ -191,11 +191,11 @@ export class EepromComponent implements OnInit, OnDestroy {
   }
 
   isPlotter() {
-    return this.isEepromLoaded && (this.eeprom.signature == ESignature.SIGNATUREPLOTTER || this.eeprom.signature == ESignature.SIGNATUREPLOTTER_V2);
+    return this.isEepromLoaded && (this.eeprom.signature == ESignature.SIGNATUREPLOTTER_V1 || this.eeprom.signature == ESignature.SIGNATUREPLOTTER_V2);
   }
 
   isEepromVersion2() {
-    return this.isEepromLoaded && (this.eeprom.signature != ESignature.SIGNATURE && this.eeprom.signature != ESignature.SIGNATUREPLOTTER);
+    return this.isEepromLoaded && (this.eeprom.signature != ESignature.SIGNATURE_V1 && this.eeprom.signature != ESignature.SIGNATUREPLOTTER_V1);
   }
 
   async loadEeprom() {
