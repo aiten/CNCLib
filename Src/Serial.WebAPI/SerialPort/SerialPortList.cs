@@ -14,101 +14,100 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Serial.WebAPI.SerialPort
+namespace CNCLib.Serial.WebAPI.SerialPort;
+
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+using Framework.Arduino.SerialCommunication.Abstraction;
+using Framework.Dependency;
+
+public class SerialPortList
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
+    #region INTERNAL List
 
-    using Framework.Arduino.SerialCommunication.Abstraction;
-    using Framework.Dependency;
-
-    public class SerialPortList
+    public static async Task<SerialPortWrapper> GetPortAndRescan(int id)
     {
-        #region INTERNAL List
-
-        public static async Task<SerialPortWrapper> GetPortAndRescan(int id)
+        var port = SerialPortList.GetPort(id);
+        if (port == null)
         {
-            var port = SerialPortList.GetPort(id);
-            if (port == null)
-            {
-                // rescan
-                SerialPortList.Refresh();
-                port = SerialPortList.GetPort(id);
-            }
-
-            return await Task.FromResult(port);
+            // rescan
+            SerialPortList.Refresh();
+            port = SerialPortList.GetPort(id);
         }
 
-        public static ISerialPort SerialPort { get; private set; }
-
-        public static IEnumerable<SerialPortWrapper> Ports { get; private set; } = GetPortDefinitions();
-
-        public static SerialPortWrapper GetPort(int id)
-        {
-            var port = Ports.FirstOrDefault((s) => s.Id == id);
-            port?.InitPort();
-            return port;
-        }
-
-        private static int GetIdFromPortName(string portName, int index)
-        {
-            string portNo = portName.Remove(0, 3); // remove "com"
-            if (int.TryParse(portNo, out int id))
-            {
-                return id;
-            }
-
-            return index;
-        }
-
-        private static IEnumerable<SerialPortWrapper> GetPortDefinitions()
-        {
-            if (SerialPort == null)
-            {
-                SerialPort = AppService.GetRequiredService<ISerialPort>();
-            }
-
-            var portNames = SerialPort.GetPortNames();
-
-            return portNames.Select(
-                (port, index) => new SerialPortWrapper()
-                {
-                    Id       = GetIdFromPortName(port, index),
-                    PortName = port
-                }).ToList();
-        }
-
-        public static void Refresh()
-        {
-            var currentPortDefinition = GetPortDefinitions().ToList();
-
-            var newList = new List<SerialPortWrapper>();
-
-            // add same(existing) portName
-            foreach (var port in Ports)
-            {
-                var existingPort = currentPortDefinition.Find((p) => port.PortName == p.PortName);
-
-                if (existingPort != null)
-                {
-                    newList.Add(port);
-                }
-            }
-
-            //add new ports 
-            foreach (var port in currentPortDefinition)
-            {
-                var existingPort = newList.Find((p) => port.PortName == p.PortName);
-                if (existingPort == null)
-                {
-                    newList.Add(port);
-                }
-            }
-
-            Ports = newList;
-        }
-
-        #endregion
+        return await Task.FromResult(port);
     }
+
+    public static ISerialPort SerialPort { get; private set; }
+
+    public static IEnumerable<SerialPortWrapper> Ports { get; private set; } = GetPortDefinitions();
+
+    public static SerialPortWrapper GetPort(int id)
+    {
+        var port = Ports.FirstOrDefault((s) => s.Id == id);
+        port?.InitPort();
+        return port;
+    }
+
+    private static int GetIdFromPortName(string portName, int index)
+    {
+        string portNo = portName.Remove(0, 3); // remove "com"
+        if (int.TryParse(portNo, out int id))
+        {
+            return id;
+        }
+
+        return index;
+    }
+
+    private static IEnumerable<SerialPortWrapper> GetPortDefinitions()
+    {
+        if (SerialPort == null)
+        {
+            SerialPort = AppService.GetRequiredService<ISerialPort>();
+        }
+
+        var portNames = SerialPort.GetPortNames();
+
+        return portNames.Select(
+            (port, index) => new SerialPortWrapper()
+            {
+                Id       = GetIdFromPortName(port, index),
+                PortName = port
+            }).ToList();
+    }
+
+    public static void Refresh()
+    {
+        var currentPortDefinition = GetPortDefinitions().ToList();
+
+        var newList = new List<SerialPortWrapper>();
+
+        // add same(existing) portName
+        foreach (var port in Ports)
+        {
+            var existingPort = currentPortDefinition.Find((p) => port.PortName == p.PortName);
+
+            if (existingPort != null)
+            {
+                newList.Add(port);
+            }
+        }
+
+        //add new ports 
+        foreach (var port in currentPortDefinition)
+        {
+            var existingPort = newList.Find((p) => port.PortName == p.PortName);
+            if (existingPort == null)
+            {
+                newList.Add(port);
+            }
+        }
+
+        Ports = newList;
+    }
+
+    #endregion
 }

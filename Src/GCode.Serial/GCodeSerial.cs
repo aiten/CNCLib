@@ -14,12 +14,11 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.GCode.Serial
+namespace CNCLib.GCode.Serial;
+
+public static class GCodeSerial
 {
-    public static class GCodeSerial
-    {
-        public const int DefaultTimeout      = 120 * 1000;
-        public const int DefaultEpromTimeout = 3000;
-        public const int DefaultProbeTimeout = 15000;
-    }
+    public const int DefaultTimeout      = 120 * 1000;
+    public const int DefaultEpromTimeout = 3000;
+    public const int DefaultProbeTimeout = 15000;
 }

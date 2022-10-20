@@ -14,18 +14,17 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Service.Abstraction
+namespace CNCLib.Service.Abstraction;
+
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction.DTO;
+
+using Framework.Service.Abstraction;
+
+public interface IItemService : IDisposable, ICrudService<Item, int>
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-
-    using CNCLib.Logic.Abstraction.DTO;
-
-    using Framework.Service.Abstraction;
-
-    public interface IItemService : IDisposable, ICrudService<Item, int>
-    {
-        Task<IEnumerable<Item>> GetByClassName(string classname);
-    }
+    Task<IEnumerable<Item>> GetByClassNameAsync(string classname);
 }

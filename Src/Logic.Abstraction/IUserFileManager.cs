@@ -14,23 +14,22 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Logic.Abstraction
+namespace CNCLib.Logic.Abstraction;
+
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction.DTO;
+
+using Framework.Logic.Abstraction;
+
+public interface IUserFileManager : ICrudManager<DTO.UserFile, int>
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+    Task<int> GetFileIdAsync(string fileName);
 
-    using CNCLib.Logic.Abstraction.DTO;
+    Task<DTO.UserFile> GetByNameAsync(string fileName);
 
-    using Framework.Logic.Abstraction;
+    Task<IEnumerable<UserFileInfo>> GetFileInfosAsync();
 
-    public interface IUserFileManager : ICrudManager<DTO.UserFile, int>
-    {
-        Task<int> GetFileId(string fileName);
-
-        Task<DTO.UserFile> GetByName(string fileName);
-
-        Task<IEnumerable<UserFileInfo>> GetFileInfos();
-
-        Task<UserFileInfo> GetFileInfo(UserFile userFile);
-    }
+    Task<UserFileInfo> GetFileInfoAsync(UserFile userFile);
 }

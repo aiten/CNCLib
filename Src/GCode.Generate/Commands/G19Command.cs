@@ -14,32 +14,31 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.GCode.Generate.Commands
+namespace CNCLib.GCode.Generate.Commands;
+
+[IsGCommand]
+public class G19Command : Command
 {
-    [IsGCommand]
-    public class G19Command : Command
+    #region crt + factory
+
+    public G19Command()
     {
-        #region crt + factory
-
-        public G19Command()
-        {
-            Code = GetType().Name.Substring(0, 3);
-        }
-
-        #endregion
-
-        #region GCode
-
-        #endregion
-
-        #region Draw
-
-        public override void Draw(IOutputCommand output, CommandState state, object param)
-        {
-            base.Draw(output, state, param);
-            state.CurrentPane = Pane.YZPane;
-        }
-
-        #endregion
+        Code = GetType().Name.Substring(0, 3);
     }
+
+    #endregion
+
+    #region GCode
+
+    #endregion
+
+    #region Draw
+
+    public override void Draw(IOutputCommand output, CommandState state, object param)
+    {
+        base.Draw(output, state, param);
+        state.CurrentPane = Pane.YZPane;
+    }
+
+    #endregion
 }

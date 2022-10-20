@@ -14,28 +14,27 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.GCode.Serial
+namespace CNCLib.GCode.Serial;
+
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
+
+using Framework.Arduino.SerialCommunication;
+using Framework.Arduino.SerialCommunication.Abstraction;
+
+public static class GCodeSerialProbeExtension
 {
-    using System.Globalization;
-    using System.Linq;
-    using System.Threading.Tasks;
-
-    using Framework.Arduino.SerialCommunication;
-    using Framework.Arduino.SerialCommunication.Abstraction;
-
-    public static class GCodeSerialProbeExtension
+    public static async Task<bool> SendProbeCommandAsync(this ISerial serial, string axisName, decimal probeSize, decimal probeDist, decimal probeDistUp, decimal probeFeed)
     {
-        public static async Task<bool> SendProbeCommandAsync(this ISerial serial, string axisName, decimal probeSize, decimal probeDist, decimal probeDistUp, decimal probeFeed)
+        var result = await serial.SendCommandAsync($"g91 g31 {axisName}-{probeDist.ToString(CultureInfo.InvariantCulture)} F{probeFeed.ToString(CultureInfo.InvariantCulture)} g90", GCodeSerial.DefaultProbeTimeout);
+        if (result?.LastOrDefault()?.ReplyType.HasFlag(EReplyType.ReplyError) == false)
         {
-            var result = await serial.SendCommandAsync($"g91 g31 {axisName}-{probeDist.ToString(CultureInfo.InvariantCulture)} F{probeFeed.ToString(CultureInfo.InvariantCulture)} g90", GCodeSerial.DefaultProbeTimeout);
-            if (result?.LastOrDefault()?.ReplyType.HasFlag(EReplyType.ReplyError) == false)
-            {
-                serial.QueueCommand($"g92 {axisName}{(-probeSize).ToString(CultureInfo.InvariantCulture)}");
-                serial.QueueCommand($"g91 g0 {axisName}{probeDistUp.ToString(CultureInfo.InvariantCulture)} g90");
-                return true;
-            }
-
-            return false;
+            serial.QueueCommand($"g92 {axisName}{(-probeSize).ToString(CultureInfo.InvariantCulture)}");
+            serial.QueueCommand($"g91 g0 {axisName}{probeDistUp.ToString(CultureInfo.InvariantCulture)} g90");
+            return true;
         }
+
+        return false;
     }
 }

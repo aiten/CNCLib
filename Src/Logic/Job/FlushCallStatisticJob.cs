@@ -14,86 +14,85 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Logic.Job
+namespace CNCLib.Logic.Job;
+
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Statistics;
+using CNCLib.Repository.Abstraction;
+
+using Framework.Repository.Abstraction;
+
+using Microsoft.Extensions.Logging;
+
+public sealed class FlushCallStatisticJob : IFlushCallStatisticJob
 {
-    using System;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
+    private readonly IUserRepository    _repository;
+    private readonly CallStatisticCache _callStatistic;
+    private readonly IUnitOfWork        _uow;
+    private readonly ILogger            _logger;
 
-    using CNCLib.Logic.Abstraction;
-    using CNCLib.Logic.Statistics;
-    using CNCLib.Repository.Abstraction;
+    public string            JobName { get; set; }
+    public object            Param   { get; set; }
+    public CancellationToken CToken  { get; set; }
 
-    using Framework.Repository.Abstraction;
-
-    using Microsoft.Extensions.Logging;
-
-    public sealed class FlushCallStatisticJob : IFlushCallStatisticJob
+    public FlushCallStatisticJob(IUnitOfWork uow, IUserRepository repository, CallStatisticCache callStatistic, ILogger<FlushCallStatisticJob> logger)
     {
-        private readonly IUserRepository    _repository;
-        private readonly CallStatisticCache _callStatistic;
-        private readonly IUnitOfWork        _uow;
-        private readonly ILogger            _logger;
+        _logger        = logger;
+        _repository    = repository;
+        _callStatistic = callStatistic;
+        _uow           = uow;
+    }
 
-        public string            JobName { get; set; }
-        public object            Param   { get; set; }
-        public CancellationToken CToken  { get; set; }
-
-        public FlushCallStatisticJob(IUnitOfWork uow, IUserRepository repository, CallStatisticCache callStatistic, ILogger<FlushCallStatisticJob> logger)
+    public async Task ExecuteAsync()
+    {
+        try
         {
-            _logger        = logger;
-            _repository    = repository;
-            _callStatistic = callStatistic;
-            _uow           = uow;
-        }
+            _logger.LogInformation($"Background Task: {JobName}");
 
-        public async Task Execute()
-        {
-            try
+            var callStat = _callStatistic.GetCallStatisticsAndClear();
+
+            if (callStat.Any())
             {
-                _logger.LogInformation($"Background Task: {JobName}");
+                // we aggregate the counts for different hours => do not store a record overlapping two hours (see consolidation job)
 
-                var callStat = _callStatistic.GetCallStatisticsAndClear();
+                var callsPerUser = callStat.GroupBy(
+                    c => c.UserId,
+                    (k, c) => new { UserId = k, LastLogin = c.Max(cc => cc.CallTime) }
+                ).ToList();
 
-                if (callStat.Any())
+                using (var trans = _uow.BeginTransaction())
                 {
-                    // we aggregate the counts for different hours => do not store a record overlapping two hours (see consolidation job)
-
-                    var callsPerUser = callStat.GroupBy(
+                    var userEntities = await _repository.GetTrackingAsync(callsPerUser.Select(c => c.UserId));
+                    var joinedUsers = callsPerUser.Join(
+                        userEntities,
+                        u => u.UserId,
                         c => c.UserId,
-                        (k, c) => new { UserId = k, LastLogin = c.Max(cc => cc.CallTime) }
-                    ).ToList();
-
-                    using (var trans = _uow.BeginTransaction())
+                        (c, u) => new { User = u, Call = c });
+                    foreach (var joinedUser in joinedUsers)
                     {
-                        var userEntities = await _repository.GetTracking(callsPerUser.Select(c => c.UserId));
-                        var joinedUsers = callsPerUser.Join(
-                            userEntities,
-                            u => u.UserId,
-                            c => c.UserId,
-                            (c, u) => new { User = u, Call = c });
-                        foreach (var joinedUser in joinedUsers)
+                        if (!joinedUser.User.LastLogin.HasValue || joinedUser.Call.LastLogin >= joinedUser.User.LastLogin)
                         {
-                            if (!joinedUser.User.LastLogin.HasValue || joinedUser.Call.LastLogin >= joinedUser.User.LastLogin)
-                            {
-                                joinedUser.User.LastLogin = joinedUser.Call.LastLogin;
-                            }
+                            joinedUser.User.LastLogin = joinedUser.Call.LastLogin;
                         }
-
-                        await trans.CommitTransactionAsync();
                     }
+
+                    await trans.CommitTransactionAsync();
                 }
             }
-            catch (Exception e)
-            {
-                _logger.LogError(e, $"Could not: {JobName}.");
-            }
         }
-
-        public async Task SetContext()
+        catch (Exception e)
         {
-            await Task.CompletedTask;
+            _logger.LogError(e, $"Could not: {JobName}.");
         }
+    }
+
+    public async Task SetContextAsync()
+    {
+        await Task.CompletedTask;
     }
 }

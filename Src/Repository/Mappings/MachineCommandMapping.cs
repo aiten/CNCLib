@@ -14,28 +14,27 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository.Mappings
+namespace CNCLib.Repository.Mappings;
+
+using CNCLib.Repository.Abstraction.Entities;
+
+using Framework.Repository.Mappings;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+public static class MachineCommandMapping
 {
-    using CNCLib.Repository.Abstraction.Entities;
-
-    using Framework.Repository.Mappings;
-
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-    public static class MachineCommandMapping
+    public static void Map(this EntityTypeBuilder<MachineCommandEntity> entity)
     {
-        public static void Map(this EntityTypeBuilder<MachineCommandEntity> entity)
-        {
-            entity.ToTable("MachineCommand");
+        entity.ToTable("MachineCommand");
 
-            entity.HasKey(mc => mc.MachineCommandId);
+        entity.HasKey(mc => mc.MachineCommandId);
 
-            entity.Property(m => m.CommandString).AsRequiredText(64);
-            entity.Property(m => m.CommandName).AsRequiredText(64);
-            entity.Property(m => m.JoystickMessage).HasMaxLength(64);
+        entity.Property(m => m.CommandString).AsRequiredText(64);
+        entity.Property(m => m.CommandName).AsRequiredText(64);
+        entity.Property(m => m.JoystickMessage).HasMaxLength(64);
 
-            entity.HasOne(mc => mc.Machine).WithMany(m => m.MachineCommands).HasForeignKey(mc => mc.MachineId);
-        }
+        entity.HasOne(mc => mc.Machine).WithMany(m => m.MachineCommands).HasForeignKey(mc => mc.MachineId);
     }
 }

@@ -14,34 +14,33 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository.Abstraction
+namespace CNCLib.Repository.Abstraction;
+
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using CNCLib.Repository.Abstraction.Entities;
+using CNCLib.Repository.Abstraction.QueryResult;
+
+using Framework.Repository.Abstraction;
+
+public interface IUserFileRepository : ICrudRepository<UserFileEntity, int>
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+    Task<IList<UserFileEntity>> GetByUserAsync(int userId);
 
-    using CNCLib.Repository.Abstraction.Entities;
-    using CNCLib.Repository.Abstraction.QueryResult;
+    Task<IList<int>> GetIdByUserAsync(int userId);
 
-    using Framework.Repository.Abstraction;
+    Task DeleteByUserAsync(int userId);
 
-    public interface IUserFileRepository : ICrudRepository<UserFileEntity, int>
-    {
-        Task<IList<UserFileEntity>> GetByUser(int userId);
+    Task<IList<UserFileInfoQuery>> GetFileInfosAsync(int userId);
 
-        Task<IList<int>> GetIdByUser(int userId);
+    Task<UserFileInfoQuery> GetFileInfoAsync(int userFileId);
 
-        Task DeleteByUser(int userId);
+    Task<int> GetFileIdAsync(int userId, string fileName);
 
-        Task<IList<UserFileInfoQuery>> GetFileInfos(int userId);
+    Task<UserFileEntity> GetByNameAsync(int userId, string fileName);
 
-        Task<UserFileInfoQuery> GetFileInfo(int userFileId);
+    Task<long> GetTotalUserFileSizeAsync(int userId);
 
-        Task<int> GetFileId(int userId, string fileName);
-
-        Task<UserFileEntity> GetByName(int userId, string fileName);
-
-        Task<long> GetTotalUserFileSize(int userId);
-
-        Task<long> GetUserFileSize(int userFileId);
-    }
+    Task<long> GetUserFileSizeAsync(int userFileId);
 }

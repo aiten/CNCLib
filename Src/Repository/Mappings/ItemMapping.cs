@@ -14,30 +14,29 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository.Mappings
+namespace CNCLib.Repository.Mappings;
+
+using CNCLib.Repository.Abstraction.Entities;
+
+using Framework.Repository.Mappings;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+public static class ItemMapping
 {
-    using CNCLib.Repository.Abstraction.Entities;
-
-    using Framework.Repository.Mappings;
-
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-    public static class ItemMapping
+    public static void Map(this EntityTypeBuilder<ItemEntity> entity)
     {
-        public static void Map(this EntityTypeBuilder<ItemEntity> entity)
-        {
-            entity.ToTable("Item");
+        entity.ToTable("Item");
 
-            entity.HasKey(i => i.ItemId);
+        entity.HasKey(i => i.ItemId);
 
-            entity.HasIndex(c => new { c.UserId, c.Name }).IsUnique();
+        entity.HasIndex(c => new { c.UserId, c.Name }).IsUnique();
 
-            entity.Property(i => i.Name).AsRequiredText(64);
-            entity.Property(i => i.ClassName).AsRequiredText(255);
+        entity.Property(i => i.Name).AsRequiredText(64);
+        entity.Property(i => i.ClassName).AsRequiredText(255);
 
-            entity.HasOne(i => i.User);
-            entity.Property(i => i.UserId);
-        }
+        entity.HasOne(i => i.User);
+        entity.Property(i => i.UserId);
     }
 }

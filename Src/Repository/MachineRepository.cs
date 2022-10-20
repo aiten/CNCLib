@@ -14,83 +14,82 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository
+namespace CNCLib.Repository;
+
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+using CNCLib.Repository.Abstraction;
+using CNCLib.Repository.Abstraction.Entities;
+using CNCLib.Repository.Context;
+
+using Framework.Repository;
+
+using Microsoft.EntityFrameworkCore;
+
+public class MachineRepository : CrudRepository<CNCLibContext, MachineEntity, int>, IMachineRepository
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
+    #region ctr/default/overrides
 
-    using CNCLib.Repository.Abstraction;
-    using CNCLib.Repository.Abstraction.Entities;
-    using CNCLib.Repository.Context;
-
-    using Framework.Repository;
-
-    using Microsoft.EntityFrameworkCore;
-
-    public class MachineRepository : CrudRepository<CNCLibContext, MachineEntity, int>, IMachineRepository
+    public MachineRepository(CNCLibContext context) : base(context)
     {
-        #region ctr/default/overrides
-
-        public MachineRepository(CNCLibContext context) : base(context)
-        {
-        }
-
-        protected override FilterBuilder<MachineEntity, int> FilterBuilder =>
-            new()
-            {
-                PrimaryWhere   = (query, key) => query.Where(item => item.MachineId == key),
-                PrimaryWhereIn = (query, keys) => query.Where(item => keys.Contains(item.MachineId))
-            };
-
-        protected override IQueryable<MachineEntity> AddInclude(IQueryable<MachineEntity> query)
-        {
-            return query.Include(x => x.MachineCommands).Include(x => x.MachineInitCommands).Include(x => x.User);
-        }
-
-        protected override void AssignValuesGraph(MachineEntity trackingEntity, MachineEntity values)
-        {
-            base.AssignValuesGraph(trackingEntity, values);
-            Sync(trackingEntity.MachineCommands,
-                values.MachineCommands,
-                (x, y) => x.MachineCommandId > 0 && x.MachineCommandId == y.MachineCommandId,
-                x => x.Machine = null);
-            Sync(trackingEntity.MachineInitCommands,
-                values.MachineInitCommands,
-                (x, y) => x.MachineInitCommandId > 0 && x.MachineInitCommandId == y.MachineInitCommandId,
-                x => x.Machine = null);
-        }
-
-        #endregion
-
-        #region extra Queries
-
-        public async Task<IList<MachineEntity>> GetByUser(int userId)
-        {
-            return await QueryWithInclude.Where(m => m.UserId == userId).ToListAsync();
-        }
-
-        public async Task<IList<int>> GetIdByUser(int userId)
-        {
-            return await Query.Where(m => m.UserId == userId).Select(m => m.MachineId).ToListAsync();
-        }
-
-        public async Task DeleteByUser(int userId)
-        {
-            var machines = await TrackingQueryWithInclude.Where(m => m.UserId == userId).ToListAsync();
-            DeleteEntities(machines);
-        }
-
-        public async Task<IList<MachineCommandEntity>> GetMachineCommands(int machineId)
-        {
-            return await Context.Set<MachineCommandEntity>().Where(c => c.MachineId == machineId).ToListAsync();
-        }
-
-        public async Task<IList<MachineInitCommandEntity>> GetMachineInitCommands(int machineId)
-        {
-            return await Context.Set<MachineInitCommandEntity>().Where(c => c.MachineId == machineId).ToListAsync();
-        }
-
-        #endregion
     }
+
+    protected override FilterBuilder<MachineEntity, int> FilterBuilder =>
+        new()
+        {
+            PrimaryWhere   = (query, key) => query.Where(item => item.MachineId == key),
+            PrimaryWhereIn = (query, keys) => query.Where(item => keys.Contains(item.MachineId))
+        };
+
+    protected override IQueryable<MachineEntity> AddInclude(IQueryable<MachineEntity> query)
+    {
+        return query.Include(x => x.MachineCommands).Include(x => x.MachineInitCommands).Include(x => x.User);
+    }
+
+    protected override void AssignValuesGraph(MachineEntity trackingEntity, MachineEntity values)
+    {
+        base.AssignValuesGraph(trackingEntity, values);
+        Sync(trackingEntity.MachineCommands,
+            values.MachineCommands,
+            (x, y) => x.MachineCommandId > 0 && x.MachineCommandId == y.MachineCommandId,
+            x => x.Machine = null);
+        Sync(trackingEntity.MachineInitCommands,
+            values.MachineInitCommands,
+            (x, y) => x.MachineInitCommandId > 0 && x.MachineInitCommandId == y.MachineInitCommandId,
+            x => x.Machine = null);
+    }
+
+    #endregion
+
+    #region extra Queries
+
+    public async Task<IList<MachineEntity>> GetByUserAsync(int userId)
+    {
+        return await QueryWithInclude.Where(m => m.UserId == userId).ToListAsync();
+    }
+
+    public async Task<IList<int>> GetIdByUserAsync(int userId)
+    {
+        return await Query.Where(m => m.UserId == userId).Select(m => m.MachineId).ToListAsync();
+    }
+
+    public async Task DeleteByUserAsync(int userId)
+    {
+        var machines = await TrackingQueryWithInclude.Where(m => m.UserId == userId).ToListAsync();
+        DeleteEntities(machines);
+    }
+
+    public async Task<IList<MachineCommandEntity>> GetMachineCommandsAsync(int machineId)
+    {
+        return await Context.Set<MachineCommandEntity>().Where(c => c.MachineId == machineId).ToListAsync();
+    }
+
+    public async Task<IList<MachineInitCommandEntity>> GetMachineInitCommandsAsync(int machineId)
+    {
+        return await Context.Set<MachineInitCommandEntity>().Where(c => c.MachineId == machineId).ToListAsync();
+    }
+
+    #endregion
 }

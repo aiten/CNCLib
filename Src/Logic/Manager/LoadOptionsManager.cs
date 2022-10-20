@@ -14,102 +14,101 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Logic.Manager
+namespace CNCLib.Logic.Manager;
+
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Logic.Client;
+
+using Framework.Logic;
+
+using Microsoft.AspNetCore.JsonPatch;
+
+public class LoadOptionsManager : ManagerBase, ILoadOptionsManager
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+    private readonly IDynItemController _dynItemController;
 
-    using CNCLib.Logic.Abstraction;
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Logic.Client;
-
-    using Framework.Logic;
-
-    using Microsoft.AspNetCore.JsonPatch;
-
-    public class LoadOptionsManager : ManagerBase, ILoadOptionsManager
+    public LoadOptionsManager(IDynItemController dynItemController)
     {
-        private readonly IDynItemController _dynItemController;
+        _dynItemController = dynItemController;
+    }
 
-        public LoadOptionsManager(IDynItemController dynItemController)
+    public async Task<IEnumerable<LoadOptions>> GetAllAsync()
+    {
+        var list = new List<LoadOptions>();
+        foreach (DynItem item in await _dynItemController.GetAllAsync(typeof(LoadOptions)))
         {
-            _dynItemController = dynItemController;
+            var loadOption = (LoadOptions)await _dynItemController.CreateAsync(item.ItemId);
+            loadOption.Id = item.ItemId;
+            list.Add(loadOption);
         }
 
-        public async Task<IEnumerable<LoadOptions>> GetAll()
-        {
-            var list = new List<LoadOptions>();
-            foreach (DynItem item in await _dynItemController.GetAll(typeof(LoadOptions)))
-            {
-                var loadOption = (LoadOptions)await _dynItemController.Create(item.ItemId);
-                loadOption.Id = item.ItemId;
-                list.Add(loadOption);
-            }
+        return list;
+    }
 
-            return list;
+    public async Task<LoadOptions> GetAsync(int id)
+    {
+        object obj = await _dynItemController.CreateAsync(id);
+        if (obj != null)
+        {
+            var loadOption = (LoadOptions)obj;
+            loadOption.Id = id;
+            return loadOption;
         }
 
-        public async Task<LoadOptions> Get(int id)
-        {
-            object obj = await _dynItemController.Create(id);
-            if (obj != null)
-            {
-                var loadOption = (LoadOptions)obj;
-                loadOption.Id = id;
-                return loadOption;
-            }
+        return null;
+    }
 
-            return null;
-        }
+    public async Task DeleteAsync(LoadOptions loadOption)
+    {
+        await _dynItemController.DeleteAsync(loadOption.Id);
+    }
 
-        public async Task Delete(LoadOptions loadOption)
-        {
-            await _dynItemController.Delete(loadOption.Id);
-        }
+    public async Task DeleteAsync(int key)
+    {
+        await _dynItemController.DeleteAsync(key);
+    }
 
-        public async Task Delete(int key)
-        {
-            await _dynItemController.Delete(key);
-        }
+    public async Task<int> AddAsync(LoadOptions loadOption)
+    {
+        return await _dynItemController.AddAsync(loadOption.SettingName, loadOption);
+    }
 
-        public async Task<int> Add(LoadOptions loadOption)
-        {
-            return await _dynItemController.Add(loadOption.SettingName, loadOption);
-        }
+    public async Task UpdateAsync(LoadOptions loadOption)
+    {
+        await _dynItemController.SaveAsync(loadOption.Id, loadOption.SettingName, loadOption);
+    }
 
-        public async Task Update(LoadOptions loadOption)
-        {
-            await _dynItemController.Save(loadOption.Id, loadOption.SettingName, loadOption);
-        }
+    public Task<IEnumerable<int>> AddAsync(IEnumerable<LoadOptions> values)
+    {
+        throw new System.NotImplementedException();
+    }
 
-        public Task<IEnumerable<int>> Add(IEnumerable<LoadOptions> values)
-        {
-            throw new System.NotImplementedException();
-        }
+    public Task UpdateAsync(IEnumerable<LoadOptions> values)
+    {
+        throw new System.NotImplementedException();
+    }
 
-        public Task Update(IEnumerable<LoadOptions> values)
-        {
-            throw new System.NotImplementedException();
-        }
+    public Task DeleteAsync(IEnumerable<LoadOptions> values)
+    {
+        throw new System.NotImplementedException();
+    }
 
-        public Task Delete(IEnumerable<LoadOptions> values)
-        {
-            throw new System.NotImplementedException();
-        }
+    public Task DeleteAsync(IEnumerable<int> keys)
+    {
+        throw new System.NotImplementedException();
+    }
 
-        public Task Delete(IEnumerable<int> keys)
-        {
-            throw new System.NotImplementedException();
-        }
+    public Task<IEnumerable<LoadOptions>> GetAsync(IEnumerable<int> key)
+    {
+        throw new System.NotImplementedException();
+    }
 
-        public Task<IEnumerable<LoadOptions>> Get(IEnumerable<int> key)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task Patch(int key, JsonPatchDocument<LoadOptions> patch)
-        {
-            throw new System.NotImplementedException();
-        }
+    public Task PatchAsync(int key, JsonPatchDocument<LoadOptions> patch)
+    {
+        throw new System.NotImplementedException();
     }
 }

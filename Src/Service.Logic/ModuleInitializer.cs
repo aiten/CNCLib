@@ -14,23 +14,22 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Service.Logic
+namespace CNCLib.Service.Logic;
+
+using Framework.Dependency;
+using Framework.Localization.Abstraction;
+using Framework.Startup.Abstraction;
+
+using Microsoft.Extensions.DependencyInjection;
+
+public class ModuleInitializer : IModuleInitializer
 {
-    using Framework.Dependency;
-    using Framework.Localization.Abstraction;
-    using Framework.Startup.Abstraction;
-
-    using Microsoft.Extensions.DependencyInjection;
-
-    public class ModuleInitializer : IModuleInitializer
+    public void AddServices(IServiceCollection services)
     {
-        public void AddServices(IServiceCollection services)
-        {
-            services.AddAssemblyIncludingInternals(ServiceLifetime.Transient, typeof(MachineService).Assembly);
-        }
+        services.AddAssemblyIncludingInternals(ServiceLifetime.Transient, typeof(MachineService).Assembly);
+    }
 
-        public void AddTranslationResources(ILocalizationCollector localisation)
-        {
-        }
+    public void AddTranslationResources(ILocalizationCollector localisation)
+    {
     }
 }

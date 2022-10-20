@@ -14,17 +14,16 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository.Mappings
-{
-    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+namespace CNCLib.Repository.Mappings;
 
-    public static class MappingExtensions
-    {
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+public static class MappingExtensions
+{
 /*
         public static PropertyBuilder<string> AsRequiredText(this PropertyBuilder<string> builder, int maxLength)
         {
             return builder.IsUnicode().IsRequired().HasMaxLength(maxLength);
         }
 */
-    }
 }

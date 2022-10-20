@@ -14,33 +14,32 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.GCode.Generate.Commands
+namespace CNCLib.GCode.Generate.Commands;
+
+[IsGCommand("M106")]
+public class M106Command : Command
 {
-    [IsGCommand("M106")]
-    public class M106Command : Command
+    #region crt + factory
+
+    public M106Command()
     {
-        #region crt + factory
-
-        public M106Command()
-        {
-            Code = "M106";
-        }
-
-        #endregion
-
-        #region GCode
-
-        #endregion
-
-        #region Itteration
-
-        public override void SetCommandState(CommandState state)
-        {
-            base.SetCommandState(state);
-            state.LaserOn  = true;
-            state.UseLaser = true;
-        }
-
-        #endregion
+        Code = "M106";
     }
+
+    #endregion
+
+    #region GCode
+
+    #endregion
+
+    #region Itteration
+
+    public override void SetCommandState(CommandState state)
+    {
+        base.SetCommandState(state);
+        state.LaserOn  = true;
+        state.UseLaser = true;
+    }
+
+    #endregion
 }

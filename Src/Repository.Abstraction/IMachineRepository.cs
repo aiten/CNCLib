@@ -14,25 +14,24 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository.Abstraction
+namespace CNCLib.Repository.Abstraction;
+
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using CNCLib.Repository.Abstraction.Entities;
+
+using Framework.Repository.Abstraction;
+
+public interface IMachineRepository : ICrudRepository<MachineEntity, int>
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+    Task<IList<MachineEntity>> GetByUserAsync(int userId);
 
-    using CNCLib.Repository.Abstraction.Entities;
+    Task<IList<int>> GetIdByUserAsync(int userId);
 
-    using Framework.Repository.Abstraction;
+    Task DeleteByUserAsync(int userId);
 
-    public interface IMachineRepository : ICrudRepository<MachineEntity, int>
-    {
-        Task<IList<MachineEntity>> GetByUser(int userId);
+    Task<IList<MachineCommandEntity>> GetMachineCommandsAsync(int machineId);
 
-        Task<IList<int>> GetIdByUser(int userId);
-
-        Task DeleteByUser(int userId);
-
-        Task<IList<MachineCommandEntity>> GetMachineCommands(int machineId);
-
-        Task<IList<MachineInitCommandEntity>> GetMachineInitCommands(int machineId);
-    }
+    Task<IList<MachineInitCommandEntity>> GetMachineInitCommandsAsync(int machineId);
 }

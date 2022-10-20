@@ -14,144 +14,143 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.UnitTest.Repository
+namespace CNCLib.UnitTest.Repository;
+
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+using CNCLib.Repository;
+using CNCLib.Repository.Abstraction;
+using CNCLib.Repository.Abstraction.Entities;
+using CNCLib.Repository.Context;
+
+using FluentAssertions;
+
+using Framework.Repository;
+using Framework.Tools;
+using Framework.UnitTest.Repository;
+
+using Xunit;
+
+public class ItemRepositoryTests : RepositoryTests
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
+    #region crt and overrides
 
-    using CNCLib.Repository;
-    using CNCLib.Repository.Abstraction;
-    using CNCLib.Repository.Abstraction.Entities;
-    using CNCLib.Repository.Context;
-
-    using FluentAssertions;
-
-    using Framework.Repository;
-    using Framework.Tools;
-    using Framework.UnitTest.Repository;
-
-    using Xunit;
-
-    public class ItemRepositoryTests : RepositoryTests
+    public ItemRepositoryTests(RepositoryTestFixture testFixture) : base(testFixture)
     {
-        #region crt and overrides
+    }
 
-        public ItemRepositoryTests(RepositoryTestFixture testFixture) : base(testFixture)
+    protected CrudRepositoryTests<CNCLibContext, ItemEntity, int, IItemRepository> CreateTestContext()
+    {
+        return new CrudRepositoryTests<CNCLibContext, ItemEntity, int, IItemRepository>()
         {
-        }
-
-        protected CrudRepositoryTests<CNCLibContext, ItemEntity, int, IItemRepository> CreateTestContext()
-        {
-            return new CrudRepositoryTests<CNCLibContext, ItemEntity, int, IItemRepository>()
+            CreateTestDbContext = () =>
             {
-                CreateTestDbContext = () =>
+                var context = TestFixture.CreateDbContext();
+                var uow     = new UnitOfWork<CNCLibContext>(context);
+                var rep     = new ItemRepository(context);
+                return new CrudTestDbContext<CNCLibContext, ItemEntity, int, IItemRepository>(context, uow, rep);
+            },
+            GetEntityKey = (entity) => entity.ItemId,
+            SetEntityKey = (entity, key) =>
+            {
+                entity.ItemId = key;
+                foreach (var itemProp in entity.ItemProperties)
                 {
-                    var context = TestFixture.CreateDbContext();
-                    var uow     = new UnitOfWork<CNCLibContext>(context);
-                    var rep     = new ItemRepository(context);
-                    return new CrudTestDbContext<CNCLibContext, ItemEntity, int, IItemRepository>(context, uow, rep);
-                },
-                GetEntityKey = (entity) => entity.ItemId,
-                SetEntityKey = (entity, key) =>
-                {
-                    entity.ItemId = key;
-                    foreach (var itemProp in entity.ItemProperties)
+                    itemProp.ItemId = key;
+                }
+            },
+            CompareEntity = (entity1, entity2) => entity1.ArePropertiesEqual(entity2, new[] { @"ItemId", @"User" })
+        };
+    }
+
+    #endregion
+
+    #region CRUD Test
+
+    [Fact]
+    public async Task GetAllTest()
+    {
+        var entities = await CreateTestContext().GetAll();
+        entities.Should().HaveCountGreaterThan(1);
+        entities.Count(i => i.Name == "laser cut 160mg paper").Should().Be(1);
+        entities.Count(i => i.Name == "laser cut hole 130mg black").Should().Be(1);
+    }
+
+    [Fact]
+    public async Task GetOKTest()
+    {
+        var entity = await CreateTestContext().GetOK(1);
+        entity.ItemId.Should().Be(1);
+    }
+
+    [Fact]
+    public async Task GetTrackingOKTest()
+    {
+        var entity = await CreateTestContext().GetTrackingOK(2);
+        entity.ItemId.Should().Be(2);
+    }
+
+    [Fact]
+    public async Task GetNotExistTest()
+    {
+        await CreateTestContext().GetNotExist(2342341);
+    }
+
+    [Fact]
+    public async Task AddUpdateDeleteTest()
+    {
+        await CreateTestContext().AddUpdateDelete(() => CreateItem(@"AddUpdateDeleteTest"), (entity) => entity.ClassName = "DummyClassUpdate");
+    }
+
+    [Fact]
+    public async Task AddUpdateDeleteWithItemPropertiesTest()
+    {
+        await CreateTestContext().AddUpdateDelete(
+            () => AddItemProperties(CreateItem(@"AddUpdateDeleteWithItemPropertiesTest")),
+            (entity) =>
+            {
+                entity.ClassName = "DummyClassUpdate";
+                entity.ItemProperties.Remove(entity.ItemProperties.First());
+                entity.ItemProperties.First().Value = "NewValue";
+                entity.ItemProperties.Add(
+                    new ItemPropertyEntity()
                     {
-                        itemProp.ItemId = key;
-                    }
-                },
-                CompareEntity = (entity1, entity2) => entity1.ArePropertiesEqual(entity2, new[] { @"ItemId", @"User" })
-            };
-        }
+                        Name  = @"NewItemProperty",
+                        Value = @"Hallo"
+                    });
+            });
+    }
 
-        #endregion
+    [Fact]
+    public async Task AddRollbackTest()
+    {
+        await CreateTestContext().AddRollBack(() => CreateItem(@"AddRollbackTest"));
+    }
 
-        #region CRUD Test
+    #endregion
 
-        [Fact]
-        public async Task GetAllTest()
+    private static ItemEntity CreateItem(string name)
+    {
+        var e = new ItemEntity
         {
-            var entities = await CreateTestContext().GetAll();
-            entities.Should().HaveCountGreaterThan(1);
-            entities.Count(i => i.Name == "laser cut 160mg paper").Should().Be(1);
-            entities.Count(i => i.Name == "laser cut hole 130mg black").Should().Be(1);
-        }
+            Name           = name,
+            ClassName      = "Dummy",
+            ItemProperties = new List<ItemPropertyEntity>(),
+            UserId         = 1
+        };
+        return e;
+    }
 
-        [Fact]
-        public async Task GetOKTest()
+    private static ItemEntity AddItemProperties(ItemEntity e)
+    {
+        e.ItemProperties = new List<ItemPropertyEntity>
         {
-            var entity = await CreateTestContext().GetOK(1);
-            entity.ItemId.Should().Be(1);
-        }
-
-        [Fact]
-        public async Task GetTrackingOKTest()
-        {
-            var entity = await CreateTestContext().GetTrackingOK(2);
-            entity.ItemId.Should().Be(2);
-        }
-
-        [Fact]
-        public async Task GetNotExistTest()
-        {
-            await CreateTestContext().GetNotExist(2342341);
-        }
-
-        [Fact]
-        public async Task AddUpdateDeleteTest()
-        {
-            await CreateTestContext().AddUpdateDelete(() => CreateItem(@"AddUpdateDeleteTest"), (entity) => entity.ClassName = "DummyClassUpdate");
-        }
-
-        [Fact]
-        public async Task AddUpdateDeleteWithItemPropertiesTest()
-        {
-            await CreateTestContext().AddUpdateDelete(
-                () => AddItemProperties(CreateItem(@"AddUpdateDeleteWithItemPropertiesTest")),
-                (entity) =>
-                {
-                    entity.ClassName = "DummyClassUpdate";
-                    entity.ItemProperties.Remove(entity.ItemProperties.First());
-                    entity.ItemProperties.First().Value = "NewValue";
-                    entity.ItemProperties.Add(
-                        new ItemPropertyEntity()
-                        {
-                            Name  = @"NewItemProperty",
-                            Value = @"Hallo"
-                        });
-                });
-        }
-
-        [Fact]
-        public async Task AddRollbackTest()
-        {
-            await CreateTestContext().AddRollBack(() => CreateItem(@"AddRollbackTest"));
-        }
-
-        #endregion
-
-        private static ItemEntity CreateItem(string name)
-        {
-            var e = new ItemEntity
-            {
-                Name           = name,
-                ClassName      = "Dummy",
-                ItemProperties = new List<ItemPropertyEntity>(),
-                UserId         = 1
-            };
-            return e;
-        }
-
-        private static ItemEntity AddItemProperties(ItemEntity e)
-        {
-            e.ItemProperties = new List<ItemPropertyEntity>
-            {
-                new ItemPropertyEntity { Name = "Name1", Value = "Test1", Item = e },
-                new ItemPropertyEntity { Name = "Name2", Value = "Test2", Item = e },
-                new ItemPropertyEntity { Name = "Name3", Item  = e }
-            };
-            return e;
-        }
+            new ItemPropertyEntity { Name = "Name1", Value = "Test1", Item = e },
+            new ItemPropertyEntity { Name = "Name2", Value = "Test2", Item = e },
+            new ItemPropertyEntity { Name = "Name3", Item  = e }
+        };
+        return e;
     }
 }

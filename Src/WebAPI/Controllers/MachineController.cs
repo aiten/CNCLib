@@ -14,122 +14,121 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WebAPI.Controllers
+namespace CNCLib.WebAPI.Controllers;
+
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Shared;
+
+using Framework.WebAPI.Controller;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+[Authorize]
+[Route("api/[controller]")]
+public class MachineController : Controller
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+    private readonly IMachineManager    _manager;
+    private readonly ICNCLibUserContext _userContext;
 
-    using CNCLib.Logic.Abstraction;
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Shared;
-
-    using Framework.WebAPI.Controller;
-
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
-
-    [Authorize]
-    [Route("api/[controller]")]
-    public class MachineController : Controller
+    public MachineController(IMachineManager manager, ICNCLibUserContext userContext)
     {
-        private readonly IMachineManager    _manager;
-        private readonly ICNCLibUserContext _userContext;
+        _manager     = manager;
+        _userContext = userContext;
+    }
 
-        public MachineController(IMachineManager manager, ICNCLibUserContext userContext)
-        {
-            _manager     = manager;
-            _userContext = userContext;
-        }
+    #region default REST
 
-        #region default REST
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Machine>>> Get()
+    {
+        return await this.GetAll(_manager);
+    }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Machine>>> Get()
-        {
-            return await this.GetAll(_manager);
-        }
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<Machine>> Get(int id)
+    {
+        return await this.Get(_manager, id);
+    }
 
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<Machine>> Get(int id)
-        {
-            return await this.Get(_manager, id);
-        }
+    [HttpPost]
+    public async Task<ActionResult<Machine>> Add([FromBody] Machine value)
+    {
+        return await this.Add<Machine, int>(_manager, value);
+    }
 
-        [HttpPost]
-        public async Task<ActionResult<Machine>> Add([FromBody] Machine value)
-        {
-            return await this.Add<Machine, int>(_manager, value);
-        }
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult> Update(int id, [FromBody] Machine value)
+    {
+        return await this.Update<Machine, int>(_manager, id, value.MachineId, value);
+    }
 
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult> Update(int id, [FromBody] Machine value)
-        {
-            return await this.Update<Machine, int>(_manager, id, value.MachineId, value);
-        }
+    [HttpDelete("{id:int}")]
+    public async Task<ActionResult> Delete(int id)
+    {
+        return await this.Delete<Machine, int>(_manager, id);
+    }
 
-        [HttpDelete("{id:int}")]
-        public async Task<ActionResult> Delete(int id)
-        {
-            return await this.Delete<Machine, int>(_manager, id);
-        }
+    #endregion
 
-        #endregion
+    #region bulk
 
-        #region bulk
+    [HttpPost("bulk")]
+    public async Task<ActionResult<IEnumerable<UriAndValue<Machine>>>> Add([FromBody] IEnumerable<Machine> values)
+    {
+        return await this.Add<Machine, int>(_manager, values);
+    }
 
-        [HttpPost("bulk")]
-        public async Task<ActionResult<IEnumerable<UriAndValue<Machine>>>> Add([FromBody] IEnumerable<Machine> values)
-        {
-            return await this.Add<Machine, int>(_manager, values);
-        }
+    [HttpPut("bulk")]
+    public async Task<ActionResult> Update([FromBody] IEnumerable<Machine> values)
+    {
+        return await this.Update<Machine, int>(_manager, values);
+    }
 
-        [HttpPut("bulk")]
-        public async Task<ActionResult> Update([FromBody] IEnumerable<Machine> values)
-        {
-            return await this.Update<Machine, int>(_manager, values);
-        }
+    [HttpDelete("bulk")]
+    public async Task<ActionResult> Delete(int[] ids)
+    {
+        return await this.Delete<Machine, int>(_manager, ids);
+    }
 
-        [HttpDelete("bulk")]
-        public async Task<ActionResult> Delete(int[] ids)
-        {
-            return await this.Delete<Machine, int>(_manager, ids);
-        }
+    #endregion
 
-        #endregion
+    [HttpGet("default")]
+    public async Task<ActionResult<Machine>> DefaultMachine()
+    {
+        var m = await _manager.DefaultAsync();
+        return await this.NotFoundOrOk(m);
+    }
 
-        [HttpGet("default")]
-        public async Task<ActionResult<Machine>> DefaultMachine()
-        {
-            var m = await _manager.Default();
-            return await this.NotFoundOrOk(m);
-        }
+    [HttpGet("defaultmachine")]
+    public async Task<ActionResult<int>> GetDefaultMachine()
+    {
+        int id = await _manager.GetDefaultAsync();
+        return Ok(id);
+    }
 
-        [HttpGet("defaultmachine")]
-        public async Task<ActionResult<int>> GetDefaultMachine()
-        {
-            int id = await _manager.GetDefault();
-            return Ok(id);
-        }
+    [HttpPut("defaultmachine")]
+    public async Task<ActionResult> SetDefaultMachine(int id)
+    {
+        await _manager.SetDefaultAsync(id);
+        return StatusCode(204);
+    }
 
-        [HttpPut("defaultmachine")]
-        public async Task<ActionResult> SetDefaultMachine(int id)
-        {
-            await _manager.SetDefault(id);
-            return StatusCode(204);
-        }
+    [HttpGet("{id:int}/joystick")]
+    public async Task<ActionResult<string>> TranslateJoystickMessage(int id, string joystickMessage)
+    {
+        return Ok(await _manager.TranslateJoystickMessageAsync(id, joystickMessage));
+    }
 
-        [HttpGet("{id:int}/joystick")]
-        public async Task<ActionResult<string>> TranslateJoystickMessage(int id, string joystickMessage)
-        {
-            return Ok(await _manager.TranslateJoystickMessage(id, joystickMessage));
-        }
-
-        [HttpPut("fromEeprom")]
-        public ActionResult<Machine> UpdateFromEeprom([FromBody] Tuple<Machine, uint[]> machine_eepromValues)
-        {
-            var ret = _manager.UpdateFromEeprom(machine_eepromValues.Item1, machine_eepromValues.Item2);
-            return Ok(ret);
-        }
+    [HttpPut("fromEeprom")]
+    public ActionResult<Machine> UpdateFromEeprom([FromBody] Tuple<Machine, uint[]> machine_eepromValues)
+    {
+        var ret = _manager.UpdateFromEeprom(machine_eepromValues.Item1, machine_eepromValues.Item2);
+        return Ok(ret);
     }
 }

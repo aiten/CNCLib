@@ -14,14 +14,13 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.ViewModels
-{
-    using System;
+namespace CNCLib.WpfClient.ViewModels;
 
-    public interface IManualControlViewModel
-    {
-        void RunInNewTask(Action    todo);
-        void RunAndUpdate(Action    todo);
-        void SetPositions(decimal[] positions, int positionIdx);
-    }
+using System;
+
+public interface IManualControlViewModel
+{
+    void RunInNewTask(Action    todo);
+    void RunAndUpdate(Action    todo);
+    void SetPositions(decimal[] positions, int positionIdx);
 }

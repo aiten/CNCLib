@@ -14,56 +14,55 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.UnitTest.Logic
+namespace CNCLib.UnitTest.Logic;
+
+using System;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Logic.Manager;
+
+using FluentAssertions;
+
+using NSubstitute;
+
+using Xunit;
+
+public class EepromConfigManagerTests : LogicTests
 {
-    using System;
-    using System.Threading.Tasks;
-
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Logic.Manager;
-
-    using FluentAssertions;
-
-    using NSubstitute;
-
-    using Xunit;
-
-    public class EepromConfigManagerTests : LogicTests
+    private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
     {
-        private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
+        var rep = Substitute.For<TInterface>();
+        return rep;
+    }
+
+    [Fact]
+    public async Task CalculateMaxStepRate()
+    {
+        // no repository is needed
+        //var rep = CreateMock<IItemXXX>();
+        //    
+        //var itemEntity = new ItemEntity[0];
+        //rep.GetAsync().Returns(itemEntity);
+
+        var ctrl = new EepromConfigurationManager();
+
+        var input = new EepromConfigurationInput
         {
-            var rep = Substitute.For<TInterface>();
-            return rep;
-        }
-
-        [Fact]
-        public async Task CalculateMaxStepRate()
-        {
-            // no repository is needed
-            //var rep = CreateMock<IItemXXX>();
-            //    
-            //var itemEntity = new ItemEntity[0];
-            //rep.Get().Returns(itemEntity);
-
-            var ctrl = new EepromConfigurationManager();
-
-            var input = new EepromConfigurationInput
-            {
-                Teeth                  = 15,
-                ToothSizeInMm          = 2.0,
-                MicroSteps             = 16,
-                StepsPerRotation       = 200,
-                EstimatedRotationSpeed = 7.8,
-                TimeToAcc              = 0.2,
-                TimeToDec              = 0.15
-            };
-            var result = await ctrl.CalculateConfig(input);
-            result.Should().NotBeNull();
-            result.StepsPerRotation.Should().Be(3200);
-            result.StepsPerMm.Should().Be(3200.0 / (15.0 * 2.0));
-            result.Acc.Should().Be(375);
-            result.Dec.Should().Be(433);
-            result.MaxStepRate.Should().Be(24960);
-        }
+            Teeth                  = 15,
+            ToothSizeInMm          = 2.0,
+            MicroSteps             = 16,
+            StepsPerRotation       = 200,
+            EstimatedRotationSpeed = 7.8,
+            TimeToAcc              = 0.2,
+            TimeToDec              = 0.15
+        };
+        var result = await ctrl.CalculateConfigAsync(input);
+        result.Should().NotBeNull();
+        result.StepsPerRotation.Should().Be(3200);
+        result.StepsPerMm.Should().Be(3200.0 / (15.0 * 2.0));
+        result.Acc.Should().Be(375);
+        result.Dec.Should().Be(433);
+        result.MaxStepRate.Should().Be(24960);
     }
 }

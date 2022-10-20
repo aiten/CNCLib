@@ -14,119 +14,118 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.UnitTest.Logic
+namespace CNCLib.UnitTest.Logic;
+
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Logic.Client;
+using CNCLib.Logic.Manager;
+
+using FluentAssertions;
+
+using NSubstitute;
+
+using Xunit;
+
+public class JoystickManagerTests : LogicTests
 {
-    using System;
-    using System.Linq;
-    using System.Threading.Tasks;
-
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Logic.Client;
-    using CNCLib.Logic.Manager;
-
-    using FluentAssertions;
-
-    using NSubstitute;
-
-    using Xunit;
-
-    public class JoystickManagerTests : LogicTests
+    private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
     {
-        private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
-        {
-            var rep = Substitute.For<TInterface>();
-            return rep;
-        }
+        var rep = Substitute.For<TInterface>();
+        return rep;
+    }
 
-        [Fact]
-        public async Task GetAllJoysticks()
-        {
-            var rep  = CreateMock<IDynItemController>();
-            var ctrl = new JoystickManager(rep);
+    [Fact]
+    public async Task GetAllJoysticks()
+    {
+        var rep  = CreateMock<IDynItemController>();
+        var ctrl = new JoystickManager(rep);
 
-            rep.GetAll(typeof(Joystick)).Returns(
-                new[]
-                {
-                    new DynItem { ItemId = 1, Name = "Entry1" }
-                });
-            rep.Create(1).Returns(new Joystick { SerialServer = "Entry1", Id = 1, SerialServerUser = "HA" });
+        rep.GetAllAsync(typeof(Joystick)).Returns(
+            new[]
+            {
+                new DynItem { ItemId = 1, Name = "Entry1" }
+            });
+        rep.CreateAsync(1).Returns(new Joystick { SerialServer = "Entry1", Id = 1, SerialServerUser = "HA" });
 
-            var all = (await ctrl.GetAll()).ToList();
+        var all = (await ctrl.GetAllAsync()).ToList();
 
-            all.Should().HaveCount(1);
+        all.Should().HaveCount(1);
 
-            var first = all.First();
+        var first = all.First();
 
-            first.Id.Should().Be(1);
-            first.SerialServer.Should().Be("Entry1");
-            first.SerialServerUser.Should().Be("HA");
-        }
+        first.Id.Should().Be(1);
+        first.SerialServer.Should().Be("Entry1");
+        first.SerialServerUser.Should().Be("HA");
+    }
 
-        [Fact]
-        public async Task GetJoystick()
-        {
-            var rep  = CreateMock<IDynItemController>();
-            var ctrl = new JoystickManager(rep);
+    [Fact]
+    public async Task GetJoystick()
+    {
+        var rep  = CreateMock<IDynItemController>();
+        var ctrl = new JoystickManager(rep);
 
-            rep.Create(1).Returns(new Joystick { SerialServer = "Entry1", Id = 1, SerialServerUser = "HA" });
+        rep.CreateAsync(1).Returns(new Joystick { SerialServer = "Entry1", Id = 1, SerialServerUser = "HA" });
 
-            var all = await ctrl.Get(1);
+        var all = await ctrl.GetAsync(1);
 
-            all.Id.Should().Be(1);
-            all.SerialServer.Should().Be("Entry1");
-            all.SerialServerUser.Should().Be("HA");
-        }
+        all.Id.Should().Be(1);
+        all.SerialServer.Should().Be("Entry1");
+        all.SerialServerUser.Should().Be("HA");
+    }
 
-        [Fact]
-        public async Task GetJoystickNull()
-        {
-            var rep  = CreateMock<IDynItemController>();
-            var ctrl = new JoystickManager(rep);
+    [Fact]
+    public async Task GetJoystickNull()
+    {
+        var rep  = CreateMock<IDynItemController>();
+        var ctrl = new JoystickManager(rep);
 
-            rep.Create(1).Returns(new Joystick { SerialServer = "Entry1", Id = 1, SerialServerUser = "HA" });
+        rep.CreateAsync(1).Returns(new Joystick { SerialServer = "Entry1", Id = 1, SerialServerUser = "HA" });
 
-            var all = await ctrl.Get(2);
+        var all = await ctrl.GetAsync(2);
 
-            all.Should().BeNull();
-        }
+        all.Should().BeNull();
+    }
 
-        [Fact]
-        public async Task AddJoystick()
-        {
-            var rep  = CreateMock<IDynItemController>();
-            var ctrl = new JoystickManager(rep);
+    [Fact]
+    public async Task AddJoystick()
+    {
+        var rep  = CreateMock<IDynItemController>();
+        var ctrl = new JoystickManager(rep);
 
-            var joystick = new Joystick { SerialServer = "Entry1", Id = 1, SerialServerUser = "HA" };
+        var joystick = new Joystick { SerialServer = "Entry1", Id = 1, SerialServerUser = "HA" };
 
-            await ctrl.Add(joystick);
+        await ctrl.AddAsync(joystick);
 
-            await rep.Received().Add(Arg.Is<string>(x => x == "Joystick1"), Arg.Is<Joystick>(x => x.SerialServer == "Entry1" && x.SerialServerUser == "HA"));
-        }
+        await rep.Received().AddAsync(Arg.Is<string>(x => x == "Joystick1"), Arg.Is<Joystick>(x => x.SerialServer == "Entry1" && x.SerialServerUser == "HA"));
+    }
 
-        [Fact]
-        public async Task UpdateJoystick()
-        {
-            var rep  = CreateMock<IDynItemController>();
-            var ctrl = new JoystickManager(rep);
+    [Fact]
+    public async Task UpdateJoystick()
+    {
+        var rep  = CreateMock<IDynItemController>();
+        var ctrl = new JoystickManager(rep);
 
-            var joystick = new Joystick { SerialServer = "Entry1", Id = 1, SerialServerUser = "HA" };
+        var joystick = new Joystick { SerialServer = "Entry1", Id = 1, SerialServerUser = "HA" };
 
-            await ctrl.Update(joystick);
+        await ctrl.UpdateAsync(joystick);
 
-            await rep.Received().Save(Arg.Is<int>(x => x == 1), Arg.Is<string>(x => x == "Joystick1"), Arg.Is<Joystick>(x => x.SerialServer == "Entry1" && x.SerialServerUser == "HA"));
-        }
+        await rep.Received().SaveAsync(Arg.Is<int>(x => x == 1), Arg.Is<string>(x => x == "Joystick1"), Arg.Is<Joystick>(x => x.SerialServer == "Entry1" && x.SerialServerUser == "HA"));
+    }
 
-        [Fact]
-        public async Task DeleteJoystick()
-        {
-            var rep  = CreateMock<IDynItemController>();
-            var ctrl = new JoystickManager(rep);
+    [Fact]
+    public async Task DeleteJoystick()
+    {
+        var rep  = CreateMock<IDynItemController>();
+        var ctrl = new JoystickManager(rep);
 
-            var joystick = new Joystick { SerialServer = "Entry1", Id = 1, SerialServerUser = "HA" };
+        var joystick = new Joystick { SerialServer = "Entry1", Id = 1, SerialServerUser = "HA" };
 
-            await ctrl.Delete(joystick).ConfigureAwait(false);
+        await ctrl.DeleteAsync(joystick).ConfigureAwait(false);
 
-            await rep.Received().Delete(Arg.Is<int>(x => x == 1));
-        }
+        await rep.Received().DeleteAsync(Arg.Is<int>(x => x == 1));
     }
 }

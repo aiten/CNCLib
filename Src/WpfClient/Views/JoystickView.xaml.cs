@@ -14,38 +14,37 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.Views
+namespace CNCLib.WpfClient.Views;
+
+using System.Windows;
+
+using Framework.Dependency;
+using Framework.Wpf.ViewModels;
+
+/// <summary>
+/// Interaction logic for MainWindow.xaml
+/// </summary>
+public partial class JoystickView : Window
 {
-    using System.Windows;
-
-    using Framework.Dependency;
-    using Framework.Wpf.ViewModels;
-
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class JoystickView : Window
+    public JoystickView()
     {
-        public JoystickView()
+        var vm = AppService.GetRequiredService<ViewModels.JoystickViewModel>();
+        DataContext = vm;
+
+        InitializeComponent();
+
+        if (vm.CloseAction == null)
         {
-            var vm = AppService.GetRequiredService<ViewModels.JoystickViewModel>();
-            DataContext = vm;
-
-            InitializeComponent();
-
-            if (vm.CloseAction == null)
-            {
-                vm.CloseAction = Close;
-            }
-
-            Loaded += async (v, e) =>
-            {
-                var vmm = DataContext as BaseViewModel;
-                if (vmm != null)
-                {
-                    await vmm.Loaded();
-                }
-            };
+            vm.CloseAction = Close;
         }
+
+        Loaded += async (v, e) =>
+        {
+            var vmm = DataContext as BaseViewModel;
+            if (vmm != null)
+            {
+                await vmm.Loaded();
+            }
+        };
     }
 }

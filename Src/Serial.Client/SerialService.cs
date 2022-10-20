@@ -14,329 +14,328 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Serial.Client
+namespace CNCLib.Serial.Client;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+
+using CNCLib.Serial.Shared;
+
+using Framework.Arduino.SerialCommunication;
+using Framework.Arduino.SerialCommunication.Abstraction;
+
+using Microsoft.AspNetCore.SignalR.Client;
+
+public class SerialService : MyServiceBase, ISerial
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net.Http;
-    using System.Threading.Tasks;
+    protected readonly string           _api = @"api/SerialPort";
+    private            SerialServiceHub _serviceHub;
 
-    using CNCLib.Serial.Shared;
-
-    using Framework.Arduino.SerialCommunication;
-    using Framework.Arduino.SerialCommunication.Abstraction;
-
-    using Microsoft.AspNetCore.SignalR.Client;
-
-    public class SerialService : MyServiceBase, ISerial
+    private async Task InitServiceHub()
     {
-        protected readonly string           _api = @"api/SerialPort";
-        private            SerialServiceHub _serviceHub;
+        _serviceHub = new SerialServiceHub(WebServerUri, this);
+        var connection = await _serviceHub.Start();
 
-        private async Task InitServiceHub()
-        {
-            _serviceHub = new SerialServiceHub(WebServerUri, this);
-            var connection = await _serviceHub.Start();
-
-            connection.On(
-                "QueueEmpty",
-                (int id) =>
-                {
-                    if (PortId == id)
-                    {
-                        CommandQueueEmpty?.Invoke(this, new SerialEventArgs());
-                    }
-                });
-            connection.On(
-                "QueueChanged",
-                (int id, int queueLength) =>
-                {
-                    if (PortId == id)
-                    {
-                        CommandQueueChanged?.Invoke(this, new SerialEventArgs(queueLength, null));
-                    }
-                });
-            connection.On(
-                "SendingCommand",
-                (int id, int seqId) =>
-                {
-                    if (PortId == id)
-                    {
-                        CommandSending?.Invoke(this, new SerialEventArgs(new SerialCommand() { SeqId = seqId }));
-                    }
-                });
-        }
-
-        public int PortId { get; private set; } = -1;
-
-        private async Task<SerialPortDefinition> GetSerialPortDefinition(HttpClient client, string portName)
-        {
-            // first ge all ports
-            var responseAll = await client.GetAsync($@"{_api}");
-            if (responseAll.IsSuccessStatusCode)
+        connection.On(
+            "QueueEmpty",
+            (int id) =>
             {
-                var allPorts = await responseAll.Content.ReadAsAsync<IEnumerable<SerialPortDefinition>>();
-                return allPorts.FirstOrDefault((p) => 0 == string.Compare(p.PortName, portName, StringComparison.OrdinalIgnoreCase));
-            }
-
-            return null;
-        }
-
-        private async Task<SerialPortDefinition> RefreshAndGetSerialPortDefinition(HttpClient client, string portName)
-        {
-            var responseAll = await client.PostAsJsonAsync($@"{_api}/refresh", "dummy");
-            if (responseAll.IsSuccessStatusCode)
-            {
-                var allPorts = await responseAll.Content.ReadAsAsync<IEnumerable<SerialPortDefinition>>();
-                return allPorts.FirstOrDefault((p) => 0 == string.Compare(p.PortName, portName, StringComparison.OrdinalIgnoreCase));
-            }
-
-            return null;
-        }
-
-        public async Task ConnectAsync(string portName, string serverName, string userName, string password)
-        {
-            if (WaitForSend != null || CommandSent != null || WaitCommandSent != null || ReplyReceived != null || ReplyOk != null || ReplyError != null || ReplyInfo != null || ReplyUnknown != null)
-            {
-                // dummy do not get "unused"                
-            }
-
-            if (!string.IsNullOrEmpty(portName))
-            {
-                if (!serverName.EndsWith('/'))
+                if (PortId == id)
                 {
-                    serverName += '/';
+                    CommandQueueEmpty?.Invoke(this, new SerialEventArgs());
                 }
-
-                WebServerUri = serverName;
-                UserName     = userName;
-                Password     = password;
-
-                using (var scope = CreateScope())
+            });
+        connection.On(
+            "QueueChanged",
+            (int id, int queueLength) =>
+            {
+                if (PortId == id)
                 {
-                    var port = await GetSerialPortDefinition(scope.Instance, portName) ?? await RefreshAndGetSerialPortDefinition(scope.Instance, portName);
-
-                    if (port != null)
-                    {
-                        var response = await scope.Instance.PostAsJsonAsync($@"{_api}/{port.Id}/connect?baudRate={BaudRate}&dtrIsReset={DtrIsReset}&resetOnConnect={ResetOnConnect}", "x");
-                        if (response.IsSuccessStatusCode)
-                        {
-                            var value = await response.Content.ReadAsAsync<SerialPortDefinition>();
-                            IsConnected = true;
-                            PortId      = port.Id;
-
-                            await InitServiceHub();
-                            return;
-                        }
-                    }
+                    CommandQueueChanged?.Invoke(this, new SerialEventArgs(queueLength, null));
                 }
-            }
+            });
+        connection.On(
+            "SendingCommand",
+            (int id, int seqId) =>
+            {
+                if (PortId == id)
+                {
+                    CommandSending?.Invoke(this, new SerialEventArgs(new SerialCommand() { SeqId = seqId }));
+                }
+            });
+    }
 
-            throw new Exception($"Connect to SerialPort failed: {serverName}/{portName}");
+    public int PortId { get; private set; } = -1;
+
+    private async Task<SerialPortDefinition> GetSerialPortDefinition(HttpClient client, string portName)
+    {
+        // first ge all ports
+        var responseAll = await client.GetAsync($@"{_api}");
+        if (responseAll.IsSuccessStatusCode)
+        {
+            var allPorts = await responseAll.Content.ReadAsAsync<IEnumerable<SerialPortDefinition>>();
+            return allPorts.FirstOrDefault((p) => 0 == string.Compare(p.PortName, portName, StringComparison.OrdinalIgnoreCase));
         }
 
-        public async Task DisconnectAsync()
+        return null;
+    }
+
+    private async Task<SerialPortDefinition> RefreshAndGetSerialPortDefinition(HttpClient client, string portName)
+    {
+        var responseAll = await client.PostAsJsonAsync($@"{_api}/refresh", "dummy");
+        if (responseAll.IsSuccessStatusCode)
         {
-            if (PortId >= 0)
+            var allPorts = await responseAll.Content.ReadAsAsync<IEnumerable<SerialPortDefinition>>();
+            return allPorts.FirstOrDefault((p) => 0 == string.Compare(p.PortName, portName, StringComparison.OrdinalIgnoreCase));
+        }
+
+        return null;
+    }
+
+    public async Task ConnectAsync(string portName, string serverName, string userName, string password)
+    {
+        if (WaitForSend != null || CommandSent != null || WaitCommandSent != null || ReplyReceived != null || ReplyOk != null || ReplyError != null || ReplyInfo != null || ReplyUnknown != null)
+        {
+            // dummy do not get "unused"                
+        }
+
+        if (!string.IsNullOrEmpty(portName))
+        {
+            if (!serverName.EndsWith('/'))
             {
-                using (var scope = CreateScope())
+                serverName += '/';
+            }
+
+            WebServerUri = serverName;
+            UserName     = userName;
+            Password     = password;
+
+            using (var scope = CreateScope())
+            {
+                var port = await GetSerialPortDefinition(scope.Instance, portName) ?? await RefreshAndGetSerialPortDefinition(scope.Instance, portName);
+
+                if (port != null)
                 {
-                    var response = await scope.Instance.PostAsJsonAsync($@"{_api}/{PortId}/disconnect", "x");
+                    var response = await scope.Instance.PostAsJsonAsync($@"{_api}/{port.Id}/connect?baudRate={BaudRate}&dtrIsReset={DtrIsReset}&resetOnConnect={ResetOnConnect}", "x");
                     if (response.IsSuccessStatusCode)
                     {
-                        _serviceHub?.Stop();
-                        _serviceHub = null;
-                        IsConnected = false;
-                        PortId      = -1;
+                        var value = await response.Content.ReadAsAsync<SerialPortDefinition>();
+                        IsConnected = true;
+                        PortId      = port.Id;
+
+                        await InitServiceHub();
                         return;
                     }
                 }
             }
-
-            throw new Exception("DisConnect to SerialPort failed");
         }
 
-        public void AbortCommands()
+        throw new Exception($"Connect to SerialPort failed: {serverName}/{portName}");
+    }
+
+    public async Task DisconnectAsync()
+    {
+        if (PortId >= 0)
         {
-            if (PortId >= 0)
+            using (var scope = CreateScope())
             {
-                using (var scope = CreateScope())
+                var response = await scope.Instance.PostAsJsonAsync($@"{_api}/{PortId}/disconnect", "x");
+                if (response.IsSuccessStatusCode)
                 {
-                    var response = scope.Instance.PostAsJsonAsync($@"{_api}/{PortId}/abort", "x").ConfigureAwait(false).GetAwaiter().GetResult();
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return;
-                    }
+                    _serviceHub?.Stop();
+                    _serviceHub = null;
+                    IsConnected = false;
+                    PortId      = -1;
+                    return;
                 }
             }
-
-            throw new Exception("AbortCommands to SerialPort failed");
         }
 
-        public void ResumeAfterAbort()
+        throw new Exception("DisConnect to SerialPort failed");
+    }
+
+    public void AbortCommands()
+    {
+        if (PortId >= 0)
         {
-            if (PortId >= 0)
+            using (var scope = CreateScope())
             {
-                using (var scope = CreateScope())
+                var response = scope.Instance.PostAsJsonAsync($@"{_api}/{PortId}/abort", "x").ConfigureAwait(false).GetAwaiter().GetResult();
+                if (response.IsSuccessStatusCode)
                 {
-                    var response = scope.Instance.PostAsJsonAsync($@"{_api}/{PortId}/resume", "x").ConfigureAwait(false).GetAwaiter().GetResult();
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return;
-                    }
+                    return;
                 }
             }
-
-            throw new Exception("ResumeAfterAbort to SerialPort failed");
         }
 
-        public async Task<IEnumerable<SerialCommand>> QueueCommandsAsync(IEnumerable<string> lines)
+        throw new Exception("AbortCommands to SerialPort failed");
+    }
+
+    public void ResumeAfterAbort()
+    {
+        if (PortId >= 0)
+        {
+            using (var scope = CreateScope())
+            {
+                var response = scope.Instance.PostAsJsonAsync($@"{_api}/{PortId}/resume", "x").ConfigureAwait(false).GetAwaiter().GetResult();
+                if (response.IsSuccessStatusCode)
+                {
+                    return;
+                }
+            }
+        }
+
+        throw new Exception("ResumeAfterAbort to SerialPort failed");
+    }
+
+    public async Task<IEnumerable<SerialCommand>> QueueCommandsAsync(IEnumerable<string> lines)
+    {
+        if (PortId >= 0)
+        {
+            using (var scope = CreateScope())
+            {
+                var cmds     = new SerialCommands() { Commands = lines.ToArray() };
+                var response = scope.Instance.PostAsJsonAsync($@"{_api}/{PortId}/queue", cmds).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    var value = await response.Content.ReadAsAsync<IEnumerable<SerialCommand>>();
+                    return value;
+                }
+            }
+        }
+
+        throw new Exception("Queue to SerialPort failed");
+    }
+
+    public async Task<IEnumerable<SerialCommand>> SendCommandsAsync(IEnumerable<string> lines, int waitForMilliseconds)
+    {
+        if (PortId >= 0)
+        {
+            using (var scope = CreateScope())
+            {
+                scope.Instance.Timeout = new TimeSpan(10000L * (((long)waitForMilliseconds) + 5000));
+                var cmds     = new SerialCommands() { Commands = lines.ToArray(), TimeOut = waitForMilliseconds };
+                var response = await scope.Instance.PostAsJsonAsync($@"{_api}/{PortId}/send", cmds);
+                if (response.IsSuccessStatusCode)
+                {
+                    var value = await response.Content.ReadAsAsync<IEnumerable<SerialCommand>>();
+                    return value;
+                }
+            }
+        }
+
+        throw new Exception("Send to SerialPort failed");
+    }
+
+    public Task<bool> WaitUntilResponseAsync(int maxMilliseconds)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> WaitUntilQueueEmptyAsync(int maxMilliseconds)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<string> ISerial.WaitUntilResponseAsync(int maxMilliseconds)
+    {
+        throw new NotImplementedException();
+    }
+
+    public event CommandEventHandler WaitForSend;
+    public event CommandEventHandler CommandSending;
+    public event CommandEventHandler CommandSent;
+    public event CommandEventHandler WaitCommandSent;
+    public event CommandEventHandler ReplyReceived;
+    public event CommandEventHandler ReplyOk;
+    public event CommandEventHandler ReplyError;
+    public event CommandEventHandler ReplyInfo;
+    public event CommandEventHandler ReplyUnknown;
+    public event CommandEventHandler CommandQueueChanged;
+    public event CommandEventHandler CommandQueueEmpty;
+    public bool                      IsConnected            { get; private set; }
+    public int                       CommandsInQueue        { get; }
+    public bool                      Pause                  { get; set; }
+    public bool                      SendNext               { get; set; }
+    public int                       BaudRate               { get; set; }
+    public bool                      DtrIsReset             { get; set; }
+    public bool                      ResetOnConnect         { get; set; }
+    public string                    OkTag                  { get; set; }
+    public string                    ErrorTag               { get; set; }
+    public string                    InfoTag                { get; set; }
+    public bool                      CommandToUpper         { get; set; }
+    public bool                      ErrorIsReply           { get; set; }
+    public int                       MaxCommandHistoryCount { get; set; }
+    public int                       ArduinoBufferSize      { get; set; }
+    public int                       ArduinoLineSize        { get; set; }
+    public bool                      Aborted                { get; }
+
+    public SerialCommand LastCommand { get; }
+
+    public void WriteCommandHistory(string filename)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<SerialCommand> CommandHistoryCopy
+    {
+        get
         {
             if (PortId >= 0)
             {
                 using (var scope = CreateScope())
                 {
-                    var cmds     = new SerialCommands() { Commands = lines.ToArray() };
-                    var response = scope.Instance.PostAsJsonAsync($@"{_api}/{PortId}/queue", cmds).Result;
+                    var response = scope.Instance.GetAsync($@"{_api}/{PortId}/history").ConfigureAwait(false).GetAwaiter().GetResult();
                     if (response.IsSuccessStatusCode)
                     {
-                        var value = await response.Content.ReadAsAsync<IEnumerable<SerialCommand>>();
+                        var value = response.Content.ReadAsAsync<List<SerialCommand>>().Result;
                         return value;
                     }
                 }
             }
 
-            throw new Exception("Queue to SerialPort failed");
+            throw new Exception("CommandHistory failed");
         }
+    }
 
-        public async Task<IEnumerable<SerialCommand>> SendCommandsAsync(IEnumerable<string> lines, int waitForMilliseconds)
+    public IEnumerable<SerialCommand> PendingCommands
+    {
+        get
         {
             if (PortId >= 0)
             {
                 using (var scope = CreateScope())
                 {
-                    scope.Instance.Timeout = new TimeSpan(10000L * (((long)waitForMilliseconds) + 5000));
-                    var cmds     = new SerialCommands() { Commands = lines.ToArray(), TimeOut = waitForMilliseconds };
-                    var response = await scope.Instance.PostAsJsonAsync($@"{_api}/{PortId}/send", cmds);
+                    var response = scope.Instance.GetAsync($@"{_api}/{PortId}/pending").ConfigureAwait(false).GetAwaiter().GetResult();
                     if (response.IsSuccessStatusCode)
                     {
-                        var value = await response.Content.ReadAsAsync<IEnumerable<SerialCommand>>();
+                        var value = response.Content.ReadAsAsync<List<SerialCommand>>().Result;
                         return value;
                     }
                 }
             }
 
-            throw new Exception("Send to SerialPort failed");
+            throw new Exception("PendingCommands failed");
         }
+    }
 
-        public Task<bool> WaitUntilResponseAsync(int maxMilliseconds)
+    public void ClearCommandHistory()
+    {
+        if (PortId >= 0)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> WaitUntilQueueEmptyAsync(int maxMilliseconds)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<string> ISerial.WaitUntilResponseAsync(int maxMilliseconds)
-        {
-            throw new NotImplementedException();
-        }
-
-        public event CommandEventHandler WaitForSend;
-        public event CommandEventHandler CommandSending;
-        public event CommandEventHandler CommandSent;
-        public event CommandEventHandler WaitCommandSent;
-        public event CommandEventHandler ReplyReceived;
-        public event CommandEventHandler ReplyOk;
-        public event CommandEventHandler ReplyError;
-        public event CommandEventHandler ReplyInfo;
-        public event CommandEventHandler ReplyUnknown;
-        public event CommandEventHandler CommandQueueChanged;
-        public event CommandEventHandler CommandQueueEmpty;
-        public bool                      IsConnected            { get; private set; }
-        public int                       CommandsInQueue        { get; }
-        public bool                      Pause                  { get; set; }
-        public bool                      SendNext               { get; set; }
-        public int                       BaudRate               { get; set; }
-        public bool                      DtrIsReset             { get; set; }
-        public bool                      ResetOnConnect         { get; set; }
-        public string                    OkTag                  { get; set; }
-        public string                    ErrorTag               { get; set; }
-        public string                    InfoTag                { get; set; }
-        public bool                      CommandToUpper         { get; set; }
-        public bool                      ErrorIsReply           { get; set; }
-        public int                       MaxCommandHistoryCount { get; set; }
-        public int                       ArduinoBufferSize      { get; set; }
-        public int                       ArduinoLineSize        { get; set; }
-        public bool                      Aborted                { get; }
-
-        public SerialCommand LastCommand { get; }
-
-        public void WriteCommandHistory(string filename)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<SerialCommand> CommandHistoryCopy
-        {
-            get
+            using (var scope = CreateScope())
             {
-                if (PortId >= 0)
+                var response = scope.Instance.PostAsJsonAsync($@"{_api}/{PortId}/history/clear", "x").ConfigureAwait(false).GetAwaiter().GetResult();
+                if (response.IsSuccessStatusCode)
                 {
-                    using (var scope = CreateScope())
-                    {
-                        var response = scope.Instance.GetAsync($@"{_api}/{PortId}/history").ConfigureAwait(false).GetAwaiter().GetResult();
-                        if (response.IsSuccessStatusCode)
-                        {
-                            var value = response.Content.ReadAsAsync<List<SerialCommand>>().Result;
-                            return value;
-                        }
-                    }
-                }
-
-                throw new Exception("CommandHistory failed");
-            }
-        }
-
-        public IEnumerable<SerialCommand> PendingCommands
-        {
-            get
-            {
-                if (PortId >= 0)
-                {
-                    using (var scope = CreateScope())
-                    {
-                        var response = scope.Instance.GetAsync($@"{_api}/{PortId}/pending").ConfigureAwait(false).GetAwaiter().GetResult();
-                        if (response.IsSuccessStatusCode)
-                        {
-                            var value = response.Content.ReadAsAsync<List<SerialCommand>>().Result;
-                            return value;
-                        }
-                    }
-                }
-
-                throw new Exception("PendingCommands failed");
-            }
-        }
-
-        public void ClearCommandHistory()
-        {
-            if (PortId >= 0)
-            {
-                using (var scope = CreateScope())
-                {
-                    var response = scope.Instance.PostAsJsonAsync($@"{_api}/{PortId}/history/clear", "x").ConfigureAwait(false).GetAwaiter().GetResult();
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return;
-                    }
+                    return;
                 }
             }
-
-            throw new Exception("ClearCommandHistory to SerialPort failed");
         }
+
+        throw new Exception("ClearCommandHistory to SerialPort failed");
     }
 }

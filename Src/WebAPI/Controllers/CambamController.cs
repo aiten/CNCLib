@@ -14,58 +14,57 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WebAPI.Controllers
+namespace CNCLib.WebAPI.Controllers;
+
+using System.IO;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
+
+using CNCLib.GCode.Generate.CamBam;
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
+
+using Microsoft.AspNetCore.Mvc;
+
+using CNCLib.Shared;
+using CNCLib.WebAPI.Models;
+
+using Microsoft.AspNetCore.Authorization;
+
+[Authorize]
+[Route("api/[controller]")]
+public class CambamController : Controller
 {
-    using System.IO;
-    using System.Threading.Tasks;
-    using System.Xml.Serialization;
+    private readonly GCodeLoadHelper _loadHelper;
 
-    using CNCLib.GCode.Generate.CamBam;
-    using CNCLib.Logic.Abstraction;
-    using CNCLib.Logic.Abstraction.DTO;
-
-    using Microsoft.AspNetCore.Mvc;
-
-    using CNCLib.Shared;
-    using CNCLib.WebAPI.Models;
-
-    using Microsoft.AspNetCore.Authorization;
-
-    [Authorize]
-    [Route("api/[controller]")]
-    public class CambamController : Controller
+    public CambamController(ILoadOptionsManager loadOptionsManager, GCodeLoadHelper loadHelper, ICNCLibUserContext userContext)
     {
-        private readonly GCodeLoadHelper _loadHelper;
+        _loadOptionsManager = loadOptionsManager;
+        _loadHelper         = loadHelper;
+        _userContext        = userContext;
+    }
 
-        public CambamController(ILoadOptionsManager loadOptionsManager, GCodeLoadHelper loadHelper, ICNCLibUserContext userContext)
-        {
-            _loadOptionsManager = loadOptionsManager;
-            _loadHelper         = loadHelper;
-            _userContext        = userContext;
-        }
+    readonly ILoadOptionsManager _loadOptionsManager;
+    readonly ICNCLibUserContext  _userContext;
 
-        readonly ILoadOptionsManager _loadOptionsManager;
-        readonly ICNCLibUserContext  _userContext;
+    [HttpPost]
+    public async Task<string> Post([FromBody] LoadOptions input)
+    {
+        var load = await _loadHelper.CallLoad(input, false);
+        var sw   = new StringWriter();
+        new XmlSerializer(typeof(CamBam)).Serialize(sw, load.CamBam);
+        return sw.ToString();
+    }
 
-        [HttpPost]
-        public async Task<string> Post([FromBody] LoadOptions input)
-        {
-            var load = await _loadHelper.CallLoad(input, false);
-            var sw   = new StringWriter();
-            new XmlSerializer(typeof(CamBam)).Serialize(sw, load.CamBam);
-            return sw.ToString();
-        }
-
-        [HttpPut]
-        public async Task<string> Put([FromBody] CreateGCode input)
-        {
-            var opt = await _loadOptionsManager.Get(input.LoadOptionsId);
-            opt.FileName    = input.FileName;
-            opt.FileContent = input.FileContent;
-            var load = await _loadHelper.CallLoad(opt, false);
-            var sw   = new StringWriter();
-            new XmlSerializer(typeof(CamBam)).Serialize(sw, load.CamBam);
-            return sw.ToString();
-        }
+    [HttpPut]
+    public async Task<string> Put([FromBody] CreateGCode input)
+    {
+        var opt = await _loadOptionsManager.GetAsync(input.LoadOptionsId);
+        opt.FileName    = input.FileName;
+        opt.FileContent = input.FileContent;
+        var load = await _loadHelper.CallLoad(opt, false);
+        var sw   = new StringWriter();
+        new XmlSerializer(typeof(CamBam)).Serialize(sw, load.CamBam);
+        return sw.ToString();
     }
 }

@@ -14,28 +14,27 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Logic
+namespace CNCLib.Logic;
+
+using AutoMapper;
+
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Repository.Abstraction.Entities;
+using CNCLib.Repository.Abstraction.QueryResult;
+
+public sealed class LogicAutoMapperProfile : Profile
 {
-    using AutoMapper;
-
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Repository.Abstraction.Entities;
-    using CNCLib.Repository.Abstraction.QueryResult;
-
-    public sealed class LogicAutoMapperProfile : Profile
+    public LogicAutoMapperProfile()
     {
-        public LogicAutoMapperProfile()
-        {
-            CreateMap<MachineEntity, Machine>().ReverseMap();
-            CreateMap<MachineInitCommandEntity, MachineInitCommand>().ReverseMap();
-            CreateMap<MachineCommandEntity, MachineCommand>().ReverseMap();
+        CreateMap<MachineEntity, Machine>().ReverseMap();
+        CreateMap<MachineInitCommandEntity, MachineInitCommand>().ReverseMap();
+        CreateMap<MachineCommandEntity, MachineCommand>().ReverseMap();
 
-            CreateMap<ItemEntity, Item>().ReverseMap();
-            CreateMap<ItemPropertyEntity, ItemProperty>().ReverseMap();
+        CreateMap<ItemEntity, Item>().ReverseMap();
+        CreateMap<ItemPropertyEntity, ItemProperty>().ReverseMap();
 
-            CreateMap<UserEntity, User>().ReverseMap();
-            CreateMap<UserFileEntity, UserFile>().ReverseMap();
-            CreateMap<UserFileInfoQuery, UserFileInfo>().ReverseMap();
-        }
+        CreateMap<UserEntity, User>().ReverseMap();
+        CreateMap<UserFileEntity, UserFile>().ReverseMap();
+        CreateMap<UserFileInfoQuery, UserFileInfo>().ReverseMap();
     }
 }

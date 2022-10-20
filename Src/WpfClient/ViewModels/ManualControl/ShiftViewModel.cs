@@ -14,39 +14,38 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.ViewModels.ManualControl
+namespace CNCLib.WpfClient.ViewModels.ManualControl;
+
+using System.Windows.Input;
+
+using Framework.Arduino.SerialCommunication;
+using Framework.Wpf.Helpers;
+
+public class ShiftViewModel : DetailViewModel
 {
-    using System.Windows.Input;
+    private readonly Global _global;
 
-    using Framework.Arduino.SerialCommunication;
-    using Framework.Wpf.Helpers;
-
-    public class ShiftViewModel : DetailViewModel
+    public ShiftViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
     {
-        private readonly Global _global;
-
-        public ShiftViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
-        {
-            _global = global;
-        }
-
-        #region Properties
-
-        #endregion
-
-        #region Commands / CanCommands
-
-        public void SendG92()
-        {
-            RunAndUpdate(() => { _global.Com.Current.QueueCommand("g92"); });
-        }
-
-        #endregion
-
-        #region ICommand
-
-        public ICommand SendG92Command => new DelegateCommand(SendG92, CanSendGCode);
-
-        #endregion
+        _global = global;
     }
+
+    #region Properties
+
+    #endregion
+
+    #region Commands / CanCommands
+
+    public void SendG92()
+    {
+        RunAndUpdate(() => { _global.Com.Current.QueueCommand("g92"); });
+    }
+
+    #endregion
+
+    #region ICommand
+
+    public ICommand SendG92Command => new DelegateCommand(SendG92, CanSendGCode);
+
+    #endregion
 }

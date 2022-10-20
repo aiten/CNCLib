@@ -14,43 +14,42 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.Views
+namespace CNCLib.WpfClient.Views;
+
+using System.Windows.Controls;
+
+using CNCLib.WpfClient.ViewModels;
+
+using Framework.Dependency;
+using Framework.Wpf.Views;
+
+/// <summary>
+/// Interaction logic for ManualControl.xaml
+/// </summary>
+public partial class ManualControlPage : Page
 {
-    using System.Windows.Controls;
-
-    using CNCLib.WpfClient.ViewModels;
-
-    using Framework.Dependency;
-    using Framework.Wpf.Views;
-
-    /// <summary>
-    /// Interaction logic for ManualControl.xaml
-    /// </summary>
-    public partial class ManualControlPage : Page
+    public ManualControlPage()
     {
-        public ManualControlPage()
+        var vm = AppService.GetRequiredService<ManualControlViewModel>();
+        DataContext = vm;
+
+        InitializeComponent();
+
+        vm.SD.DefaultInitForBaseViewModel();
+        this.DefaultInitForBaseViewModel();
+    }
+
+    public bool IsConnected
+    {
+        get
         {
-            var vm = AppService.GetRequiredService<ManualControlViewModel>();
-            DataContext = vm;
-
-            InitializeComponent();
-
-            vm.SD.DefaultInitForBaseViewModel();
-            this.DefaultInitForBaseViewModel();
-        }
-
-        public bool IsConnected
-        {
-            get
+            var vm = DataContext as ManualControlViewModel;
+            if (vm != null)
             {
-                var vm = DataContext as ManualControlViewModel;
-                if (vm != null)
-                {
-                    return vm.Connected;
-                }
-
-                return false;
+                return vm.Connected;
             }
+
+            return false;
         }
     }
 }

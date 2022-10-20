@@ -14,34 +14,33 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.GCode.Machine
+namespace CNCLib.GCode.Machine;
+
+public class EepromV2Plotter : EepromV2
 {
-    public class EepromV2Plotter : EepromV2
+    #region Properties
+
+    public const uint SIGNATUREPLOTTER_V2 = 0x21438703;
+
+    public override uint VersionSignature => SIGNATUREPLOTTER_V2;
+
+    #endregion
+
+    #region Read/Write
+
+    public override void ReadFrom(Eeprom eeprom)
     {
-        #region Properties
+        base.ReadFrom(eeprom);
 
-        public const uint SIGNATUREPLOTTER_V2 = 0x21438703;
-
-        public override uint VersionSignature => SIGNATUREPLOTTER_V2;
-
-        #endregion
-
-        #region Read/Write
-
-        public override void ReadFrom(Eeprom eeprom)
-        {
-            base.ReadFrom(eeprom);
-
-            EepromVxPlotterExtensions.ReadPlotter(this, eeprom);
-        }
-
-        public override void WriteTo(Eeprom eeprom)
-        {
-            base.WriteTo(eeprom);
-
-            EepromVxPlotterExtensions.WritePlotter(this, eeprom);
-        }
-
-        #endregion
+        EepromVxPlotterExtensions.ReadPlotter(this, eeprom);
     }
+
+    public override void WriteTo(Eeprom eeprom)
+    {
+        base.WriteTo(eeprom);
+
+        EepromVxPlotterExtensions.WritePlotter(this, eeprom);
+    }
+
+    #endregion
 }

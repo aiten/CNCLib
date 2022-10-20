@@ -14,46 +14,45 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.Helpers
+namespace CNCLib.WpfClient.Helpers;
+
+using System;
+
+using CNCLib.GCode.Tools;
+
+using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;
+
+public static class Extensions
 {
-    using System;
-
-    using CNCLib.GCode.Tools;
-
-    using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;
-
-    public static class Extensions
+    public static string GetAxisName(this MachineDto m, int axis)
     {
-        public static string GetAxisName(this MachineDto m, int axis)
+        return GCodeHelper.IndexToAxisName(axis);
+    }
+
+    public static decimal GetSize(this MachineDto m, int axis)
+    {
+        switch (axis)
         {
-            return GCodeHelper.IndexToAxisName(axis);
+            case 0: return m.SizeX;
+            case 1: return m.SizeY;
+            case 2: return m.SizeZ;
+            case 3: return m.SizeA;
+            case 4: return m.SizeB;
+            case 5: return m.SizeC;
         }
 
-        public static decimal GetSize(this MachineDto m, int axis)
-        {
-            switch (axis)
-            {
-                case 0: return m.SizeX;
-                case 1: return m.SizeY;
-                case 2: return m.SizeZ;
-                case 3: return m.SizeA;
-                case 4: return m.SizeB;
-                case 5: return m.SizeC;
-            }
+        throw new NotImplementedException();
+    }
 
-            throw new NotImplementedException();
+    public static decimal GetProbeSize(this MachineDto m, int axis)
+    {
+        switch (axis)
+        {
+            case 0: return m.ProbeSizeX;
+            case 1: return m.ProbeSizeY;
+            case 2: return m.ProbeSizeZ;
         }
 
-        public static decimal GetProbeSize(this MachineDto m, int axis)
-        {
-            switch (axis)
-            {
-                case 0: return m.ProbeSizeX;
-                case 1: return m.ProbeSizeY;
-                case 2: return m.ProbeSizeZ;
-            }
-
-            return 0m;
-        }
+        return 0m;
     }
 }

@@ -14,51 +14,50 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Service.WebAPI
+namespace CNCLib.Service.WebAPI;
+
+using System.Net.Http;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Service.Abstraction;
+
+using Framework.Pattern;
+using Framework.Service.WebAPI;
+using Framework.Service.WebAPI.Uri;
+
+public class EepromConfigurationService : ServiceBase, IEepromConfigurationService
 {
-    using System.Net.Http;
-    using System.Threading.Tasks;
+    private HttpClient _httpClient;
 
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Service.Abstraction;
-
-    using Framework.Pattern;
-    using Framework.Service.WebAPI;
-    using Framework.Service.WebAPI.Uri;
-
-    public class EepromConfigurationService : ServiceBase, IEepromConfigurationService
+    public EepromConfigurationService(HttpClient httpClient)
     {
-        private HttpClient _httpClient;
+        BaseApi     = @"api/EepromConfiguration";
+        _httpClient = httpClient;
+    }
 
-        public EepromConfigurationService(HttpClient httpClient)
+    protected override IScope<HttpClient> CreateScope()
+    {
+        return new ScopeInstance<HttpClient>(_httpClient);
+    }
+
+    public async Task<EepromConfiguration> CalculateConfig(EepromConfigurationInput param)
+    {
+        using (var scope = CreateScope())
         {
-            BaseApi     = @"api/EepromConfiguration";
-            _httpClient = httpClient;
-        }
+            var paramUri = new UriQueryBuilder();
+            paramUri.Add("teeth", param.Teeth)
+                .Add("toothSizeInMm",          param.ToothSizeInMm)
+                .Add("microSteps",             param.MicroSteps)
+                .Add("stepsPerRotation",       param.StepsPerRotation)
+                .Add("estimatedRotationSpeed", param.EstimatedRotationSpeed)
+                .Add("timeToAcc",              param.TimeToAcc)
+                .Add("timeToDec",              param.TimeToDec);
 
-        protected override IScope<HttpClient> CreateScope()
-        {
-            return new ScopeInstance<HttpClient>(_httpClient);
-        }
+            var response = await scope.Instance.GetAsync(CreatePathBuilder().AddQuery(paramUri).Build());
+            response.EnsureSuccessStatusCode();
 
-        public async Task<EepromConfiguration> CalculateConfig(EepromConfigurationInput param)
-        {
-            using (var scope = CreateScope())
-            {
-                var paramUri = new UriQueryBuilder();
-                paramUri.Add("teeth", param.Teeth)
-                    .Add("toothSizeInMm",          param.ToothSizeInMm)
-                    .Add("microSteps",             param.MicroSteps)
-                    .Add("stepsPerRotation",       param.StepsPerRotation)
-                    .Add("estimatedRotationSpeed", param.EstimatedRotationSpeed)
-                    .Add("timeToAcc",              param.TimeToAcc)
-                    .Add("timeToDec",              param.TimeToDec);
-
-                var response = await scope.Instance.GetAsync(CreatePathBuilder().AddQuery(paramUri).Build());
-                response.EnsureSuccessStatusCode();
-
-                return await response.Content.ReadAsAsync<EepromConfiguration>();
-            }
+            return await response.Content.ReadAsAsync<EepromConfiguration>();
         }
     }
 }

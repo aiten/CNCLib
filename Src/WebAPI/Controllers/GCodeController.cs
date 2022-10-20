@@ -14,149 +14,148 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WebAPI.Controllers
+namespace CNCLib.WebAPI.Controllers;
+
+using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+
+using CNCLib.GCode.Draw;
+using CNCLib.GCode.Generate.Load;
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
+
+using Microsoft.AspNetCore.Mvc;
+
+using CNCLib.Shared;
+using CNCLib.WebAPI.Models;
+
+using Framework.Drawing;
+using Framework.WebAPI.Controller;
+
+[Route("api/[controller]")]
+public class GCodeController : Controller
 {
-    using System.Collections.Generic;
-    using System.Drawing;
-    using System.Drawing.Imaging;
-    using System.IO;
-    using System.Linq;
-    using System.Threading.Tasks;
+    private readonly ILoadOptionsManager _loadOptionsManager;
+    private readonly GCodeLoadHelper     _loadHelper;
+    private readonly IUserFileManager    _fileManager;
+    private readonly ICNCLibUserContext  _userContext;
 
-    using CNCLib.GCode.Draw;
-    using CNCLib.GCode.Generate.Load;
-    using CNCLib.Logic.Abstraction;
-    using CNCLib.Logic.Abstraction.DTO;
-
-    using Microsoft.AspNetCore.Mvc;
-
-    using CNCLib.Shared;
-    using CNCLib.WebAPI.Models;
-
-    using Framework.Drawing;
-    using Framework.WebAPI.Controller;
-
-    [Route("api/[controller]")]
-    public class GCodeController : Controller
+    public GCodeController(ILoadOptionsManager loadOptionsManager, IUserFileManager fileManager, GCodeLoadHelper loadHelper, ICNCLibUserContext userContext)
     {
-        private readonly ILoadOptionsManager _loadOptionsManager;
-        private readonly GCodeLoadHelper     _loadHelper;
-        private readonly IUserFileManager    _fileManager;
-        private readonly ICNCLibUserContext  _userContext;
+        _loadOptionsManager = loadOptionsManager;
+        _fileManager        = fileManager;
+        _loadHelper         = loadHelper;
+        _userContext        = userContext;
+    }
 
-        public GCodeController(ILoadOptionsManager loadOptionsManager, IUserFileManager fileManager, GCodeLoadHelper loadHelper, ICNCLibUserContext userContext)
+    [HttpPost]
+    public async Task<IEnumerable<string>> Post([FromBody] LoadOptions input)
+    {
+        if (input.FileName.StartsWith(@"db:"))
         {
-            _loadOptionsManager = loadOptionsManager;
-            _fileManager        = fileManager;
-            _loadHelper         = loadHelper;
-            _userContext        = userContext;
+            input.FileName = input.FileName.Substring(3);
+            var fileDto = await _fileManager.GetByNameAsync(input.FileName);
+            input.FileContent = fileDto.Content;
         }
 
-        [HttpPost]
-        public async Task<IEnumerable<string>> Post([FromBody] LoadOptions input)
-        {
-            if (input.FileName.StartsWith(@"db:"))
-            {
-                input.FileName = input.FileName.Substring(3);
-                var fileDto = await _fileManager.GetByName(input.FileName);
-                input.FileContent = fileDto.Content;
-            }
+        return (await _loadHelper.CallLoad(input, true)).Commands.ToStringList();
+    }
 
-            return (await _loadHelper.CallLoad(input, true)).Commands.ToStringList();
+    [HttpPut]
+    public async Task<IEnumerable<string>> Put([FromBody] CreateGCode input)
+    {
+        var opt = await _loadOptionsManager.GetAsync(input.LoadOptionsId);
+        opt.FileName    = input.FileName;
+        opt.FileContent = input.FileContent;
+
+        return (await _loadHelper.CallLoad(opt, true)).Commands.ToStringList();
+    }
+
+    [HttpPut("render")]
+    public async Task<IActionResult> Render([FromBody] PreviewGCode opt)
+    {
+        await Task.CompletedTask;
+
+        var gCodeDraw = new GCodeBitmapDraw()
+        {
+            SizeX      = opt.SizeX,
+            SizeY      = opt.SizeY,
+            SizeZ      = opt.SizeZ,
+            RenderSize = new Size(opt.RenderSizeX, opt.RenderSizeY),
+            OffsetX    = opt.OffsetX,
+            OffsetY    = opt.OffsetY,
+            OffsetZ    = opt.OffsetZ,
+
+            Zoom       = opt.Zoom,
+            CutterSize = opt.CutterSize,
+            LaserSize  = opt.LaserSize,
+            KeepRatio  = opt.KeepRatio,
+        };
+
+        if (!string.IsNullOrEmpty(opt.MachineColor)) gCodeDraw.MachineColor       = System.Drawing.ColorTranslator.FromHtml(opt.MachineColor);
+        if (!string.IsNullOrEmpty(opt.LaserOnColor)) gCodeDraw.LaserOnColor       = System.Drawing.ColorTranslator.FromHtml(opt.LaserOnColor);
+        if (!string.IsNullOrEmpty(opt.LaserOffColor)) gCodeDraw.LaserOffColor     = System.Drawing.ColorTranslator.FromHtml(opt.LaserOffColor);
+        if (!string.IsNullOrEmpty(opt.CutColor)) gCodeDraw.CutColor               = System.Drawing.ColorTranslator.FromHtml(opt.CutColor);
+        if (!string.IsNullOrEmpty(opt.CutDotColor)) gCodeDraw.CutDotColor         = System.Drawing.ColorTranslator.FromHtml(opt.CutDotColor);
+        if (!string.IsNullOrEmpty(opt.CutEllipseColor)) gCodeDraw.CutEllipseColor = System.Drawing.ColorTranslator.FromHtml(opt.CutEllipseColor);
+        if (!string.IsNullOrEmpty(opt.CutArcColor)) gCodeDraw.CutArcColor         = System.Drawing.ColorTranslator.FromHtml(opt.CutArcColor);
+        if (!string.IsNullOrEmpty(opt.FastMoveColor)) gCodeDraw.FastMoveColor     = System.Drawing.ColorTranslator.FromHtml(opt.FastMoveColor);
+        if (!string.IsNullOrEmpty(opt.HelpLineColor)) gCodeDraw.HelpLineColor     = System.Drawing.ColorTranslator.FromHtml(opt.HelpLineColor);
+
+        if (opt.Rotate3DVect != null && opt.Rotate3DVect.Count() == 3)
+        {
+            gCodeDraw.Rotate = new Rotate3D(opt.Rotate3DAngle, opt.Rotate3DVect.ToArray());
         }
 
-        [HttpPut]
-        public async Task<IEnumerable<string>> Put([FromBody] CreateGCode input)
+        var load = new LoadGCode();
+        load.Load(opt.Commands.ToArray());
+        var commands = load.Commands;
+        var bitmap   = gCodeDraw.DrawToBitmap(commands);
+
+        var memoryStream = new MemoryStream();
+        bitmap.Save(memoryStream, ImageFormat.Png);
+        memoryStream.Position = 0;
+        var fileName = "preview.png";
+        return File(memoryStream, this.GetContentType(fileName), fileName);
+    }
+
+    [HttpGet("render")]
+    public async Task<ActionResult<PreviewGCode>> RenderDefault()
+    {
+        await Task.CompletedTask;
+
+        var gCodeDraw = new GCodeBitmapDraw();
+        var opt = new PreviewGCode()
         {
-            var opt = await _loadOptionsManager.Get(input.LoadOptionsId);
-            opt.FileName    = input.FileName;
-            opt.FileContent = input.FileContent;
+            SizeX           = 200,
+            SizeY           = 200,
+            SizeZ           = 200,
+            KeepRatio       = true,
+            Zoom            = 1.0,
+            OffsetX         = 0,
+            OffsetY         = 0,
+            OffsetZ         = 0,
+            CutterSize      = gCodeDraw.CutterSize,
+            LaserSize       = gCodeDraw.LaserSize,
+            MachineColor    = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.MachineColor),
+            LaserOnColor    = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.LaserOnColor),
+            LaserOffColor   = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.LaserOffColor),
+            CutColor        = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.CutColor),
+            CutDotColor     = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.CutDotColor),
+            CutEllipseColor = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.CutEllipseColor),
+            CutArcColor     = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.CutArcColor),
+            FastMoveColor   = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.FastMoveColor),
+            HelpLineColor   = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.HelpLineColor),
+            Rotate3DAngle   = 0,
+            Rotate3DVect    = new List<double> { 0.0, 0.0, 1.0 },
+            RenderSizeX     = 800,
+            RenderSizeY     = 800
+        };
 
-            return (await _loadHelper.CallLoad(opt, true)).Commands.ToStringList();
-        }
-
-        [HttpPut("render")]
-        public async Task<IActionResult> Render([FromBody] PreviewGCode opt)
-        {
-            await Task.CompletedTask;
-
-            var gCodeDraw = new GCodeBitmapDraw()
-            {
-                SizeX      = opt.SizeX,
-                SizeY      = opt.SizeY,
-                SizeZ      = opt.SizeZ,
-                RenderSize = new Size(opt.RenderSizeX, opt.RenderSizeY),
-                OffsetX    = opt.OffsetX,
-                OffsetY    = opt.OffsetY,
-                OffsetZ    = opt.OffsetZ,
-
-                Zoom       = opt.Zoom,
-                CutterSize = opt.CutterSize,
-                LaserSize  = opt.LaserSize,
-                KeepRatio  = opt.KeepRatio,
-            };
-
-            if (!string.IsNullOrEmpty(opt.MachineColor)) gCodeDraw.MachineColor       = System.Drawing.ColorTranslator.FromHtml(opt.MachineColor);
-            if (!string.IsNullOrEmpty(opt.LaserOnColor)) gCodeDraw.LaserOnColor       = System.Drawing.ColorTranslator.FromHtml(opt.LaserOnColor);
-            if (!string.IsNullOrEmpty(opt.LaserOffColor)) gCodeDraw.LaserOffColor     = System.Drawing.ColorTranslator.FromHtml(opt.LaserOffColor);
-            if (!string.IsNullOrEmpty(opt.CutColor)) gCodeDraw.CutColor               = System.Drawing.ColorTranslator.FromHtml(opt.CutColor);
-            if (!string.IsNullOrEmpty(opt.CutDotColor)) gCodeDraw.CutDotColor         = System.Drawing.ColorTranslator.FromHtml(opt.CutDotColor);
-            if (!string.IsNullOrEmpty(opt.CutEllipseColor)) gCodeDraw.CutEllipseColor = System.Drawing.ColorTranslator.FromHtml(opt.CutEllipseColor);
-            if (!string.IsNullOrEmpty(opt.CutArcColor)) gCodeDraw.CutArcColor         = System.Drawing.ColorTranslator.FromHtml(opt.CutArcColor);
-            if (!string.IsNullOrEmpty(opt.FastMoveColor)) gCodeDraw.FastMoveColor     = System.Drawing.ColorTranslator.FromHtml(opt.FastMoveColor);
-            if (!string.IsNullOrEmpty(opt.HelpLineColor)) gCodeDraw.HelpLineColor     = System.Drawing.ColorTranslator.FromHtml(opt.HelpLineColor);
-
-            if (opt.Rotate3DVect != null && opt.Rotate3DVect.Count() == 3)
-            {
-                gCodeDraw.Rotate = new Rotate3D(opt.Rotate3DAngle, opt.Rotate3DVect.ToArray());
-            }
-
-            var load = new LoadGCode();
-            load.Load(opt.Commands.ToArray());
-            var commands = load.Commands;
-            var bitmap   = gCodeDraw.DrawToBitmap(commands);
-
-            var memoryStream = new MemoryStream();
-            bitmap.Save(memoryStream, ImageFormat.Png);
-            memoryStream.Position = 0;
-            var fileName = "preview.png";
-            return File(memoryStream, this.GetContentType(fileName), fileName);
-        }
-
-        [HttpGet("render")]
-        public async Task<ActionResult<PreviewGCode>> RenderDefault()
-        {
-            await Task.CompletedTask;
-
-            var gCodeDraw = new GCodeBitmapDraw();
-            var opt = new PreviewGCode()
-            {
-                SizeX           = 200,
-                SizeY           = 200,
-                SizeZ           = 200,
-                KeepRatio       = true,
-                Zoom            = 1.0,
-                OffsetX         = 0,
-                OffsetY         = 0,
-                OffsetZ         = 0,
-                CutterSize      = gCodeDraw.CutterSize,
-                LaserSize       = gCodeDraw.LaserSize,
-                MachineColor    = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.MachineColor),
-                LaserOnColor    = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.LaserOnColor),
-                LaserOffColor   = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.LaserOffColor),
-                CutColor        = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.CutColor),
-                CutDotColor     = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.CutDotColor),
-                CutEllipseColor = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.CutEllipseColor),
-                CutArcColor     = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.CutArcColor),
-                FastMoveColor   = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.FastMoveColor),
-                HelpLineColor   = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.HelpLineColor),
-                Rotate3DAngle   = 0,
-                Rotate3DVect    = new List<double> { 0.0, 0.0, 1.0 },
-                RenderSizeX     = 800,
-                RenderSizeY     = 800
-            };
-
-            return Ok(opt);
-        }
+        return Ok(opt);
     }
 }

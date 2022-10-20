@@ -14,58 +14,57 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Serial.WebAPI.Models
+namespace CNCLib.Serial.WebAPI.Models;
+
+using System.Collections.Generic;
+
+public class PreviewGCode
 {
-    using System.Collections.Generic;
+    public double SizeX { get; set; }
 
-    public class PreviewGCode
-    {
-        public double SizeX { get; set; }
+    public double SizeY { get; set; }
 
-        public double SizeY { get; set; }
+    public double SizeZ { get; set; }
 
-        public double SizeZ { get; set; }
+    public bool KeepRatio { get; set; }
 
-        public bool KeepRatio { get; set; }
+    public double Zoom { get; set; }
 
-        public double Zoom { get; set; }
+    public double OffsetX { get; set; }
 
-        public double OffsetX { get; set; }
+    public double OffsetY { get; set; }
 
-        public double OffsetY { get; set; }
+    public double OffsetZ { get; set; }
 
-        public double OffsetZ { get; set; }
+    public double CutterSize { get; set; }
 
-        public double CutterSize { get; set; }
+    public double LaserSize { get; set; }
 
-        public double LaserSize { get; set; }
+    public string MachineColor { get; set; }
 
-        public string MachineColor { get; set; }
+    public string LaserOnColor { get; set; }
 
-        public string LaserOnColor { get; set; }
+    public string LaserOffColor { get; set; }
 
-        public string LaserOffColor { get; set; }
+    public string CutColor { get; set; }
 
-        public string CutColor { get; set; }
+    public string CutDotColor { get; set; }
 
-        public string CutDotColor { get; set; }
+    public string CutEllipseColor { get; set; }
 
-        public string CutEllipseColor { get; set; }
+    public string CutArcColor { get; set; }
 
-        public string CutArcColor { get; set; }
+    public string FastMoveColor { get; set; }
 
-        public string FastMoveColor { get; set; }
+    public string HelpLineColor { get; set; }
 
-        public string HelpLineColor { get; set; }
+    // public Rotate3D Rotate { get; set; }
 
-        // public Rotate3D Rotate { get; set; }
+    public double Rotate3DAngle { get; set; }
 
-        public double Rotate3DAngle { get; set; }
+    public IEnumerable<double> Rotate3DVect { get; set; }
 
-        public IEnumerable<double> Rotate3DVect { get; set; }
+    public int RenderSizeX { get; set; }
 
-        public int RenderSizeX { get; set; }
-
-        public int RenderSizeY { get; set; }
-    }
+    public int RenderSizeY { get; set; }
 }

@@ -14,297 +14,296 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Logic.Client
+namespace CNCLib.Logic.Client;
+
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Reflection;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Service.Abstraction;
+
+using Framework.Pattern;
+
+public class DynItemController : DisposeWrapper, IDynItemController
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Reflection;
-    using System.Threading.Tasks;
+    readonly IItemService _itemService;
 
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Service.Abstraction;
-
-    using Framework.Pattern;
-
-    public class DynItemController : DisposeWrapper, IDynItemController
+    public DynItemController(IItemService itemService)
     {
-        readonly IItemService _itemService;
+        _itemService = itemService;
+    }
 
-        public DynItemController(IItemService itemService)
+    public async Task<DynItem> GetAsync(int id)
+    {
+        Item item = await _itemService.GetAsync(id);
+        return item == null ? null : Convert(item);
+    }
+
+    public async Task<IEnumerable<DynItem>> GetAllAsync(Type t)
+    {
+        IEnumerable<Item> allItems = await _itemService.GetByClassNameAsync(GetClassName(t));
+        return Convert(allItems);
+    }
+
+    public async Task<IEnumerable<DynItem>> GetAllAsync()
+    {
+        IEnumerable<Item> allItems = await _itemService.GetAllAsync();
+        return Convert(allItems);
+    }
+
+    public async Task<object> CreateAsync(int id)
+    {
+        Item item = await _itemService.GetAsync(id);
+
+        if (item == null)
         {
-            _itemService = itemService;
+            return null;
         }
 
-        public async Task<DynItem> Get(int id)
+        Type t   = Type.GetType(item.ClassName);
+        var  obj = Activator.CreateInstance(t ?? throw new InvalidOperationException());
+
+        foreach (ItemProperty ip in item.ItemProperties)
         {
-            Item item = await _itemService.Get(id);
-            return item == null ? null : Convert(item);
+            AssignProperty(obj, ip, t.GetProperty(ip.Name));
         }
 
-        public async Task<IEnumerable<DynItem>> GetAll(Type t)
-        {
-            IEnumerable<Item> allItems = await _itemService.GetByClassName(GetClassName(t));
-            return Convert(allItems);
-        }
+        return obj;
+    }
 
-        public async Task<IEnumerable<DynItem>> GetAll()
+    private static void AssignProperty(object obj, ItemProperty ip, PropertyInfo pi)
+    {
+        if (pi != null && pi.CanWrite)
         {
-            IEnumerable<Item> allItems = await _itemService.GetAll();
-            return Convert(allItems);
-        }
-
-        public async Task<object> Create(int id)
-        {
-            Item item = await _itemService.Get(id);
-
-            if (item == null)
+            if (pi.PropertyType == typeof(string))
             {
-                return null;
+                pi.SetValue(obj, ip.Value);
             }
-
-            Type t   = Type.GetType(item.ClassName);
-            var  obj = Activator.CreateInstance(t ?? throw new InvalidOperationException());
-
-            foreach (ItemProperty ip in item.ItemProperties)
+            else if (pi.PropertyType == typeof(int))
             {
-                AssignProperty(obj, ip, t.GetProperty(ip.Name));
+                pi.SetValue(obj, int.Parse(ip.Value));
             }
-
-            return obj;
-        }
-
-        private static void AssignProperty(object obj, ItemProperty ip, PropertyInfo pi)
-        {
-            if (pi != null && pi.CanWrite)
+            else if (pi.PropertyType == typeof(byte))
             {
+                pi.SetValue(obj, byte.Parse(ip.Value));
+            }
+            else if (pi.PropertyType == typeof(bool))
+            {
+                pi.SetValue(obj, ip.Value == "true");
+            }
+            else if (pi.PropertyType == typeof(decimal))
+            {
+                pi.SetValue(obj, decimal.Parse(ip.Value, CultureInfo.InvariantCulture));
+            }
+            else if (pi.PropertyType == typeof(float))
+            {
+                pi.SetValue(obj, double.Parse(ip.Value, CultureInfo.InvariantCulture));
+            }
+            else if (pi.PropertyType == typeof(double))
+            {
+                pi.SetValue(obj, double.Parse(ip.Value, CultureInfo.InvariantCulture));
+            }
+            else if (pi.PropertyType == typeof(int?))
+            {
+                int? val = null;
+                if (!string.IsNullOrEmpty(ip.Value))
+                {
+                    val = int.Parse(ip.Value);
+                }
+
+                pi.SetValue(obj, val);
+            }
+            else if (pi.PropertyType == typeof(decimal?))
+            {
+                decimal? val = null;
+                if (!string.IsNullOrEmpty(ip.Value))
+                {
+                    val = decimal.Parse(ip.Value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
+                }
+
+                pi.SetValue(obj, val);
+            }
+            else if (pi.PropertyType == typeof(double?))
+            {
+                double? val = null;
+                if (!string.IsNullOrEmpty(ip.Value))
+                {
+                    val = double.Parse(ip.Value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
+                }
+
+                pi.SetValue(obj, val);
+            }
+            else if (pi.PropertyType.IsEnum)
+            {
+                pi.SetValue(obj, Enum.Parse(pi.PropertyType, ip.Value));
+            }
+            else if (pi.PropertyType == typeof(byte[]))
+            {
+                if (!string.IsNullOrEmpty(ip.Value))
+                {
+                    byte[] bytes = System.Convert.FromBase64String(ip.Value);
+                    pi.SetValue(obj, bytes);
+                }
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+    }
+
+    private List<ItemProperty> GetProperties(int id, object obj)
+    {
+        Type t = obj.GetType();
+
+        var list = new List<ItemProperty>();
+
+        foreach (PropertyInfo pi in t.GetProperties())
+        {
+            if (pi.CanWrite && pi.CanRead)
+            {
+                string value = null;
                 if (pi.PropertyType == typeof(string))
                 {
-                    pi.SetValue(obj, ip.Value);
+                    object str = pi.GetValue(obj);
+                    if (str != null)
+                    {
+                        value = (string)str;
+                    }
                 }
-                else if (pi.PropertyType == typeof(int))
+                else if (pi.PropertyType == typeof(int) || pi.PropertyType == typeof(byte))
                 {
-                    pi.SetValue(obj, int.Parse(ip.Value));
-                }
-                else if (pi.PropertyType == typeof(byte))
-                {
-                    pi.SetValue(obj, byte.Parse(ip.Value));
+                    value = pi.GetValue(obj).ToString();
                 }
                 else if (pi.PropertyType == typeof(bool))
                 {
-                    pi.SetValue(obj, ip.Value == "true");
+                    value = (bool)pi.GetValue(obj) ? "true" : "false";
                 }
                 else if (pi.PropertyType == typeof(decimal))
                 {
-                    pi.SetValue(obj, decimal.Parse(ip.Value, CultureInfo.InvariantCulture));
+                    value = ((decimal)pi.GetValue(obj)).ToString(CultureInfo.InvariantCulture);
                 }
                 else if (pi.PropertyType == typeof(float))
                 {
-                    pi.SetValue(obj, double.Parse(ip.Value, CultureInfo.InvariantCulture));
+                    value = ((float)pi.GetValue(obj)).ToString(CultureInfo.InvariantCulture);
                 }
                 else if (pi.PropertyType == typeof(double))
                 {
-                    pi.SetValue(obj, double.Parse(ip.Value, CultureInfo.InvariantCulture));
+                    value = ((double)pi.GetValue(obj)).ToString(CultureInfo.InvariantCulture);
                 }
                 else if (pi.PropertyType == typeof(int?))
                 {
-                    int? val = null;
-                    if (!string.IsNullOrEmpty(ip.Value))
+                    var val = (int?)pi.GetValue(obj);
+                    if (val.HasValue)
                     {
-                        val = int.Parse(ip.Value);
+                        value = val.Value.ToString();
                     }
-
-                    pi.SetValue(obj, val);
                 }
                 else if (pi.PropertyType == typeof(decimal?))
                 {
-                    decimal? val = null;
-                    if (!string.IsNullOrEmpty(ip.Value))
+                    var val = (decimal?)pi.GetValue(obj);
+                    if (val.HasValue)
                     {
-                        val = decimal.Parse(ip.Value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
+                        value = val.Value.ToString(CultureInfo.InvariantCulture);
                     }
-
-                    pi.SetValue(obj, val);
                 }
                 else if (pi.PropertyType == typeof(double?))
                 {
-                    double? val = null;
-                    if (!string.IsNullOrEmpty(ip.Value))
+                    var val = (double?)pi.GetValue(obj);
+                    if (val.HasValue)
                     {
-                        val = double.Parse(ip.Value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
+                        value = val.Value.ToString(CultureInfo.InvariantCulture);
                     }
-
-                    pi.SetValue(obj, val);
                 }
                 else if (pi.PropertyType.IsEnum)
                 {
-                    pi.SetValue(obj, Enum.Parse(pi.PropertyType, ip.Value));
+                    value = pi.GetValue(obj).ToString();
                 }
                 else if (pi.PropertyType == typeof(byte[]))
                 {
-                    if (!string.IsNullOrEmpty(ip.Value))
+                    var bytes = (byte[])pi.GetValue(obj);
+                    if (bytes != null)
                     {
-                        byte[] bytes = System.Convert.FromBase64String(ip.Value);
-                        pi.SetValue(obj, bytes);
+                        value = System.Convert.ToBase64String(bytes);
                     }
                 }
                 else
                 {
                     throw new NotImplementedException();
                 }
-            }
-        }
 
-        private List<ItemProperty> GetProperties(int id, object obj)
-        {
-            Type t = obj.GetType();
-
-            var list = new List<ItemProperty>();
-
-            foreach (PropertyInfo pi in t.GetProperties())
-            {
-                if (pi.CanWrite && pi.CanRead)
+                var prop = new ItemProperty { Name = pi.Name, ItemId = id };
+                if (!string.IsNullOrEmpty(value))
                 {
-                    string value = null;
-                    if (pi.PropertyType == typeof(string))
-                    {
-                        object str = pi.GetValue(obj);
-                        if (str != null)
-                        {
-                            value = (string)str;
-                        }
-                    }
-                    else if (pi.PropertyType == typeof(int) || pi.PropertyType == typeof(byte))
-                    {
-                        value = pi.GetValue(obj).ToString();
-                    }
-                    else if (pi.PropertyType == typeof(bool))
-                    {
-                        value = (bool)pi.GetValue(obj) ? "true" : "false";
-                    }
-                    else if (pi.PropertyType == typeof(decimal))
-                    {
-                        value = ((decimal)pi.GetValue(obj)).ToString(CultureInfo.InvariantCulture);
-                    }
-                    else if (pi.PropertyType == typeof(float))
-                    {
-                        value = ((float)pi.GetValue(obj)).ToString(CultureInfo.InvariantCulture);
-                    }
-                    else if (pi.PropertyType == typeof(double))
-                    {
-                        value = ((double)pi.GetValue(obj)).ToString(CultureInfo.InvariantCulture);
-                    }
-                    else if (pi.PropertyType == typeof(int?))
-                    {
-                        var val = (int?)pi.GetValue(obj);
-                        if (val.HasValue)
-                        {
-                            value = val.Value.ToString();
-                        }
-                    }
-                    else if (pi.PropertyType == typeof(decimal?))
-                    {
-                        var val = (decimal?)pi.GetValue(obj);
-                        if (val.HasValue)
-                        {
-                            value = val.Value.ToString(CultureInfo.InvariantCulture);
-                        }
-                    }
-                    else if (pi.PropertyType == typeof(double?))
-                    {
-                        var val = (double?)pi.GetValue(obj);
-                        if (val.HasValue)
-                        {
-                            value = val.Value.ToString(CultureInfo.InvariantCulture);
-                        }
-                    }
-                    else if (pi.PropertyType.IsEnum)
-                    {
-                        value = pi.GetValue(obj).ToString();
-                    }
-                    else if (pi.PropertyType == typeof(byte[]))
-                    {
-                        var bytes = (byte[])pi.GetValue(obj);
-                        if (bytes != null)
-                        {
-                            value = System.Convert.ToBase64String(bytes);
-                        }
-                    }
-                    else
-                    {
-                        throw new NotImplementedException();
-                    }
-
-                    var prop = new ItemProperty { Name = pi.Name, ItemId = id };
-                    if (!string.IsNullOrEmpty(value))
-                    {
-                        prop.Value = value;
-                    }
-
-                    list.Add(prop);
+                    prop.Value = value;
                 }
-            }
 
-            return list;
-        }
-
-        public async Task<int> Add(string name, object obj)
-        {
-            return await _itemService.Add(ConvertToItem(name, obj, 0));
-        }
-
-        public async Task Save(int id, string name, object obj)
-        {
-            await _itemService.Update(ConvertToItem(name, obj, id));
-        }
-
-        public async Task Delete(int id)
-        {
-            var item = await _itemService.Get(id);
-            if (item != null)
-            {
-                await _itemService.Delete(item);
+                list.Add(prop);
             }
         }
 
-        private Item ConvertToItem(string name, object obj, int id)
+        return list;
+    }
+
+    public async Task<int> AddAsync(string name, object obj)
+    {
+        return await _itemService.AddAsync(ConvertToItem(name, obj, 0));
+    }
+
+    public async Task SaveAsync(int id, string name, object obj)
+    {
+        await _itemService.UpdateAsync(ConvertToItem(name, obj, id));
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        var item = await _itemService.GetAsync(id);
+        if (item != null)
         {
-            var list = GetProperties(id, obj);
-            var item = new Item
-            {
-                ItemId         = id,
-                Name           = name,
-                ClassName      = GetClassName(obj.GetType()),
-                ItemProperties = list.ToArray()
-            };
-            return item;
+            await _itemService.DeleteAsync(item);
+        }
+    }
+
+    private Item ConvertToItem(string name, object obj, int id)
+    {
+        var list = GetProperties(id, obj);
+        var item = new Item
+        {
+            ItemId         = id,
+            Name           = name,
+            ClassName      = GetClassName(obj.GetType()),
+            ItemProperties = list.ToArray()
+        };
+        return item;
+    }
+
+    private static IEnumerable<DynItem> Convert(IEnumerable<Item> allItems)
+    {
+        if (allItems == null)
+        {
+            return null;
         }
 
-        private static IEnumerable<DynItem> Convert(IEnumerable<Item> allItems)
+        var l = new List<DynItem>();
+        foreach (var o in allItems)
         {
-            if (allItems == null)
-            {
-                return null;
-            }
-
-            var l = new List<DynItem>();
-            foreach (var o in allItems)
-            {
-                l.Add(new DynItem { ItemId = o.ItemId, Name = o.Name });
-            }
-
-            return l;
+            l.Add(new DynItem { ItemId = o.ItemId, Name = o.Name });
         }
 
-        private static DynItem Convert(Item item)
-        {
-            return new DynItem { ItemId = item.ItemId, Name = item.Name };
-        }
+        return l;
+    }
 
-        public static string GetClassName(Type t)
-        {
-            string[] names = t.AssemblyQualifiedName.Split(',');
-            return names[0].Trim() + "," + names[1].Trim();
-        }
+    private static DynItem Convert(Item item)
+    {
+        return new DynItem { ItemId = item.ItemId, Name = item.Name };
+    }
+
+    public static string GetClassName(Type t)
+    {
+        string[] names = t.AssemblyQualifiedName.Split(',');
+        return names[0].Trim() + "," + names[1].Trim();
     }
 }

@@ -14,124 +14,123 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.GCode.Serial
+namespace CNCLib.GCode.Serial;
+
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
+
+using Framework.Arduino.SerialCommunication;
+using Framework.Arduino.SerialCommunication.Abstraction;
+
+public static class GCodeSerialExtension
 {
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using System.Threading.Tasks;
+    public const int DefaultTimeout = 120 * 1000;
 
-    using Framework.Arduino.SerialCommunication;
-    using Framework.Arduino.SerialCommunication.Abstraction;
-
-    public static class GCodeSerialExtension
+    public static async Task<decimal?> GetParameterValueAsync(this ISerial serial, int parameter, string commandPrefix)
     {
-        public const int DefaultTimeout = 120 * 1000;
+        string message = await serial.SendCommandAndReadOKReplyAsync($"{commandPrefix}(print, #{parameter})", 10 * 1000);
 
-        public static async Task<decimal?> GetParameterValueAsync(this ISerial serial, int parameter, string commandPrefix)
+        if (!string.IsNullOrEmpty(message))
         {
-            string message = await serial.SendCommandAndReadOKReplyAsync($"{commandPrefix}(print, #{parameter})", 10 * 1000);
-
-            if (!string.IsNullOrEmpty(message))
+            // expected response : 0\nok
+            string pos = message.Split('\n').FirstOrDefault();
+            if (decimal.TryParse(pos, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal val))
             {
-                // expected response : 0\nok
-                string pos = message.Split('\n').FirstOrDefault();
-                if (decimal.TryParse(pos, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal val))
-                {
-                    return val;
-                }
+                return val;
             }
-
-            return null;
         }
 
-        #region GetPosition
-
-        private static decimal[] Convert(string[] list)
-        {
-            var ret = new decimal[list.Length];
-            for (int i = 0; i < list.Length; i++)
-            {
-                decimal val;
-                if (decimal.TryParse(list[i], NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out val))
-                {
-                    ret[i] = val;
-                }
-            }
-
-            return ret;
-        }
-
-        static string TrimMsg(string msg, string replace)
-        {
-            return msg.Replace("ok", "").Replace(" ", "").Replace(replace, "").Replace(">", "");
-        }
-
-        static decimal[] Convert(string msg, string replace)
-        {
-            return Convert(TrimMsg(msg, replace).Split(':', ','));
-        }
-
-        static decimal[] TryConvert(string[] tags, string txt)
-        {
-            string tag = tags.FirstOrDefault((s) => s.StartsWith(txt));
-            if (tag != null)
-            {
-                return Convert(TrimMsg(tag, txt).Split(':', ','));
-            }
-
-            return null;
-        }
-
-        public static async Task<IEnumerable<IEnumerable<decimal>>> GetPosition(this ISerial serial, string commandPrefix)
-        {
-            string message = await serial.SendCommandAndReadOKReplyAsync($"{commandPrefix}?", 10 * 1000);
-            var    ret     = new List<IEnumerable<decimal>>();
-
-            if (!string.IsNullOrEmpty(message))
-            {
-                if (message.Contains("MPos:"))
-                {
-                    // new or grbl format
-                    message = message.Replace("ok", "").Replace("<", "").Replace(">", "").Trim();
-
-                    string[] tags = message.Split('|');
-
-                    var mPos = TryConvert(tags, "MPos:");
-                    if (mPos != null)
-                    {
-                        ret.Add(mPos.ToArray());
-
-                        var wco = TryConvert(tags, "WCO:");
-                        if (wco != null)
-                        {
-                            for (int i = 0; i < wco.Length; i++)
-                            {
-                                mPos[i] -= wco[i];
-                            }
-                        }
-
-                        ret.Add(mPos);
-                    }
-                }
-                else
-                {
-                    decimal[] mPos = Convert(message, "dummy");
-                    ret.Add(mPos);
-
-                    message = await serial.SendCommandAndReadOKReplyAsync($"{commandPrefix}m114 s1", 10 * 1000);
-
-                    if (!string.IsNullOrEmpty(message))
-                    {
-                        decimal[] rPos = Convert(message, "dummy");
-                        ret.Add(rPos);
-                    }
-                }
-            }
-
-            return ret;
-        }
-
-        #endregion
+        return null;
     }
+
+    #region GetPosition
+
+    private static decimal[] Convert(string[] list)
+    {
+        var ret = new decimal[list.Length];
+        for (int i = 0; i < list.Length; i++)
+        {
+            decimal val;
+            if (decimal.TryParse(list[i], NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out val))
+            {
+                ret[i] = val;
+            }
+        }
+
+        return ret;
+    }
+
+    static string TrimMsg(string msg, string replace)
+    {
+        return msg.Replace("ok", "").Replace(" ", "").Replace(replace, "").Replace(">", "");
+    }
+
+    static decimal[] Convert(string msg, string replace)
+    {
+        return Convert(TrimMsg(msg, replace).Split(':', ','));
+    }
+
+    static decimal[] TryConvert(string[] tags, string txt)
+    {
+        string tag = tags.FirstOrDefault((s) => s.StartsWith(txt));
+        if (tag != null)
+        {
+            return Convert(TrimMsg(tag, txt).Split(':', ','));
+        }
+
+        return null;
+    }
+
+    public static async Task<IEnumerable<IEnumerable<decimal>>> GetPosition(this ISerial serial, string commandPrefix)
+    {
+        string message = await serial.SendCommandAndReadOKReplyAsync($"{commandPrefix}?", 10 * 1000);
+        var    ret     = new List<IEnumerable<decimal>>();
+
+        if (!string.IsNullOrEmpty(message))
+        {
+            if (message.Contains("MPos:"))
+            {
+                // new or grbl format
+                message = message.Replace("ok", "").Replace("<", "").Replace(">", "").Trim();
+
+                string[] tags = message.Split('|');
+
+                var mPos = TryConvert(tags, "MPos:");
+                if (mPos != null)
+                {
+                    ret.Add(mPos.ToArray());
+
+                    var wco = TryConvert(tags, "WCO:");
+                    if (wco != null)
+                    {
+                        for (int i = 0; i < wco.Length; i++)
+                        {
+                            mPos[i] -= wco[i];
+                        }
+                    }
+
+                    ret.Add(mPos);
+                }
+            }
+            else
+            {
+                decimal[] mPos = Convert(message, "dummy");
+                ret.Add(mPos);
+
+                message = await serial.SendCommandAndReadOKReplyAsync($"{commandPrefix}m114 s1", 10 * 1000);
+
+                if (!string.IsNullOrEmpty(message))
+                {
+                    decimal[] rPos = Convert(message, "dummy");
+                    ret.Add(rPos);
+                }
+            }
+        }
+
+        return ret;
+    }
+
+    #endregion
 }

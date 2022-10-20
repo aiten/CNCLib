@@ -14,64 +14,63 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Logic.Manager
+namespace CNCLib.Logic.Manager;
+
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using AutoMapper;
+
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Repository.Abstraction;
+using CNCLib.Repository.Abstraction.Entities;
+using CNCLib.Shared;
+
+using Framework.Logic;
+using Framework.Repository.Abstraction;
+
+public class ItemManager : CrudManager<Item, int, ItemEntity>, IItemManager
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+    private readonly IUnitOfWork        _unitOfWork;
+    private readonly IItemRepository    _repository;
+    private readonly ICNCLibUserContext _userContext;
 
-    using AutoMapper;
-
-    using CNCLib.Logic.Abstraction;
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Repository.Abstraction;
-    using CNCLib.Repository.Abstraction.Entities;
-    using CNCLib.Shared;
-
-    using Framework.Logic;
-    using Framework.Repository.Abstraction;
-
-    public class ItemManager : CrudManager<Item, int, ItemEntity>, IItemManager
+    public ItemManager(IUnitOfWork unitOfWork, IItemRepository repository, ICNCLibUserContext userContext, IMapper mapper) : base(unitOfWork, repository, mapper)
     {
-        private readonly IUnitOfWork        _unitOfWork;
-        private readonly IItemRepository    _repository;
-        private readonly ICNCLibUserContext _userContext;
+        _unitOfWork  = unitOfWork;
+        _repository  = repository;
+        _userContext = userContext;
+    }
 
-        public ItemManager(IUnitOfWork unitOfWork, IItemRepository repository, ICNCLibUserContext userContext, IMapper mapper) : base(unitOfWork, repository, mapper)
-        {
-            _unitOfWork  = unitOfWork;
-            _repository  = repository;
-            _userContext = userContext;
-        }
+    protected override int GetKey(ItemEntity entity)
+    {
+        return entity.ItemId;
+    }
 
-        protected override int GetKey(ItemEntity entity)
-        {
-            return entity.ItemId;
-        }
+    protected override Task<IList<ItemEntity>> GetAllEntitiesAsync()
+    {
+        return _repository.GetByUserAsync(_userContext.UserId);
+    }
 
-        protected override Task<IList<ItemEntity>> GetAllEntities()
-        {
-            return _repository.GetByUser(_userContext.UserId);
-        }
+    protected override void AddEntity(ItemEntity entityInDb)
+    {
+        entityInDb.UserId = _userContext.UserId;
+        base.AddEntity(entityInDb);
+    }
 
-        protected override void AddEntity(ItemEntity entityInDb)
-        {
-            entityInDb.UserId = _userContext.UserId;
-            base.AddEntity(entityInDb);
-        }
+    protected override void UpdateEntity(ItemEntity entityInDb, ItemEntity values)
+    {
+        // do not overwrite user!
 
-        protected override void UpdateEntity(ItemEntity entityInDb, ItemEntity values)
-        {
-            // do not overwrite user!
+        values.UserId = entityInDb.UserId;
+        values.User   = entityInDb.User;
 
-            values.UserId = entityInDb.UserId;
-            values.User   = entityInDb.User;
+        base.UpdateEntity(entityInDb, values);
+    }
 
-            base.UpdateEntity(entityInDb, values);
-        }
-
-        public async Task<IEnumerable<Item>> GetByClassName(string classname)
-        {
-            return await MapToDto(await _repository.Get(_userContext.UserId, classname));
-        }
+    public async Task<IEnumerable<Item>> GetByClassNameAsync(string classname)
+    {
+        return await MapToDtoAsync(await _repository.GetAsync(_userContext.UserId, classname));
     }
 }

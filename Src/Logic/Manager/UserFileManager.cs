@@ -14,119 +14,118 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Logic.Manager
+namespace CNCLib.Logic.Manager;
+
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using AutoMapper;
+
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Repository.Abstraction;
+using CNCLib.Repository.Abstraction.Entities;
+using CNCLib.Shared;
+
+using Framework.Localization;
+using Framework.Logic;
+using Framework.Repository.Abstraction;
+using Framework.Tools.Abstraction;
+
+using ErrorMessagesLogic = CNCLib.Logic.ErrorMessages;
+
+public class UserFileManager : CrudManager<UserFile, int, UserFileEntity>, IUserFileManager
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+    private readonly IUnitOfWork         _unitOfWork;
+    private readonly IUserFileRepository _repository;
+    private readonly IMapper             _mapper;
+    private readonly ICNCLibUserContext  _userContext;
+    private readonly ICurrentDateTime    _currentDateTime;
 
-    using AutoMapper;
-
-    using CNCLib.Logic.Abstraction;
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Repository.Abstraction;
-    using CNCLib.Repository.Abstraction.Entities;
-    using CNCLib.Shared;
-
-    using Framework.Localization;
-    using Framework.Logic;
-    using Framework.Repository.Abstraction;
-    using Framework.Tools.Abstraction;
-
-    using ErrorMessagesLogic = CNCLib.Logic.ErrorMessages;
-
-    public class UserFileManager : CrudManager<UserFile, int, UserFileEntity>, IUserFileManager
+    public UserFileManager(IUnitOfWork unitOfWork, IUserFileRepository repository, ICNCLibUserContext userContext, IMapper mapper, ICurrentDateTime currentDateTime) : base(unitOfWork, repository, mapper)
     {
-        private readonly IUnitOfWork         _unitOfWork;
-        private readonly IUserFileRepository _repository;
-        private readonly IMapper             _mapper;
-        private readonly ICNCLibUserContext  _userContext;
-        private readonly ICurrentDateTime    _currentDateTime;
+        _unitOfWork      = unitOfWork;
+        _repository      = repository;
+        _userContext     = userContext;
+        _mapper          = mapper;
+        _currentDateTime = currentDateTime;
+    }
 
-        public UserFileManager(IUnitOfWork unitOfWork, IUserFileRepository repository, ICNCLibUserContext userContext, IMapper mapper, ICurrentDateTime currentDateTime) : base(unitOfWork, repository, mapper)
+    #region file size check
+
+    protected override async Task ValidateDtoAsync(UserFile dto, ValidationType validation)
+    {
+        await base.ValidateDtoAsync(dto, validation);
+
+        if (validation == ValidationType.AddValidation || validation == ValidationType.UpdateValidation)
         {
-            _unitOfWork      = unitOfWork;
-            _repository      = repository;
-            _userContext     = userContext;
-            _mapper          = mapper;
-            _currentDateTime = currentDateTime;
-        }
-
-        #region file size check
-
-        protected override async Task ValidateDto(UserFile dto, ValidationType validation)
-        {
-            await base.ValidateDto(dto, validation);
-
-            if (validation == ValidationType.AddValidation || validation == ValidationType.UpdateValidation)
+            const int MAXFILESIZE = 1024 * 1024 * 32;
+            if (dto.Content.Length > MAXFILESIZE)
             {
-                const int MAXFILESIZE = 1024 * 1024 * 32;
-                if (dto.Content.Length > MAXFILESIZE)
-                {
-                    throw new ArgumentException(
-                        ErrorMessagesLogic.ResourceManager.ToLocalizable(nameof(ErrorMessagesLogic.CNCLib_Logic_FileToBig), new object[] { MAXFILESIZE, dto.Content.Length }).Message());
-                }
+                throw new ArgumentException(
+                    ErrorMessagesLogic.ResourceManager.ToLocalizable(nameof(ErrorMessagesLogic.CNCLib_Logic_FileToBig), new object[] { MAXFILESIZE, dto.Content.Length }).Message());
+            }
 
-                var currentDbSize = await _repository.GetTotalUserFileSize(_userContext.UserId);
+            var currentDbSize = await _repository.GetTotalUserFileSizeAsync(_userContext.UserId);
 
-                if (validation == ValidationType.UpdateValidation)
-                {
-                    currentDbSize -= await _repository.GetUserFileSize(dto.UserFileId);
-                }
+            if (validation == ValidationType.UpdateValidation)
+            {
+                currentDbSize -= await _repository.GetUserFileSizeAsync(dto.UserFileId);
+            }
 
-                currentDbSize += dto.Content.LongLength;
+            currentDbSize += dto.Content.LongLength;
 
-                const int MAXTOTALFILESIZE = 1024 * 1024 * 100;
-                if (currentDbSize > MAXTOTALFILESIZE)
-                {
-                    throw new ArgumentException(
-                        ErrorMessagesLogic.ResourceManager.ToLocalizable(nameof(ErrorMessagesLogic.CNCLib_Logic_TotalFilesToBig), new object[] { MAXTOTALFILESIZE, currentDbSize }).Message());
-                }
+            const int MAXTOTALFILESIZE = 1024 * 1024 * 100;
+            if (currentDbSize > MAXTOTALFILESIZE)
+            {
+                throw new ArgumentException(
+                    ErrorMessagesLogic.ResourceManager.ToLocalizable(nameof(ErrorMessagesLogic.CNCLib_Logic_TotalFilesToBig), new object[] { MAXTOTALFILESIZE, currentDbSize }).Message());
             }
         }
+    }
 
-        #endregion
+    #endregion
 
-        protected override void AddEntity(UserFileEntity entity)
-        {
-            base.AddEntity(entity);
-            entity.UploadTime = _currentDateTime.Now;
-        }
+    protected override void AddEntity(UserFileEntity entity)
+    {
+        base.AddEntity(entity);
+        entity.UploadTime = _currentDateTime.Now;
+    }
 
-        protected override void UpdateEntity(UserFileEntity entityInDb, UserFileEntity values)
-        {
-            values.UploadTime = _currentDateTime.Now;
-            base.UpdateEntity(entityInDb, values);
-        }
+    protected override void UpdateEntity(UserFileEntity entityInDb, UserFileEntity values)
+    {
+        values.UploadTime = _currentDateTime.Now;
+        base.UpdateEntity(entityInDb, values);
+    }
 
-        protected override Task<IList<UserFileEntity>> GetAllEntities()
-        {
-            return _repository.GetByUser(_userContext.UserId);
-        }
+    protected override Task<IList<UserFileEntity>> GetAllEntitiesAsync()
+    {
+        return _repository.GetByUserAsync(_userContext.UserId);
+    }
 
-        public async Task<IEnumerable<UserFileInfo>> GetFileInfos()
-        {
-            return _mapper.Map<IEnumerable<UserFileInfo>>(await _repository.GetFileInfos(_userContext.UserId));
-        }
+    public async Task<IEnumerable<UserFileInfo>> GetFileInfosAsync()
+    {
+        return _mapper.Map<IEnumerable<UserFileInfo>>(await _repository.GetFileInfosAsync(_userContext.UserId));
+    }
 
-        public async Task<UserFileInfo> GetFileInfo(UserFile userFile)
-        {
-            return _mapper.Map<UserFileInfo>(await _repository.GetFileInfo(userFile.UserFileId));
-        }
+    public async Task<UserFileInfo> GetFileInfoAsync(UserFile userFile)
+    {
+        return _mapper.Map<UserFileInfo>(await _repository.GetFileInfoAsync(userFile.UserFileId));
+    }
 
-        protected override int GetKey(UserFileEntity entity)
-        {
-            return entity.UserFileId;
-        }
+    protected override int GetKey(UserFileEntity entity)
+    {
+        return entity.UserFileId;
+    }
 
-        public async Task<UserFile> GetByName(string filename)
-        {
-            return await MapToDto(await _repository.GetByName(_userContext.UserId, filename));
-        }
+    public async Task<UserFile> GetByNameAsync(string filename)
+    {
+        return await MapToDtoAsync(await _repository.GetByNameAsync(_userContext.UserId, filename));
+    }
 
-        public async Task<int> GetFileId(string fileName)
-        {
-            return await _repository.GetFileId(_userContext.UserId, fileName);
-        }
+    public async Task<int> GetFileIdAsync(string fileName)
+    {
+        return await _repository.GetFileIdAsync(_userContext.UserId, fileName);
     }
 }

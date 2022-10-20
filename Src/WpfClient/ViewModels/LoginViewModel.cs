@@ -14,82 +14,81 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.ViewModels
+namespace CNCLib.WpfClient.ViewModels;
+
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
+
+using CNCLib.Service.Abstraction;
+
+using Framework.Pattern;
+using Framework.Wpf.Helpers;
+using Framework.Wpf.ViewModels;
+
+public class LoginViewModel : BaseViewModel
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using System.Windows;
-    using System.Windows.Input;
+    private readonly IFactory<IUserService> _userService;
 
-    using CNCLib.Service.Abstraction;
+    #region crt
 
-    using Framework.Pattern;
-    using Framework.Wpf.Helpers;
-    using Framework.Wpf.ViewModels;
-
-    public class LoginViewModel : BaseViewModel
+    public LoginViewModel(IFactory<IUserService> userService)
     {
-        private readonly IFactory<IUserService> _userService;
-
-        #region crt
-
-        public LoginViewModel(IFactory<IUserService> userService)
-        {
-            _userService = userService;
-        }
-
-        #endregion
-
-        #region Properties
-
-        private string _userName;
-
-        public string UserName
-        {
-            get => _userName;
-            set { SetProperty(() => _userName == value, () => _userName = value); }
-        }
-
-        private string _password;
-
-        public string Password
-        {
-            get => _password;
-            set { SetProperty(() => _password == value, () => _password = value); }
-        }
-
-        #endregion
-
-        #region Operations
-
-        public async Task<bool> VerifyUser(CancellationToken ctk)
-        {
-            using (var scope = _userService.Create())
-            {
-                var isValidUser = await scope.Instance.IsValidUser(UserName, Password);
-
-                if (isValidUser)
-                {
-                    DialogOKAction();
-                    return true;
-                }
-
-                MessageBox?.Invoke(@"Illegal user/password", @"Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
-        }
-
-        public bool CanVerifyUser()
-        {
-            return true;
-        }
-
-        #endregion
-
-        #region Commands
-
-        public ICommand VerifyLoginCommand => new DelegateCommandAsync<bool>(VerifyUser, CanVerifyUser);
-
-        #endregion
+        _userService = userService;
     }
+
+    #endregion
+
+    #region Properties
+
+    private string _userName;
+
+    public string UserName
+    {
+        get => _userName;
+        set { SetProperty(() => _userName == value, () => _userName = value); }
+    }
+
+    private string _password;
+
+    public string Password
+    {
+        get => _password;
+        set { SetProperty(() => _password == value, () => _password = value); }
+    }
+
+    #endregion
+
+    #region Operations
+
+    public async Task<bool> VerifyUser(CancellationToken ctk)
+    {
+        using (var scope = _userService.Create())
+        {
+            var isValidUser = await scope.Instance.IsValidUser(UserName, Password);
+
+            if (isValidUser)
+            {
+                DialogOKAction();
+                return true;
+            }
+
+            MessageBox?.Invoke(@"Illegal user/password", @"Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            return false;
+        }
+    }
+
+    public bool CanVerifyUser()
+    {
+        return true;
+    }
+
+    #endregion
+
+    #region Commands
+
+    public ICommand VerifyLoginCommand => new DelegateCommandAsync<bool>(VerifyUser, CanVerifyUser);
+
+    #endregion
 }

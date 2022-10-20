@@ -14,26 +14,25 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository.Mappings
+namespace CNCLib.Repository.Mappings;
+
+using CNCLib.Repository.Abstraction.Entities;
+
+using Framework.Repository.Mappings;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+public static class ItemPropertyMapping
 {
-    using CNCLib.Repository.Abstraction.Entities;
-
-    using Framework.Repository.Mappings;
-
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-    public static class ItemPropertyMapping
+    public static void Map(this EntityTypeBuilder<ItemPropertyEntity> entity)
     {
-        public static void Map(this EntityTypeBuilder<ItemPropertyEntity> entity)
-        {
-            entity.ToTable("ItemProperty");
+        entity.ToTable("ItemProperty");
 
-            entity.HasKey(m => new { ItemId = m.ItemId, m.Name });
+        entity.HasKey(m => new { ItemId = m.ItemId, m.Name });
 
-            entity.Property(m => m.Name).AsRequiredText(255);
+        entity.Property(m => m.Name).AsRequiredText(255);
 
-            entity.HasOne(i => i.Item).WithMany(ip => ip.ItemProperties).HasForeignKey(ip => ip.ItemId);
-        }
+        entity.HasOne(i => i.Item).WithMany(ip => ip.ItemProperties).HasForeignKey(ip => ip.ItemId);
     }
 }

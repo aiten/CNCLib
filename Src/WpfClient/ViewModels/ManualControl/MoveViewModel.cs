@@ -14,81 +14,80 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.ViewModels.ManualControl
+namespace CNCLib.WpfClient.ViewModels.ManualControl;
+
+using System.Globalization;
+using System.Windows.Input;
+
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.WpfClient.Helpers;
+
+using Framework.Arduino.SerialCommunication;
+using Framework.Wpf.Helpers;
+
+public class MoveViewModel : DetailViewModel
 {
-    using System.Globalization;
-    using System.Windows.Input;
+    private readonly Global _global;
 
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.WpfClient.Helpers;
-
-    using Framework.Arduino.SerialCommunication;
-    using Framework.Wpf.Helpers;
-
-    public class MoveViewModel : DetailViewModel
+    public MoveViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
     {
-        private readonly Global _global;
-
-        public MoveViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
-        {
-            _global = global;
-        }
-
-        #region Properties
-
-        #endregion
-
-        #region Commands / CanCommands
-
-        private void SendMoveCommand(double? dist, char axisName)
-        {
-            RunAndUpdate(
-                () =>
-                {
-                    bool   mustUse2Lines = _global.Machine.CommandSyntax == CommandSyntax.Grbl;
-                    string commandStr    = _global.Machine.PrepareCommand("g91 g0" + axisName + (dist ?? 0.0).ToString(CultureInfo.InvariantCulture));
-
-                    if (!mustUse2Lines)
-                    {
-                        commandStr += " g90";
-                    }
-
-                    _global.Com.Current.QueueCommand(commandStr);
-
-                    if (mustUse2Lines)
-                    {
-                        _global.Com.Current.QueueCommand("g90");
-                    }
-                });
-        }
-
-        public bool CanSendCommand(double? dist)
-        {
-            return CanSend();
-        }
-
-        #endregion
-
-        #region ICommands
-
-        public ICommand SendRightCommand =>
-            new DelegateCommand<double?>(dist => SendMoveCommand(dist, 'X'), CanSendCommand);
-
-        public ICommand SendLeftCommand =>
-            new DelegateCommand<double?>(dist => SendMoveCommand(-dist, 'X'), CanSendCommand);
-
-        public ICommand SendUpCommand =>
-            new DelegateCommand<double?>(dist => SendMoveCommand(dist, 'Y'), CanSendCommand);
-
-        public ICommand SendDownCommand =>
-            new DelegateCommand<double?>(dist => SendMoveCommand(-dist, 'Y'), CanSendCommand);
-
-        public ICommand SendZUpCommand =>
-            new DelegateCommand<double?>(dist => SendMoveCommand(dist, 'Z'), CanSendCommand);
-
-        public ICommand SendZDownCommand =>
-            new DelegateCommand<double?>(dist => SendMoveCommand(-dist, 'Z'), CanSendCommand);
-
-        #endregion
+        _global = global;
     }
+
+    #region Properties
+
+    #endregion
+
+    #region Commands / CanCommands
+
+    private void SendMoveCommand(double? dist, char axisName)
+    {
+        RunAndUpdate(
+            () =>
+            {
+                bool   mustUse2Lines = _global.Machine.CommandSyntax == CommandSyntax.Grbl;
+                string commandStr    = _global.Machine.PrepareCommand("g91 g0" + axisName + (dist ?? 0.0).ToString(CultureInfo.InvariantCulture));
+
+                if (!mustUse2Lines)
+                {
+                    commandStr += " g90";
+                }
+
+                _global.Com.Current.QueueCommand(commandStr);
+
+                if (mustUse2Lines)
+                {
+                    _global.Com.Current.QueueCommand("g90");
+                }
+            });
+    }
+
+    public bool CanSendCommand(double? dist)
+    {
+        return CanSend();
+    }
+
+    #endregion
+
+    #region ICommands
+
+    public ICommand SendRightCommand =>
+        new DelegateCommand<double?>(dist => SendMoveCommand(dist, 'X'), CanSendCommand);
+
+    public ICommand SendLeftCommand =>
+        new DelegateCommand<double?>(dist => SendMoveCommand(-dist, 'X'), CanSendCommand);
+
+    public ICommand SendUpCommand =>
+        new DelegateCommand<double?>(dist => SendMoveCommand(dist, 'Y'), CanSendCommand);
+
+    public ICommand SendDownCommand =>
+        new DelegateCommand<double?>(dist => SendMoveCommand(-dist, 'Y'), CanSendCommand);
+
+    public ICommand SendZUpCommand =>
+        new DelegateCommand<double?>(dist => SendMoveCommand(dist, 'Z'), CanSendCommand);
+
+    public ICommand SendZDownCommand =>
+        new DelegateCommand<double?>(dist => SendMoveCommand(-dist, 'Z'), CanSendCommand);
+
+    #endregion
 }

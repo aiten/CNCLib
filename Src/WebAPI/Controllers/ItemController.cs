@@ -14,78 +14,77 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WebAPI.Controllers
+namespace CNCLib.WebAPI.Controllers;
+
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Shared;
+
+using Framework.WebAPI.Controller;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+[Authorize]
+[Route("api/[controller]")]
+public class ItemController : Controller
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+    private readonly IItemManager       _manager;
+    private readonly ICNCLibUserContext _userContext;
 
-    using CNCLib.Logic.Abstraction;
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Shared;
-
-    using Framework.WebAPI.Controller;
-
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
-
-    [Authorize]
-    [Route("api/[controller]")]
-    public class ItemController : Controller
+    public ItemController(IItemManager manager, ICNCLibUserContext userContext)
     {
-        private readonly IItemManager       _manager;
-        private readonly ICNCLibUserContext _userContext;
+        _manager     = manager;
+        _userContext = userContext;
+    }
 
-        public ItemController(IItemManager manager, ICNCLibUserContext userContext)
-        {
-            _manager     = manager;
-            _userContext = userContext;
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Item>>> Get(string classname)
-        {
-            if (classname == null)
-            {
-                return await this.GetAll(_manager);
-            }
-
-            var items = await _manager.GetByClassName(classname);
-            return await this.NotFoundOrOk(items);
-        }
-
-        #region default REST
-
-/*
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Item>>> Get()
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Item>>> Get(string classname)
+    {
+        if (classname == null)
         {
             return await this.GetAll(_manager);
         }
-*/
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<Item>> Get(int id)
-        {
-            return await this.Get<Item, int>(_manager, id);
-        }
 
-        [HttpPost]
-        public async Task<ActionResult<Item>> Add([FromBody] Item value)
-        {
-            return await this.Add<Item, int>(_manager, value);
-        }
-
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult> Update(int id, [FromBody] Item value)
-        {
-            return await this.Update<Item, int>(_manager, id, value.ItemId, value);
-        }
-
-        [HttpDelete("{id:int}")]
-        public async Task<ActionResult> Delete(int id)
-        {
-            return await this.Delete<Item, int>(_manager, id);
-        }
-
-        #endregion
+        var items = await _manager.GetByClassNameAsync(classname);
+        return await this.NotFoundOrOk(items);
     }
+
+    #region default REST
+
+/*
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Item>>> GetAsync()
+        {
+            return await this.GetAllAsync(_manager);
+        }
+*/
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<Item>> Get(int id)
+    {
+        return await this.Get<Item, int>(_manager, id);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<Item>> Add([FromBody] Item value)
+    {
+        return await this.Add<Item, int>(_manager, value);
+    }
+
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult> Update(int id, [FromBody] Item value)
+    {
+        return await this.Update<Item, int>(_manager, id, value.ItemId, value);
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<ActionResult> Delete(int id)
+    {
+        return await this.Delete<Item, int>(_manager, id);
+    }
+
+    #endregion
 }

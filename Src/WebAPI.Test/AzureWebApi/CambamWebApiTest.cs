@@ -14,43 +14,42 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WebAPI.Test.AzureWebApi
+namespace CNCLib.WebAPI.Test.AzureWebApi;
+
+using System;
+using System.IO;
+using System.Net.Http;
+using System.Reflection;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction.DTO;
+
+using FluentAssertions;
+
+using Xunit;
+
+public class CambamWebApiTest : AzureWebApiTest
 {
-    using System;
-    using System.IO;
-    using System.Net.Http;
-    using System.Reflection;
-    using System.Threading.Tasks;
+    private readonly string api = "/api/Cambam";
 
-    using CNCLib.Logic.Abstraction.DTO;
-
-    using FluentAssertions;
-
-    using Xunit;
-
-    public class CambamWebApiTest : AzureWebApiTest
+    [Fact]
+    public async Task PutHpgl()
     {
-        private readonly string api = "/api/Cambam";
+        var client = GetHttpClient();
 
-        [Fact]
-        public async Task PutHpgl()
-        {
-            var client = GetHttpClient();
+        var info = new LoadOptions { LoadType = LoadOptions.ELoadType.Hpgl };
 
-            var info = new LoadOptions { LoadType = LoadOptions.ELoadType.Hpgl };
+        var ass     = Assembly.GetExecutingAssembly();
+        var assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
 
-            var ass     = Assembly.GetExecutingAssembly();
-            var assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
+        info.FileName    = assPath + @"\TestData\heikes-mietzi.hpgl";
+        info.FileContent = await File.ReadAllBytesAsync(info.FileName);
 
-            info.FileName    = assPath + @"\TestData\heikes-mietzi.hpgl";
-            info.FileContent = await File.ReadAllBytesAsync(info.FileName);
+        var response = await client.PostAsJsonAsync(api, info);
+        response.EnsureSuccessStatusCode();
 
-            var response = await client.PostAsJsonAsync(api, info);
-            response.EnsureSuccessStatusCode();
+        var cambam = await response.Content.ReadAsAsync<string>();
 
-            var cambam = await response.Content.ReadAsAsync<string>();
-
-            cambam.Should().NotBeNull();
-        }
+        cambam.Should().NotBeNull();
     }
 }

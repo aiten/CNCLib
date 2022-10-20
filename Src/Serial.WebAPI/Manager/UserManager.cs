@@ -14,55 +14,54 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Serial.WebAPI.Manager
+namespace CNCLib.Serial.WebAPI.Manager;
+
+using System.Security.Claims;
+using System.Threading.Tasks;
+
+using Framework.Logic.Abstraction;
+using Framework.Tools.Password;
+
+using Microsoft.Extensions.Configuration;
+
+public class UserManager : IAuthenticationManager
 {
-    using System.Security.Claims;
-    using System.Threading.Tasks;
+    private IConfiguration          _configuration;
+    private IOneWayPasswordProvider _passwordProvider;
 
-    using Framework.Logic.Abstraction;
-    using Framework.Tools.Password;
-
-    using Microsoft.Extensions.Configuration;
-
-    public class UserManager : IAuthenticationManager
+    public UserManager(IConfiguration configuration, IOneWayPasswordProvider passwordProvider)
     {
-        private IConfiguration          _configuration;
-        private IOneWayPasswordProvider _passwordProvider;
+        _configuration    = configuration;
+        _passwordProvider = passwordProvider;
+    }
 
-        public UserManager(IConfiguration configuration, IOneWayPasswordProvider passwordProvider)
+    public async Task<ClaimsPrincipal> AuthenticateAsync(string userName, string password)
+    {
+        if (!string.IsNullOrEmpty(userName))
         {
-            _configuration    = configuration;
-            _passwordProvider = passwordProvider;
-        }
+            var users = _configuration.GetSection("Users");
 
-        public async Task<ClaimsPrincipal> Authenticate(string userName, string password)
-        {
-            if (!string.IsNullOrEmpty(userName))
+            if (users != null)
             {
-                var users = _configuration.GetSection("Users");
-
-                if (users != null)
+                var passwordHash = users.GetValue<string>(userName);
+                if (passwordHash != null)
                 {
-                    var passwordHash = users.GetValue<string>(userName);
-                    if (passwordHash != null)
+                    if (_passwordProvider.ValidatePassword(password, passwordHash))
                     {
-                        if (_passwordProvider.ValidatePassword(password, passwordHash))
+                        var claims = new[]
                         {
-                            var claims = new[]
-                            {
-                                new Claim(ClaimTypes.NameIdentifier, 1.ToString()),
-                                new Claim(ClaimTypes.Name,           userName),
-                            };
-                            var identity  = new ClaimsIdentity(claims, "BasicAuthentication");
-                            var principal = new ClaimsPrincipal(identity);
+                            new Claim(ClaimTypes.NameIdentifier, 1.ToString()),
+                            new Claim(ClaimTypes.Name,           userName),
+                        };
+                        var identity  = new ClaimsIdentity(claims, "BasicAuthentication");
+                        var principal = new ClaimsPrincipal(identity);
 
-                            return principal;
-                        }
+                        return principal;
                     }
                 }
             }
-
-            return await Task.FromResult<ClaimsPrincipal>(null);
         }
+
+        return await Task.FromResult<ClaimsPrincipal>(null);
     }
 }

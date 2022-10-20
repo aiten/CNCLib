@@ -14,16 +14,15 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Logic.Abstraction.DTO
+namespace CNCLib.Logic.Abstraction.DTO;
+
+public class Joystick
 {
-    public class Joystick
-    {
-        public int    Id                   { get; set; }
-        public string SerialServer         { get; set; }
-        public string SerialServerUser     { get; set; }
-        public string SerialServerPassword { get; set; }
-        public string ComPort              { get; set; }
-        public int    BaudRate             { get; set; }
-        public string InitCommands         { get; set; }
-    }
+    public int    Id                   { get; set; }
+    public string SerialServer         { get; set; }
+    public string SerialServerUser     { get; set; }
+    public string SerialServerPassword { get; set; }
+    public string ComPort              { get; set; }
+    public int    BaudRate             { get; set; }
+    public string InitCommands         { get; set; }
 }

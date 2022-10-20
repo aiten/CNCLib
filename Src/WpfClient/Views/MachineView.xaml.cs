@@ -14,26 +14,25 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.Views
+namespace CNCLib.WpfClient.Views;
+
+using System.Windows;
+
+using Framework.Dependency;
+using Framework.Wpf.Views;
+
+/// <summary>
+/// Interaction logic for MainWindow.xaml
+/// </summary>
+public partial class MachineView : Window
 {
-    using System.Windows;
-
-    using Framework.Dependency;
-    using Framework.Wpf.Views;
-
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MachineView : Window
+    public MachineView()
     {
-        public MachineView()
-        {
-            var vm = AppService.GetRequiredService<ViewModels.MachineViewModel>();
-            DataContext = vm;
+        var vm = AppService.GetRequiredService<ViewModels.MachineViewModel>();
+        DataContext = vm;
 
-            InitializeComponent();
+        InitializeComponent();
 
-            this.DefaultInitForBaseViewModel();
-        }
+        this.DefaultInitForBaseViewModel();
     }
 }

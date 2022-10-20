@@ -14,123 +14,122 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WebAPI.Test.AzureWebApi
+namespace CNCLib.WebAPI.Test.AzureWebApi;
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Reflection;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction.DTO;
+
+using FluentAssertions;
+
+using Xunit;
+
+public class GCodeWebApiTest : AzureWebApiTest
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Net.Http;
-    using System.Reflection;
-    using System.Threading.Tasks;
+    private readonly string api = "/api/GCode";
 
-    using CNCLib.Logic.Abstraction.DTO;
-
-    using FluentAssertions;
-
-    using Xunit;
-
-    public class GCodeWebApiTest : AzureWebApiTest
+    [Fact]
+    public async Task PutHpgl()
     {
-        private readonly string api = "/api/GCode";
+        var client = GetHttpClient();
 
-        [Fact]
-        public async Task PutHpgl()
+        var info = new LoadOptions { LoadType = LoadOptions.ELoadType.Hpgl };
+
+        var ass     = Assembly.GetExecutingAssembly();
+        var assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
+
+        info.FileName    = assPath + @"\TestData\heikes-mietzi.hpgl";
+        info.FileContent = await File.ReadAllBytesAsync(info.FileName);
+
+        var response = await client.PostAsJsonAsync(api, info);
+        response.EnsureSuccessStatusCode();
+
+        var gcode = await response.Content.ReadAsAsync<string[]>();
+
+        gcode.Should().NotBeNull();
+    }
+
+    [Fact]
+    public async Task PutImage()
+    {
+        var client = GetHttpClient();
+
+        var info = new LoadOptions
         {
-            var client = GetHttpClient();
+            LoadType       = LoadOptions.ELoadType.Image,
+            AutoScale      = true,
+            AutoScaleSizeX = 100,
+            AutoScaleSizeY = 100,
+            MoveSpeed      = 450,
+            PenMoveType    = LoadOptions.PenType.CommandString,
+            ImageDPIX      = 66.7m,
+            ImageDPIY      = 66.7m
+        };
 
-            var info = new LoadOptions { LoadType = LoadOptions.ELoadType.Hpgl };
+        var ass     = Assembly.GetExecutingAssembly();
+        var assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
 
-            var ass     = Assembly.GetExecutingAssembly();
-            var assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
+        info.FileName    = assPath + @"\TestData\Wendelin_Ait110.png";
+        info.FileContent = await File.ReadAllBytesAsync(info.FileName);
 
-            info.FileName    = assPath + @"\TestData\heikes-mietzi.hpgl";
-            info.FileContent = await File.ReadAllBytesAsync(info.FileName);
+        var response = await client.PostAsJsonAsync(api, info);
+        response.EnsureSuccessStatusCode();
 
-            var response = await client.PostAsJsonAsync(api, info);
-            response.EnsureSuccessStatusCode();
+        var gcode = await response.Content.ReadAsAsync<string[]>();
 
-            var gcode = await response.Content.ReadAsAsync<string[]>();
+        gcode.Should().NotBeNull();
+    }
 
-            gcode.Should().NotBeNull();
-        }
+    public class CreateGCode
+    {
+        public int    LoadOptionsId { get; set; }
+        public string FileName      { get; set; }
 
-        [Fact]
-        public async Task PutImage()
+        public byte[] FileContent { get; set; }
+    }
+
+    private async Task<IEnumerable<LoadOptions>> GetAllLoadOptions()
+    {
+        var client   = GetHttpClient();
+        var response = await client.GetAsync("/api/loadoptions");
+
+        response.EnsureSuccessStatusCode();
+
+        return await response.Content.ReadAsAsync<IList<LoadOptions>>();
+    }
+
+    [Fact]
+    public async Task PutImageWithStoredOptions()
+    {
+        var all = await GetAllLoadOptions();
+        all.Should().HaveCountGreaterThan(0);
+
+        var first = all.First(l => l.SettingName == "laser grave image");
+
+        var client = GetHttpClient();
+
+        var ass     = Assembly.GetExecutingAssembly();
+        var assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
+
+        var input = new CreateGCode
         {
-            var client = GetHttpClient();
+            LoadOptionsId = first.Id,
+            FileName      = assPath + @"\TestData\Wendelin_Ait110.png"
+        };
 
-            var info = new LoadOptions
-            {
-                LoadType       = LoadOptions.ELoadType.Image,
-                AutoScale      = true,
-                AutoScaleSizeX = 100,
-                AutoScaleSizeY = 100,
-                MoveSpeed      = 450,
-                PenMoveType    = LoadOptions.PenType.CommandString,
-                ImageDPIX      = 66.7m,
-                ImageDPIY      = 66.7m
-            };
+        input.FileContent = await File.ReadAllBytesAsync(input.FileName);
 
-            var ass     = Assembly.GetExecutingAssembly();
-            var assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
+        var response = await client.PutAsJsonAsync(api, input);
+        response.EnsureSuccessStatusCode();
 
-            info.FileName    = assPath + @"\TestData\Wendelin_Ait110.png";
-            info.FileContent = await File.ReadAllBytesAsync(info.FileName);
+        var gcode = await response.Content.ReadAsAsync<string[]>();
 
-            var response = await client.PostAsJsonAsync(api, info);
-            response.EnsureSuccessStatusCode();
-
-            var gcode = await response.Content.ReadAsAsync<string[]>();
-
-            gcode.Should().NotBeNull();
-        }
-
-        public class CreateGCode
-        {
-            public int    LoadOptionsId { get; set; }
-            public string FileName      { get; set; }
-
-            public byte[] FileContent { get; set; }
-        }
-
-        private async Task<IEnumerable<LoadOptions>> GetAllLoadOptions()
-        {
-            var client   = GetHttpClient();
-            var response = await client.GetAsync("/api/loadoptions");
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<IList<LoadOptions>>();
-        }
-
-        [Fact]
-        public async Task PutImageWithStoredOptions()
-        {
-            var all = await GetAllLoadOptions();
-            all.Should().HaveCountGreaterThan(0);
-
-            var first = all.First(l => l.SettingName == "laser grave image");
-
-            var client = GetHttpClient();
-
-            var ass     = Assembly.GetExecutingAssembly();
-            var assPath = Path.GetDirectoryName(new Uri(ass.EscapedCodeBase).LocalPath);
-
-            var input = new CreateGCode
-            {
-                LoadOptionsId = first.Id,
-                FileName      = assPath + @"\TestData\Wendelin_Ait110.png"
-            };
-
-            input.FileContent = await File.ReadAllBytesAsync(input.FileName);
-
-            var response = await client.PutAsJsonAsync(api, input);
-            response.EnsureSuccessStatusCode();
-
-            var gcode = await response.Content.ReadAsAsync<string[]>();
-
-            gcode.Should().NotBeNull();
-        }
+        gcode.Should().NotBeNull();
     }
 }

@@ -14,12 +14,11 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WebAPI.Hubs
-{
-    using System.Threading.Tasks;
+namespace CNCLib.WebAPI.Hubs;
 
-    public interface ICNCLibHubClient
-    {
-        Task HeartBeat();
-    }
+using System.Threading.Tasks;
+
+public interface ICNCLibHubClient
+{
+    Task HeartBeat();
 }

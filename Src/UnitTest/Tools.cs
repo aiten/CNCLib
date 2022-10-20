@@ -14,30 +14,29 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.UnitTest
+namespace CNCLib.UnitTest;
+
+using System;
+using System.ComponentModel;
+
+static class Tools
 {
-    using System;
-    using System.ComponentModel;
-
-    static class Tools
+    public static bool CompareProperties<T>(this T dest, T src)
     {
-        public static bool CompareProperties<T>(this T dest, T src)
+        foreach (PropertyDescriptor item in TypeDescriptor.GetProperties(src))
         {
-            foreach (PropertyDescriptor item in TypeDescriptor.GetProperties(src))
+            if ((item.PropertyType == typeof(string) || item.PropertyType.IsValueType))
             {
-                if ((item.PropertyType == typeof(string) || item.PropertyType.IsValueType))
-                {
-                    var s = item.GetValue(src) as IComparable;
-                    var d = item.GetValue(dest) as IComparable;
+                var s = item.GetValue(src) as IComparable;
+                var d = item.GetValue(dest) as IComparable;
 
-                    if (s != null && d != null && s.CompareTo(d) != 0)
-                    {
-                        return false;
-                    }
+                if (s != null && d != null && s.CompareTo(d) != 0)
+                {
+                    return false;
                 }
             }
-
-            return true;
         }
+
+        return true;
     }
 }

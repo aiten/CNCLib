@@ -14,16 +14,15 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Logic.Abstraction.DTO
+namespace CNCLib.Logic.Abstraction.DTO;
+
+public class MachineInitCommand
 {
-    public class MachineInitCommand
-    {
-        public int    MachineInitCommandId { get; set; }
-        public int    SeqNo                { get; set; }
-        public string CommandString        { get; set; }
+    public int    MachineInitCommandId { get; set; }
+    public int    SeqNo                { get; set; }
+    public string CommandString        { get; set; }
 
-        public int MachineId { get; set; }
+    public int MachineId { get; set; }
 
-        // public virtual Machine Machine { get; set; }
-    }
+    // public virtual Machine Machine { get; set; }
 }

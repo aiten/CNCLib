@@ -14,38 +14,37 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.Helpers
+namespace CNCLib.WpfClient.Helpers;
+
+using Framework.Arduino.SerialCommunication;
+using Framework.Arduino.SerialCommunication.Abstraction;
+using Framework.Dependency;
+using Framework.Pattern;
+
+using Microsoft.Extensions.Logging;
+
+using CNCLib.Serial.Client;
+
+public class SerialProxy
 {
-    using Framework.Arduino.SerialCommunication;
-    using Framework.Arduino.SerialCommunication.Abstraction;
-    using Framework.Dependency;
-    using Framework.Pattern;
-
-    using Microsoft.Extensions.Logging;
-
-    using CNCLib.Serial.Client;
-
-    public class SerialProxy
+    public SerialProxy()
     {
-        public SerialProxy()
-        {
-            Current = LocalCom;
-        }
+        Current = LocalCom;
+    }
 
-        public ISerial RemoteCom => Singleton<SerialService>.Instance;
+    public ISerial RemoteCom => Singleton<SerialService>.Instance;
 
-        private static Framework.Arduino.SerialCommunication.Serial _localSerial =
-            new Framework.Arduino.SerialCommunication.Serial(
-                new FactoryCreate<ISerialPort>(() => new SerialPort()),
-                AppService.GetRequiredService<ILogger<Framework.Arduino.SerialCommunication.Serial>>());
+    private static Framework.Arduino.SerialCommunication.Serial _localSerial =
+        new Framework.Arduino.SerialCommunication.Serial(
+            new FactoryCreate<ISerialPort>(() => new SerialPort()),
+            AppService.GetRequiredService<ILogger<Framework.Arduino.SerialCommunication.Serial>>());
 
-        public ISerial LocalCom => _localSerial;
+    public ISerial LocalCom => _localSerial;
 
-        public ISerial Current { get; private set; }
+    public ISerial Current { get; private set; }
 
-        public void SetCurrent(string serverName)
-        {
-            Current = string.IsNullOrEmpty(serverName) ? LocalCom : RemoteCom;
-        }
+    public void SetCurrent(string serverName)
+    {
+        Current = string.IsNullOrEmpty(serverName) ? LocalCom : RemoteCom;
     }
 }

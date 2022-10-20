@@ -14,110 +14,109 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.GCode.Generate
+namespace CNCLib.GCode.Generate;
+
+using System;
+using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+
+using CNCLib.GCode.Generate.Commands;
+using CNCLib.GCode.Generate.Load;
+using CNCLib.Logic.Abstraction.DTO;
+
+public class GCodeLoad
 {
-    using System;
-    using System.IO;
-    using System.Net.Http;
-    using System.Net.Http.Headers;
-    using System.Threading.Tasks;
-
-    using CNCLib.GCode.Generate.Commands;
-    using CNCLib.GCode.Generate.Load;
-    using CNCLib.Logic.Abstraction.DTO;
-
-    public class GCodeLoad
+    public async Task<CommandList> Load(LoadOptions loadInfo, bool azure)
     {
-        public async Task<CommandList> Load(LoadOptions loadInfo, bool azure)
+        if (azure)
         {
-            if (azure)
-            {
-                await LoadAzureAsync(loadInfo);
-            }
-            else
-            {
-                LoadLocal(loadInfo);
-            }
-
-            return Commands;
+            await LoadAzureAsync(loadInfo);
+        }
+        else
+        {
+            LoadLocal(loadInfo);
         }
 
-        private readonly string webServerUri = @"https://cnclib.azurewebsites.net";
-        private readonly string api          = @"api/GCode";
+        return Commands;
+    }
 
-        #region private
+    private readonly string webServerUri = @"https://cnclib.azurewebsites.net";
+    private readonly string api          = @"api/GCode";
 
-        private CommandList Commands { get; } = new CommandList();
+    #region private
 
-        private void LoadLocal(LoadOptions loadInfo)
+    private CommandList Commands { get; } = new CommandList();
+
+    private void LoadLocal(LoadOptions loadInfo)
+    {
+        try
         {
-            try
-            {
-                LoadBase load = LoadBase.Create(loadInfo);
+            LoadBase load = LoadBase.Create(loadInfo);
 
-                load.LoadOptions = loadInfo;
-                load.Load();
+            load.LoadOptions = loadInfo;
+            load.Load();
+            Commands.Clear();
+            Commands.AddRange(load.Commands);
+            if (!string.IsNullOrEmpty(loadInfo.GCodeWriteToFileName))
+            {
+                string gcodeFileName = Environment.ExpandEnvironmentVariables(loadInfo.GCodeWriteToFileName);
+                using (var sw = File.CreateText(gcodeFileName))
+                {
+                    load.WriteGCodeFile(sw);
+                }
+
+                using (var sw = File.CreateText(Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".cb"))
+                {
+                    load.WriteCamBamFile(sw);
+                }
+
+                using (var sw = File.CreateText(Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".hpgl"))
+                {
+                    load.WriteImportInfoFile(sw);
+                }
+            }
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    private async Task LoadAzureAsync(LoadOptions info)
+    {
+        using (var client = CreateHttpClient())
+        {
+            info.FileContent = await File.ReadAllBytesAsync(info.FileName);
+
+            var response = await client.PostAsJsonAsync(api, info);
+            var gcode    = await response.Content.ReadAsAsync<string[]>();
+
+            if (response.IsSuccessStatusCode)
+            {
+                var load = new LoadGCode();
+                load.Load(gcode);
                 Commands.Clear();
                 Commands.AddRange(load.Commands);
-                if (!string.IsNullOrEmpty(loadInfo.GCodeWriteToFileName))
+                if (!string.IsNullOrEmpty(info.GCodeWriteToFileName))
                 {
-                    string gcodeFileName = Environment.ExpandEnvironmentVariables(loadInfo.GCodeWriteToFileName);
-                    using (var sw = File.CreateText(gcodeFileName))
+                    using (var sw = File.CreateText(Environment.ExpandEnvironmentVariables(info.GCodeWriteToFileName)))
                     {
                         load.WriteGCodeFile(sw);
                     }
-
-                    using (var sw = File.CreateText(Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".cb"))
-                    {
-                        load.WriteCamBamFile(sw);
-                    }
-
-                    using (var sw = File.CreateText(Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".hpgl"))
-                    {
-                        load.WriteImportInfoFile(sw);
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        private async Task LoadAzureAsync(LoadOptions info)
-        {
-            using (var client = CreateHttpClient())
-            {
-                info.FileContent = await File.ReadAllBytesAsync(info.FileName);
-
-                var response = await client.PostAsJsonAsync(api, info);
-                var gcode    = await response.Content.ReadAsAsync<string[]>();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var load = new LoadGCode();
-                    load.Load(gcode);
-                    Commands.Clear();
-                    Commands.AddRange(load.Commands);
-                    if (!string.IsNullOrEmpty(info.GCodeWriteToFileName))
-                    {
-                        using (var sw = File.CreateText(Environment.ExpandEnvironmentVariables(info.GCodeWriteToFileName)))
-                        {
-                            load.WriteGCodeFile(sw);
-                        }
-                    }
                 }
             }
         }
-
-        private HttpClient CreateHttpClient()
-        {
-            var client = new HttpClient { BaseAddress = new Uri(webServerUri) };
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            return client;
-        }
-
-        #endregion
     }
+
+    private HttpClient CreateHttpClient()
+    {
+        var client = new HttpClient { BaseAddress = new Uri(webServerUri) };
+        client.DefaultRequestHeaders.Accept.Clear();
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        return client;
+    }
+
+    #endregion
 }

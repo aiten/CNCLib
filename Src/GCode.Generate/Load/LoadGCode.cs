@@ -14,53 +14,32 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.GCode.Generate.Load
+namespace CNCLib.GCode.Generate.Load;
+
+using System;
+using System.IO;
+
+using CNCLib.GCode.Generate.Commands;
+
+using Framework.Parser;
+
+public class LoadGCode : LoadBase
 {
-    using System;
-    using System.IO;
+    readonly Parser _parser = new Parser("");
+    Command         _lastNoPrefixCommand;
 
-    using CNCLib.GCode.Generate.Commands;
-
-    using Framework.Parser;
-
-    public class LoadGCode : LoadBase
+    public override void Load()
     {
-        readonly Parser _parser = new Parser("");
-        Command         _lastNoPrefixCommand;
+        PreLoad();
 
-        public override void Load()
+        _lastNoPrefixCommand = null;
+
+        using (StreamReader sr = GetStreamReader())
         {
-            PreLoad();
-
-            _lastNoPrefixCommand = null;
-
-            using (StreamReader sr = GetStreamReader())
-            {
-                try
-                {
-                    string line;
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        _parser.Reset(line);
-                        Command();
-                    }
-                }
-                catch (FormatException)
-                {
-                    Commands.Clear();
-                }
-            }
-
-            PostLoad();
-        }
-
-        public void Load(string[] lines)
-        {
-            _lastNoPrefixCommand = null;
-
             try
             {
-                foreach (string line in lines)
+                string line;
+                while ((line = sr.ReadLine()) != null)
                 {
                     _parser.Reset(line);
                     Command();
@@ -70,141 +49,161 @@ namespace CNCLib.GCode.Generate.Load
             {
                 Commands.Clear();
             }
-
-            PostLoad();
         }
 
-        private void Command()
+        PostLoad();
+    }
+
+    public void Load(string[] lines)
+    {
+        _lastNoPrefixCommand = null;
+
+        try
         {
-            int? lineNumber = null;
-
-            if (_parser.NextCharToUpper == 'N')
+            foreach (string line in lines)
             {
-                _parser.Next();
-
-                if (!_parser.IsNumber())
-                {
-                    throw new FormatException(@"A number must follow after N");
-                }
-
-                lineNumber = _parser.GetInt();
-                _parser.SkipSpaces();
-            }
-
-            _parser.SkipSpaces();
-            Command cmd;
-
-            if (_parser.NextCharToUpper == 'G')
-            {
-                cmd = ReadGCommand();
-            }
-            else if ("XYZABCF".IndexOf(_parser.NextCharToUpper) >= 0)
-            {
-                if (_lastNoPrefixCommand == null)
-                {
-                    throw new FormatException(@"Last command did not specify the axis");
-                }
-
-                cmd = ReadGNoPrefixCommand();
-            }
-            else if (_parser.NextCharToUpper == 'M')
-            {
-                cmd = ReadMCommand();
-            }
-            else if (_parser.NextCharToUpper == '#')
-            {
-                cmd = ReadSetParameterCommand();
-            }
-            else
-            {
-                cmd = ReadOtherCommand();
-            }
-
-            if (cmd != null)
-            {
-                if (lineNumber.HasValue)
-                {
-                    cmd.LineNumber = lineNumber;
-                }
-
-                Commands.AddCommand(cmd);
+                _parser.Reset(line);
+                Command();
             }
         }
-
-        private Command AddGxxMxxCommand(Command cmd, string cmdName)
+        catch (FormatException)
         {
-            cmd.SetCode(cmdName);
-            cmd.ReadFrom(_parser);
-            return cmd;
+            Commands.Clear();
         }
 
-        private Command ReadGCommand()
+        PostLoad();
+    }
+
+    private void Command()
+    {
+        int? lineNumber = null;
+
+        if (_parser.NextCharToUpper == 'N')
         {
             _parser.Next();
 
-            string cmdName = "G" + _parser.ReadDigits();
+            if (!_parser.IsNumber())
+            {
+                throw new FormatException(@"A number must follow after N");
+            }
+
+            lineNumber = _parser.GetInt();
             _parser.SkipSpaces();
-
-            Command cmd = CommandFactory.Create(cmdName);
-
-            if (cmd != null)
-            {
-                if (cmd.UseWithoutPrefix)
-                {
-                    _lastNoPrefixCommand = cmd;
-                }
-
-                cmd.ReadFrom(_parser);
-            }
-            else
-            {
-                cmd = AddGxxMxxCommand(CommandFactory.Create("GXX"), cmdName);
-            }
-
-            return cmd;
         }
 
-        private Command ReadGNoPrefixCommand()
-        {
-            // g without prefix
+        _parser.SkipSpaces();
+        Command cmd;
 
-            Command cmd = CommandFactory.Create(_lastNoPrefixCommand.Code);
-            cmd?.ReadFrom(_parser);
-            return cmd;
+        if (_parser.NextCharToUpper == 'G')
+        {
+            cmd = ReadGCommand();
         }
-
-        private Command ReadMCommand()
+        else if ("XYZABCF".IndexOf(_parser.NextCharToUpper) >= 0)
         {
-            _parser.Next();
-            string cmdName = "M" + _parser.ReadDigits();
-            _parser.SkipSpaces();
-
-            Command cmd = CommandFactory.Create(cmdName);
-
-            if (cmd != null)
+            if (_lastNoPrefixCommand == null)
             {
-                cmd.ReadFrom(_parser);
-            }
-            else
-            {
-                cmd = AddGxxMxxCommand(CommandFactory.Create("MXX"), cmdName);
+                throw new FormatException(@"Last command did not specify the axis");
             }
 
-            return cmd;
+            cmd = ReadGNoPrefixCommand();
+        }
+        else if (_parser.NextCharToUpper == 'M')
+        {
+            cmd = ReadMCommand();
+        }
+        else if (_parser.NextCharToUpper == '#')
+        {
+            cmd = ReadSetParameterCommand();
+        }
+        else
+        {
+            cmd = ReadOtherCommand();
         }
 
-        private Command ReadOtherCommand()
+        if (cmd != null)
         {
-            Command cmd = CommandFactory.Create("GXX");
+            if (lineNumber.HasValue)
+            {
+                cmd.LineNumber = lineNumber;
+            }
+
+            Commands.AddCommand(cmd);
+        }
+    }
+
+    private Command AddGxxMxxCommand(Command cmd, string cmdName)
+    {
+        cmd.SetCode(cmdName);
+        cmd.ReadFrom(_parser);
+        return cmd;
+    }
+
+    private Command ReadGCommand()
+    {
+        _parser.Next();
+
+        string cmdName = "G" + _parser.ReadDigits();
+        _parser.SkipSpaces();
+
+        Command cmd = CommandFactory.Create(cmdName);
+
+        if (cmd != null)
+        {
+            if (cmd.UseWithoutPrefix)
+            {
+                _lastNoPrefixCommand = cmd;
+            }
+
             cmd.ReadFrom(_parser);
-            return cmd;
+        }
+        else
+        {
+            cmd = AddGxxMxxCommand(CommandFactory.Create("GXX"), cmdName);
         }
 
-        private Command ReadSetParameterCommand()
+        return cmd;
+    }
+
+    private Command ReadGNoPrefixCommand()
+    {
+        // g without prefix
+
+        Command cmd = CommandFactory.Create(_lastNoPrefixCommand.Code);
+        cmd?.ReadFrom(_parser);
+        return cmd;
+    }
+
+    private Command ReadMCommand()
+    {
+        _parser.Next();
+        string cmdName = "M" + _parser.ReadDigits();
+        _parser.SkipSpaces();
+
+        Command cmd = CommandFactory.Create(cmdName);
+
+        if (cmd != null)
         {
-            Command cmd = CommandFactory.Create("#");
             cmd.ReadFrom(_parser);
-            return cmd;
         }
+        else
+        {
+            cmd = AddGxxMxxCommand(CommandFactory.Create("MXX"), cmdName);
+        }
+
+        return cmd;
+    }
+
+    private Command ReadOtherCommand()
+    {
+        Command cmd = CommandFactory.Create("GXX");
+        cmd.ReadFrom(_parser);
+        return cmd;
+    }
+
+    private Command ReadSetParameterCommand()
+    {
+        Command cmd = CommandFactory.Create("#");
+        cmd.ReadFrom(_parser);
+        return cmd;
     }
 }

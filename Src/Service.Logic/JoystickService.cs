@@ -14,28 +14,27 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Service.Logic
+namespace CNCLib.Service.Logic;
+
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Service.Abstraction;
+
+using Framework.Service.Logic;
+
+public class JoystickService : CrudService<Joystick, int>, IJoystickService
 {
-    using System.Threading.Tasks;
+    readonly IJoystickManager _manager;
 
-    using CNCLib.Logic.Abstraction;
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Service.Abstraction;
-
-    using Framework.Service.Logic;
-
-    public class JoystickService : CrudService<Joystick, int>, IJoystickService
+    public JoystickService(IJoystickManager manager) : base(manager)
     {
-        readonly IJoystickManager _manager;
+        _manager = manager;
+    }
 
-        public JoystickService(IJoystickManager manager) : base(manager)
-        {
-            _manager = manager;
-        }
-
-        public async Task<Joystick> Default()
-        {
-            return await _manager.Default();
-        }
+    public async Task<Joystick> Default()
+    {
+        return await _manager.DefaultAsync();
     }
 }

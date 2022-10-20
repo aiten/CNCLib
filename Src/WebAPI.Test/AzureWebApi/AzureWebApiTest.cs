@@ -14,37 +14,36 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WebAPI.Test.AzureWebApi
+namespace CNCLib.WebAPI.Test.AzureWebApi;
+
+using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
+
+using CNCLib.Shared;
+
+using Framework.Tools;
+
+public class AzureWebApiTest : UnitTestBase
 {
-    using System;
-    using System.Net.Http;
-    using System.Net.Http.Headers;
+    //public static readonly string AzureUri = @"http://localhost:55586/";
+    public static readonly string _AzureUri = @"https://cnclib.azurewebsites.net/";
 
-    using CNCLib.Shared;
+    public HttpClient _httpClient;
 
-    using Framework.Tools;
-
-    public class AzureWebApiTest : UnitTestBase
+    protected HttpClient GetHttpClient()
     {
-        //public static readonly string AzureUri = @"http://localhost:55586/";
-        public static readonly string _AzureUri = @"https://cnclib.azurewebsites.net/";
-
-        public HttpClient _httpClient;
-
-        protected HttpClient GetHttpClient()
+        if (_httpClient == null)
         {
-            if (_httpClient == null)
-            {
-                _httpClient             = new HttpClient();
-                _httpClient.BaseAddress = new Uri(_AzureUri);
-                _httpClient.DefaultRequestHeaders.Accept.Clear();
-                _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _httpClient             = new HttpClient();
+            _httpClient.BaseAddress = new Uri(_AzureUri);
+            _httpClient.DefaultRequestHeaders.Accept.Clear();
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Base64Helper.StringToBase64($"{CNCLibConst.AdminUser}:{"CNCLib4Global."}"));
-            }
-
-
-            return _httpClient;
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Base64Helper.StringToBase64($"{CNCLibConst.AdminUser}:{"CNCLib4Global."}"));
         }
+
+
+        return _httpClient;
     }
 }

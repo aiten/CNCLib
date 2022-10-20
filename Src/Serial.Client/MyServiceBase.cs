@@ -14,43 +14,42 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Serial.Client
+namespace CNCLib.Serial.Client;
+
+using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
+
+using Framework.Pattern;
+using Framework.Service.WebAPI;
+using Framework.Tools;
+
+public class MyServiceBase : ServiceBase
 {
-    using System;
-    using System.Net.Http;
-    using System.Net.Http.Headers;
+    protected string WebServerUri { get; set; } = @"http://localhost:5000/";
+    protected string UserName     { get; set; }
+    protected string Password     { get; set; }
 
-    using Framework.Pattern;
-    using Framework.Service.WebAPI;
-    using Framework.Tools;
-
-    public class MyServiceBase : ServiceBase
+    public MyServiceBase()
     {
-        protected string WebServerUri { get; set; } = @"http://localhost:5000/";
-        protected string UserName     { get; set; }
-        protected string Password     { get; set; }
+    }
 
-        public MyServiceBase()
-        {
-        }
+    protected override IScope<HttpClient> CreateScope()
+    {
+        return new ScopeDispose<HttpClient>(CreateHttpClient());
+    }
 
-        protected override IScope<HttpClient> CreateScope()
-        {
-            return new ScopeDispose<HttpClient>(CreateHttpClient());
-        }
+    private HttpClient CreateHttpClient()
+    {
+        var httpClientHandler = new HttpClientHandler();
+        httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
 
-        private HttpClient CreateHttpClient()
-        {
-            var httpClientHandler = new HttpClientHandler();
-            httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+        var client = new HttpClient(httpClientHandler) { BaseAddress = new Uri(WebServerUri) };
+        client.DefaultRequestHeaders.Accept.Clear();
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var client = new HttpClient(httpClientHandler) { BaseAddress = new Uri(WebServerUri) };
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Base64Helper.StringToBase64($"{UserName}:{Password}"));
 
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Base64Helper.StringToBase64($"{UserName}:{Password}"));
-
-            return client;
-        }
+        return client;
     }
 }

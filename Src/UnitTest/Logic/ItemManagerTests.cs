@@ -14,118 +14,117 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.UnitTest.Logic
+namespace CNCLib.UnitTest.Logic;
+
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Manager;
+using CNCLib.Repository.Abstraction;
+using CNCLib.Repository.Abstraction.Entities;
+
+using FluentAssertions;
+
+using Framework.Repository.Abstraction;
+
+using NSubstitute;
+
+using Xunit;
+
+using ItemDto = CNCLib.Logic.Abstraction.DTO.Item;
+
+public class ItemManagerTests : LogicTests
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-
-    using CNCLib.Logic.Manager;
-    using CNCLib.Repository.Abstraction;
-    using CNCLib.Repository.Abstraction.Entities;
-
-    using FluentAssertions;
-
-    using Framework.Repository.Abstraction;
-
-    using NSubstitute;
-
-    using Xunit;
-
-    using ItemDto = CNCLib.Logic.Abstraction.DTO.Item;
-
-    public class ItemManagerTests : LogicTests
+    [Fact]
+    public async Task GetItemNone()
     {
-        [Fact]
-        public async Task GetItemNone()
+        var unitOfWork = Substitute.For<IUnitOfWork>();
+        var rep        = Substitute.For<IItemRepository>();
+
+        var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Mapper);
+
+        var itemEntity = new ItemEntity[0];
+        rep.GetAllAsync().Returns(itemEntity);
+
+        var all = (await ctrl.GetAllAsync()).ToArray();
+        all.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task GetItemAll()
+    {
+        var unitOfWork  = Substitute.For<IUnitOfWork>();
+        var rep         = Substitute.For<IItemRepository>();
+        var userContext = new CNCLibUserContext();
+
+        var ctrl = new ItemManager(unitOfWork, rep, userContext, Mapper);
+
+        var itemEntity = new[]
         {
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var rep        = Substitute.For<IItemRepository>();
+            new ItemEntity { ItemId = 1, Name = "Test1", UserId = userContext.UserId }, new ItemEntity { ItemId = 2, Name = "Test2", UserId = userContext.UserId }
+        };
+        rep.GetByUserAsync(userContext.UserId).Returns(itemEntity);
 
-            var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Mapper);
+        var all = (await ctrl.GetAllAsync()).ToArray();
 
-            var itemEntity = new ItemEntity[0];
-            rep.GetAll().Returns(itemEntity);
-
-            var all = (await ctrl.GetAll()).ToArray();
-            all.Should().BeEmpty();
-        }
-
-        [Fact]
-        public async Task GetItemAll()
+        all.Should().HaveCount(2);
+        new
         {
-            var unitOfWork  = Substitute.For<IUnitOfWork>();
-            var rep         = Substitute.For<IItemRepository>();
-            var userContext = new CNCLibUserContext();
+            ItemId = 1,
+            Name   = "Test1"
+        }.Should().BeEquivalentTo(all.FirstOrDefault(), options => options.ExcludingMissingMembers());
+    }
 
-            var ctrl = new ItemManager(unitOfWork, rep, userContext, Mapper);
+    [Fact]
+    public async Task GetItem()
+    {
+        var unitOfWork = Substitute.For<IUnitOfWork>();
+        var rep        = Substitute.For<IItemRepository>();
 
-            var itemEntity = new[]
-            {
-                new ItemEntity { ItemId = 1, Name = "Test1", UserId = userContext.UserId }, new ItemEntity { ItemId = 2, Name = "Test2", UserId = userContext.UserId }
-            };
-            rep.GetByUser(userContext.UserId).Returns(itemEntity);
+        var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Mapper);
 
-            var all = (await ctrl.GetAll()).ToArray();
+        rep.GetAsync(1).Returns(new ItemEntity { ItemId = 1, Name = "Test1" });
 
-            all.Should().HaveCount(2);
-            new
-            {
-                ItemId = 1,
-                Name   = "Test1"
-            }.Should().BeEquivalentTo(all.FirstOrDefault(), options => options.ExcludingMissingMembers());
-        }
+        var all = await ctrl.GetAsync(1);
 
-        [Fact]
-        public async Task GetItem()
+        new
         {
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var rep        = Substitute.For<IItemRepository>();
+            ItemId = 1,
+            Name   = "Test1"
+        }.Should().BeEquivalentTo(all, options => options.ExcludingMissingMembers());
+    }
 
-            var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Mapper);
+    [Fact]
+    public async Task GetItemNull()
+    {
+        var unitOfWork = Substitute.For<IUnitOfWork>();
+        var rep        = Substitute.For<IItemRepository>();
 
-            rep.Get(1).Returns(new ItemEntity { ItemId = 1, Name = "Test1" });
+        var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Mapper);
 
-            var all = await ctrl.Get(1);
+        var all = await ctrl.GetAsync(10);
 
-            new
-            {
-                ItemId = 1,
-                Name   = "Test1"
-            }.Should().BeEquivalentTo(all, options => options.ExcludingMissingMembers());
-        }
+        all.Should().BeNull();
+    }
 
-        [Fact]
-        public async Task GetItemNull()
-        {
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var rep        = Substitute.For<IItemRepository>();
+    [Fact]
+    public async Task DeleteItemNone()
+    {
+        // arrange
 
-            var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Mapper);
+        var unitOfWork = Substitute.For<IUnitOfWork>();
+        var rep        = Substitute.For<IItemRepository>();
 
-            var all = await ctrl.Get(10);
+        var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Mapper);
 
-            all.Should().BeNull();
-        }
+        var item = new ItemDto { ItemId = 3000, Name = "Hallo" };
 
-        [Fact]
-        public async Task DeleteItemNone()
-        {
-            // arrange
+        //act
 
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var rep        = Substitute.For<IItemRepository>();
+        await ctrl.DeleteAsync(item);
 
-            var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Mapper);
-
-            var item = new ItemDto { ItemId = 3000, Name = "Hallo" };
-
-            //act
-
-            await ctrl.Delete(item);
-
-            //assert
-            rep.Received().DeleteRange(Arg.Is<IEnumerable<ItemEntity>>(x => x.First().ItemId == item.ItemId));
-        }
+        //assert
+        rep.Received().DeleteRange(Arg.Is<IEnumerable<ItemEntity>>(x => x.First().ItemId == item.ItemId));
     }
 }

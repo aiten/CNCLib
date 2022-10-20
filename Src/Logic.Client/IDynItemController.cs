@@ -14,26 +14,25 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Logic.Client
+namespace CNCLib.Logic.Client;
+
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction.DTO;
+
+public interface IDynItemController : IDisposable
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+    Task<DynItem> GetAsync(int id);
 
-    using CNCLib.Logic.Abstraction.DTO;
+    Task<IEnumerable<DynItem>> GetAllAsync();
 
-    public interface IDynItemController : IDisposable
-    {
-        Task<DynItem> Get(int id);
+    Task<IEnumerable<DynItem>> GetAllAsync(Type t);
 
-        Task<IEnumerable<DynItem>> GetAll();
+    Task<object> CreateAsync(int id);
 
-        Task<IEnumerable<DynItem>> GetAll(Type t);
-
-        Task<object> Create(int id);
-
-        Task<int> Add(string name, object value);
-        Task      Save(int   id,   string name, object value);
-        Task      Delete(int id);
-    }
+    Task<int> AddAsync(string name, object value);
+    Task      SaveAsync(int   id,   string name, object value);
+    Task      DeleteAsync(int id);
 }

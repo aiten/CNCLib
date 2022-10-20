@@ -14,30 +14,29 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Logic
+namespace CNCLib.Logic;
+
+using CNCLib.Logic.Statistics;
+
+using Framework.Dependency;
+using Framework.Localization.Abstraction;
+using Framework.Schedule;
+using Framework.Startup.Abstraction;
+
+using Microsoft.Extensions.DependencyInjection;
+
+public class ModuleInitializer : IModuleInitializer
 {
-    using CNCLib.Logic.Statistics;
-
-    using Framework.Dependency;
-    using Framework.Localization.Abstraction;
-    using Framework.Schedule;
-    using Framework.Startup.Abstraction;
-
-    using Microsoft.Extensions.DependencyInjection;
-
-    public class ModuleInitializer : IModuleInitializer
+    public void AddServices(IServiceCollection services)
     {
-        public void AddServices(IServiceCollection services)
-        {
-            services
-                .AddAssemblyIncludingInternals(ServiceLifetime.Transient, typeof(Manager.MachineManager).Assembly)
-                .AddScoped<JobParamContainer>()
-                .AddSingleton<CallStatisticCache>();
-        }
+        services
+            .AddAssemblyIncludingInternals(ServiceLifetime.Transient, typeof(Manager.MachineManager).Assembly)
+            .AddScoped<JobParamContainer>()
+            .AddSingleton<CallStatisticCache>();
+    }
 
-        public void AddTranslationResources(ILocalizationCollector localisation)
-        {
-            localisation.Resources.Add(ErrorMessages.ResourceManager);
-        }
+    public void AddTranslationResources(ILocalizationCollector localisation)
+    {
+        localisation.Resources.Add(ErrorMessages.ResourceManager);
     }
 }

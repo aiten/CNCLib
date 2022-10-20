@@ -14,38 +14,37 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Service.WebAPI
+namespace CNCLib.Service.WebAPI;
+
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Service.Abstraction;
+
+using Framework.Service.WebAPI;
+using Framework.Service.WebAPI.Uri;
+
+public class ItemService : CrudServiceBase<Item, int>, IItemService
 {
-    using System.Collections.Generic;
-    using System.Net.Http;
-    using System.Threading.Tasks;
+    protected override int GetKey(Item i) => i.ItemId;
 
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Service.Abstraction;
-
-    using Framework.Service.WebAPI;
-    using Framework.Service.WebAPI.Uri;
-
-    public class ItemService : CrudServiceBase<Item, int>, IItemService
+    public ItemService(HttpClient httpClient) : base(httpClient)
     {
-        protected override int GetKey(Item i) => i.ItemId;
+        BaseApi = @"api/Item";
+    }
 
-        public ItemService(HttpClient httpClient) : base(httpClient)
+    public async Task<IEnumerable<Item>> GetByClassNameAsync(string classname)
+    {
+        using (var scope = CreateScope())
         {
-            BaseApi = @"api/Item";
-        }
+            var paramUri = new UriQueryBuilder();
+            paramUri.Add("classname", classname);
 
-        public async Task<IEnumerable<Item>> GetByClassName(string classname)
-        {
-            using (var scope = CreateScope())
-            {
-                var paramUri = new UriQueryBuilder();
-                paramUri.Add("classname", classname);
-
-                var response = await scope.Instance.GetAsync(CreatePathBuilder().AddQuery(paramUri).Build());
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadAsAsync<IEnumerable<Item>>();
-            }
+            var response = await scope.Instance.GetAsync(CreatePathBuilder().AddQuery(paramUri).Build());
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsAsync<IEnumerable<Item>>();
         }
     }
 }

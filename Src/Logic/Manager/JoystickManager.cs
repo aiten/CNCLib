@@ -14,115 +14,114 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Logic.Manager
+namespace CNCLib.Logic.Manager;
+
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Logic.Client;
+
+using Framework.Logic;
+
+using Microsoft.AspNetCore.JsonPatch;
+
+public class JoystickManager : ManagerBase, IJoystickManager
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+    private readonly IDynItemController _dynItemController;
 
-    using CNCLib.Logic.Abstraction;
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Logic.Client;
-
-    using Framework.Logic;
-
-    using Microsoft.AspNetCore.JsonPatch;
-
-    public class JoystickManager : ManagerBase, IJoystickManager
+    public JoystickManager(IDynItemController dynItemController)
     {
-        private readonly IDynItemController _dynItemController;
+        _dynItemController = dynItemController;
+    }
 
-        public JoystickManager(IDynItemController dynItemController)
+    public async Task<IEnumerable<Joystick>> GetAllAsync()
+    {
+        var list = new List<Joystick>();
+        foreach (DynItem item in await _dynItemController.GetAllAsync(typeof(Joystick)))
         {
-            _dynItemController = dynItemController;
+            var joystick = (Joystick)await _dynItemController.CreateAsync(item.ItemId);
+            joystick.Id = item.ItemId;
+            list.Add(joystick);
         }
 
-        public async Task<IEnumerable<Joystick>> GetAll()
-        {
-            var list = new List<Joystick>();
-            foreach (DynItem item in await _dynItemController.GetAll(typeof(Joystick)))
-            {
-                var joystick = (Joystick)await _dynItemController.Create(item.ItemId);
-                joystick.Id = item.ItemId;
-                list.Add(joystick);
-            }
+        return list;
+    }
 
-            return list;
+    public async Task<Joystick> GetAsync(int id)
+    {
+        object obj = await _dynItemController.CreateAsync(id);
+        if (obj != null)
+        {
+            var joystick = (Joystick)obj;
+            joystick.Id = id;
+            return joystick;
         }
 
-        public async Task<Joystick> Get(int id)
-        {
-            object obj = await _dynItemController.Create(id);
-            if (obj != null)
-            {
-                var joystick = (Joystick)obj;
-                joystick.Id = id;
-                return joystick;
-            }
+        return null;
+    }
 
-            return null;
-        }
+    public async Task DeleteAsync(Joystick joystick)
+    {
+        await _dynItemController.DeleteAsync(joystick.Id);
+    }
 
-        public async Task Delete(Joystick joystick)
-        {
-            await _dynItemController.Delete(joystick.Id);
-        }
+    public async Task DeleteAsync(int key)
+    {
+        await _dynItemController.DeleteAsync(key);
+    }
 
-        public async Task Delete(int key)
-        {
-            await _dynItemController.Delete(key);
-        }
+    public async Task<int> AddAsync(Joystick joystick)
+    {
+        return await _dynItemController.AddAsync($"Joystick{joystick.Id}", joystick);
+    }
 
-        public async Task<int> Add(Joystick joystick)
-        {
-            return await _dynItemController.Add($"Joystick{joystick.Id}", joystick);
-        }
+    public async Task UpdateAsync(Joystick joystick)
+    {
+        await _dynItemController.SaveAsync(joystick.Id, $"Joystick{joystick.Id}", joystick);
+    }
 
-        public async Task Update(Joystick joystick)
+    public async Task<Joystick> DefaultAsync()
+    {
+        var joystick = new Joystick()
         {
-            await _dynItemController.Save(joystick.Id, $"Joystick{joystick.Id}", joystick);
-        }
+            SerialServer         = "https://localhost:5000",
+            SerialServerUser     = "Admin",
+            SerialServerPassword = "Serial.Server",
+            BaudRate             = 250000,
+            ComPort              = "COM7"
+        };
+        return await Task.FromResult(joystick);
+    }
 
-        public async Task<Joystick> Default()
-        {
-            var joystick = new Joystick()
-            {
-                SerialServer         = "https://localhost:5000",
-                SerialServerUser     = "Admin",
-                SerialServerPassword = "Serial.Server",
-                BaudRate             = 250000,
-                ComPort              = "COM7"
-            };
-            return await Task.FromResult(joystick);
-        }
+    public Task<IEnumerable<int>> AddAsync(IEnumerable<Joystick> values)
+    {
+        throw new System.NotImplementedException();
+    }
 
-        public Task<IEnumerable<int>> Add(IEnumerable<Joystick> values)
-        {
-            throw new System.NotImplementedException();
-        }
+    public Task UpdateAsync(IEnumerable<Joystick> values)
+    {
+        throw new System.NotImplementedException();
+    }
 
-        public Task Update(IEnumerable<Joystick> values)
-        {
-            throw new System.NotImplementedException();
-        }
+    public Task DeleteAsync(IEnumerable<Joystick> values)
+    {
+        throw new System.NotImplementedException();
+    }
 
-        public Task Delete(IEnumerable<Joystick> values)
-        {
-            throw new System.NotImplementedException();
-        }
+    public Task DeleteAsync(IEnumerable<int> keys)
+    {
+        throw new System.NotImplementedException();
+    }
 
-        public Task Delete(IEnumerable<int> keys)
-        {
-            throw new System.NotImplementedException();
-        }
+    public Task<IEnumerable<Joystick>> GetAsync(IEnumerable<int> key)
+    {
+        throw new System.NotImplementedException();
+    }
 
-        public Task<IEnumerable<Joystick>> Get(IEnumerable<int> key)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task Patch(int key, JsonPatchDocument<Joystick> patch)
-        {
-            throw new System.NotImplementedException();
-        }
+    public Task PatchAsync(int key, JsonPatchDocument<Joystick> patch)
+    {
+        throw new System.NotImplementedException();
     }
 }

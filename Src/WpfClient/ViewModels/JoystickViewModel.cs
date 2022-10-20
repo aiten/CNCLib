@@ -14,105 +14,104 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.ViewModels
+namespace CNCLib.WpfClient.ViewModels;
+
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
+
+using AutoMapper;
+
+using CNCLib.Service.Abstraction;
+using CNCLib.WpfClient.Models;
+
+using Framework.Pattern;
+using Framework.Wpf.Helpers;
+using Framework.Wpf.ViewModels;
+
+public class JoystickViewModel : BaseViewModel
 {
-    using System.Linq;
-    using System.Threading.Tasks;
-    using System.Windows.Input;
+    private readonly IFactory<IJoystickService> _joystickService;
+    private readonly IMapper                    _mapper;
 
-    using AutoMapper;
+    #region crt
 
-    using CNCLib.Service.Abstraction;
-    using CNCLib.WpfClient.Models;
-
-    using Framework.Pattern;
-    using Framework.Wpf.Helpers;
-    using Framework.Wpf.ViewModels;
-
-    public class JoystickViewModel : BaseViewModel
+    public JoystickViewModel(IFactory<IJoystickService> joystickService, IMapper mapper)
     {
-        private readonly IFactory<IJoystickService> _joystickService;
-        private readonly IMapper                    _mapper;
-
-        #region crt
-
-        public JoystickViewModel(IFactory<IJoystickService> joystickService, IMapper mapper)
-        {
-            _joystickService = joystickService;
-            _mapper          = mapper;
-        }
-
-        public override async Task Loaded()
-        {
-            await base.Loaded();
-            await LoadJoystick();
-        }
-
-        #endregion
-
-        #region Properties
-
-        Models.Joystick _currentJoystick = new Models.Joystick();
-        int             _id              = -1;
-
-        public Models.Joystick Joystick
-        {
-            get => _currentJoystick;
-            set { SetProperty(() => _currentJoystick == value, () => _currentJoystick = value); }
-        }
-
-        #endregion
-
-        #region Operations
-
-        public async Task LoadJoystick()
-        {
-            using (var scope = _joystickService.Create())
-            {
-                var joystick = _mapper.Map<Joystick>((await scope.Instance.GetAll()).FirstOrDefault());
-                if (joystick == null)
-                {
-                    joystick = new Joystick() { Id = 0, BaudRate = 250000, ComPort = @"com7" };
-                    _id      = 0;
-                }
-
-                Joystick = joystick;
-                _id      = Joystick.Id;
-
-
-                RaisePropertyChanged(nameof(Joystick));
-            }
-        }
-
-        public async void SaveJoystick()
-        {
-            using (var scope = _joystickService.Create())
-            {
-                var joystick = _mapper.Map<Logic.Abstraction.DTO.Joystick>(Joystick);
-                if (_id == 0)
-                {
-                    await scope.Instance.Add(joystick);
-                }
-                else
-                {
-                    await scope.Instance.Update(joystick);
-                }
-
-                CloseAction();
-            }
-        }
-
-        public bool CanSaveJoystick()
-        {
-            return true;
-        }
-
-        #endregion
-
-        #region Commands
-
-        public ICommand SaveJoystickCommand => new DelegateCommand(SaveJoystick, CanSaveJoystick);
-
-        #endregion
+        _joystickService = joystickService;
+        _mapper          = mapper;
     }
+
+    public override async Task Loaded()
+    {
+        await base.Loaded();
+        await LoadJoystick();
+    }
+
+    #endregion
+
+    #region Properties
+
+    Models.Joystick _currentJoystick = new Models.Joystick();
+    int             _id              = -1;
+
+    public Models.Joystick Joystick
+    {
+        get => _currentJoystick;
+        set { SetProperty(() => _currentJoystick == value, () => _currentJoystick = value); }
+    }
+
+    #endregion
+
+    #region Operations
+
+    public async Task LoadJoystick()
+    {
+        using (var scope = _joystickService.Create())
+        {
+            var joystick = _mapper.Map<Joystick>((await scope.Instance.GetAllAsync()).FirstOrDefault());
+            if (joystick == null)
+            {
+                joystick = new Joystick() { Id = 0, BaudRate = 250000, ComPort = @"com7" };
+                _id      = 0;
+            }
+
+            Joystick = joystick;
+            _id      = Joystick.Id;
+
+
+            RaisePropertyChanged(nameof(Joystick));
+        }
+    }
+
+    public async void SaveJoystick()
+    {
+        using (var scope = _joystickService.Create())
+        {
+            var joystick = _mapper.Map<Logic.Abstraction.DTO.Joystick>(Joystick);
+            if (_id == 0)
+            {
+                await scope.Instance.AddAsync(joystick);
+            }
+            else
+            {
+                await scope.Instance.UpdateAsync(joystick);
+            }
+
+            CloseAction();
+        }
+    }
+
+    public bool CanSaveJoystick()
+    {
+        return true;
+    }
+
+    #endregion
+
+    #region Commands
+
+    public ICommand SaveJoystickCommand => new DelegateCommand(SaveJoystick, CanSaveJoystick);
+
+    #endregion
 }

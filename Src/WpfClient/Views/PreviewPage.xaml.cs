@@ -14,99 +14,98 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.Views
+namespace CNCLib.WpfClient.Views;
+
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+
+using CNCLib.GCode.GUI.ViewModels;
+using CNCLib.GCode.GUI.Views;
+using CNCLib.WpfClient.ViewModels;
+
+using Framework.Dependency;
+using Framework.Wpf.Helpers;
+using Framework.Wpf.Views;
+
+/// <summary>
+/// Interaction logic for PreviewPage.xaml
+/// </summary>
+public partial class PreviewPage : Page
 {
-    using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Input;
-
-    using CNCLib.GCode.GUI.ViewModels;
-    using CNCLib.GCode.GUI.Views;
-    using CNCLib.WpfClient.ViewModels;
-
-    using Framework.Dependency;
-    using Framework.Wpf.Helpers;
-    using Framework.Wpf.Views;
-
-    /// <summary>
-    /// Interaction logic for PreviewPage.xaml
-    /// </summary>
-    public partial class PreviewPage : Page
+    public PreviewPage()
     {
-        public PreviewPage()
+        var vm = AppService.GetRequiredService<PreviewViewModel>();
+        DataContext = vm;
+
+        InitializeComponent();
+
+        this.DefaultInitForBaseViewModel();
+
+        ToggleSettings();
+
+        vm.Global.PropertyChanged += (sender, e) =>
         {
-            var vm = AppService.GetRequiredService<PreviewViewModel>();
-            DataContext = vm;
-
-            InitializeComponent();
-
-            this.DefaultInitForBaseViewModel();
-
-            ToggleSettings();
-
-            vm.Global.PropertyChanged += (sender, e) =>
+            if (e.PropertyName == nameof(Global.SizeX) || e.PropertyName == nameof(Global.SizeY))
             {
-                if (e.PropertyName == nameof(Global.SizeX) || e.PropertyName == nameof(Global.SizeY))
-                {
-                    gcode.SizeX = (double)vm.Global.SizeX;
-                    gcode.SizeY = (double)vm.Global.SizeY;
-                }
-            };
+                gcode.SizeX = (double)vm.Global.SizeX;
+                gcode.SizeY = (double)vm.Global.SizeY;
+            }
+        };
 
-            if (vm.GetLoadInfo == null)
+        if (vm.GetLoadInfo == null)
+        {
+            vm.GetLoadInfo = arg =>
             {
-                vm.GetLoadInfo = arg =>
+                var dlg       = new LoadOptionView();
+                var viewModel = dlg.DataContext as LoadOptionViewModel;
+                if (viewModel != null)
                 {
-                    var dlg       = new LoadOptionView();
-                    var viewModel = dlg.DataContext as LoadOptionViewModel;
-                    if (viewModel != null)
+                    viewModel.LoadOptionsValue = viewModel.MapLoadOptions(arg.LoadOption);
+                    viewModel.UseAzure         = arg.UseAzure;
+                    if (!dlg.ShowDialog() ?? false)
                     {
-                        viewModel.LoadOptionsValue = viewModel.MapLoadOptions(arg.LoadOption);
-                        viewModel.UseAzure         = arg.UseAzure;
-                        if (!dlg.ShowDialog() ?? false)
-                        {
-                            return false;
-                        }
-
-                        arg.LoadOption = viewModel.MapLoadOptions(viewModel.LoadOptionsValue);
-                        arg.UseAzure   = viewModel.UseAzure;
+                        return false;
                     }
 
-                    return true;
-                };
-            }
+                    arg.LoadOption = viewModel.MapLoadOptions(viewModel.LoadOptionsValue);
+                    arg.UseAzure   = viewModel.UseAzure;
+                }
 
-            if (vm.RefreshPreview == null)
-            {
-                vm.RefreshPreview = () => { gcode.Dispatcher.Invoke(() => gcode.InvalidateVisual()); };
-            }
+                return true;
+            };
         }
 
-        private bool _isSettingsVisible = true;
-
-        void ToggleSettings()
+        if (vm.RefreshPreview == null)
         {
-            if (_isSettingsVisible)
-            {
-                _settings.Visibility = Visibility.Hidden;
-                _settings.Width      = 0;
-                _toggle.Content      = ">";
-            }
-            else
-            {
-                _settings.Visibility = Visibility.Visible;
-                _settings.Width      = 100;
-                _toggle.Content      = "<";
-            }
-
-            _isSettingsVisible = !_isSettingsVisible;
+            vm.RefreshPreview = () => { gcode.Dispatcher.Invoke(() => gcode.InvalidateVisual()); };
         }
-
-        bool CanToggleSettings()
-        {
-            return true;
-        }
-
-        public ICommand ToggleSettingsCommand => new DelegateCommand(ToggleSettings, CanToggleSettings);
     }
+
+    private bool _isSettingsVisible = true;
+
+    void ToggleSettings()
+    {
+        if (_isSettingsVisible)
+        {
+            _settings.Visibility = Visibility.Hidden;
+            _settings.Width      = 0;
+            _toggle.Content      = ">";
+        }
+        else
+        {
+            _settings.Visibility = Visibility.Visible;
+            _settings.Width      = 100;
+            _toggle.Content      = "<";
+        }
+
+        _isSettingsVisible = !_isSettingsVisible;
+    }
+
+    bool CanToggleSettings()
+    {
+        return true;
+    }
+
+    public ICommand ToggleSettingsCommand => new DelegateCommand(ToggleSettings, CanToggleSettings);
 }

@@ -14,39 +14,38 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository
+namespace CNCLib.Repository;
+
+using System;
+
+using CNCLib.Repository.Context;
+
+using Framework.Dependency;
+using Framework.Localization.Abstraction;
+using Framework.Repository;
+using Framework.Repository.Abstraction;
+using Framework.Startup.Abstraction;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+
+public class ModuleInitializer : IModuleInitializer
 {
-    using System;
+    public Action<DbContextOptionsBuilder> OptionsAction { get; set; }
 
-    using CNCLib.Repository.Context;
-
-    using Framework.Dependency;
-    using Framework.Localization.Abstraction;
-    using Framework.Repository;
-    using Framework.Repository.Abstraction;
-    using Framework.Startup.Abstraction;
-
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.DependencyInjection;
-
-    public class ModuleInitializer : IModuleInitializer
+    public void AddServices(IServiceCollection services)
     {
-        public Action<DbContextOptionsBuilder> OptionsAction { get; set; }
+        var options = new DbContextOptionsBuilder<CNCLibContext>();
+        OptionsAction(options);
 
-        public void AddServices(IServiceCollection services)
-        {
-            var options = new DbContextOptionsBuilder<CNCLibContext>();
-            OptionsAction(options);
+        services.AddSingleton<DbContextOptions<CNCLibContext>>(options.Options);
+        services.AddScoped<CNCLibContext, CNCLibContext>();
+        services.AddScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
-            services.AddSingleton<DbContextOptions<CNCLibContext>>(options.Options);
-            services.AddScoped<CNCLibContext, CNCLibContext>();
-            services.AddScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
+        services.AddAssemblyIncludingInternals(ServiceLifetime.Transient, typeof(Repository.MachineRepository).Assembly);
+    }
 
-            services.AddAssemblyIncludingInternals(ServiceLifetime.Transient, typeof(Repository.MachineRepository).Assembly);
-        }
-
-        public void AddTranslationResources(ILocalizationCollector localisation)
-        {
-        }
+    public void AddTranslationResources(ILocalizationCollector localisation)
+    {
     }
 }

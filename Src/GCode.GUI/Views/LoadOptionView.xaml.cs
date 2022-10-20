@@ -14,28 +14,27 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.GCode.GUI.Views
+namespace CNCLib.GCode.GUI.Views;
+
+using System.Windows;
+
+using CNCLib.GCode.GUI.ViewModels;
+
+using Framework.Dependency;
+using Framework.Wpf.Views;
+
+/// <summary>
+/// Interaction logic for EepromView.xaml
+/// </summary>
+public partial class LoadOptionView : Window
 {
-    using System.Windows;
-
-    using CNCLib.GCode.GUI.ViewModels;
-
-    using Framework.Dependency;
-    using Framework.Wpf.Views;
-
-    /// <summary>
-    /// Interaction logic for EepromView.xaml
-    /// </summary>
-    public partial class LoadOptionView : Window
+    public LoadOptionView()
     {
-        public LoadOptionView()
-        {
-            InitializeComponent();
+        InitializeComponent();
 
-            var vm = AppService.GetRequiredService<LoadOptionViewModel>();
-            DataContext = vm;
+        var vm = AppService.GetRequiredService<LoadOptionViewModel>();
+        DataContext = vm;
 
-            this.DefaultInitForBaseViewModel();
-        }
+        this.DefaultInitForBaseViewModel();
     }
 }

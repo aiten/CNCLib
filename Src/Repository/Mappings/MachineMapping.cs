@@ -14,44 +14,43 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository.Mappings
+namespace CNCLib.Repository.Mappings;
+
+using CNCLib.Repository.Abstraction.Entities;
+
+using Framework.Repository.Mappings;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+public static class MachineMapping
 {
-    using CNCLib.Repository.Abstraction.Entities;
-
-    using Framework.Repository.Mappings;
-
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-    public static class MachineMapping
+    public static void Map(this EntityTypeBuilder<MachineEntity> entity)
     {
-        public static void Map(this EntityTypeBuilder<MachineEntity> entity)
-        {
-            entity.ToTable("Machine");
+        entity.ToTable("Machine");
 
-            entity.HasKey(m => m.MachineId);
+        entity.HasKey(m => m.MachineId);
 
-            entity.HasIndex(c => new { c.UserId, c.Name }).IsUnique();
+        entity.HasIndex(c => new { c.UserId, c.Name }).IsUnique();
 
-            entity.Property(m => m.Name).AsRequiredText(64);
+        entity.Property(m => m.Name).AsRequiredText(64);
 
-            entity.Property(m => m.SerialServer).AsText(128);
-            entity.Property(m => m.SerialServerUser).AsText(32);
-            entity.Property(m => m.SerialServerPassword).AsText(64);
+        entity.Property(m => m.SerialServer).AsText(128);
+        entity.Property(m => m.SerialServerUser).AsText(32);
+        entity.Property(m => m.SerialServerPassword).AsText(64);
 
-            entity.Property(m => m.ComPort).AsRequiredText(32);
+        entity.Property(m => m.ComPort).AsRequiredText(32);
 
-            entity.Property(m => m.Axis).IsRequired();
+        entity.Property(m => m.Axis).IsRequired();
 
-            entity.Property(m => m.SizeX).IsRequired();
-            entity.Property(m => m.SizeY).IsRequired();
-            entity.Property(m => m.SizeZ).IsRequired();
+        entity.Property(m => m.SizeX).IsRequired();
+        entity.Property(m => m.SizeY).IsRequired();
+        entity.Property(m => m.SizeZ).IsRequired();
 
-            entity.Property(m => m.CommandSyntax).IsRequired();
-            entity.Property(m => m.WorkOffsets).IsRequired();
+        entity.Property(m => m.CommandSyntax).IsRequired();
+        entity.Property(m => m.WorkOffsets).IsRequired();
 
-            entity.HasOne(p => p.User);
-            entity.Property(m => m.UserId);
-        }
+        entity.HasOne(p => p.User);
+        entity.Property(m => m.UserId);
     }
 }

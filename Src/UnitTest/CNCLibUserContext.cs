@@ -14,36 +14,35 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.UnitTest
+namespace CNCLib.UnitTest;
+
+using System.Security.Claims;
+
+using CNCLib.Logic.Abstraction;
+using CNCLib.Shared;
+
+public class CNCLibUserContext : ICNCLibUserContext
 {
-    using System.Security.Claims;
+    public int    UserId   { get; private set; }
+    public string UserName { get; private set; }
+    public bool   IsAdmin  { get; private set; }
 
-    using CNCLib.Logic.Abstraction;
-    using CNCLib.Shared;
+    public ClaimsPrincipal User { get; private set; }
 
-    public class CNCLibUserContext : ICNCLibUserContext
+    public CNCLibUserContext()
     {
-        public int    UserId   { get; private set; }
-        public string UserName { get; private set; }
-        public bool   IsAdmin  { get; private set; }
+        UserName = "Maxi";
+        UserId   = 1;
+        IsAdmin  = true;
 
-        public ClaimsPrincipal User { get; private set; }
-
-        public CNCLibUserContext()
+        var claims = new[]
         {
-            UserName = "Maxi";
-            UserId   = 1;
-            IsAdmin  = true;
+            new Claim(ClaimTypes.NameIdentifier, UserId.ToString()),
+            new Claim(ClaimTypes.Name,           UserName),
+            new Claim(CNCLibClaimTypes.IsAdmin,  "true"),
+        };
+        var identity = new ClaimsIdentity(claims, "BasicAuthentication");
 
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, UserId.ToString()),
-                new Claim(ClaimTypes.Name,           UserName),
-                new Claim(CNCLibClaimTypes.IsAdmin,  "true"),
-            };
-            var identity = new ClaimsIdentity(claims, "BasicAuthentication");
-
-            User = new ClaimsPrincipal(identity);
-        }
+        User = new ClaimsPrincipal(identity);
     }
 }

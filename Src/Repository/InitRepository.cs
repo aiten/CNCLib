@@ -14,64 +14,63 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository
+namespace CNCLib.Repository;
+
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using CNCLib.Repository.Abstraction;
+using CNCLib.Repository.Abstraction.Entities;
+using CNCLib.Repository.Context;
+
+using Framework.Repository;
+
+public class InitRepository : RepositoryBase<CNCLibContext>, IInitRepository
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+    #region ctr/default/overrides
 
-    using CNCLib.Repository.Abstraction;
-    using CNCLib.Repository.Abstraction.Entities;
-    using CNCLib.Repository.Context;
-
-    using Framework.Repository;
-
-    public class InitRepository : RepositoryBase<CNCLibContext>, IInitRepository
+    public InitRepository(CNCLibContext context) : base(context)
     {
-        #region ctr/default/overrides
+    }
 
-        public InitRepository(CNCLibContext context) : base(context)
-        {
-        }
+    #endregion
 
-        #endregion
+    public async Task InitializeAsync(int userId)
+    {
+        new CNCLibDefaultData(Context).ImportForUser(userId);
+        await Task.CompletedTask;
+    }
 
-        public async Task Initialize(int userId)
-        {
-            new CNCLibDefaultData(Context).ImportForUser(userId);
-            await Task.CompletedTask;
-        }
+    public async Task AddDefaultMachinesAsync(int userId)
+    {
+        new CNCLibDefaultData(Context).ImportForUserMachine(userId);
+        await Task.CompletedTask;
+    }
 
-        public async Task AddDefaultMachines(int userId)
-        {
-            new CNCLibDefaultData(Context).ImportForUserMachine(userId);
-            await Task.CompletedTask;
-        }
+    public async Task AddDefaultItemsAsync(int userId)
+    {
+        new CNCLibDefaultData(Context).ImportForUserItem(userId);
+        await Task.CompletedTask;
+    }
 
-        public async Task AddDefaultItems(int userId)
-        {
-            new CNCLibDefaultData(Context).ImportForUserItem(userId);
-            await Task.CompletedTask;
-        }
+    public async Task AddDefaultFilesAsync(int userId)
+    {
+        new CNCLibDefaultData(Context).ImportForUserFile(userId);
+        await Task.CompletedTask;
+    }
 
-        public async Task AddDefaultFiles(int userId)
-        {
-            new CNCLibDefaultData(Context).ImportForUserFile(userId);
-            await Task.CompletedTask;
-        }
+    public IList<MachineEntity> GetDefaultMachines()
+    {
+        return new CNCLibDefaultData(Context).GetDefaultMachines();
+    }
 
-        public IList<MachineEntity> GetDefaultMachines()
-        {
-            return new CNCLibDefaultData(Context).GetDefaultMachines();
-        }
+    public IList<ItemEntity> GetDefaultItems()
+    {
+        return new CNCLibDefaultData(Context).GetDefaultItems();
+    }
 
-        public IList<ItemEntity> GetDefaultItems()
-        {
-            return new CNCLibDefaultData(Context).GetDefaultItems();
-        }
-
-        public IList<UserFileEntity> GetDefaultFiles()
-        {
-            return new CNCLibDefaultData(Context).GetDefaultFiles();
-        }
+    public IList<UserFileEntity> GetDefaultFiles()
+    {
+        return new CNCLibDefaultData(Context).GetDefaultFiles();
     }
 }

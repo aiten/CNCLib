@@ -14,37 +14,36 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.GCode.Generate.Commands
+namespace CNCLib.GCode.Generate.Commands;
+
+using Framework.Drawing;
+
+public class DrillCommand : Command
 {
-    using Framework.Drawing;
+    #region crt + factory
 
-    public class DrillCommand : Command
+    public DrillCommand()
     {
-        #region crt + factory
-
-        public DrillCommand()
-        {
-            UseWithoutPrefix = true;
-            PositionValid    = true;
-            MoveType         = CommandMoveType.Fast;
-        }
-
-        #endregion
-
-        #region GCode
-
-        #endregion
-
-        #region Draw
-
-        public override void Draw(IOutputCommand output, CommandState state, object param)
-        {
-            int radius = 10;
-            base.Draw(output, state, param);
-            Point3D ptFrom = CalculatedEndPosition;
-            output.DrawEllipse(this, param, Convert(CommandMoveType.Normal, state), ptFrom, radius, radius);
-        }
-
-        #endregion
+        UseWithoutPrefix = true;
+        PositionValid    = true;
+        MoveType         = CommandMoveType.Fast;
     }
+
+    #endregion
+
+    #region GCode
+
+    #endregion
+
+    #region Draw
+
+    public override void Draw(IOutputCommand output, CommandState state, object param)
+    {
+        int radius = 10;
+        base.Draw(output, state, param);
+        Point3D ptFrom = CalculatedEndPosition;
+        output.DrawEllipse(this, param, Convert(CommandMoveType.Normal, state), ptFrom, radius, radius);
+    }
+
+    #endregion
 }

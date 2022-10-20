@@ -14,35 +14,34 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.Models
+namespace CNCLib.WpfClient.Models;
+
+using AutoMapper;
+
+using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;
+
+static class Converter
 {
-    using AutoMapper;
-
-    using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;
-
-    static class Converter
+    public static MachineDto Convert(this Machine from, IMapper mapper)
     {
-        public static MachineDto Convert(this Machine from, IMapper mapper)
+        return mapper.Map<MachineDto>(from);
+    }
+
+    public static Machine Convert(this MachineDto from, IMapper mapper)
+    {
+        var to = mapper.Map<Machine>(from);
+
+        // AutoMapper do not mapper readonly observable collections
+        foreach (var m in from.MachineCommands)
         {
-            return mapper.Map<MachineDto>(from);
+            to.MachineCommands.Add(mapper.Map<MachineCommand>(m));
         }
 
-        public static Machine Convert(this MachineDto from, IMapper mapper)
+        foreach (var mi in from.MachineInitCommands)
         {
-            var to = mapper.Map<Machine>(from);
-
-            // AutoMapper do not mapper readonly observable collections
-            foreach (var m in from.MachineCommands)
-            {
-                to.MachineCommands.Add(mapper.Map<MachineCommand>(m));
-            }
-
-            foreach (var mi in from.MachineInitCommands)
-            {
-                to.MachineInitCommands.Add(mapper.Map<MachineInitCommand>(mi));
-            }
-
-            return to;
+            to.MachineInitCommands.Add(mapper.Map<MachineInitCommand>(mi));
         }
+
+        return to;
     }
 }

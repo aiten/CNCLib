@@ -14,31 +14,30 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WebAPI.Filter
+namespace CNCLib.WebAPI.Filter;
+
+using CNCLib.Shared;
+
+using Microsoft.AspNetCore.Mvc.Filters;
+
+public sealed class SetUserContextFilter : IActionFilter
 {
-    using CNCLib.Shared;
+    private ICNCLibUserContext _userContext;
 
-    using Microsoft.AspNetCore.Mvc.Filters;
-
-    public sealed class SetUserContextFilter : IActionFilter
+    public SetUserContextFilter(ICNCLibUserContext userContext)
     {
-        private ICNCLibUserContext _userContext;
+        _userContext = userContext;
+    }
 
-        public SetUserContextFilter(ICNCLibUserContext userContext)
+    public void OnActionExecuting(ActionExecutingContext context)
+    {
+        if (context.Controller is Microsoft.AspNetCore.Mvc.Controller controller)
         {
-            _userContext = userContext;
+            ((CNCLibUserContext)_userContext).InitFromController(controller);
         }
+    }
 
-        public void OnActionExecuting(ActionExecutingContext context)
-        {
-            if (context.Controller is Microsoft.AspNetCore.Mvc.Controller controller)
-            {
-                ((CNCLibUserContext)_userContext).InitFromController(controller);
-            }
-        }
-
-        public void OnActionExecuted(ActionExecutedContext context)
-        {
-        }
+    public void OnActionExecuted(ActionExecutedContext context)
+    {
     }
 }

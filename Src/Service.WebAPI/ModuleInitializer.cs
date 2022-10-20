@@ -14,40 +14,39 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Service.WebAPI
+namespace CNCLib.Service.WebAPI;
+
+using System;
+using System.Net.Http;
+
+using CNCLib.Service.Abstraction;
+
+using Framework.Localization.Abstraction;
+using Framework.Service.WebAPI;
+using Framework.Startup.Abstraction;
+
+using Microsoft.Extensions.DependencyInjection;
+
+public class ModuleInitializer : IModuleInitializer
 {
-    using System;
-    using System.Net.Http;
+    public Action<HttpClient> ConfigureHttpClient { get; set; }
 
-    using CNCLib.Service.Abstraction;
-
-    using Framework.Localization.Abstraction;
-    using Framework.Service.WebAPI;
-    using Framework.Startup.Abstraction;
-
-    using Microsoft.Extensions.DependencyInjection;
-
-    public class ModuleInitializer : IModuleInitializer
+    public void AddServices(IServiceCollection services)
     {
-        public Action<HttpClient> ConfigureHttpClient { get; set; }
+        AddConfigureClientBuilder(services.AddHttpClient<IMachineService, MachineService>(ConfigureHttpClient));
+        AddConfigureClientBuilder(services.AddHttpClient<IEepromConfigurationService, EepromConfigurationService>(ConfigureHttpClient));
+        AddConfigureClientBuilder(services.AddHttpClient<IItemService, ItemService>(ConfigureHttpClient));
+        AddConfigureClientBuilder(services.AddHttpClient<ILoadOptionsService, LoadOptionsService>(ConfigureHttpClient));
+        AddConfigureClientBuilder(services.AddHttpClient<IUserService, UserService>(ConfigureHttpClient));
+        AddConfigureClientBuilder(services.AddHttpClient<IJoystickService, JoystickService>(ConfigureHttpClient));
+    }
 
-        public void AddServices(IServiceCollection services)
-        {
-            AddConfigureClientBuilder(services.AddHttpClient<IMachineService, MachineService>(ConfigureHttpClient));
-            AddConfigureClientBuilder(services.AddHttpClient<IEepromConfigurationService, EepromConfigurationService>(ConfigureHttpClient));
-            AddConfigureClientBuilder(services.AddHttpClient<IItemService, ItemService>(ConfigureHttpClient));
-            AddConfigureClientBuilder(services.AddHttpClient<ILoadOptionsService, LoadOptionsService>(ConfigureHttpClient));
-            AddConfigureClientBuilder(services.AddHttpClient<IUserService, UserService>(ConfigureHttpClient));
-            AddConfigureClientBuilder(services.AddHttpClient<IJoystickService, JoystickService>(ConfigureHttpClient));
-        }
+    private static IHttpClientBuilder AddConfigureClientBuilder(IHttpClientBuilder builder)
+    {
+        return builder.ConfigurePrimaryHttpMessageHandler(HttpClientHelper.CreateHttpClientHandlerIgnoreSSLCertificatesError);
+    }
 
-        private static IHttpClientBuilder AddConfigureClientBuilder(IHttpClientBuilder builder)
-        {
-            return builder.ConfigurePrimaryHttpMessageHandler(HttpClientHelper.CreateHttpClientHandlerIgnoreSSLCertificatesError);
-        }
-
-        public void AddTranslationResources(ILocalizationCollector localisation)
-        {
-        }
+    public void AddTranslationResources(ILocalizationCollector localisation)
+    {
     }
 }

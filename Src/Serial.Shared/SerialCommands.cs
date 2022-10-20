@@ -14,11 +14,10 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Serial.Shared
+namespace CNCLib.Serial.Shared;
+
+public class SerialCommands
 {
-    public class SerialCommands
-    {
-        public string[] Commands { get; set; }
-        public int      TimeOut  { get; set; } = 120 * 1000;
-    }
+    public string[] Commands { get; set; }
+    public int      TimeOut  { get; set; } = 120 * 1000;
 }

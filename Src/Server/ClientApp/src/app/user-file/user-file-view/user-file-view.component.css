@@ -30,14 +30,8 @@
   display: block;
 }
 
-.mat-column-uploadTime {
-  min-width: 8rem;
-}
+.mat-column-uploadTime { min-width: 8rem; }
 
-.mat-column-fileSize {
-  min-width: 5rem;
-}
+.mat-column-fileSize { min-width: 5rem; }
 
-.mat-column-fileName {
-  min-width: 165pt;
-}
+.mat-column-fileName { min-width: 165pt; }

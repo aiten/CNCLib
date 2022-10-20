@@ -14,30 +14,29 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WebAPI.Controllers
+namespace CNCLib.WebAPI.Controllers;
+
+using System.Globalization;
+
+using Framework.Localization.Abstraction;
+
+using Microsoft.AspNetCore.Mvc;
+
+using UserFileDto = CNCLib.Logic.Abstraction.DTO.UserFile;
+
+[Route("api/[controller]")]
+public class LocalizationController : Controller
 {
-    using System.Globalization;
+    private readonly ILocalizationCollector _generator;
 
-    using Framework.Localization.Abstraction;
-
-    using Microsoft.AspNetCore.Mvc;
-
-    using UserFileDto = CNCLib.Logic.Abstraction.DTO.UserFile;
-
-    [Route("api/[controller]")]
-    public class LocalizationController : Controller
+    public LocalizationController(ILocalizationCollector generator)
     {
-        private readonly ILocalizationCollector _generator;
+        _generator = generator;
+    }
 
-        public LocalizationController(ILocalizationCollector generator)
-        {
-            _generator = generator;
-        }
-
-        [HttpGet("{locale}.json")]
-        public ActionResult GetMessageGroupFile(string locale)
-        {
-            return Ok(_generator.Generate(CultureInfo.GetCultureInfo(locale)));
-        }
+    [HttpGet("{locale}.json")]
+    public ActionResult GetMessageGroupFile(string locale)
+    {
+        return Ok(_generator.Generate(CultureInfo.GetCultureInfo(locale)));
     }
 }

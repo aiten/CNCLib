@@ -14,120 +14,119 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.GCode.Generate.Commands
+namespace CNCLib.GCode.Generate.Commands;
+
+using CNCLib.GCode.Generate.Parser;
+
+using Framework.Drawing;
+using Framework.Parser;
+
+[IsGCommand("#")]
+public class SetParameterCommand : Command
 {
-    using CNCLib.GCode.Generate.Parser;
+    #region crt + factory
 
-    using Framework.Drawing;
-    using Framework.Parser;
-
-    [IsGCommand("#")]
-    public class SetParameterCommand : Command
+    public SetParameterCommand()
     {
-        #region crt + factory
+        Code = "#";
+    }
 
-        public SetParameterCommand()
+    public int    ParameterNo    { get; set; } = -1;
+    public double ParameterValue { get; private set; }
+
+    #endregion
+
+    #region GCode
+
+    public override string[] GetGCodeCommands(Point3D startFrom, CommandState state)
+    {
+        string[] ret;
+        if (ParameterNo >= 0)
         {
-            Code = "#";
+            ret = new[]
+            {
+                GCodeLineNumber(" ") + Code + ParameterNo.ToString() + " =" + GCodeAdd
+            };
+        }
+        else
+        {
+            ret = new[]
+            {
+                GCodeLineNumber(" ") + GCodeAdd
+            };
         }
 
-        public int    ParameterNo    { get; set; } = -1;
-        public double ParameterValue { get; private set; }
+        return ret;
+    }
 
-        #endregion
+    #endregion
 
-        #region GCode
+    public override void SetCommandState(CommandState state)
+    {
+        base.SetCommandState(state);
 
-        public override string[] GetGCodeCommands(Point3D startFrom, CommandState state)
+        if (ParameterNo >= 0)
         {
-            string[] ret;
-            if (ParameterNo >= 0)
+            state.ParameterValues[ParameterNo] = ParameterValue;
+        }
+    }
+
+    #region Serialization
+
+    public override void ReadFrom(Parser parser)
+    {
+        int saveIndex = parser.PushPosition();
+
+        parser.Next();
+
+        if (parser.IsNumber())
+        {
+            int parameter = parser.GetInt();
+
+            if (parameter >= 0 && parser.SkipSpacesToUpper() == '=')
             {
-                ret = new[]
-                {
-                    GCodeLineNumber(" ") + Code + ParameterNo.ToString() + " =" + GCodeAdd
-                };
+                parser.Next();
+                ParameterNo = parameter;
             }
             else
             {
-                ret = new[]
-                {
-                    GCodeLineNumber(" ") + GCodeAdd
-                };
-            }
-
-            return ret;
-        }
-
-        #endregion
-
-        public override void SetCommandState(CommandState state)
-        {
-            base.SetCommandState(state);
-
-            if (ParameterNo >= 0)
-            {
-                state.ParameterValues[ParameterNo] = ParameterValue;
+                // error => do not analyze line
+                parser.PopPosition(saveIndex);
             }
         }
 
-        #region Serialization
-
-        public override void ReadFrom(Parser parser)
-        {
-            int saveIndex = parser.PushPosition();
-
-            parser.Next();
-
-            if (parser.IsNumber())
-            {
-                int parameter = parser.GetInt();
-
-                if (parameter >= 0 && parser.SkipSpacesToUpper() == '=')
-                {
-                    parser.Next();
-                    ParameterNo = parameter;
-                }
-                else
-                {
-                    // error => do not analyze line
-                    parser.PopPosition(saveIndex);
-                }
-            }
-
-            ReadFromToEnd(parser);
-        }
-
-        public override void UpdateCalculatedEndPosition(CommandState state)
-        {
-            if (ParameterNo >= 0 && EvaluateParameterValue(state, out double paramValue))
-            {
-                ParameterValue = paramValue;
-                SetCommandState(state);
-            }
-
-            base.UpdateCalculatedEndPosition(state);
-        }
-
-        private bool EvaluateParameterValue(CommandState state, out double paramValue)
-        {
-            var lineStream       = new ParserStreamReader() { Line                         = GCodeAdd };
-            var expressionParser = new GCodeExpressionParser(lineStream) { ParameterValues = state.ParameterValues };
-            expressionParser.Parse();
-            if (expressionParser.IsError())
-            {
-                paramValue = 0;
-                return false;
-            }
-
-            paramValue = expressionParser.Answer;
-            return true;
-        }
-
-        #endregion
-
-        #region Draw
-
-        #endregion
+        ReadFromToEnd(parser);
     }
+
+    public override void UpdateCalculatedEndPosition(CommandState state)
+    {
+        if (ParameterNo >= 0 && EvaluateParameterValue(state, out double paramValue))
+        {
+            ParameterValue = paramValue;
+            SetCommandState(state);
+        }
+
+        base.UpdateCalculatedEndPosition(state);
+    }
+
+    private bool EvaluateParameterValue(CommandState state, out double paramValue)
+    {
+        var lineStream       = new ParserStreamReader() { Line                         = GCodeAdd };
+        var expressionParser = new GCodeExpressionParser(lineStream) { ParameterValues = state.ParameterValues };
+        expressionParser.Parse();
+        if (expressionParser.IsError())
+        {
+            paramValue = 0;
+            return false;
+        }
+
+        paramValue = expressionParser.Answer;
+        return true;
+    }
+
+    #endregion
+
+    #region Draw
+
+    #endregion
 }

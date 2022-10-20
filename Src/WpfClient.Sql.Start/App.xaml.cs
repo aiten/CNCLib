@@ -14,122 +14,121 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.Sql.Start
+namespace CNCLib.WpfClient.Sql.Start;
+
+using System;
+using System.Data.SqlClient;
+using System.Globalization;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Markup;
+
+using AutoMapper;
+
+using CNCLib.GCode.GUI;
+using CNCLib.Logic;
+using CNCLib.Repository.Context;
+using CNCLib.Repository.SqlServer;
+using CNCLib.Shared;
+
+using Framework.Dependency;
+using Framework.Localization;
+using Framework.Startup;
+
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+
+using NLog;
+
+using ILogger = NLog.ILogger;
+
+public partial class App : Application
 {
-    using System;
-    using System.Data.SqlClient;
-    using System.Globalization;
-    using System.Threading.Tasks;
-    using System.Windows;
-    using System.Windows.Markup;
+    private ILogger _logger => LogManager.GetCurrentClassLogger();
 
-    using AutoMapper;
-
-    using CNCLib.GCode.GUI;
-    using CNCLib.Logic;
-    using CNCLib.Repository.Context;
-    using CNCLib.Repository.SqlServer;
-    using CNCLib.Shared;
-
-    using Framework.Dependency;
-    using Framework.Localization;
-    using Framework.Startup;
-
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
-
-    using NLog;
-
-    using ILogger = NLog.ILogger;
-
-    public partial class App : Application
+    private void AppStartup(object sender, StartupEventArgs e)
     {
-        private ILogger _logger => LogManager.GetCurrentClassLogger();
+        var localizationCollector = new LocalizationCollector();
+        var moduleInit            = new InitializationManager();
 
-        private void AppStartup(object sender, StartupEventArgs e)
+        moduleInit.Add(new Framework.Tools.ModuleInitializer());
+        moduleInit.Add(new Framework.Arduino.SerialCommunication.ModuleInitializer());
+        moduleInit.Add(new Framework.Logic.ModuleInitializer()
         {
-            var localizationCollector = new LocalizationCollector();
-            var moduleInit            = new InitializationManager();
+            MapperConfiguration =
+                new MapperConfiguration(
+                    cfg =>
+                    {
+                        cfg.AddProfile<LogicAutoMapperProfile>();
+                        cfg.AddProfile<WpfAutoMapperProfile>();
+                        cfg.AddProfile<GCodeGUIAutoMapperProfile>();
+                    })
+        });
+        moduleInit.Add(new CNCLib.Logic.ModuleInitializer());
+        moduleInit.Add(new CNCLib.Logic.Client.ModuleInitializer());
+        moduleInit.Add(new CNCLib.Repository.ModuleInitializer() { OptionsAction = SqlServerDatabaseTools.OptionBuilder });
+        moduleInit.Add(new CNCLib.Service.Logic.ModuleInitializer());
+        moduleInit.Add(new CNCLib.WpfClient.ModuleInitializer());
 
-            moduleInit.Add(new Framework.Tools.ModuleInitializer());
-            moduleInit.Add(new Framework.Arduino.SerialCommunication.ModuleInitializer());
-            moduleInit.Add(new Framework.Logic.ModuleInitializer()
-            {
-                MapperConfiguration =
-                    new MapperConfiguration(
-                        cfg =>
-                        {
-                            cfg.AddProfile<LogicAutoMapperProfile>();
-                            cfg.AddProfile<WpfAutoMapperProfile>();
-                            cfg.AddProfile<GCodeGUIAutoMapperProfile>();
-                        })
-            });
-            moduleInit.Add(new CNCLib.Logic.ModuleInitializer());
-            moduleInit.Add(new CNCLib.Logic.Client.ModuleInitializer());
-            moduleInit.Add(new CNCLib.Repository.ModuleInitializer() { OptionsAction = SqlServerDatabaseTools.OptionBuilder });
-            moduleInit.Add(new CNCLib.Service.Logic.ModuleInitializer());
-            moduleInit.Add(new CNCLib.WpfClient.ModuleInitializer());
+        string connectString = SqlServerDatabaseTools.ConnectString;
 
-            string connectString = SqlServerDatabaseTools.ConnectString;
+        GlobalDiagnosticsContext.Set("logDir",           $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib.Sql/logs");
+        GlobalDiagnosticsContext.Set("connectionString", connectString);
 
-            GlobalDiagnosticsContext.Set("logDir",           $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib.Sql/logs");
-            GlobalDiagnosticsContext.Set("connectionString", connectString);
-
-            try
-            {
+        try
+        {
 #if DEBUG
-                LogManager.ThrowExceptions = true;
+            LogManager.ThrowExceptions = true;
 #endif
-                NLog.Logger logger = LogManager.GetLogger("foo");
+            NLog.Logger logger = LogManager.GetLogger("foo");
 
-                _logger.Info(@"Starting ...");
+            _logger.Info(@"Starting ...");
 #if DEBUG
-                LogManager.ThrowExceptions = false;
+            LogManager.ThrowExceptions = false;
 #endif
-            }
-            catch (SqlException)
-            {
-                // ignore Sql Exception
-            }
-
-            FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
-
-            var userContext = new CNCLibUserContext(CNCLibConst.AdminUser);
-
-            AppService.ServiceCollection = new ServiceCollection();
-            AppService.ServiceCollection
-                .AddTransient<ILoggerFactory, LoggerFactory>()
-                .AddTransient(typeof(ILogger<>), typeof(Logger<>))
-                .AddSingleton((ICNCLibUserContext)userContext);
-
-            moduleInit.Initialize(AppService.ServiceCollection, localizationCollector);
-
-            AppService.BuildServiceProvider();
-
-            // Open Database here
-
-            try
-            {
-                CNCLibContext.InitializeDatabase(AppService.ServiceProvider);
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex);
-
-                MessageBox.Show("Cannot connect to database" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Current.Shutdown();
-            }
-
-            var task = Task.Run(async () => await userContext.InitUserContext());
-            while (!task.IsCompleted)
-            {
-                Task.Yield();
-            }
+        }
+        catch (SqlException)
+        {
+            // ignore Sql Exception
         }
 
-        protected override void OnExit(ExitEventArgs e)
+        FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
+
+        var userContext = new CNCLibUserContext(CNCLibConst.AdminUser);
+
+        AppService.ServiceCollection = new ServiceCollection();
+        AppService.ServiceCollection
+            .AddTransient<ILoggerFactory, LoggerFactory>()
+            .AddTransient(typeof(ILogger<>), typeof(Logger<>))
+            .AddSingleton((ICNCLibUserContext)userContext);
+
+        moduleInit.Initialize(AppService.ServiceCollection, localizationCollector);
+
+        AppService.BuildServiceProvider();
+
+        // Open Database here
+
+        try
         {
-            LogManager.Shutdown();
+            CNCLibContext.InitializeDatabase(AppService.ServiceProvider);
         }
+        catch (Exception ex)
+        {
+            _logger.Error(ex);
+
+            MessageBox.Show("Cannot connect to database" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            Current.Shutdown();
+        }
+
+        var task = Task.Run(async () => await userContext.InitUserContext());
+        while (!task.IsCompleted)
+        {
+            Task.Yield();
+        }
+    }
+
+    protected override void OnExit(ExitEventArgs e)
+    {
+        LogManager.Shutdown();
     }
 }

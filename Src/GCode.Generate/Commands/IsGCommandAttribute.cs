@@ -14,24 +14,23 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.GCode.Generate.Commands
+namespace CNCLib.GCode.Generate.Commands;
+
+using System;
+
+[AttributeUsage(AttributeTargets.Class)]
+public class IsGCommandAttribute : Attribute
 {
-    using System;
+    public bool   IsGCommand { get; set; }
+    public string RegisterAs { get; set; }
 
-    [AttributeUsage(AttributeTargets.Class)]
-    public class IsGCommandAttribute : Attribute
+    public IsGCommandAttribute()
     {
-        public bool   IsGCommand { get; set; }
-        public string RegisterAs { get; set; }
+        IsGCommand = true;
+    }
 
-        public IsGCommandAttribute()
-        {
-            IsGCommand = true;
-        }
-
-        public IsGCommandAttribute(string registerAs)
-        {
-            RegisterAs = registerAs;
-        }
+    public IsGCommandAttribute(string registerAs)
+    {
+        RegisterAs = registerAs;
     }
 }

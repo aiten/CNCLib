@@ -14,23 +14,22 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient
+namespace CNCLib.WpfClient;
+
+using AutoMapper;
+
+using JoystickDto = CNCLib.Logic.Abstraction.DTO.Joystick;
+using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;
+using MachineInitCommandDto = CNCLib.Logic.Abstraction.DTO.MachineInitCommand;
+using MachineCommandDto = CNCLib.Logic.Abstraction.DTO.MachineCommand;
+
+public sealed class WpfAutoMapperProfile : Profile
 {
-    using AutoMapper;
-
-    using JoystickDto = CNCLib.Logic.Abstraction.DTO.Joystick;
-    using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;
-    using MachineInitCommandDto = CNCLib.Logic.Abstraction.DTO.MachineInitCommand;
-    using MachineCommandDto = CNCLib.Logic.Abstraction.DTO.MachineCommand;
-
-    public sealed class WpfAutoMapperProfile : Profile
+    public WpfAutoMapperProfile()
     {
-        public WpfAutoMapperProfile()
-        {
-            CreateMap<Models.Joystick, JoystickDto>().ReverseMap();
-            CreateMap<Models.Machine, MachineDto>().ReverseMap();
-            CreateMap<Models.MachineInitCommand, MachineInitCommandDto>().ReverseMap();
-            CreateMap<Models.MachineCommand, MachineCommandDto>().ReverseMap();
-        }
+        CreateMap<Models.Joystick, JoystickDto>().ReverseMap();
+        CreateMap<Models.Machine, MachineDto>().ReverseMap();
+        CreateMap<Models.MachineInitCommand, MachineInitCommandDto>().ReverseMap();
+        CreateMap<Models.MachineCommand, MachineCommandDto>().ReverseMap();
     }
 }

@@ -14,32 +14,31 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Logic.Abstraction
+namespace CNCLib.Logic.Abstraction;
+
+using System.Threading.Tasks;
+
+using Framework.Logic.Abstraction;
+
+public interface IUserManager : ICrudManager<DTO.User, int>, IAuthenticationManager
 {
-    using System.Threading.Tasks;
+    Task<DTO.User> GetByNameAsync(string username);
 
-    using Framework.Logic.Abstraction;
+    Task<string> CreatePasswordHashAsync(string password);
 
-    public interface IUserManager : ICrudManager<DTO.User, int>, IAuthenticationManager
-    {
-        Task<DTO.User> GetByName(string username);
+    Task<string> RegisterAsync(string username, string password);
 
-        Task<string> CreatePasswordHash(string password);
+    Task ChangePasswordAsync(string username, string passwordOld, string passwordNew);
 
-        Task<string> Register(string username, string password);
+    Task LeaveAsync();
 
-        Task ChangePassword(string username, string passwordOld, string passwordNew);
+    Task LeaveAsync(string username);
 
-        Task Leave();
+    Task InitDataAsync();
 
-        Task Leave(string username);
+    Task CleanupAsync();
 
-        Task InitData();
+    Task InitMachinesAsync();
 
-        Task Cleanup();
-
-        Task InitMachines();
-
-        Task InitItems();
-    }
+    Task InitItemsAsync();
 }

@@ -14,10 +14,9 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.GCode.Generate.Commands
+namespace CNCLib.GCode.Generate.Commands;
+
+public class ConvertOptions
 {
-    public class ConvertOptions
-    {
-        public bool SubstG82 { get; set; }
-    }
+    public bool SubstG82 { get; set; }
 }

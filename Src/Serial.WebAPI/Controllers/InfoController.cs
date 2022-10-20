@@ -14,63 +14,62 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Serial.WebAPI.Controllers
+namespace CNCLib.Serial.WebAPI.Controllers;
+
+using System.Reflection;
+
+using CNCLib.Serial.Shared;
+
+using Microsoft.AspNetCore.Mvc;
+
+[Route("api/[controller]")]
+public class InfoController : Controller
 {
-    using System.Reflection;
+    #region Query/Info
 
-    using CNCLib.Serial.Shared;
-
-    using Microsoft.AspNetCore.Mvc;
-
-    [Route("api/[controller]")]
-    public class InfoController : Controller
+    [HttpGet]
+    public Info Get()
     {
-        #region Query/Info
-
-        [HttpGet]
-        public Info Get()
-        {
-            return Info();
-        }
-
-        [HttpGet("version")]
-        public string GetVersion()
-        {
-            return Info().Version.ToString();
-        }
-
-        [HttpGet("name")]
-        public string GetName()
-        {
-            return Info().Name;
-        }
-
-        [HttpGet("fullname")]
-        public string GetFullName()
-        {
-            return Info().FullName;
-        }
-
-        [HttpGet("copyright")]
-        public string GetCopyright()
-        {
-            return Info().Copyright;
-        }
-
-        private static Info Info()
-        {
-            var ass     = Assembly.GetExecutingAssembly();
-            var assName = ass.GetName();
-
-            return new Info()
-            {
-                Version   = ass.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion,
-                Copyright = ass.GetCustomAttribute<AssemblyCopyrightAttribute>()?.Copyright,
-                Name      = assName.Name,
-                FullName  = assName.FullName,
-            };
-        }
-
-        #endregion
+        return Info();
     }
+
+    [HttpGet("version")]
+    public string GetVersion()
+    {
+        return Info().Version.ToString();
+    }
+
+    [HttpGet("name")]
+    public string GetName()
+    {
+        return Info().Name;
+    }
+
+    [HttpGet("fullname")]
+    public string GetFullName()
+    {
+        return Info().FullName;
+    }
+
+    [HttpGet("copyright")]
+    public string GetCopyright()
+    {
+        return Info().Copyright;
+    }
+
+    private static Info Info()
+    {
+        var ass     = Assembly.GetExecutingAssembly();
+        var assName = ass.GetName();
+
+        return new Info()
+        {
+            Version   = ass.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion,
+            Copyright = ass.GetCustomAttribute<AssemblyCopyrightAttribute>()?.Copyright,
+            Name      = assName.Name,
+            FullName  = assName.FullName,
+        };
+    }
+
+    #endregion
 }

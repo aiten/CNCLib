@@ -14,176 +14,175 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WebAPI.Controllers
+namespace CNCLib.WebAPI.Controllers;
+
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Shared;
+
+using Framework.WebAPI.Controller;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+[Authorize]
+[Route("api/[controller]")]
+public class UserController : Controller
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+    private readonly IUserManager       _manager;
+    private readonly ICNCLibUserContext _userContext;
 
-    using CNCLib.Logic.Abstraction;
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Shared;
-
-    using Framework.WebAPI.Controller;
-
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
-
-    [Authorize]
-    [Route("api/[controller]")]
-    public class UserController : Controller
+    public UserController(IUserManager manager, ICNCLibUserContext userContext)
     {
-        private readonly IUserManager       _manager;
-        private readonly ICNCLibUserContext _userContext;
+        _manager     = manager;
+        _userContext = userContext;
+    }
 
-        public UserController(IUserManager manager, ICNCLibUserContext userContext)
+    [Authorize(Policy = Policies.IsAdmin)]
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<User>>> Get(string userName)
+    {
+        if (!string.IsNullOrEmpty(userName))
         {
-            _manager     = manager;
-            _userContext = userContext;
-        }
-
-        [Authorize(Policy = Policies.IsAdmin)]
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> Get(string userName)
-        {
-            if (!string.IsNullOrEmpty(userName))
+            var user = await _manager.GetByNameAsync(userName);
+            if (user == null)
             {
-                var user = await _manager.GetByName(userName);
-                if (user == null)
-                {
-                    return Ok(new List<User>());
-                }
-
-                return Ok(new List<User>() { user });
+                return Ok(new List<User>());
             }
 
-            return await this.GetAll(_manager);
+            return Ok(new List<User>() { user });
         }
 
-        [HttpGet("currentUser")]
-        public async Task<ActionResult<User>> CurrentUser()
+        return await this.GetAll(_manager);
+    }
+
+    [HttpGet("currentUser")]
+    public async Task<ActionResult<User>> CurrentUser()
+    {
+        return Ok(await _manager.GetByNameAsync(_userContext.UserName));
+    }
+
+    [AllowAnonymous]
+    [HttpGet("isValidUser")]
+    public async Task<ActionResult> IsValidUser(string userName, string password)
+    {
+        if ((await _manager.AuthenticateAsync(userName, password)) == null)
         {
-            return Ok(await _manager.GetByName(_userContext.UserName));
+            return Forbid();
         }
 
-        [AllowAnonymous]
-        [HttpGet("isValidUser")]
-        public async Task<ActionResult> IsValidUser(string userName, string password)
-        {
-            if ((await _manager.Authenticate(userName, password)) == null)
-            {
-                return Forbid();
-            }
+        return Ok();
+    }
 
+    [HttpPut("changePassword")]
+    public async Task<ActionResult> ChangePassword(string userName, string passwordOld, string passwordNew)
+    {
+        if (!_userContext.IsAdmin && _userContext.UserName != userName)
+        {
+            return Forbid();
+        }
+
+        await _manager.ChangePasswordAsync(userName, passwordOld, passwordNew);
+        return Ok();
+    }
+
+    [AllowAnonymous]
+    [HttpPost("register")]
+    public async Task<ActionResult<string>> Register(string userName, string password)
+    {
+        var result = await _manager.RegisterAsync(userName, password);
+        if (string.IsNullOrEmpty(result))
+        {
+            return Forbid();
+        }
+
+        return Ok(result);
+    }
+
+    [AllowAnonymous]
+    [HttpGet("passwordHash")]
+    public async Task<ActionResult<string>> PasswordHash(string password)
+    {
+        return Ok(await _manager.CreatePasswordHashAsync(password));
+    }
+
+    [HttpPut("init")]
+    public async Task<ActionResult> InitUser()
+    {
+        await _manager.InitDataAsync();
+        return Ok();
+    }
+
+    [HttpPut("initMachines")]
+    public async Task<ActionResult> InitMachines()
+    {
+        await _manager.InitMachinesAsync();
+        return Ok();
+    }
+
+    [HttpPut("initItems")]
+    public async Task<ActionResult> InitItems()
+    {
+        await _manager.InitItemsAsync();
+        return Ok();
+    }
+
+    [HttpDelete("cleanup")]
+    public async Task<ActionResult> Cleanup()
+    {
+        await _manager.CleanupAsync();
+        return Ok();
+    }
+
+    [HttpDelete("leave")]
+    public async Task<ActionResult> Leave(string userName)
+    {
+        if (string.IsNullOrEmpty(userName) || _userContext.UserName == userName)
+        {
+            await _manager.LeaveAsync();
             return Ok();
         }
 
-        [HttpPut("changePassword")]
-        public async Task<ActionResult> ChangePassword(string userName, string passwordOld, string passwordNew)
+        if (!_userContext.IsAdmin)
         {
-            if (!_userContext.IsAdmin && _userContext.UserName != userName)
-            {
-                return Forbid();
-            }
-
-            await _manager.ChangePassword(userName, passwordOld, passwordNew);
-            return Ok();
+            return Forbid();
         }
 
-        [AllowAnonymous]
-        [HttpPost("register")]
-        public async Task<ActionResult<string>> Register(string userName, string password)
-        {
-            var result = await _manager.Register(userName, password);
-            if (string.IsNullOrEmpty(result))
-            {
-                return Forbid();
-            }
+        await _manager.LeaveAsync(userName);
+        return Ok();
+    }
 
-            return Ok(result);
-        }
+    #region default REST
 
-        [AllowAnonymous]
-        [HttpGet("passwordHash")]
-        public async Task<ActionResult<string>> PasswordHash(string password)
-        {
-            return Ok(await _manager.CreatePasswordHash(password));
-        }
-
-        [HttpPut("init")]
-        public async Task<ActionResult> InitUser()
-        {
-            await _manager.InitData();
-            return Ok();
-        }
-
-        [HttpPut("initMachines")]
-        public async Task<ActionResult> InitMachines()
-        {
-            await _manager.InitMachines();
-            return Ok();
-        }
-
-        [HttpPut("initItems")]
-        public async Task<ActionResult> InitItems()
-        {
-            await _manager.InitItems();
-            return Ok();
-        }
-
-        [HttpDelete("cleanup")]
-        public async Task<ActionResult> Cleanup()
-        {
-            await _manager.Cleanup();
-            return Ok();
-        }
-
-        [HttpDelete("leave")]
-        public async Task<ActionResult> Leave(string userName)
-        {
-            if (string.IsNullOrEmpty(userName) || _userContext.UserName == userName)
-            {
-                await _manager.Leave();
-                return Ok();
-            }
-
-            if (!_userContext.IsAdmin)
-            {
-                return Forbid();
-            }
-
-            await _manager.Leave(userName);
-            return Ok();
-        }
-
-        #region default REST
-
-        [Authorize(Policy = Policies.IsAdmin)]
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<User>> Get(int id)
-        {
-            return await this.Get<User, int>(_manager, id);
-        }
+    [Authorize(Policy = Policies.IsAdmin)]
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<User>> Get(int id)
+    {
+        return await this.Get<User, int>(_manager, id);
+    }
 
 /*
         [HttpPost]
-        public async Task<ActionResult<User>> Add([FromBody] User value)
+        public async Task<ActionResult<User>> AddAsync([FromBody] User value)
         {
-            return await this.Add<User, int>(_manager, value);
+            return await this.AddAsync<User, int>(_manager, value);
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Update(int id, [FromBody] User value)
+        public async Task<ActionResult> UpdateAsync(int id, [FromBody] User value)
         {
-            return await this.Update<User, int>(_manager, id, value.UserId, value);
+            return await this.UpdateAsync<User, int>(_manager, id, value.UserId, value);
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> DeleteAsync(int id)
         {
-            return await this.Delete<User, int>(_manager, id);
+            return await this.DeleteAsync<User, int>(_manager, id);
         }
 */
 
-        #endregion
-    }
+    #endregion
 }

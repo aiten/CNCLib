@@ -14,107 +14,106 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Service.WebAPI
+namespace CNCLib.Service.WebAPI;
+
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Service.Abstraction;
+
+using Framework.Service.WebAPI;
+using Framework.Service.WebAPI.Uri;
+
+public class UserService : CrudServiceBase<User, int>, IUserService
 {
-    using System.Linq;
-    using System.Net.Http;
-    using System.Threading.Tasks;
-
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Service.Abstraction;
-
-    using Framework.Service.WebAPI;
-    using Framework.Service.WebAPI.Uri;
-
-    public class UserService : CrudServiceBase<User, int>, IUserService
+    public UserService(HttpClient httpClient) : base(httpClient)
     {
-        public UserService(HttpClient httpClient) : base(httpClient)
-        {
-            BaseApi = @"api/user";
-        }
+        BaseApi = @"api/user";
+    }
 
-        protected override int GetKey(User u) => u.UserId;
+    protected override int GetKey(User u) => u.UserId;
 
-        public async Task<User> GetByName(string username)
-        {
-            return (await ReadList<User>(
-                    CreatePathBuilder()
-                        .AddQuery(new UriQueryBuilder().Add("username", username))))
-                .FirstOrDefault();
-        }
-
-        public async Task<User> GetCurrentUser()
-        {
-            return await Read<User>(
+    public async Task<User> GetByName(string username)
+    {
+        return (await ReadList<User>(
                 CreatePathBuilder()
-                    .AddPath("currentUser"));
-        }
+                    .AddQuery(new UriQueryBuilder().Add("username", username))))
+            .FirstOrDefault();
+    }
 
-        public async Task<bool> IsValidUser(string username, string password)
+    public async Task<User> GetCurrentUser()
+    {
+        return await Read<User>(
+            CreatePathBuilder()
+                .AddPath("currentUser"));
+    }
+
+    public async Task<bool> IsValidUser(string username, string password)
+    {
+        using (var scope = CreateScope())
         {
-            using (var scope = CreateScope())
-            {
-                var builder = CreatePathBuilder()
-                    .AddPath("isValidUser")
-                    .AddQuery(new UriQueryBuilder()
-                        .Add("username", username)
-                        .Add("password", password));
+            var builder = CreatePathBuilder()
+                .AddPath("isValidUser")
+                .AddQuery(new UriQueryBuilder()
+                    .Add("username", username)
+                    .Add("password", password));
 
-                var response = await scope.Instance.GetAsync(builder.Build());
-                return response.IsSuccessStatusCode;
-            }
+            var response = await scope.Instance.GetAsync(builder.Build());
+            return response.IsSuccessStatusCode;
         }
+    }
 
-        public async Task<string> Register(string username, string password)
+    public async Task<string> Register(string username, string password)
+    {
+        using (var scope = CreateScope())
         {
-            using (var scope = CreateScope())
-            {
-                var builder = CreatePathBuilder()
-                    .AddPath("register")
-                    .AddQuery(new UriQueryBuilder()
-                        .Add("username", username)
-                        .Add("password", password));
+            var builder = CreatePathBuilder()
+                .AddPath("register")
+                .AddQuery(new UriQueryBuilder()
+                    .Add("username", username)
+                    .Add("password", password));
 
-                var response = await scope.Instance.PutAsync(builder.Build(), null);
-                response.EnsureSuccessStatusCode();
-                return "1";
-            }
+            var response = await scope.Instance.PutAsync(builder.Build(), null);
+            response.EnsureSuccessStatusCode();
+            return "1";
         }
+    }
 
-        public async Task Leave()
+    public async Task Leave()
+    {
+        using (var scope = CreateScope())
         {
-            using (var scope = CreateScope())
-            {
-                var builder = CreatePathBuilder()
-                    .AddPath("leave");
+            var builder = CreatePathBuilder()
+                .AddPath("leave");
 
-                var response = await scope.Instance.DeleteAsync(builder.Build());
-                response.EnsureSuccessStatusCode();
-            }
+            var response = await scope.Instance.DeleteAsync(builder.Build());
+            response.EnsureSuccessStatusCode();
         }
+    }
 
-        public async Task InitData()
+    public async Task InitData()
+    {
+        using (var scope = CreateScope())
         {
-            using (var scope = CreateScope())
-            {
-                var builder = CreatePathBuilder()
-                    .AddPath("init");
+            var builder = CreatePathBuilder()
+                .AddPath("init");
 
-                var response = await scope.Instance.PutAsync(builder.Build(), null);
-                response.EnsureSuccessStatusCode();
-            }
+            var response = await scope.Instance.PutAsync(builder.Build(), null);
+            response.EnsureSuccessStatusCode();
         }
+    }
 
-        public async Task Cleanup()
+    public async Task Cleanup()
+    {
+        using (var scope = CreateScope())
         {
-            using (var scope = CreateScope())
-            {
-                var builder = CreatePathBuilder()
-                    .AddPath("cleanup");
+            var builder = CreatePathBuilder()
+                .AddPath("cleanup");
 
-                var response = await scope.Instance.DeleteAsync(builder.Build());
-                response.EnsureSuccessStatusCode();
-            }
+            var response = await scope.Instance.DeleteAsync(builder.Build());
+            response.EnsureSuccessStatusCode();
         }
     }
 }

@@ -14,54 +14,53 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.ViewModels.ManualControl
+namespace CNCLib.WpfClient.ViewModels.ManualControl;
+
+using System;
+
+using CNCLib.Logic.Abstraction.DTO;
+
+using Framework.Wpf.ViewModels;
+
+public class DetailViewModel : BaseViewModel
 {
-    using System;
+    private readonly Global                  _global;
+    protected        IManualControlViewModel Vm { get; set; }
 
-    using CNCLib.Logic.Abstraction.DTO;
-
-    using Framework.Wpf.ViewModels;
-
-    public class DetailViewModel : BaseViewModel
+    public DetailViewModel(IManualControlViewModel vm, Global global)
     {
-        private readonly Global                  _global;
-        protected        IManualControlViewModel Vm { get; set; }
-
-        public DetailViewModel(IManualControlViewModel vm, Global global)
-        {
-            _global = global;
-            Vm      = vm;
-        }
-
-        public bool Connected => _global.Com.Current.IsConnected;
-
-        protected void RunInNewTask(Action todo)
-        {
-            Vm.RunInNewTask(todo);
-        }
-
-        protected void RunAndUpdate(Action todo)
-        {
-            Vm.RunAndUpdate(todo);
-        }
-
-        protected void SetPositions(decimal[] positions, int positionIdx)
-        {
-            Vm.SetPositions(positions, positionIdx);
-        }
-
-        #region Command/CanCommand
-
-        public bool CanSend()
-        {
-            return Connected;
-        }
-
-        public bool CanSendGCode()
-        {
-            return CanSend() && _global.Machine.CommandSyntax != CommandSyntax.Hpgl;
-        }
-
-        #endregion
+        _global = global;
+        Vm      = vm;
     }
+
+    public bool Connected => _global.Com.Current.IsConnected;
+
+    protected void RunInNewTask(Action todo)
+    {
+        Vm.RunInNewTask(todo);
+    }
+
+    protected void RunAndUpdate(Action todo)
+    {
+        Vm.RunAndUpdate(todo);
+    }
+
+    protected void SetPositions(decimal[] positions, int positionIdx)
+    {
+        Vm.SetPositions(positions, positionIdx);
+    }
+
+    #region Command/CanCommand
+
+    public bool CanSend()
+    {
+        return Connected;
+    }
+
+    public bool CanSendGCode()
+    {
+        return CanSend() && _global.Machine.CommandSyntax != CommandSyntax.Hpgl;
+    }
+
+    #endregion
 }

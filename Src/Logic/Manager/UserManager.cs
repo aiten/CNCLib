@@ -14,281 +14,280 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Logic.Manager
+namespace CNCLib.Logic.Manager;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Authentication;
+using System.Security.Claims;
+using System.Threading.Tasks;
+
+using AutoMapper;
+
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Logic.Statistics;
+using CNCLib.Repository.Abstraction;
+using CNCLib.Repository.Abstraction.Entities;
+using CNCLib.Shared;
+
+using Framework.Logic;
+using Framework.Repository.Abstraction;
+using Framework.Tools.Abstraction;
+using Framework.Tools.Password;
+
+public class UserManager : CrudManager<User, int, UserEntity>, IUserManager
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Security.Authentication;
-    using System.Security.Claims;
-    using System.Threading.Tasks;
+    private readonly IUnitOfWork              _unitOfWork;
+    private readonly IUserRepository          _repository;
+    private readonly IMachineRepository       _machineRepository;
+    private readonly IItemRepository          _itemRepository;
+    private readonly IUserFileRepository      _userFileRepository;
+    private readonly IInitRepository          _initRepository;
+    private readonly IConfigurationRepository _configRepository;
 
-    using AutoMapper;
+    private readonly ICurrentDateTime   _currentDate;
+    private readonly IMapper            _mapper;
+    private readonly ICNCLibUserContext _userContext;
 
-    using CNCLib.Logic.Abstraction;
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Logic.Statistics;
-    using CNCLib.Repository.Abstraction;
-    using CNCLib.Repository.Abstraction.Entities;
-    using CNCLib.Shared;
+    private readonly IOneWayPasswordProvider _passwordProvider;
+    private readonly CallStatisticCache      _callStatisticCache;
 
-    using Framework.Logic;
-    using Framework.Repository.Abstraction;
-    using Framework.Tools.Abstraction;
-    using Framework.Tools.Password;
+    public const int GlobalUserId = 1;
 
-    public class UserManager : CrudManager<User, int, UserEntity>, IUserManager
+    public UserManager(IUnitOfWork unitOfWork,
+        IUserRepository            repository,
+        IMachineRepository         machineRepository,
+        IItemRepository            itemRepository,
+        IUserFileRepository        userFileRepository,
+        IConfigurationRepository   configRepository,
+        IInitRepository            initRepository,
+        ICNCLibUserContext         userContext,
+        ICurrentDateTime           currentDate,
+        IMapper                    mapper,
+        IOneWayPasswordProvider    passwordProvider,
+        CallStatisticCache         callStatisticCache) : base(unitOfWork, repository, mapper)
     {
-        private readonly IUnitOfWork              _unitOfWork;
-        private readonly IUserRepository          _repository;
-        private readonly IMachineRepository       _machineRepository;
-        private readonly IItemRepository          _itemRepository;
-        private readonly IUserFileRepository      _userFileRepository;
-        private readonly IInitRepository          _initRepository;
-        private readonly IConfigurationRepository _configRepository;
+        _unitOfWork         = unitOfWork;
+        _repository         = repository;
+        _machineRepository  = machineRepository;
+        _itemRepository     = itemRepository;
+        _configRepository   = configRepository;
+        _userFileRepository = userFileRepository;
+        _initRepository     = initRepository;
+        _userContext        = userContext;
+        _currentDate        = currentDate;
+        _mapper             = mapper;
+        _passwordProvider   = passwordProvider;
+        _callStatisticCache = callStatisticCache;
+    }
 
-        private readonly ICurrentDateTime   _currentDate;
-        private readonly IMapper            _mapper;
-        private readonly ICNCLibUserContext _userContext;
+    protected override int GetKey(UserEntity entity)
+    {
+        return entity.UserId;
+    }
 
-        private readonly IOneWayPasswordProvider _passwordProvider;
-        private readonly CallStatisticCache      _callStatisticCache;
+    public async Task<User> GetByNameAsync(string username)
+    {
+        return await MapToDtoAsync(await _repository.GetByNameAsync(username));
+    }
 
-        public const int GlobalUserId = 1;
+    public async Task<ClaimsPrincipal> AuthenticateAsync(string userName, string password)
+    {
+        var userEntity = await _repository.GetByNameAsync(userName);
 
-        public UserManager(IUnitOfWork unitOfWork,
-            IUserRepository            repository,
-            IMachineRepository         machineRepository,
-            IItemRepository            itemRepository,
-            IUserFileRepository        userFileRepository,
-            IConfigurationRepository   configRepository,
-            IInitRepository            initRepository,
-            ICNCLibUserContext         userContext,
-            ICurrentDateTime           currentDate,
-            IMapper                    mapper,
-            IOneWayPasswordProvider    passwordProvider,
-            CallStatisticCache         callStatisticCache) : base(unitOfWork, repository, mapper)
+        if (!string.IsNullOrEmpty(password) && userEntity != null && _passwordProvider.ValidatePassword(password, userEntity.Password))
         {
-            _unitOfWork         = unitOfWork;
-            _repository         = repository;
-            _machineRepository  = machineRepository;
-            _itemRepository     = itemRepository;
-            _configRepository   = configRepository;
-            _userFileRepository = userFileRepository;
-            _initRepository     = initRepository;
-            _userContext        = userContext;
-            _currentDate        = currentDate;
-            _mapper             = mapper;
-            _passwordProvider   = passwordProvider;
-            _callStatisticCache = callStatisticCache;
-        }
-
-        protected override int GetKey(UserEntity entity)
-        {
-            return entity.UserId;
-        }
-
-        public async Task<User> GetByName(string username)
-        {
-            return await MapToDto(await _repository.GetByName(username));
-        }
-
-        public async Task<ClaimsPrincipal> Authenticate(string userName, string password)
-        {
-            var userEntity = await _repository.GetByName(userName);
-
-            if (!string.IsNullOrEmpty(password) && userEntity != null && _passwordProvider.ValidatePassword(password, userEntity.Password))
+            var claims = new List<Claim>()
             {
-                var claims = new List<Claim>()
-                {
-                    new Claim(ClaimTypes.NameIdentifier, userEntity.UserId.ToString()),
-                    new Claim(ClaimTypes.Name,           userName),
-                };
+                new Claim(ClaimTypes.NameIdentifier, userEntity.UserId.ToString()),
+                new Claim(ClaimTypes.Name,           userName),
+            };
 
-                if (userName == CNCLibConst.AdminUser)
-                {
-                    claims.Add(new Claim(CNCLibClaimTypes.IsAdmin, "true"));
-                }
-
-                var identity  = new ClaimsIdentity(claims, "BasicAuthentication");
-                var principal = new ClaimsPrincipal(identity);
-
-                _callStatisticCache.AddCall(new CallStatistic()
-                {
-                    CallTime = _currentDate.Now,
-                    UserId   = userEntity.UserId
-                });
-
-                return principal;
+            if (userName == CNCLibConst.AdminUser)
+            {
+                claims.Add(new Claim(CNCLibClaimTypes.IsAdmin, "true"));
             }
 
-            return null;
-        }
+            var identity  = new ClaimsIdentity(claims, "BasicAuthentication");
+            var principal = new ClaimsPrincipal(identity);
 
-        public async Task<string> Register(string userName, string password)
-        {
-            using (var trans = _unitOfWork.BeginTransaction())
+            _callStatisticCache.AddCall(new CallStatistic()
             {
-                var userEntity = await _repository.GetByName(userName);
+                CallTime = _currentDate.Now,
+                UserId   = userEntity.UserId
+            });
 
-                if (userEntity != null)
-                {
-                    throw new Exception("user already exists");
-                }
-
-                userEntity = new UserEntity()
-                {
-                    Name     = userName,
-                    Password = _passwordProvider.GetPasswordHash(password),
-                    Created  = _currentDate.Now
-                };
-
-                _repository.Add(userEntity);
-
-                await trans.SaveChangesAsync();
-
-                await _initRepository.Initialize(userEntity.UserId);
-
-                await CommitTransaction(trans);
-
-                return userEntity.UserId.ToString();
-            }
+            return principal;
         }
 
-        public async Task ChangePassword(string userName, string passwordOld, string passwordNew)
+        return null;
+    }
+
+    public async Task<string> RegisterAsync(string userName, string password)
+    {
+        using (var trans = _unitOfWork.BeginTransaction())
         {
-            using (var trans = _unitOfWork.BeginTransaction())
+            var userEntity = await _repository.GetByNameAsync(userName);
+
+            if (userEntity != null)
             {
-                var authUser = await Authenticate(userName, passwordOld);
-
-                if (authUser == null)
-                {
-                    throw new AuthenticationException();
-                }
-
-                var userEntity = await _repository.GetByNameTracking(userName);
-                userEntity.Password = _passwordProvider.GetPasswordHash(passwordNew);
-
-                await CommitTransaction(trans);
+                throw new Exception("user already exists");
             }
-        }
 
-        public async Task<string> CreatePasswordHash(string password)
-        {
-            await Task.Delay(100);
-            return await Task.FromResult(_passwordProvider.GetPasswordHash(password));
-        }
-
-        public async Task InitData()
-        {
-            using (var trans = _unitOfWork.BeginTransaction())
+            userEntity = new UserEntity()
             {
-                await _initRepository.Initialize(_userContext.UserId);
+                Name     = userName,
+                Password = _passwordProvider.GetPasswordHash(password),
+                Created  = _currentDate.Now
+            };
 
-                await CommitTransaction(trans);
-            }
+            _repository.Add(userEntity);
+
+            await trans.SaveChangesAsync();
+
+            await _initRepository.InitializeAsync(userEntity.UserId);
+
+            await CommitTransactionAsync(trans);
+
+            return userEntity.UserId.ToString();
         }
+    }
 
-        public async Task Cleanup()
+    public async Task ChangePasswordAsync(string userName, string passwordOld, string passwordNew)
+    {
+        using (var trans = _unitOfWork.BeginTransaction())
         {
-            using (var trans = _unitOfWork.BeginTransaction())
+            var authUser = await AuthenticateAsync(userName, passwordOld);
+
+            if (authUser == null)
             {
-                await DeleteData(_userContext.UserId);
-
-                await CommitTransaction(trans);
+                throw new AuthenticationException();
             }
-        }
 
-        private async Task DeleteData(int userId)
-        {
-            await _machineRepository.DeleteByUser(userId);
-            await _itemRepository.DeleteByUser(userId);
-            await _userFileRepository.DeleteByUser(userId);
-            await _configRepository.DeleteByUser(userId);
-        }
+            var userEntity = await _repository.GetByNameTrackingAsync(userName);
+            userEntity.Password = _passwordProvider.GetPasswordHash(passwordNew);
 
-        public async Task Leave()
+            await CommitTransactionAsync(trans);
+        }
+    }
+
+    public async Task<string> CreatePasswordHashAsync(string password)
+    {
+        await Task.Delay(100);
+        return await Task.FromResult(_passwordProvider.GetPasswordHash(password));
+    }
+
+    public async Task InitDataAsync()
+    {
+        using (var trans = _unitOfWork.BeginTransaction())
         {
-            using (var trans = _unitOfWork.BeginTransaction())
+            await _initRepository.InitializeAsync(_userContext.UserId);
+
+            await CommitTransactionAsync(trans);
+        }
+    }
+
+    public async Task CleanupAsync()
+    {
+        using (var trans = _unitOfWork.BeginTransaction())
+        {
+            await DeleteData(_userContext.UserId);
+
+            await CommitTransactionAsync(trans);
+        }
+    }
+
+    private async Task DeleteData(int userId)
+    {
+        await _machineRepository.DeleteByUserAsync(userId);
+        await _itemRepository.DeleteByUserAsync(userId);
+        await _userFileRepository.DeleteByUserAsync(userId);
+        await _configRepository.DeleteByUserAsync(userId);
+    }
+
+    public async Task LeaveAsync()
+    {
+        using (var trans = _unitOfWork.BeginTransaction())
+        {
+            await DeleteData(_userContext.UserId);
+
+            _repository.Delete(await _repository.GetTrackingAsync(_userContext.UserId));
+
+            await CommitTransactionAsync(trans);
+        }
+    }
+
+    public async Task LeaveAsync(string userName)
+    {
+        // only as admin
+
+        using (var trans = _unitOfWork.BeginTransaction())
+        {
+            var userEntity = await _repository.GetByNameAsync(userName);
+
+            if (userEntity != null && userName != CNCLibConst.AdminUser && _userContext.IsAdmin)
             {
-                await DeleteData(_userContext.UserId);
+                await DeleteData(userEntity.UserId);
 
-                _repository.Delete(await _repository.GetTracking(_userContext.UserId));
-
-                await CommitTransaction(trans);
+                _repository.Delete(await _repository.GetTrackingAsync(userEntity.UserId));
             }
+
+            await CommitTransactionAsync(trans);
         }
+    }
 
-        public async Task Leave(string userName)
+    public async Task InitMachinesAsync()
+    {
+        var defaultMachines = _initRepository.GetDefaultMachines();
+
+        using (var trans = _unitOfWork.BeginTransaction())
         {
-            // only as admin
+            var userMachines = await _machineRepository.GetTrackingAsync(await _machineRepository.GetIdByUserAsync(_userContext.UserId));
 
-            using (var trans = _unitOfWork.BeginTransaction())
-            {
-                var userEntity = await _repository.GetByName(userName);
+            var sameMachines = userMachines.Join(defaultMachines,
+                m => m.Name.ToLower(),
+                m => m.Name.ToLower(),
+                (m, _) => m);
 
-                if (userEntity != null && userName != CNCLibConst.AdminUser && _userContext.IsAdmin)
-                {
-                    await DeleteData(userEntity.UserId);
+            _machineRepository.DeleteRange(sameMachines);
 
-                    _repository.Delete(await _repository.GetTracking(userEntity.UserId));
-                }
-
-                await CommitTransaction(trans);
-            }
+            await _unitOfWork.SaveChangesAsync();
+            await _initRepository.AddDefaultMachinesAsync(_userContext.UserId);
+            await CommitTransactionAsync(trans);
         }
+    }
 
-        public async Task InitMachines()
+    public async Task InitItemsAsync()
+    {
+        var defaultItems = _initRepository.GetDefaultItems();
+        var defaultFiles = _initRepository.GetDefaultFiles();
+
+        using (var trans = _unitOfWork.BeginTransaction())
         {
-            var defaultMachines = _initRepository.GetDefaultMachines();
+            var userItems = await _itemRepository.GetTrackingAsync(await _itemRepository.GetIdByUserAsync(_userContext.UserId));
 
-            using (var trans = _unitOfWork.BeginTransaction())
-            {
-                var userMachines = await _machineRepository.GetTracking(await _machineRepository.GetIdByUser(_userContext.UserId));
+            var sameItems = userItems.Join(defaultItems,
+                item => item.Name.ToLower(),
+                item => item.Name.ToLower(),
+                (item, _) => item);
 
-                var sameMachines = userMachines.Join(defaultMachines,
-                    m => m.Name.ToLower(),
-                    m => m.Name.ToLower(),
-                    (m, _) => m);
+            _itemRepository.DeleteRange(sameItems);
 
-                _machineRepository.DeleteRange(sameMachines);
+            var userFiles = await _userFileRepository.GetTrackingAsync(await _userFileRepository.GetIdByUserAsync(_userContext.UserId));
 
-                await _unitOfWork.SaveChangesAsync();
-                await _initRepository.AddDefaultMachines(_userContext.UserId);
-                await CommitTransaction(trans);
-            }
-        }
+            var sameFiles = userFiles.Join(defaultFiles,
+                f => f.FileName.ToLower(),
+                f => f.FileName.ToLower(),
+                (r, _) => r);
 
-        public async Task InitItems()
-        {
-            var defaultItems = _initRepository.GetDefaultItems();
-            var defaultFiles = _initRepository.GetDefaultFiles();
+            _userFileRepository.DeleteRange(sameFiles);
 
-            using (var trans = _unitOfWork.BeginTransaction())
-            {
-                var userItems = await _itemRepository.GetTracking(await _itemRepository.GetIdByUser(_userContext.UserId));
-
-                var sameItems = userItems.Join(defaultItems,
-                    item => item.Name.ToLower(),
-                    item => item.Name.ToLower(),
-                    (item, _) => item);
-
-                _itemRepository.DeleteRange(sameItems);
-
-                var userFiles = await _userFileRepository.GetTracking(await _userFileRepository.GetIdByUser(_userContext.UserId));
-
-                var sameFiles = userFiles.Join(defaultFiles,
-                    f => f.FileName.ToLower(),
-                    f => f.FileName.ToLower(),
-                    (r, _) => r);
-
-                _userFileRepository.DeleteRange(sameFiles);
-
-                await _unitOfWork.SaveChangesAsync();
-                await _initRepository.AddDefaultItems(_userContext.UserId);
-                await _initRepository.AddDefaultFiles(_userContext.UserId);
-                await CommitTransaction(trans);
-            }
+            await _unitOfWork.SaveChangesAsync();
+            await _initRepository.AddDefaultItemsAsync(_userContext.UserId);
+            await _initRepository.AddDefaultFilesAsync(_userContext.UserId);
+            await CommitTransactionAsync(trans);
         }
     }
 }

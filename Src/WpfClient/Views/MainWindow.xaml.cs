@@ -14,55 +14,54 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.Views
+namespace CNCLib.WpfClient.Views;
+
+using System.Threading.Tasks;
+
+using Framework.Dependency;
+using Framework.Wpf.ViewModels;
+
+using MahApps.Metro.Controls;
+
+/// <summary>
+/// Interaction logic for MainWindow.xaml
+/// </summary>
+public partial class MainWindow : MetroWindow
 {
-    using System.Threading.Tasks;
-
-    using Framework.Dependency;
-    using Framework.Wpf.ViewModels;
-
-    using MahApps.Metro.Controls;
-
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : MetroWindow
+    public MainWindow()
     {
-        public MainWindow()
+        var vm = AppService.GetRequiredService<ViewModels.MainWindowViewModel>();
+        DataContext = vm;
+
+        InitializeComponent();
+
+        Loaded += async (v, e) =>
         {
-            var vm = AppService.GetRequiredService<ViewModels.MainWindowViewModel>();
-            DataContext = vm;
-
-            InitializeComponent();
-
-            Loaded += async (v, e) =>
+            var vmm = DataContext as BaseViewModel;
+            if (vmm != null)
             {
-                var vmm = DataContext as BaseViewModel;
-                if (vmm != null)
-                {
-                    await vmm.Loaded();
-                }
-            };
+                await vmm.Loaded();
+            }
+        };
+    }
+
+    private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+        Windows_ClosingAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+    }
+
+    private async Task Windows_ClosingAsync()
+    {
+        var global = AppService.GetRequiredService<Global>();
+
+        if (global.Com.LocalCom.IsConnected)
+        {
+            await global.Com.LocalCom.DisconnectAsync();
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        if (global.ComJoystick.IsConnected)
         {
-            Windows_ClosingAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-        }
-
-        private async Task Windows_ClosingAsync()
-        {
-            var global = AppService.GetRequiredService<Global>();
-
-            if (global.Com.LocalCom.IsConnected)
-            {
-                await global.Com.LocalCom.DisconnectAsync();
-            }
-
-            if (global.ComJoystick.IsConnected)
-            {
-                await global.ComJoystick.DisconnectAsync();
-            }
+            await global.ComJoystick.DisconnectAsync();
         }
     }
 }

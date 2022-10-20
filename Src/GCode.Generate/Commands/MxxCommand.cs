@@ -14,36 +14,35 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.GCode.Generate.Commands
+namespace CNCLib.GCode.Generate.Commands;
+
+[IsGCommand("MXX")]
+public class MxxCommand : Command
 {
-    [IsGCommand("MXX")]
-    public class MxxCommand : Command
+    #region crt + factory
+
+    public MxxCommand()
     {
-        #region crt + factory
-
-        public MxxCommand()
-        {
-            Code = "";
-        }
-
-        #endregion
-
-        #region GCode
-
-        public override void SetCode(string code)
-        {
-            Code = code;
-        }
-
-        #endregion
-
-        #region Draw
-
-        public override void Draw(IOutputCommand output, CommandState state, object param)
-        {
-            //base.Draw(output, state, param);
-        }
-
-        #endregion
+        Code = "";
     }
+
+    #endregion
+
+    #region GCode
+
+    public override void SetCode(string code)
+    {
+        Code = code;
+    }
+
+    #endregion
+
+    #region Draw
+
+    public override void Draw(IOutputCommand output, CommandState state, object param)
+    {
+        //base.Draw(output, state, param);
+    }
+
+    #endregion
 }

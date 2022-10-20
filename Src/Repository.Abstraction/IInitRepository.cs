@@ -14,25 +14,24 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository.Abstraction
+namespace CNCLib.Repository.Abstraction;
+
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using CNCLib.Repository.Abstraction.Entities;
+
+using Framework.Repository.Abstraction;
+
+public interface IInitRepository : IRepository
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+    Task InitializeAsync(int userId);
 
-    using CNCLib.Repository.Abstraction.Entities;
+    Task AddDefaultMachinesAsync(int userId);
+    Task AddDefaultItemsAsync(int    userId);
+    Task AddDefaultFilesAsync(int    userId);
 
-    using Framework.Repository.Abstraction;
-
-    public interface IInitRepository : IRepository
-    {
-        Task Initialize(int userId);
-
-        Task AddDefaultMachines(int userId);
-        Task AddDefaultItems(int    userId);
-        Task AddDefaultFiles(int    userId);
-
-        IList<MachineEntity>  GetDefaultMachines();
-        IList<ItemEntity>     GetDefaultItems();
-        IList<UserFileEntity> GetDefaultFiles();
-    }
+    IList<MachineEntity>  GetDefaultMachines();
+    IList<ItemEntity>     GetDefaultItems();
+    IList<UserFileEntity> GetDefaultFiles();
 }

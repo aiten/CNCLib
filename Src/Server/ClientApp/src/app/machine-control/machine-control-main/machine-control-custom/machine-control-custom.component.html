@@ -1,5 +1,5 @@
 <div class="container-fluid nopadding">
   <div *ngFor="let item of machineControlState.serialServer.getMachine().commands" class="row nopadding">
-      <button mat-stroked-button class="custom-button" (click)='machineControlState.postcommand(item.commandString)'>{{item.commandName}}</button>
+    <button mat-stroked-button class="custom-button" (click)='machineControlState.postcommand(item.commandString)'>{{item.commandName}}</button>
   </div>
 </div>

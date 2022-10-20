@@ -14,13 +14,12 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WebAPI.Models
-{
-    public class CreateGCode
-    {
-        public int    LoadOptionsId { get; set; }
-        public string FileName      { get; set; }
+namespace CNCLib.WebAPI.Models;
 
-        public byte[] FileContent { get; set; }
-    }
+public class CreateGCode
+{
+    public int    LoadOptionsId { get; set; }
+    public string FileName      { get; set; }
+
+    public byte[] FileContent { get; set; }
 }

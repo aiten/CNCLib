@@ -16,50 +16,49 @@
 
 using Framework.Drawing;
 
-namespace CNCLib.GCode.Generate.Commands
+namespace CNCLib.GCode.Generate.Commands;
+
+[IsGCommand("G2,G02")]
+public class G02Command : Command
 {
-    [IsGCommand("G2,G02")]
-    public class G02Command : Command
+    #region crt + factory
+
+    public G02Command()
     {
-        #region crt + factory
-
-        public G02Command()
-        {
-            UseWithoutPrefix = true;
-            PositionValid    = true;
-            MoveType         = CommandMoveType.Normal;
-            Code             = "G2";
-        }
-
-        #endregion
-
-        #region GCode
-
-        #endregion
-
-        #region Draw
-
-        public override void Draw(IOutputCommand output, CommandState state, object param)
-        {
-            double I, J, K;
-            if (!TryGetVariable('I', state, out I))
-            {
-                I = 0;
-            }
-
-            if (!TryGetVariable('J', state, out J))
-            {
-                J = 0;
-            }
-
-            if (!TryGetVariable('K', state, out K))
-            {
-                K = 0;
-            }
-
-            output.DrawArc(this, param, Convert(MoveType, state), CalculatedStartPosition, CalculatedEndPosition, new Point3D { X = I, Y = J, Z = K }, true, state.CurrentPane);
-        }
-
-        #endregion
+        UseWithoutPrefix = true;
+        PositionValid    = true;
+        MoveType         = CommandMoveType.Normal;
+        Code             = "G2";
     }
+
+    #endregion
+
+    #region GCode
+
+    #endregion
+
+    #region Draw
+
+    public override void Draw(IOutputCommand output, CommandState state, object param)
+    {
+        double I, J, K;
+        if (!TryGetVariable('I', state, out I))
+        {
+            I = 0;
+        }
+
+        if (!TryGetVariable('J', state, out J))
+        {
+            J = 0;
+        }
+
+        if (!TryGetVariable('K', state, out K))
+        {
+            K = 0;
+        }
+
+        output.DrawArc(this, param, Convert(MoveType, state), CalculatedStartPosition, CalculatedEndPosition, new Point3D { X = I, Y = J, Z = K }, true, state.CurrentPane);
+    }
+
+    #endregion
 }

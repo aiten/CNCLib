@@ -14,24 +14,23 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Serial.WebAPI.Hubs
+namespace CNCLib.Serial.WebAPI.Hubs;
+
+using System.Threading.Tasks;
+
+public interface ICNCLibHubClient
 {
-    using System.Threading.Tasks;
+    Task HeartBeat();
 
-    public interface ICNCLibHubClient
-    {
-        Task HeartBeat();
+    Task QueueEmpty(int id);
 
-        Task QueueEmpty(int id);
+    Task QueueChanged(int id, int queueLength);
 
-        Task QueueChanged(int id, int queueLength);
+    Task SendingCommand(int id, int seqId);
 
-        Task SendingCommand(int id, int seqId);
+    Task Received(int id, string command);
 
-        Task Received(int id, string command);
+    Task Connected(int id);
 
-        Task Connected(int id);
-
-        Task Disconnected(int id);
-    }
+    Task Disconnected(int id);
 }

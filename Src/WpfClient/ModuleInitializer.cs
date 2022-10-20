@@ -14,38 +14,37 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient
+namespace CNCLib.WpfClient;
+
+using CNCLib.Service.Abstraction;
+
+using Framework.Dependency;
+using Framework.Localization.Abstraction;
+using Framework.Pattern;
+using Framework.Startup.Abstraction;
+using Framework.Tools.Password;
+
+using Microsoft.Extensions.DependencyInjection;
+
+public class ModuleInitializer : IModuleInitializer
 {
-    using CNCLib.Service.Abstraction;
-
-    using Framework.Dependency;
-    using Framework.Localization.Abstraction;
-    using Framework.Pattern;
-    using Framework.Startup.Abstraction;
-    using Framework.Tools.Password;
-
-    using Microsoft.Extensions.DependencyInjection;
-
-    public class ModuleInitializer : IModuleInitializer
+    public void AddServices(IServiceCollection services)
     {
-        public void AddServices(IServiceCollection services)
-        {
-            services.AddSingleton<Global>()
-                .AddTransient<IFactory<IJoystickService>, FactoryResolve<IJoystickService>>()
-                .AddTransient<IFactory<IMachineService>, FactoryResolve<IMachineService>>()
-                .AddTransient<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>()
-                .AddTransient<IFactory<IJoystickService>, FactoryResolve<IJoystickService>>()
-                .AddTransient<IFactory<IUserService>, FactoryResolve<IUserService>>()
-                .AddTransient<IOneWayPasswordProvider, Pbkdf2PasswordProvider>()
-                .AddAssemblyByName(
-                    n => n.EndsWith("ViewModel"),
-                    ServiceLifetime.Transient,
-                    typeof(ViewModels.MachineViewModel).Assembly,
-                    typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
-        }
+        services.AddSingleton<Global>()
+            .AddTransient<IFactory<IJoystickService>, FactoryResolve<IJoystickService>>()
+            .AddTransient<IFactory<IMachineService>, FactoryResolve<IMachineService>>()
+            .AddTransient<IFactory<ILoadOptionsService>, FactoryResolve<ILoadOptionsService>>()
+            .AddTransient<IFactory<IJoystickService>, FactoryResolve<IJoystickService>>()
+            .AddTransient<IFactory<IUserService>, FactoryResolve<IUserService>>()
+            .AddTransient<IOneWayPasswordProvider, Pbkdf2PasswordProvider>()
+            .AddAssemblyByName(
+                n => n.EndsWith("ViewModel"),
+                ServiceLifetime.Transient,
+                typeof(ViewModels.MachineViewModel).Assembly,
+                typeof(GCode.GUI.ViewModels.LoadOptionViewModel).Assembly);
+    }
 
-        public void AddTranslationResources(ILocalizationCollector localisation)
-        {
-        }
+    public void AddTranslationResources(ILocalizationCollector localisation)
+    {
     }
 }

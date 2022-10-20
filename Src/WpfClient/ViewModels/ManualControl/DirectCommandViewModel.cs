@@ -14,81 +14,80 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.ViewModels.ManualControl
+namespace CNCLib.WpfClient.ViewModels.ManualControl;
+
+using System.Collections.ObjectModel;
+using System.Windows.Input;
+
+using Framework.Arduino.SerialCommunication;
+using Framework.Wpf.Helpers;
+
+public class DirectCommandViewModel : DetailViewModel
 {
-    using System.Collections.ObjectModel;
-    using System.Windows.Input;
+    private readonly Global _global;
 
-    using Framework.Arduino.SerialCommunication;
-    using Framework.Wpf.Helpers;
-
-    public class DirectCommandViewModel : DetailViewModel
+    public DirectCommandViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
     {
-        private readonly Global _global;
-
-        public DirectCommandViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
-        {
-            _global = global;
-        }
-
-        #region Properties
-
-        #endregion
-
-        #region DirectCommand
-
-        private string _directCommand;
-
-        public string DirectCommand
-        {
-            get => _directCommand;
-            set => SetProperty(ref _directCommand, value);
-        }
-
-        private void AddDirectCommandHistory(string cmd)
-        {
-            if (_directCommandHistory == null)
-            {
-                _directCommandHistory = new ObservableCollection<string>();
-            }
-
-            _directCommandHistory.Add(cmd);
-            DirectCommandHistory = _directCommandHistory;
-        }
-
-        private ObservableCollection<string> _directCommandHistory;
-
-        public ObservableCollection<string> DirectCommandHistory
-        {
-            get => _directCommandHistory;
-            set
-            {
-                SetProperty(ref _directCommandHistory, value);
-                RaisePropertyChanged(nameof(DirectCommandHistory));
-            }
-        }
-
-        #endregion
-
-        #region Commands / CanCommands
-
-        public void SendDirect()
-        {
-            RunAndUpdate(() => { _global.Com.Current.QueueCommand(DirectCommand); });
-            AddDirectCommandHistory(DirectCommand);
-        }
-
-        public bool CanSendDirectCommand()
-        {
-            return Connected && !string.IsNullOrEmpty(DirectCommand);
-        }
-
-        #endregion
-
-        #region ICommand
-
-        public ICommand SendDirectCommand => new DelegateCommand(SendDirect, CanSendDirectCommand);
-
-        #endregion
+        _global = global;
     }
+
+    #region Properties
+
+    #endregion
+
+    #region DirectCommand
+
+    private string _directCommand;
+
+    public string DirectCommand
+    {
+        get => _directCommand;
+        set => SetProperty(ref _directCommand, value);
+    }
+
+    private void AddDirectCommandHistory(string cmd)
+    {
+        if (_directCommandHistory == null)
+        {
+            _directCommandHistory = new ObservableCollection<string>();
+        }
+
+        _directCommandHistory.Add(cmd);
+        DirectCommandHistory = _directCommandHistory;
+    }
+
+    private ObservableCollection<string> _directCommandHistory;
+
+    public ObservableCollection<string> DirectCommandHistory
+    {
+        get => _directCommandHistory;
+        set
+        {
+            SetProperty(ref _directCommandHistory, value);
+            RaisePropertyChanged(nameof(DirectCommandHistory));
+        }
+    }
+
+    #endregion
+
+    #region Commands / CanCommands
+
+    public void SendDirect()
+    {
+        RunAndUpdate(() => { _global.Com.Current.QueueCommand(DirectCommand); });
+        AddDirectCommandHistory(DirectCommand);
+    }
+
+    public bool CanSendDirectCommand()
+    {
+        return Connected && !string.IsNullOrEmpty(DirectCommand);
+    }
+
+    #endregion
+
+    #region ICommand
+
+    public ICommand SendDirectCommand => new DelegateCommand(SendDirect, CanSendDirectCommand);
+
+    #endregion
 }

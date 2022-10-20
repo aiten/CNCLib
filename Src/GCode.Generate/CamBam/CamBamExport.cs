@@ -14,37 +14,36 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.GCode.Generate.CamBam
+namespace CNCLib.GCode.Generate.CamBam;
+
+using System.Collections.Generic;
+using System.Xml.Serialization;
+
+using Framework.Drawing;
+
+public class CamBamExport
 {
-    using System.Collections.Generic;
-    using System.Xml.Serialization;
-
-    using Framework.Drawing;
-
-    public class CamBamExport
+    [XmlType("layer")]
+    public class Layer
     {
-        [XmlType("layer")]
-        public class Layer
-        {
-            public string Name { get; set; }
+        public string Name { get; set; }
 
-            public System.Drawing.Color Color { get; set; }
+        public System.Drawing.Color Color { get; set; }
 
-            public List<Object> Objects { get; set; } = new List<Object>();
-        }
+        public List<Object> Objects { get; set; } = new List<Object>();
+    }
 
-        public List<Layer> Lasers { get; set; } = new List<Layer>();
+    public List<Layer> Lasers { get; set; } = new List<Layer>();
 
-        public class Object
-        {
-            public int Id { get; set; }
-        }
+    public class Object
+    {
+        public int Id { get; set; }
+    }
 
-        public class PLine : Object
-        {
-            public bool Closed { get; set; }
+    public class PLine : Object
+    {
+        public bool Closed { get; set; }
 
-            public List<Point3D> Pts { get; set; }
-        }
+        public List<Point3D> Pts { get; set; }
     }
 }

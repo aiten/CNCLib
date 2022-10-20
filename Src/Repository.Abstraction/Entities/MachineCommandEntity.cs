@@ -14,17 +14,16 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository.Abstraction.Entities
+namespace CNCLib.Repository.Abstraction.Entities;
+
+public class MachineCommandEntity
 {
-    public class MachineCommandEntity
-    {
-        public int           MachineCommandId { get; set; }
-        public string        CommandName      { get; set; }
-        public string        CommandString    { get; set; }
-        public int           MachineId        { get; set; }
-        public int?          PosX             { get; set; }
-        public int?          PosY             { get; set; }
-        public string        JoystickMessage  { get; set; }
-        public MachineEntity Machine          { get; set; }
-    }
+    public int           MachineCommandId { get; set; }
+    public string        CommandName      { get; set; }
+    public string        CommandString    { get; set; }
+    public int           MachineId        { get; set; }
+    public int?          PosX             { get; set; }
+    public int?          PosY             { get; set; }
+    public string        JoystickMessage  { get; set; }
+    public MachineEntity Machine          { get; set; }
 }

@@ -14,119 +14,118 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.UnitTest.Logic
+namespace CNCLib.UnitTest.Logic;
+
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Logic.Client;
+using CNCLib.Logic.Manager;
+
+using FluentAssertions;
+
+using NSubstitute;
+
+using Xunit;
+
+public class LoadOptionsManagerTests : LogicTests
 {
-    using System;
-    using System.Linq;
-    using System.Threading.Tasks;
-
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Logic.Client;
-    using CNCLib.Logic.Manager;
-
-    using FluentAssertions;
-
-    using NSubstitute;
-
-    using Xunit;
-
-    public class LoadOptionsManagerTests : LogicTests
+    private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
     {
-        private TInterface CreateMock<TInterface>() where TInterface : class, IDisposable
-        {
-            var rep = Substitute.For<TInterface>();
-            return rep;
-        }
+        var rep = Substitute.For<TInterface>();
+        return rep;
+    }
 
-        [Fact]
-        public async Task GetAllLoadOptions()
-        {
-            var rep  = CreateMock<IDynItemController>();
-            var ctrl = new LoadOptionsManager(rep);
+    [Fact]
+    public async Task GetAllLoadOptions()
+    {
+        var rep  = CreateMock<IDynItemController>();
+        var ctrl = new LoadOptionsManager(rep);
 
-            rep.GetAll(typeof(LoadOptions)).Returns(
-                new[]
-                {
-                    new DynItem { ItemId = 1, Name = "Entry1" }
-                });
-            rep.Create(1).Returns(new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" });
+        rep.GetAllAsync(typeof(LoadOptions)).Returns(
+            new[]
+            {
+                new DynItem { ItemId = 1, Name = "Entry1" }
+            });
+        rep.CreateAsync(1).Returns(new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" });
 
-            var all = (await ctrl.GetAll()).ToList();
+        var all = (await ctrl.GetAllAsync()).ToList();
 
-            all.Should().HaveCount(1);
+        all.Should().HaveCount(1);
 
-            var first = all.First();
+        var first = all.First();
 
-            first.Id.Should().Be(1);
-            first.SettingName.Should().Be("Entry1");
-            first.FileName.Should().Be("HA");
-        }
+        first.Id.Should().Be(1);
+        first.SettingName.Should().Be("Entry1");
+        first.FileName.Should().Be("HA");
+    }
 
-        [Fact]
-        public async Task GetLoadOptions()
-        {
-            var rep  = CreateMock<IDynItemController>();
-            var ctrl = new LoadOptionsManager(rep);
+    [Fact]
+    public async Task GetLoadOptions()
+    {
+        var rep  = CreateMock<IDynItemController>();
+        var ctrl = new LoadOptionsManager(rep);
 
-            rep.Create(1).Returns(new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" });
+        rep.CreateAsync(1).Returns(new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" });
 
-            var all = await ctrl.Get(1);
+        var all = await ctrl.GetAsync(1);
 
-            all.Id.Should().Be(1);
-            all.SettingName.Should().Be("Entry1");
-            all.FileName.Should().Be("HA");
-        }
+        all.Id.Should().Be(1);
+        all.SettingName.Should().Be("Entry1");
+        all.FileName.Should().Be("HA");
+    }
 
-        [Fact]
-        public async Task GetLoadOptionsNull()
-        {
-            var rep  = CreateMock<IDynItemController>();
-            var ctrl = new LoadOptionsManager(rep);
+    [Fact]
+    public async Task GetLoadOptionsNull()
+    {
+        var rep  = CreateMock<IDynItemController>();
+        var ctrl = new LoadOptionsManager(rep);
 
-            rep.Create(1).Returns(new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" });
+        rep.CreateAsync(1).Returns(new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" });
 
-            var all = await ctrl.Get(2);
+        var all = await ctrl.GetAsync(2);
 
-            all.Should().BeNull();
-        }
+        all.Should().BeNull();
+    }
 
-        [Fact]
-        public async Task AddLoadOptions()
-        {
-            var rep  = CreateMock<IDynItemController>();
-            var ctrl = new LoadOptionsManager(rep);
+    [Fact]
+    public async Task AddLoadOptions()
+    {
+        var rep  = CreateMock<IDynItemController>();
+        var ctrl = new LoadOptionsManager(rep);
 
-            var opt = new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" };
+        var opt = new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" };
 
-            await ctrl.Add(opt);
+        await ctrl.AddAsync(opt);
 
-            await rep.Received().Add(Arg.Is<string>(x => x == "Entry1"), Arg.Is<LoadOptions>(x => x.SettingName == "Entry1" && x.FileName == "HA"));
-        }
+        await rep.Received().AddAsync(Arg.Is<string>(x => x == "Entry1"), Arg.Is<LoadOptions>(x => x.SettingName == "Entry1" && x.FileName == "HA"));
+    }
 
-        [Fact]
-        public async Task UpdateLoadOptions()
-        {
-            var rep  = CreateMock<IDynItemController>();
-            var ctrl = new LoadOptionsManager(rep);
+    [Fact]
+    public async Task UpdateLoadOptions()
+    {
+        var rep  = CreateMock<IDynItemController>();
+        var ctrl = new LoadOptionsManager(rep);
 
-            var opt = new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" };
+        var opt = new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" };
 
-            await ctrl.Update(opt);
+        await ctrl.UpdateAsync(opt);
 
-            await rep.Received().Save(Arg.Is<int>(x => x == 1), Arg.Is<string>(x => x == "Entry1"), Arg.Is<LoadOptions>(x => x.SettingName == "Entry1" && x.FileName == "HA"));
-        }
+        await rep.Received().SaveAsync(Arg.Is<int>(x => x == 1), Arg.Is<string>(x => x == "Entry1"), Arg.Is<LoadOptions>(x => x.SettingName == "Entry1" && x.FileName == "HA"));
+    }
 
-        [Fact]
-        public async Task DeleteLoadOptions()
-        {
-            var rep  = CreateMock<IDynItemController>();
-            var ctrl = new LoadOptionsManager(rep);
+    [Fact]
+    public async Task DeleteLoadOptions()
+    {
+        var rep  = CreateMock<IDynItemController>();
+        var ctrl = new LoadOptionsManager(rep);
 
-            var opt = new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" };
+        var opt = new LoadOptions { SettingName = "Entry1", Id = 1, FileName = "HA" };
 
-            await ctrl.Delete(opt).ConfigureAwait(false);
+        await ctrl.DeleteAsync(opt).ConfigureAwait(false);
 
-            await rep.Received().Delete(Arg.Is<int>(x => x == 1));
-        }
+        await rep.Received().DeleteAsync(Arg.Is<int>(x => x == 1));
     }
 }

@@ -14,112 +14,111 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WebAPI.Test.AzureWebApi
+namespace CNCLib.WebAPI.Test.AzureWebApi;
+
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction.DTO;
+
+using FluentAssertions;
+
+using Xunit;
+
+public class MachineWebApiTest : AzureWebApiTest
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Http;
-    using System.Threading.Tasks;
+    private readonly string api = @"api/Machine";
 
-    using CNCLib.Logic.Abstraction.DTO;
-
-    using FluentAssertions;
-
-    using Xunit;
-
-    public class MachineWebApiTest : AzureWebApiTest
+    private async Task<IEnumerable<Machine>> GetAll()
     {
-        private readonly string api = @"api/Machine";
+        var client   = GetHttpClient();
+        var response = await client.GetAsync(api);
 
-        private async Task<IEnumerable<Machine>> GetAll()
+        response.EnsureSuccessStatusCode();
+
+        return await response.Content.ReadAsAsync<IList<Machine>>();
+    }
+
+    [Fact]
+    public async Task GetMachine1()
+    {
+        var all = await GetAll();
+        all.Should().HaveCountGreaterThan(0);
+
+        var first = all.First();
+
+        var client = GetHttpClient();
+
+        var response = await client.GetAsync($"{api}/{first.MachineId}");
+
+        response.IsSuccessStatusCode.Should().BeTrue();
+
+        if (response.IsSuccessStatusCode)
         {
-            var client   = GetHttpClient();
-            var response = await client.GetAsync(api);
-
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<IList<Machine>>();
+            var m = await response.Content.ReadAsAsync<Machine>();
+            m.MachineId.Should().Be(first.MachineId);
         }
+    }
 
-        [Fact]
-        public async Task GetMachine1()
+    [Fact]
+    public async Task CreateDeleteMachine()
+    {
+        var client = GetHttpClient();
+
+        var m = new Machine
         {
-            var all = await GetAll();
-            all.Should().HaveCountGreaterThan(0);
+            Name                = "MyUnitTest",
+            ComPort             = "comxx",
+            MachineCommands     = new MachineCommand[0],
+            MachineInitCommands = new MachineInitCommand[0]
+        };
 
-            var first = all.First();
+        var response = await client.PostAsJsonAsync(api, m);
+        response.IsSuccessStatusCode.Should().BeTrue();
 
-            var client = GetHttpClient();
-
-            var response = await client.GetAsync($"{api}/{first.MachineId}");
-
-            response.IsSuccessStatusCode.Should().BeTrue();
-
-            if (response.IsSuccessStatusCode)
-            {
-                var m = await response.Content.ReadAsAsync<Machine>();
-                m.MachineId.Should().Be(first.MachineId);
-            }
-        }
-
-        [Fact]
-        public async Task CreateDeleteMachine()
+        if (response.IsSuccessStatusCode)
         {
-            var client = GetHttpClient();
+            var newMachineUri = response.Headers.Location;
 
-            var m = new Machine
+            // HTTPGET again
+            var responseGet = await client.GetAsync(newMachineUri);
+            responseGet.IsSuccessStatusCode.Should().BeTrue();
+
+            if (responseGet.IsSuccessStatusCode)
             {
-                Name                = "MyUnitTest",
-                ComPort             = "comxx",
-                MachineCommands     = new MachineCommand[0],
-                MachineInitCommands = new MachineInitCommand[0]
-            };
+                var mget = await responseGet.Content.ReadAsAsync<Machine>();
 
-            var response = await client.PostAsJsonAsync(api, m);
-            response.IsSuccessStatusCode.Should().BeTrue();
+                mget.Name.Should().Be("MyUnitTest");
 
-            if (response.IsSuccessStatusCode)
-            {
-                var newMachineUri = response.Headers.Location;
+                // HTTP PUT
+                mget.ComPort = "ComHA";
+                var responsePut = await client.PutAsJsonAsync(newMachineUri, mget);
 
-                // HTTPGET again
-                var responseGet = await client.GetAsync(newMachineUri);
-                responseGet.IsSuccessStatusCode.Should().BeTrue();
+                // HTTPGET again2
+                var responseGet2 = await client.GetAsync(newMachineUri);
+                responseGet2.IsSuccessStatusCode.Should().BeTrue();
 
-                if (responseGet.IsSuccessStatusCode)
+                if (responseGet2.IsSuccessStatusCode)
                 {
-                    var mget = await responseGet.Content.ReadAsAsync<Machine>();
+                    var mget2 = await responseGet2.Content.ReadAsAsync<Machine>();
 
-                    mget.Name.Should().Be("MyUnitTest");
+                    mget2.ComPort.Should().Be("ComHA");
+                }
 
-                    // HTTP PUT
-                    mget.ComPort = "ComHA";
-                    var responsePut = await client.PutAsJsonAsync(newMachineUri, mget);
+                // HTTP DELETE
+                response = await client.DeleteAsync(newMachineUri);
 
-                    // HTTPGET again2
-                    var responseGet2 = await client.GetAsync(newMachineUri);
-                    responseGet2.IsSuccessStatusCode.Should().BeTrue();
+                // HTTPGET again3
+                var responseGet3 = await client.GetAsync(newMachineUri);
+                responseGet3.StatusCode.Should().Be(HttpStatusCode.NotFound);
 
-                    if (responseGet2.IsSuccessStatusCode)
-                    {
-                        var mget2 = await responseGet2.Content.ReadAsAsync<Machine>();
-
-                        mget2.ComPort.Should().Be("ComHA");
-                    }
-
-                    // HTTP DELETE
-                    response = await client.DeleteAsync(newMachineUri);
-
-                    // HTTPGET again3
-                    var responseGet3 = await client.GetAsync(newMachineUri);
-                    responseGet3.StatusCode.Should().Be(HttpStatusCode.NotFound);
-
-                    if (responseGet3.IsSuccessStatusCode)
-                    {
-                        var mget3 = await responseGet3.Content.ReadAsAsync<Machine>();
-                        mget3.Should().BeNull();
-                    }
+                if (responseGet3.IsSuccessStatusCode)
+                {
+                    var mget3 = await responseGet3.Content.ReadAsAsync<Machine>();
+                    mget3.Should().BeNull();
                 }
             }
         }

@@ -1,6 +1,4 @@
-.container {
-  width: 100px;
-}
+.container { width: 100px; }
 
 .nopadding {
   padding: 0px;
@@ -8,4 +6,3 @@
 }
 
 .ref-button { padding: 0px; }
-

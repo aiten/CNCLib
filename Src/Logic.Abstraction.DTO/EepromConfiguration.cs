@@ -14,30 +14,29 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Logic.Abstraction.DTO
+namespace CNCLib.Logic.Abstraction.DTO;
+
+public class EepromConfiguration
 {
-    public class EepromConfiguration
-    {
-        public uint   MaxStepRate    { get; set; }
-        public ushort Acc            { get; set; }
-        public ushort Dec            { get; set; }
-        public uint   JerkSpeed      { get; set; }
-        public float  StepsPerMm1000 { get; set; }
+    public uint   MaxStepRate    { get; set; }
+    public ushort Acc            { get; set; }
+    public ushort Dec            { get; set; }
+    public uint   JerkSpeed      { get; set; }
+    public float  StepsPerMm1000 { get; set; }
 
-        public uint   StepsPerRotation        { get; set; }
-        public double DistancePerRotationInMm { get; set; }
-        public double StepsPerMm              { get; set; }
-        public double DistancePerStepInMm     { get; set; }
+    public uint   StepsPerRotation        { get; set; }
+    public double DistancePerRotationInMm { get; set; }
+    public double StepsPerMm              { get; set; }
+    public double DistancePerStepInMm     { get; set; }
 
-        public double EstimatedMaxStepRate                      { get; set; }
-        public double EstimatedMaxSpeedInMmSec                  { get; set; }
-        public double EstimatedMaxSpeedInMmMin                  { get; set; }
-        public double EstimatedAccelerationInMmSec2             { get; set; }
-        public double EstimatedAccelerationDistToMaxSpeedInMm   { get; set; }
-        public double EstimatedDecelerationInMmSec2             { get; set; }
-        public double EstimatedDecelerationDistFromMaxSpeedInMm { get; set; }
-        public double EstimatedAcc                              { get; set; }
-        public double EstimatedDec                              { get; set; }
-        public double EstimatedJerkSpeed                        { get; set; }
-    }
+    public double EstimatedMaxStepRate                      { get; set; }
+    public double EstimatedMaxSpeedInMmSec                  { get; set; }
+    public double EstimatedMaxSpeedInMmMin                  { get; set; }
+    public double EstimatedAccelerationInMmSec2             { get; set; }
+    public double EstimatedAccelerationDistToMaxSpeedInMm   { get; set; }
+    public double EstimatedDecelerationInMmSec2             { get; set; }
+    public double EstimatedDecelerationDistFromMaxSpeedInMm { get; set; }
+    public double EstimatedAcc                              { get; set; }
+    public double EstimatedDec                              { get; set; }
+    public double EstimatedJerkSpeed                        { get; set; }
 }

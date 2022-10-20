@@ -14,77 +14,76 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository
+namespace CNCLib.Repository;
+
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+using CNCLib.Repository.Abstraction;
+using CNCLib.Repository.Abstraction.Entities;
+using CNCLib.Repository.Context;
+
+using Framework.Repository;
+
+using Microsoft.EntityFrameworkCore;
+
+public class ItemRepository : CrudRepository<CNCLibContext, ItemEntity, int>, IItemRepository
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
+    #region ctr/default/overrides
 
-    using CNCLib.Repository.Abstraction;
-    using CNCLib.Repository.Abstraction.Entities;
-    using CNCLib.Repository.Context;
-
-    using Framework.Repository;
-
-    using Microsoft.EntityFrameworkCore;
-
-    public class ItemRepository : CrudRepository<CNCLibContext, ItemEntity, int>, IItemRepository
+    public ItemRepository(CNCLibContext context) : base(context)
     {
-        #region ctr/default/overrides
-
-        public ItemRepository(CNCLibContext context) : base(context)
-        {
-        }
-
-        protected override FilterBuilder<ItemEntity, int> FilterBuilder =>
-            new()
-            {
-                PrimaryWhere   = (query, key) => query.Where(item => item.ItemId == key),
-                PrimaryWhereIn = (query, keys) => query.Where(item => keys.Contains(item.ItemId))
-            };
-
-        protected override IQueryable<ItemEntity> AddInclude(IQueryable<ItemEntity> query)
-        {
-            return query.Include(x => x.ItemProperties).Include(x => x.User);
-        }
-
-        protected override void AssignValuesGraph(ItemEntity trackingEntity, ItemEntity values)
-        {
-            base.AssignValuesGraph(trackingEntity, values);
-            Sync(trackingEntity.ItemProperties,
-                values.ItemProperties,
-                (x, y) => x.ItemId > 0 && x.ItemId == y.ItemId && x.Name == y.Name,
-                x => x.Item = null);
-        }
-
-        #endregion
-
-        #region extra Queries
-
-        public async Task<IList<ItemEntity>> GetByUser(int userId)
-        {
-            return await QueryWithInclude.Where(m => m.UserId == userId).ToListAsync();
-        }
-
-        public async Task<IList<int>> GetIdByUser(int userId)
-        {
-            return await Query.Where(item => item.UserId == userId).Select(item => item.ItemId).ToListAsync();
-        }
-
-        public async Task DeleteByUser(int userId)
-        {
-            var items = await TrackingQueryWithInclude.Where(m => m.UserId == userId).ToListAsync();
-            DeleteEntities(items);
-        }
-
-        public async Task<IList<ItemEntity>> Get(int userId, string typeIdString)
-        {
-            return await QueryWithInclude
-                .Where(i => i.UserId == userId && i.ClassName == typeIdString)
-                .Include(d => d.ItemProperties)
-                .ToListAsync();
-        }
-
-        #endregion
     }
+
+    protected override FilterBuilder<ItemEntity, int> FilterBuilder =>
+        new()
+        {
+            PrimaryWhere   = (query, key) => query.Where(item => item.ItemId == key),
+            PrimaryWhereIn = (query, keys) => query.Where(item => keys.Contains(item.ItemId))
+        };
+
+    protected override IQueryable<ItemEntity> AddInclude(IQueryable<ItemEntity> query)
+    {
+        return query.Include(x => x.ItemProperties).Include(x => x.User);
+    }
+
+    protected override void AssignValuesGraph(ItemEntity trackingEntity, ItemEntity values)
+    {
+        base.AssignValuesGraph(trackingEntity, values);
+        Sync(trackingEntity.ItemProperties,
+            values.ItemProperties,
+            (x, y) => x.ItemId > 0 && x.ItemId == y.ItemId && x.Name == y.Name,
+            x => x.Item = null);
+    }
+
+    #endregion
+
+    #region extra Queries
+
+    public async Task<IList<ItemEntity>> GetByUserAsync(int userId)
+    {
+        return await QueryWithInclude.Where(m => m.UserId == userId).ToListAsync();
+    }
+
+    public async Task<IList<int>> GetIdByUserAsync(int userId)
+    {
+        return await Query.Where(item => item.UserId == userId).Select(item => item.ItemId).ToListAsync();
+    }
+
+    public async Task DeleteByUserAsync(int userId)
+    {
+        var items = await TrackingQueryWithInclude.Where(m => m.UserId == userId).ToListAsync();
+        DeleteEntities(items);
+    }
+
+    public async Task<IList<ItemEntity>> GetAsync(int userId, string typeIdString)
+    {
+        return await QueryWithInclude
+            .Where(i => i.UserId == userId && i.ClassName == typeIdString)
+            .Include(d => d.ItemProperties)
+            .ToListAsync();
+    }
+
+    #endregion
 }

@@ -14,59 +14,58 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Logic.Job
+namespace CNCLib.Logic.Job;
+
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction;
+
+using Microsoft.Extensions.Logging;
+
+public sealed class DailyJob : IDailyJob
 {
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
+    private readonly ILogger      _logger;
+    private readonly IUserManager _userManager;
 
-    using CNCLib.Logic.Abstraction;
+    public string            JobName { get; set; }
+    public object            Param   { get; set; }
+    public CancellationToken CToken  { get; set; }
 
-    using Microsoft.Extensions.Logging;
-
-    public sealed class DailyJob : IDailyJob
+    public DailyJob(IUserManager userManager, ILogger<DailyJob> logger)
     {
-        private readonly ILogger      _logger;
-        private readonly IUserManager _userManager;
+        _userManager = userManager;
+        _logger      = logger;
+    }
 
-        public string            JobName { get; set; }
-        public object            Param   { get; set; }
-        public CancellationToken CToken  { get; set; }
-
-        public DailyJob(IUserManager userManager, ILogger<DailyJob> logger)
+    public async Task ExecuteAsync()
+    {
+        try
         {
-            _userManager = userManager;
-            _logger      = logger;
-        }
+            // do something to test the daily background job
+            _logger.LogInformation($"Job {JobName}: {Param.ToString()}");
 
-        public async Task Execute()
+            var user = await _userManager.GetAllAsync();
+        }
+        catch (Exception e)
         {
-            try
-            {
-                // do something to test the daily background job
-                _logger.LogInformation($"Job {JobName}: {Param.ToString()}");
-
-                var user = await _userManager.GetAll();
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, $"Job {JobName}: failed with exception.");
-            }
+            _logger.LogError(e, $"Job {JobName}: failed with exception.");
         }
+    }
 
-        public async Task SetContext()
-        {
-            await Task.CompletedTask;
-        }
+    public async Task SetContextAsync()
+    {
+        await Task.CompletedTask;
+    }
 
-        public async Task<bool> IsAlreadyExecuted()
-        {
-            return await Task.FromResult(false);
-        }
+    public async Task<bool> IsAlreadyExecutedAsync()
+    {
+        return await Task.FromResult(false);
+    }
 
-        public async Task SetAsExecuted()
-        {
-            await Task.CompletedTask;
-        }
+    public async Task SetAsExecutedAsync()
+    {
+        await Task.CompletedTask;
     }
 }

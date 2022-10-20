@@ -14,77 +14,76 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.Helpers
+namespace CNCLib.WpfClient.Helpers;
+
+using System;
+using System.Linq;
+using System.Media;
+using System.Threading.Tasks;
+
+using CNCLib.GCode.Serial;
+using CNCLib.GCode.Tools;
+
+using Framework.Arduino.SerialCommunication;
+using Framework.Arduino.SerialCommunication.Abstraction;
+
+using Machine = CNCLib.Logic.Abstraction.DTO.Machine;
+
+public static class SerialExtension
 {
-    using System;
-    using System.Linq;
-    using System.Media;
-    using System.Threading.Tasks;
+    #region Probe
 
-    using CNCLib.GCode.Serial;
-    using CNCLib.GCode.Tools;
-
-    using Framework.Arduino.SerialCommunication;
-    using Framework.Arduino.SerialCommunication.Abstraction;
-
-    using Machine = CNCLib.Logic.Abstraction.DTO.Machine;
-
-    public static class SerialExtension
+    public static async Task<bool> SendProbeCommandAsync(this ISerial serial, Machine machine, int axisIndex)
     {
-        #region Probe
+        return await serial.SendProbeCommandAsync(machine.GetAxisName(axisIndex), machine.GetProbeSize(axisIndex), machine.ProbeDist, machine.ProbeDistUp, machine.ProbeFeed);
+    }
 
-        public static async Task<bool> SendProbeCommandAsync(this ISerial serial, Machine machine, int axisIndex)
+    #endregion
+
+    #region send/queue
+
+    public static void PrepareAndQueueCommand(this ISerial serial, Machine machine, string commandString)
+    {
+        serial.QueueCommand(machine.PrepareCommand(commandString));
+    }
+
+    public static async Task SendMacroCommandAsync(this ISerial serial, Machine machine, string commandString)
+    {
+        string[] separators = { @"\n" };
+        string[] cmds       = commandString.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+        foreach (string s in cmds)
         {
-            return await serial.SendProbeCommandAsync(machine.GetAxisName(axisIndex), machine.GetProbeSize(axisIndex), machine.ProbeDist, machine.ProbeDistUp, machine.ProbeFeed);
-        }
+            string[] infos = s.Split(':');
+            int      axis;
 
-        #endregion
-
-        #region send/queue
-
-        public static void PrepareAndQueueCommand(this ISerial serial, Machine machine, string commandString)
-        {
-            serial.QueueCommand(machine.PrepareCommand(commandString));
-        }
-
-        public static async Task SendMacroCommandAsync(this ISerial serial, Machine machine, string commandString)
-        {
-            string[] separators = { @"\n" };
-            string[] cmds       = commandString.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string s in cmds)
+            if (infos.Length > 1 && string.Compare(infos[0], @";probe", true) == 0 && -1 != (axis = GCodeHelper.AxisNameToIndex(infos[1])))
             {
-                string[] infos = s.Split(':');
-                int      axis;
-
-                if (infos.Length > 1 && string.Compare(infos[0], @";probe", true) == 0 && -1 != (axis = GCodeHelper.AxisNameToIndex(infos[1])))
+                if (false == await serial.SendProbeCommandAsync(machine, axis))
                 {
-                    if (false == await serial.SendProbeCommandAsync(machine, axis))
-                    {
-                        break;
-                    }
+                    break;
                 }
-                else if (infos.Length == 1 && string.Compare(infos[0], @";beep", true) == 0)
+            }
+            else if (infos.Length == 1 && string.Compare(infos[0], @";beep", true) == 0)
+            {
+                SystemSounds.Beep.Play();
+            }
+            else
+            {
+                if (s.TrimEnd().EndsWith("?"))
                 {
-                    SystemSounds.Beep.Play();
+                    var result = await serial.SendCommandAsync(s.TrimEnd().TrimEnd('?'), GCodeSerial.DefaultTimeout);
+                    if (result?.LastOrDefault()?.ReplyType.HasFlag(EReplyType.ReplyError) == false)
+                    {
+                        return;
+                    }
                 }
                 else
                 {
-                    if (s.TrimEnd().EndsWith("?"))
-                    {
-                        var result = await serial.SendCommandAsync(s.TrimEnd().TrimEnd('?'), GCodeSerial.DefaultTimeout);
-                        if (result?.LastOrDefault()?.ReplyType.HasFlag(EReplyType.ReplyError) == false)
-                        {
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        await serial.SendCommandAsync(s, GCodeSerial.DefaultTimeout);
-                    }
+                    await serial.SendCommandAsync(s, GCodeSerial.DefaultTimeout);
                 }
             }
         }
-
-        #endregion
     }
+
+    #endregion
 }

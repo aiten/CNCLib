@@ -14,28 +14,27 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Service.Logic
+namespace CNCLib.Service.Logic;
+
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Service.Abstraction;
+
+using Framework.Pattern;
+
+public class EepromConfigurationService : DisposeWrapper, IEepromConfigurationService
 {
-    using System.Threading.Tasks;
+    readonly IEepromConfigurationManager _manager;
 
-    using CNCLib.Logic.Abstraction;
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Service.Abstraction;
-
-    using Framework.Pattern;
-
-    public class EepromConfigurationService : DisposeWrapper, IEepromConfigurationService
+    public EepromConfigurationService(IEepromConfigurationManager manager)
     {
-        readonly IEepromConfigurationManager _manager;
+        _manager = manager;
+    }
 
-        public EepromConfigurationService(IEepromConfigurationManager manager)
-        {
-            _manager = manager;
-        }
-
-        public async Task<EepromConfiguration> CalculateConfig(EepromConfigurationInput param)
-        {
-            return await _manager.CalculateConfig(param);
-        }
+    public async Task<EepromConfiguration> CalculateConfig(EepromConfigurationInput param)
+    {
+        return await _manager.CalculateConfigAsync(param);
     }
 }

@@ -14,39 +14,38 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.Test
+namespace CNCLib.WpfClient.Test;
+
+using AutoMapper;
+
+using Framework.Dependency;
+
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+
+public class WpfUnitTestBase
 {
-    using AutoMapper;
+    public static IMapper Mapper { get; private set; }
 
-    using Framework.Dependency;
-
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
-
-    public class WpfUnitTestBase
+    protected WpfUnitTestBase()
     {
-        public static IMapper Mapper { get; private set; }
-
-        protected WpfUnitTestBase()
+        if (Mapper == null)
         {
-            if (Mapper == null)
-            {
-                var config = new MapperConfiguration(cfg => { cfg.AddProfile<WpfAutoMapperProfile>(); });
-                config.AssertConfigurationIsValid();
+            var config = new MapperConfiguration(cfg => { cfg.AddProfile<WpfAutoMapperProfile>(); });
+            config.AssertConfigurationIsValid();
 
-                Mapper = config.CreateMapper();
-            }
+            Mapper = config.CreateMapper();
+        }
 
-            if (AppService.ServiceCollection == null)
-            {
-                AppService.ServiceCollection = new ServiceCollection();
+        if (AppService.ServiceCollection == null)
+        {
+            AppService.ServiceCollection = new ServiceCollection();
 
-                AppService.ServiceCollection
-                    .AddTransient<ILoggerFactory, LoggerFactory>()
-                    .AddTransient(typeof(ILogger<>), typeof(Logger<>));
+            AppService.ServiceCollection
+                .AddTransient<ILoggerFactory, LoggerFactory>()
+                .AddTransient(typeof(ILogger<>), typeof(Logger<>));
 
-                AppService.BuildServiceProvider();
-            }
+            AppService.BuildServiceProvider();
         }
     }
 }

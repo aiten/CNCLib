@@ -14,10 +14,9 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Shared
+namespace CNCLib.Shared;
+
+public static class CNCLibConst
 {
-    public static class CNCLibConst
-    {
-        public const string AdminUser = @"CNCLibGlobal";
-    }
+    public const string AdminUser = @"CNCLibGlobal";
 }

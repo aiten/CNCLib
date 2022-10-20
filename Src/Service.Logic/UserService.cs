@@ -14,63 +14,62 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Service.Logic
+namespace CNCLib.Service.Logic;
+
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Service.Abstraction;
+using CNCLib.Shared;
+
+using Framework.Service.Logic;
+
+public class UserService : CrudService<User, int>, IUserService
 {
-    using System.Threading.Tasks;
+    readonly         IUserManager       _manager;
+    private readonly ICNCLibUserContext _userContext;
 
-    using CNCLib.Logic.Abstraction;
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Service.Abstraction;
-    using CNCLib.Shared;
-
-    using Framework.Service.Logic;
-
-    public class UserService : CrudService<User, int>, IUserService
+    public UserService(IUserManager manager, ICNCLibUserContext userContext) : base(manager)
     {
-        readonly         IUserManager       _manager;
-        private readonly ICNCLibUserContext _userContext;
+        _manager     = manager;
+        _userContext = userContext;
+    }
 
-        public UserService(IUserManager manager, ICNCLibUserContext userContext) : base(manager)
-        {
-            _manager     = manager;
-            _userContext = userContext;
-        }
+    public async Task<User> GetByName(string username)
+    {
+        return await _manager.GetByNameAsync(username);
+    }
 
-        public async Task<User> GetByName(string username)
-        {
-            return await _manager.GetByName(username);
-        }
+    public async Task<User> GetCurrentUser()
+    {
+        return await _manager.GetAsync(_userContext.UserId);
+    }
 
-        public async Task<User> GetCurrentUser()
-        {
-            return await _manager.Get(_userContext.UserId);
-        }
+    public async Task<bool> IsValidUser(string username, string password)
+    {
+        var claimsPrincipal = await _manager.AuthenticateAsync(username, password);
+        return claimsPrincipal != null;
+    }
 
-        public async Task<bool> IsValidUser(string username, string password)
-        {
-            var claimsPrincipal = await _manager.Authenticate(username, password);
-            return claimsPrincipal != null;
-        }
+    public async Task<string> Register(string username, string password)
+    {
+        var id = await _manager.RegisterAsync(username, password);
+        return id;
+    }
 
-        public async Task<string> Register(string username, string password)
-        {
-            var id = await _manager.Register(username, password);
-            return id;
-        }
+    public async Task Leave()
+    {
+        await _manager.LeaveAsync();
+    }
 
-        public async Task Leave()
-        {
-            await _manager.Leave();
-        }
+    public async Task InitData()
+    {
+        await _manager.InitDataAsync();
+    }
 
-        public async Task InitData()
-        {
-            await _manager.InitData();
-        }
-
-        public async Task Cleanup()
-        {
-            await _manager.Cleanup();
-        }
+    public async Task Cleanup()
+    {
+        await _manager.CleanupAsync();
     }
 }

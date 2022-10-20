@@ -14,72 +14,71 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository
+namespace CNCLib.Repository;
+
+using System.Linq;
+using System.Threading.Tasks;
+
+using CNCLib.Repository.Abstraction;
+using CNCLib.Repository.Abstraction.Entities;
+using CNCLib.Repository.Context;
+
+using Framework.Repository;
+
+using Microsoft.EntityFrameworkCore;
+
+public class ConfigurationRepository : CrudRepository<CNCLibContext, ConfigurationEntity, int>, IConfigurationRepository
 {
-    using System.Linq;
-    using System.Threading.Tasks;
+    #region ctr/default/overrides
 
-    using CNCLib.Repository.Abstraction;
-    using CNCLib.Repository.Abstraction.Entities;
-    using CNCLib.Repository.Context;
-
-    using Framework.Repository;
-
-    using Microsoft.EntityFrameworkCore;
-
-    public class ConfigurationRepository : CrudRepository<CNCLibContext, ConfigurationEntity, int>, IConfigurationRepository
+    public ConfigurationRepository(CNCLibContext dbContext) : base(dbContext)
     {
-        #region ctr/default/overrides
-
-        public ConfigurationRepository(CNCLibContext dbContext) : base(dbContext)
-        {
-        }
-
-        protected override FilterBuilder<ConfigurationEntity, int> FilterBuilder =>
-            new()
-            {
-                PrimaryWhere   = (query, key) => query.Where(c => c.ConfigurationId == key),
-                PrimaryWhereIn = (query, keys) => query.Where(item => keys.Contains(item.ConfigurationId))
-            };
-
-        public async Task Store(ConfigurationEntity configuration)
-        {
-            // search und update machine
-
-            var cInDb = await AddOptionalWhere(TrackingQuery).Where(c => c.UserId == configuration.UserId && c.Group == configuration.Group && c.Name == configuration.Name).FirstOrDefaultAsync();
-
-            if (cInDb == default(ConfigurationEntity))
-            {
-                // add new
-
-                cInDb = configuration;
-                AddEntity(cInDb);
-            }
-            else
-            {
-                // syn with existing
-                configuration.ConfigurationId = cInDb.ConfigurationId;
-                configuration.UserId          = cInDb.UserId;
-                configuration.User            = cInDb.User;
-                SetValue(cInDb, configuration);
-            }
-        }
-
-        public async Task DeleteByUser(int userId)
-        {
-            var machines = await TrackingQueryWithInclude.Where(m => m.UserId == userId).ToListAsync();
-            DeleteEntities(machines);
-        }
-
-        #endregion
-
-        #region extra queries
-
-        public async Task<ConfigurationEntity> Get(int userId, string group, string name)
-        {
-            return await AddOptionalWhere(Query).Where(c => c.UserId == userId && c.Group == group && c.Name == name).FirstOrDefaultAsync();
-        }
-
-        #endregion
     }
+
+    protected override FilterBuilder<ConfigurationEntity, int> FilterBuilder =>
+        new()
+        {
+            PrimaryWhere   = (query, key) => query.Where(c => c.ConfigurationId == key),
+            PrimaryWhereIn = (query, keys) => query.Where(item => keys.Contains(item.ConfigurationId))
+        };
+
+    public async Task StoreAsync(ConfigurationEntity configuration)
+    {
+        // search und update machine
+
+        var cInDb = await AddOptionalWhere(TrackingQuery).Where(c => c.UserId == configuration.UserId && c.Group == configuration.Group && c.Name == configuration.Name).FirstOrDefaultAsync();
+
+        if (cInDb == default(ConfigurationEntity))
+        {
+            // add new
+
+            cInDb = configuration;
+            AddEntity(cInDb);
+        }
+        else
+        {
+            // syn with existing
+            configuration.ConfigurationId = cInDb.ConfigurationId;
+            configuration.UserId          = cInDb.UserId;
+            configuration.User            = cInDb.User;
+            SetValue(cInDb, configuration);
+        }
+    }
+
+    public async Task DeleteByUserAsync(int userId)
+    {
+        var machines = await TrackingQueryWithInclude.Where(m => m.UserId == userId).ToListAsync();
+        DeleteEntities(machines);
+    }
+
+    #endregion
+
+    #region extra queries
+
+    public async Task<ConfigurationEntity> GetAsync(int userId, string group, string name)
+    {
+        return await AddOptionalWhere(Query).Where(c => c.UserId == userId && c.Group == group && c.Name == name).FirstOrDefaultAsync();
+    }
+
+    #endregion
 }

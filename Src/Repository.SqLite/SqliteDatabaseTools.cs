@@ -14,46 +14,45 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository.SqLite
+namespace CNCLib.Repository.SqLite;
+
+using System;
+using System.IO;
+using System.Reflection;
+
+using Microsoft.EntityFrameworkCore;
+
+public class SqliteDatabaseTools
 {
-    using System;
-    using System.IO;
-    using System.Reflection;
+    public static string DatabaseFile  { get; set; } = $"{System.IO.Path.GetTempPath()}\\CNCLib.db";
+    public static string ConnectString => $"Data Source={DatabaseFile}";
 
-    using Microsoft.EntityFrameworkCore;
-
-    public class SqliteDatabaseTools
+    public static string SetEnvironment(bool isAzure)
     {
-        public static string DatabaseFile  { get; set; } = $"{System.IO.Path.GetTempPath()}\\CNCLib.db";
-        public static string ConnectString => $"Data Source={DatabaseFile}";
+        string dbFolder;
+        string dbFileName;
 
-        public static string SetEnvironment(bool isAzure)
+        if (isAzure)
         {
-            string dbFolder;
-            string dbFileName;
-
-            if (isAzure)
-            {
-                string baseDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                dbFolder   = $@"{baseDirectory}\data";
-                dbFileName = "CNCLibAzure.db";
-            }
-            else
-            {
-                dbFolder   = Environment.GetEnvironmentVariable(@"USERPROFILE");
-                dbFileName = "CNCLib.db";
-            }
-
-            AppDomain.CurrentDomain.SetData("DataDirectory", dbFolder);
-
-            var dbFile = $@"{dbFolder}\{dbFileName}";
-            SqliteDatabaseTools.DatabaseFile = dbFile;
-            return SqliteDatabaseTools.ConnectString;
+            string baseDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            dbFolder   = $@"{baseDirectory}\data";
+            dbFileName = "CNCLibAzure.db";
+        }
+        else
+        {
+            dbFolder   = Environment.GetEnvironmentVariable(@"USERPROFILE");
+            dbFileName = "CNCLib.db";
         }
 
-        public static void OptionBuilder(DbContextOptionsBuilder option)
-        {
-            option.UseSqlite(ConnectString, x => x.MigrationsAssembly(typeof(SqliteDatabaseTools).Assembly.GetName().Name));
-        }
+        AppDomain.CurrentDomain.SetData("DataDirectory", dbFolder);
+
+        var dbFile = $@"{dbFolder}\{dbFileName}";
+        SqliteDatabaseTools.DatabaseFile = dbFile;
+        return SqliteDatabaseTools.ConnectString;
+    }
+
+    public static void OptionBuilder(DbContextOptionsBuilder option)
+    {
+        option.UseSqlite(ConnectString, x => x.MigrationsAssembly(typeof(SqliteDatabaseTools).Assembly.GetName().Name));
     }
 }

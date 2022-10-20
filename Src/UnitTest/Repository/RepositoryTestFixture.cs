@@ -14,48 +14,47 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.UnitTest.Repository
+namespace CNCLib.UnitTest.Repository;
+
+using CNCLib.Repository.Context;
+using CNCLib.Repository.SqLite;
+
+using Framework.UnitTest.Repository;
+
+using Microsoft.EntityFrameworkCore;
+
+public class RepositoryTestFixture : RepositoryTestFixtureBase<CNCLibContext>
 {
-    using CNCLib.Repository.Context;
-    using CNCLib.Repository.SqLite;
-
-    using Framework.UnitTest.Repository;
-
-    using Microsoft.EntityFrameworkCore;
-
-    public class RepositoryTestFixture : RepositoryTestFixtureBase<CNCLibContext>
+    public RepositoryTestFixture()
     {
-        public RepositoryTestFixture()
+        //drop and recreate the test Db every time the tests are run. 
+        //               string dbDir     = testContext.TestDeploymentDir;
+        var dbDir     = System.IO.Path.GetTempPath();
+        var pathRoot  = System.IO.Path.GetPathRoot(dbDir);
+        var driveInfo = new System.IO.DriveInfo(pathRoot);
+
+        if (driveInfo.DriveType == System.IO.DriveType.Network)
         {
-            //drop and recreate the test Db every time the tests are run. 
-            //               string dbDir     = testContext.TestDeploymentDir;
-            var dbDir     = System.IO.Path.GetTempPath();
-            var pathRoot  = System.IO.Path.GetPathRoot(dbDir);
-            var driveInfo = new System.IO.DriveInfo(pathRoot);
-
-            if (driveInfo.DriveType == System.IO.DriveType.Network)
-            {
-                // a db file doesn't work on network-drive 
-                dbDir = System.IO.Path.GetTempPath();
-            }
-
-            string dbFile = $@"{dbDir}\CNCLibTest.db";
-            SqliteDatabaseTools.DatabaseFile = dbFile;
-
-            var dbContext = CreateDbContext();
-
-            dbContext.Database.EnsureDeleted();
-            dbContext.InitializeDatabase();
-
-            new TestDataImporter(dbContext).Import();
-            dbContext.SaveChanges();
+            // a db file doesn't work on network-drive 
+            dbDir = System.IO.Path.GetTempPath();
         }
 
-        public override CNCLibContext CreateDbContext()
-        {
-            var optionsBuilder = new DbContextOptionsBuilder<CNCLibContext>();
-            SqliteDatabaseTools.OptionBuilder(optionsBuilder);
-            return new CNCLibContext(optionsBuilder.Options);
-        }
+        string dbFile = $@"{dbDir}\CNCLibTest.db";
+        SqliteDatabaseTools.DatabaseFile = dbFile;
+
+        var dbContext = CreateDbContext();
+
+        dbContext.Database.EnsureDeleted();
+        dbContext.InitializeDatabase();
+
+        new TestDataImporter(dbContext).Import();
+        dbContext.SaveChanges();
+    }
+
+    public override CNCLibContext CreateDbContext()
+    {
+        var optionsBuilder = new DbContextOptionsBuilder<CNCLibContext>();
+        SqliteDatabaseTools.OptionBuilder(optionsBuilder);
+        return new CNCLibContext(optionsBuilder.Options);
     }
 }

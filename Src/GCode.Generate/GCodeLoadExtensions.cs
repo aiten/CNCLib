@@ -14,54 +14,53 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.GCode.Generate
+namespace CNCLib.GCode.Generate;
+
+using System.IO;
+using System.Xml.Serialization;
+
+using CNCLib.GCode.Generate.Commands;
+using CNCLib.GCode.Generate.Load;
+
+public static class GCodeLoadExtensions
 {
-    using System.IO;
-    using System.Xml.Serialization;
-
-    using CNCLib.GCode.Generate.Commands;
-    using CNCLib.GCode.Generate.Load;
-
-    public static class GCodeLoadExtensions
+    public static void WriteGCodeFile(this LoadBase load, StreamWriter sw)
     {
-        public static void WriteGCodeFile(this LoadBase load, StreamWriter sw)
+        Command last  = null;
+        var     state = new CommandState();
+        foreach (var r in load.Commands)
         {
-            Command last  = null;
-            var     state = new CommandState();
-            foreach (var r in load.Commands)
+            string[] cmds = r.GetGCodeCommands(last?.CalculatedEndPosition, state);
+            if (cmds != null)
             {
-                string[] cmds = r.GetGCodeCommands(last?.CalculatedEndPosition, state);
-                if (cmds != null)
+                foreach (string str in cmds)
                 {
-                    foreach (string str in cmds)
-                    {
-                        sw.WriteLine(str);
-                    }
+                    sw.WriteLine(str);
                 }
-
-                last = r;
             }
-        }
 
-        public static void WriteCamBamFile(this LoadBase load, StreamWriter writer)
-        {
-            var x = new XmlSerializer(typeof(CamBam.CamBam));
-            x.Serialize(writer, load.CamBam);
+            last = r;
         }
+    }
 
-        public static void WriteImportInfoFile(this LoadBase load, StreamWriter writer)
+    public static void WriteCamBamFile(this LoadBase load, StreamWriter writer)
+    {
+        var x = new XmlSerializer(typeof(CamBam.CamBam));
+        x.Serialize(writer, load.CamBam);
+    }
+
+    public static void WriteImportInfoFile(this LoadBase load, StreamWriter writer)
+    {
+        if (load.Commands.Exists(c => !string.IsNullOrEmpty(c.ImportInfo)))
         {
-            if (load.Commands.Exists(c => !string.IsNullOrEmpty(c.ImportInfo)))
-            {
-                load.Commands.ForEach(
-                    c =>
+            load.Commands.ForEach(
+                c =>
+                {
+                    if (!string.IsNullOrEmpty(c.ImportInfo))
                     {
-                        if (!string.IsNullOrEmpty(c.ImportInfo))
-                        {
-                            writer.WriteLine(c.ImportInfo);
-                        }
-                    });
-            }
+                        writer.WriteLine(c.ImportInfo);
+                    }
+                });
         }
     }
 }

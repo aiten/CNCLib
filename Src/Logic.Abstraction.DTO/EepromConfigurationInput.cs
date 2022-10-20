@@ -14,16 +14,15 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Logic.Abstraction.DTO
+namespace CNCLib.Logic.Abstraction.DTO;
+
+public class EepromConfigurationInput
 {
-    public class EepromConfigurationInput
-    {
-        public ushort Teeth                  { get; set; }
-        public double ToothSizeInMm          { get; set; }
-        public ushort MicroSteps             { get; set; }
-        public ushort StepsPerRotation       { get; set; }
-        public double EstimatedRotationSpeed { get; set; }
-        public double TimeToAcc              { get; set; }
-        public double TimeToDec              { get; set; }
-    }
+    public ushort Teeth                  { get; set; }
+    public double ToothSizeInMm          { get; set; }
+    public ushort MicroSteps             { get; set; }
+    public ushort StepsPerRotation       { get; set; }
+    public double EstimatedRotationSpeed { get; set; }
+    public double TimeToAcc              { get; set; }
+    public double TimeToDec              { get; set; }
 }

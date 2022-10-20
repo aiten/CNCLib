@@ -14,31 +14,30 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.UnitTest.Repository
+namespace CNCLib.UnitTest.Repository;
+
+using CNCLib.Repository.Context;
+using CNCLib.Shared;
+
+using Framework.UnitTest.Repository;
+
+using Xunit;
+
+[CollectionDefinition("RepositoryTests")]
+public class DatabaseCollection : ICollectionFixture<RepositoryTestFixture>
 {
-    using CNCLib.Repository.Context;
-    using CNCLib.Shared;
+    // This class has no code, and is never created. Its purpose is simply
+    // to be the place to apply [CollectionDefinition] and all the
+    // ICollectionFixture<> interfaces.
+}
 
-    using Framework.UnitTest.Repository;
-
-    using Xunit;
-
-    [CollectionDefinition("RepositoryTests")]
-    public class DatabaseCollection : ICollectionFixture<RepositoryTestFixture>
+[Collection("RepositoryTests")]
+public abstract class RepositoryTests : RepositoryTestBase<CNCLibContext>
+{
+    protected RepositoryTests(RepositoryTestFixture testFixture) : base(testFixture)
     {
-        // This class has no code, and is never created. Its purpose is simply
-        // to be the place to apply [CollectionDefinition] and all the
-        // ICollectionFixture<> interfaces.
     }
 
-    [Collection("RepositoryTests")]
-    public abstract class RepositoryTests : RepositoryTestBase<CNCLibContext>
-    {
-        protected RepositoryTests(RepositoryTestFixture testFixture) : base(testFixture)
-        {
-        }
-
-        private   ICNCLibUserContext _userContext = new CNCLibUserContext();
-        protected ICNCLibUserContext UserContext => _userContext;
-    }
+    private   ICNCLibUserContext _userContext = new CNCLibUserContext();
+    protected ICNCLibUserContext UserContext => _userContext;
 }

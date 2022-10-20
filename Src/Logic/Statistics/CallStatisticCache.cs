@@ -14,43 +14,42 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Logic.Statistics
+namespace CNCLib.Logic.Statistics;
+
+using System.Collections.Generic;
+
+using Framework.Tools.Abstraction;
+
+public sealed class CallStatisticCache
 {
-    using System.Collections.Generic;
+    // must be a singleton
 
-    using Framework.Tools.Abstraction;
+    private IList<CallStatistic> _calls = new List<CallStatistic>();
+    private object               _lock  = new object();
 
-    public sealed class CallStatisticCache
+    private readonly ICurrentDateTime _currentDateTime;
+
+    public CallStatisticCache(ICurrentDateTime currentDateTime)
     {
-        // must be a singleton
+        _currentDateTime = currentDateTime;
+    }
 
-        private IList<CallStatistic> _calls = new List<CallStatistic>();
-        private object               _lock  = new object();
-
-        private readonly ICurrentDateTime _currentDateTime;
-
-        public CallStatisticCache(ICurrentDateTime currentDateTime)
+    public void AddCall(CallStatistic call)
+    {
+        call.CallTime = _currentDateTime.Now;
+        lock (_lock)
         {
-            _currentDateTime = currentDateTime;
+            _calls.Add(call);
         }
+    }
 
-        public void AddCall(CallStatistic call)
+    public IList<CallStatistic> GetCallStatisticsAndClear()
+    {
+        lock (_lock)
         {
-            call.CallTime = _currentDateTime.Now;
-            lock (_lock)
-            {
-                _calls.Add(call);
-            }
-        }
-
-        public IList<CallStatistic> GetCallStatisticsAndClear()
-        {
-            lock (_lock)
-            {
-                var calls = _calls;
-                _calls = new List<CallStatistic>();
-                return calls;
-            }
+            var calls = _calls;
+            _calls = new List<CallStatistic>();
+            return calls;
         }
     }
 }

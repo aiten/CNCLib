@@ -14,55 +14,54 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WebAPI.Controllers
+namespace CNCLib.WebAPI.Controllers;
+
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
+
+using Microsoft.AspNetCore.Mvc;
+
+using CNCLib.Shared;
+
+using Framework.WebAPI.Controller;
+
+[Route("api/[controller]")]
+public class EepromConfigurationController : Controller
 {
-    using System.Threading.Tasks;
+    private readonly IEepromConfigurationManager _eepromConfigurationManager;
+    private readonly ICNCLibUserContext          _userContext;
 
-    using CNCLib.Logic.Abstraction;
-    using CNCLib.Logic.Abstraction.DTO;
-
-    using Microsoft.AspNetCore.Mvc;
-
-    using CNCLib.Shared;
-
-    using Framework.WebAPI.Controller;
-
-    [Route("api/[controller]")]
-    public class EepromConfigurationController : Controller
+    public EepromConfigurationController(IEepromConfigurationManager eepromConfigurationManager, ICNCLibUserContext userContext)
     {
-        private readonly IEepromConfigurationManager _eepromConfigurationManager;
-        private readonly ICNCLibUserContext          _userContext;
+        _eepromConfigurationManager = eepromConfigurationManager;
+        _userContext                = userContext;
+    }
 
-        public EepromConfigurationController(IEepromConfigurationManager eepromConfigurationManager, ICNCLibUserContext userContext)
+    [HttpGet]
+    public async Task<ActionResult<EepromConfiguration>> Get(
+        ushort teeth,
+        double toothSizeInMm,
+        ushort microSteps,
+        ushort stepsPerRotation,
+        double estimatedRotationSpeed,
+        double timeToAcc,
+        double timeToDec)
+    {
+        // http://localhost:2024/api/EepromConfiguration?teeth=15&toothSizeInMm=2.0&microSteps=16&stepsPerRotation=200&estimatedRotationSpeed=7.8&timeToAcc=0.2&timeToDec=0.15
+        var input = new EepromConfigurationInput
         {
-            _eepromConfigurationManager = eepromConfigurationManager;
-            _userContext                = userContext;
-        }
+            Teeth                  = teeth,
+            ToothSizeInMm          = toothSizeInMm,
+            MicroSteps             = microSteps,
+            StepsPerRotation       = stepsPerRotation,
+            EstimatedRotationSpeed = estimatedRotationSpeed,
+            TimeToAcc              = timeToAcc,
+            TimeToDec              = timeToDec
+        };
 
-        [HttpGet]
-        public async Task<ActionResult<EepromConfiguration>> Get(
-            ushort teeth,
-            double toothSizeInMm,
-            ushort microSteps,
-            ushort stepsPerRotation,
-            double estimatedRotationSpeed,
-            double timeToAcc,
-            double timeToDec)
-        {
-            // http://localhost:2024/api/EepromConfiguration?teeth=15&toothSizeInMm=2.0&microSteps=16&stepsPerRotation=200&estimatedRotationSpeed=7.8&timeToAcc=0.2&timeToDec=0.15
-            var input = new EepromConfigurationInput
-            {
-                Teeth                  = teeth,
-                ToothSizeInMm          = toothSizeInMm,
-                MicroSteps             = microSteps,
-                StepsPerRotation       = stepsPerRotation,
-                EstimatedRotationSpeed = estimatedRotationSpeed,
-                TimeToAcc              = timeToAcc,
-                TimeToDec              = timeToDec
-            };
-
-            var calculateConfig = await _eepromConfigurationManager.CalculateConfig(input);
-            return await this.NotFoundOrOk(calculateConfig);
-        }
+        var calculateConfig = await _eepromConfigurationManager.CalculateConfigAsync(input);
+        return await this.NotFoundOrOk(calculateConfig);
     }
 }

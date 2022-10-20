@@ -14,61 +14,60 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.Helpers
+namespace CNCLib.WpfClient.Helpers;
+
+using System;
+using System.Threading.Tasks;
+
+using Framework.Arduino.SerialCommunication;
+using Framework.Arduino.SerialCommunication.Abstraction;
+using Framework.Pattern;
+
+using Microsoft.Extensions.Logging;
+
+using SerialCom = Framework.Arduino.SerialCommunication.Serial;
+
+class JoystickArduinoSerialCommunication : SerialCom
 {
-    using System;
-    using System.Threading.Tasks;
+    private Global _global;
 
-    using Framework.Arduino.SerialCommunication;
-    using Framework.Arduino.SerialCommunication.Abstraction;
-    using Framework.Pattern;
-
-    using Microsoft.Extensions.Logging;
-
-    using SerialCom = Framework.Arduino.SerialCommunication.Serial;
-
-    class JoystickArduinoSerialCommunication : SerialCom
+    public JoystickArduinoSerialCommunication(IFactory<ISerialPort> serialPortFactory, ILogger<SerialCom> logger, Global global) : base(serialPortFactory, logger)
     {
-        private Global _global;
+        OkTag   = ""; // every new line is "end of command"
+        _global = global;
+    }
 
-        public JoystickArduinoSerialCommunication(IFactory<ISerialPort> serialPortFactory, ILogger<SerialCom> logger, Global global) : base(serialPortFactory, logger)
+    public void RunCommandInNewTask(Action todo)
+    {
+        Task.Run(() => { todo(); });
+    }
+
+    protected override void OnReplyReceived(SerialEventArgs info)
+    {
+        base.OnReplyReceived(info);
+
+        if (info.Info.StartsWith(";CNCJoystick"))
         {
-            OkTag   = ""; // every new line is "end of command"
-            _global = global;
-        }
-
-        public void RunCommandInNewTask(Action todo)
-        {
-            Task.Run(() => { todo(); });
-        }
-
-        protected override void OnReplyReceived(SerialEventArgs info)
-        {
-            base.OnReplyReceived(info);
-
-            if (info.Info.StartsWith(";CNCJoystick"))
-            {
-                string initCommands = _global.Joystick?.InitCommands;
-                if (initCommands != null)
-                {
-                    RunCommandInNewTask(
-                        async () =>
-                        {
-                            string[] separators = { @"\n" };
-                            string[] cmds       = initCommands.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-                            await QueueCommandsAsync(cmds);
-                        });
-                }
-            }
-            else
+            string initCommands = _global.Joystick?.InitCommands;
+            if (initCommands != null)
             {
                 RunCommandInNewTask(
                     async () =>
                     {
-                        string msg = _global.Machine.JoystickReplyReceived(info.Info.Trim());
-                        await _global.Com.Current.QueueCommandsAsync(new string[] { msg }).ConfigureAwait(false);
+                        string[] separators = { @"\n" };
+                        string[] cmds       = initCommands.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+                        await QueueCommandsAsync(cmds);
                     });
             }
+        }
+        else
+        {
+            RunCommandInNewTask(
+                async () =>
+                {
+                    string msg = _global.Machine.JoystickReplyReceived(info.Info.Trim());
+                    await _global.Com.Current.QueueCommandsAsync(new string[] { msg }).ConfigureAwait(false);
+                });
         }
     }
 }

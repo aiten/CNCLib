@@ -14,30 +14,29 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository.Abstraction.Entities
+namespace CNCLib.Repository.Abstraction.Entities;
+
+public class ConfigurationEntity
 {
-    public class ConfigurationEntity
+    public int        ConfigurationId { get; set; }
+    public int        UserId          { get; set; }
+    public UserEntity User            { get; set; }
+    public string     Group           { get; set; }
+    public string     Name            { get; set; }
+    public string     Type            { get; set; }
+    public string     Value           { get; set; }
+
+    public ConfigurationEntity()
     {
-        public int        ConfigurationId { get; set; }
-        public int        UserId          { get; set; }
-        public UserEntity User            { get; set; }
-        public string     Group           { get; set; }
-        public string     Name            { get; set; }
-        public string     Type            { get; set; }
-        public string     Value           { get; set; }
+    }
 
-        public ConfigurationEntity()
-        {
-        }
+    public ConfigurationEntity(int userId, string group, string name, object value)
+    {
+        Name   = name;
+        Group  = group;
+        Value  = value.ToString();
+        UserId = userId;
 
-        public ConfigurationEntity(int userId, string group, string name, object value)
-        {
-            Name   = name;
-            Group  = group;
-            Value  = value.ToString();
-            UserId = userId;
-
-            Type = value.GetType().ToString();
-        }
+        Type = value.GetType().ToString();
     }
 }

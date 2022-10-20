@@ -14,32 +14,31 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository.Mappings
+namespace CNCLib.Repository.Mappings;
+
+using CNCLib.Repository.Abstraction.Entities;
+
+using Framework.Repository.Mappings;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+public static class ConfigurationMapping
 {
-    using CNCLib.Repository.Abstraction.Entities;
-
-    using Framework.Repository.Mappings;
-
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-    public static class ConfigurationMapping
+    public static void Map(this EntityTypeBuilder<ConfigurationEntity> entity)
     {
-        public static void Map(this EntityTypeBuilder<ConfigurationEntity> entity)
-        {
-            entity.ToTable("Configuration");
+        entity.ToTable("Configuration");
 
-            entity.HasKey(c => c.ConfigurationId);
+        entity.HasKey(c => c.ConfigurationId);
 
-            entity.HasIndex(c => new { c.UserId, c.Group, c.Name }).IsUnique();
+        entity.HasIndex(c => new { c.UserId, c.Group, c.Name }).IsUnique();
 
-            entity.Property(c => c.Group).AsRequiredText(256);
-            entity.Property(c => c.Name).AsRequiredText(256);
-            entity.Property(c => c.Type).AsRequiredText(256);
-            entity.Property(c => c.Value).HasMaxLength(4000);
+        entity.Property(c => c.Group).AsRequiredText(256);
+        entity.Property(c => c.Name).AsRequiredText(256);
+        entity.Property(c => c.Type).AsRequiredText(256);
+        entity.Property(c => c.Value).HasMaxLength(4000);
 
-            entity.HasOne(c => c.User);
-            entity.Property(c => c.UserId);
-        }
+        entity.HasOne(c => c.User);
+        entity.Property(c => c.UserId);
     }
 }

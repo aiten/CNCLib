@@ -14,20 +14,19 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository.Abstraction.QueryResult
+namespace CNCLib.Repository.Abstraction.QueryResult;
+
+using System;
+
+public class UserFileInfoQuery
 {
-    using System;
+    public int UserFileId { get; set; }
 
-    public class UserFileInfoQuery
-    {
-        public int UserFileId { get; set; }
+    public string FileName { get; set; }
 
-        public string FileName { get; set; }
+    public bool IsSystem { get; set; }
 
-        public bool IsSystem { get; set; }
+    public long FileSize { get; set; }
 
-        public long FileSize { get; set; }
-
-        public DateTime UploadTime { get; set; }
-    }
+    public DateTime UploadTime { get; set; }
 }

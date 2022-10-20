@@ -14,48 +14,47 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository.Abstraction.Entities
+namespace CNCLib.Repository.Abstraction.Entities;
+
+using System.Collections.Generic;
+
+public class MachineEntity
 {
-    using System.Collections.Generic;
+    public int        MachineId { get; set; }
+    public int        UserId    { get; set; }
+    public UserEntity User      { get; set; }
 
-    public class MachineEntity
-    {
-        public int        MachineId { get; set; }
-        public int        UserId    { get; set; }
-        public UserEntity User      { get; set; }
+    public string Name                 { get; set; }
+    public string SerialServer         { get; set; }
+    public string SerialServerUser     { get; set; }
+    public string SerialServerPassword { get; set; }
+    public string ComPort              { get; set; }
+    public int    Axis                 { get; set; }
+    public int    BaudRate             { get; set; }
+    public bool   DtrIsReset           { get; set; }
 
-        public string Name                 { get; set; }
-        public string SerialServer         { get; set; }
-        public string SerialServerUser     { get; set; }
-        public string SerialServerPassword { get; set; }
-        public string ComPort              { get; set; }
-        public int    Axis                 { get; set; }
-        public int    BaudRate             { get; set; }
-        public bool   DtrIsReset           { get; set; }
+    public decimal SizeX          { get; set; }
+    public decimal SizeY          { get; set; }
+    public decimal SizeZ          { get; set; }
+    public decimal SizeA          { get; set; }
+    public decimal SizeB          { get; set; }
+    public decimal SizeC          { get; set; }
+    public int     BufferSize     { get; set; }
+    public bool    CommandToUpper { get; set; }
+    public decimal ProbeSizeX     { get; set; }
+    public decimal ProbeSizeY     { get; set; }
+    public decimal ProbeSizeZ     { get; set; }
+    public decimal ProbeDistUp    { get; set; }
+    public decimal ProbeDist      { get; set; }
+    public decimal ProbeFeed      { get; set; }
+    public bool    SDSupport      { get; set; }
+    public bool    Spindle        { get; set; }
+    public bool    Coolant        { get; set; }
+    public bool    Laser          { get; set; }
+    public bool    Rotate         { get; set; }
+    public int     CommandSyntax  { get; set; }
+    public int     WorkOffsets    { get; set; }
 
-        public decimal SizeX          { get; set; }
-        public decimal SizeY          { get; set; }
-        public decimal SizeZ          { get; set; }
-        public decimal SizeA          { get; set; }
-        public decimal SizeB          { get; set; }
-        public decimal SizeC          { get; set; }
-        public int     BufferSize     { get; set; }
-        public bool    CommandToUpper { get; set; }
-        public decimal ProbeSizeX     { get; set; }
-        public decimal ProbeSizeY     { get; set; }
-        public decimal ProbeSizeZ     { get; set; }
-        public decimal ProbeDistUp    { get; set; }
-        public decimal ProbeDist      { get; set; }
-        public decimal ProbeFeed      { get; set; }
-        public bool    SDSupport      { get; set; }
-        public bool    Spindle        { get; set; }
-        public bool    Coolant        { get; set; }
-        public bool    Laser          { get; set; }
-        public bool    Rotate         { get; set; }
-        public int     CommandSyntax  { get; set; }
-        public int     WorkOffsets    { get; set; }
-
-        public ICollection<MachineCommandEntity>     MachineCommands     { get; set; }
-        public ICollection<MachineInitCommandEntity> MachineInitCommands { get; set; }
-    }
+    public ICollection<MachineCommandEntity>     MachineCommands     { get; set; }
+    public ICollection<MachineInitCommandEntity> MachineInitCommands { get; set; }
 }

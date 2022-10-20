@@ -14,15 +14,14 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Logic.Abstraction
+namespace CNCLib.Logic.Abstraction;
+
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using Framework.Logic.Abstraction;
+
+public interface IItemManager : ICrudManager<DTO.Item, int>
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-
-    using Framework.Logic.Abstraction;
-
-    public interface IItemManager : ICrudManager<DTO.Item, int>
-    {
-        Task<IEnumerable<DTO.Item>> GetByClassName(string classname);
-    }
+    Task<IEnumerable<DTO.Item>> GetByClassNameAsync(string classname);
 }

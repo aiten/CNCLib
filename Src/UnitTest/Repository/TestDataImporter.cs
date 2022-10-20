@@ -14,32 +14,31 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.UnitTest.Repository
+namespace CNCLib.UnitTest.Repository;
+
+using System.IO;
+using System.Reflection;
+
+using CNCLib.Repository.Abstraction.Entities;
+using CNCLib.Repository.Context;
+
+public class TestDataImporter : CNCLibDbImporter
 {
-    using System.IO;
-    using System.Reflection;
-
-    using CNCLib.Repository.Abstraction.Entities;
-    using CNCLib.Repository.Context;
-
-    public class TestDataImporter : CNCLibDbImporter
+    public TestDataImporter(CNCLibContext context) : base(context)
     {
-        public TestDataImporter(CNCLibContext context) : base(context)
-        {
-            CsvDir = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\Repository\TestData";
-        }
+        CsvDir = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\Repository\TestData";
+    }
 
-        public void Import()
-        {
-            // default data already in db
-            _userMap = ReadFromDb<int, UserEntity>(u => u.UserId);
+    public void Import()
+    {
+        // default data already in db
+        _userMap = ReadFromDb<int, UserEntity>(u => u.UserId);
 
-            _configurationMap = ImportCsv<int, ConfigurationEntity>("ConfigurationTest.csv", c => c.ConfigurationId, (c, key) =>
-            {
-                c.ConfigurationId = key;
-                c.User            = _userMap[c.UserId];
-                c.UserId          = 0;
-            });
-        }
+        _configurationMap = ImportCsv<int, ConfigurationEntity>("ConfigurationTest.csv", c => c.ConfigurationId, (c, key) =>
+        {
+            c.ConfigurationId = key;
+            c.User            = _userMap[c.UserId];
+            c.UserId          = 0;
+        });
     }
 }

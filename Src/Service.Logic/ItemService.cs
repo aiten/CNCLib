@@ -14,29 +14,28 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Service.Logic
+namespace CNCLib.Service.Logic;
+
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Service.Abstraction;
+
+using Framework.Service.Logic;
+
+public class ItemService : CrudService<Item, int>, IItemService
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+    readonly IItemManager _manager;
 
-    using CNCLib.Logic.Abstraction;
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Service.Abstraction;
-
-    using Framework.Service.Logic;
-
-    public class ItemService : CrudService<Item, int>, IItemService
+    public ItemService(IItemManager manager) : base(manager)
     {
-        readonly IItemManager _manager;
+        _manager = manager;
+    }
 
-        public ItemService(IItemManager manager) : base(manager)
-        {
-            _manager = manager;
-        }
-
-        public async Task<IEnumerable<Item>> GetByClassName(string classname)
-        {
-            return await _manager.GetByClassName(classname);
-        }
+    public async Task<IEnumerable<Item>> GetByClassNameAsync(string classname)
+    {
+        return await _manager.GetByClassNameAsync(classname);
     }
 }

@@ -14,83 +14,82 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Serial.WebAPI.SerialPort
+namespace CNCLib.Serial.WebAPI.SerialPort;
+
+using System;
+
+using CNCLib.Serial.WebAPI.Hubs;
+
+using Framework.Arduino.SerialCommunication.Abstraction;
+using Framework.Dependency;
+using Framework.Tools;
+
+using Microsoft.AspNetCore.SignalR;
+
+public class SerialPortWrapper
 {
-    using System;
+    #region ctr/SignalR
 
-    using CNCLib.Serial.WebAPI.Hubs;
+    public static Func<IHubContext<CNCLibHub, ICNCLibHubClient>> OnCreateHub { get; set; }
 
-    using Framework.Arduino.SerialCommunication.Abstraction;
-    using Framework.Dependency;
-    using Framework.Tools;
-
-    using Microsoft.AspNetCore.SignalR;
-
-    public class SerialPortWrapper
+    public void InitPort()
     {
-        #region ctr/SignalR
-
-        public static Func<IHubContext<CNCLibHub, ICNCLibHubClient>> OnCreateHub { get; set; }
-
-        public void InitPort()
+        if (Serial == null)
         {
-            if (Serial == null)
+            Serial = AppService.GetRequiredService<ISerial>();
+
+            Serial.CommandQueueEmpty += async (sender, e) => { await OnCreateHub().Clients.All.QueueEmpty(Id); };
+            Serial.CommandQueueChanged += (sender, e) =>
             {
-                Serial = AppService.GetRequiredService<ISerial>();
-
-                Serial.CommandQueueEmpty += async (sender, e) => { await OnCreateHub().Clients.All.QueueEmpty(Id); };
-                Serial.CommandQueueChanged += (sender, e) =>
+                _delayExecuteQueueChanged.Execute(
+                    1000,
+                    () => _pendingLastQueueLength = e.QueueLength,
+                    () => { OnCreateHub().Clients.All.QueueChanged(Id, _pendingLastQueueLength); });
+            };
+            Serial.CommandSending += (sender, e) =>
+            {
+                _delayExecuteSendingCommand.Execute(
+                    1000,
+                    () => _pendingSendingCommandSeqId = e.SeqId,
+                    () => { OnCreateHub().Clients.All.SendingCommand(Id, _pendingSendingCommandSeqId); });
+            };
+            Serial.ReplyReceived += async (sender, e) =>
+            {
+                if (IsConnected && IsJoystick)
                 {
-                    _delayExecuteQueueChanged.Execute(
-                        1000,
-                        () => _pendingLastQueueLength = e.QueueLength,
-                        () => { OnCreateHub().Clients.All.QueueChanged(Id, _pendingLastQueueLength); });
-                };
-                Serial.CommandSending += (sender, e) =>
-                {
-                    _delayExecuteSendingCommand.Execute(
-                        1000,
-                        () => _pendingSendingCommandSeqId = e.SeqId,
-                        () => { OnCreateHub().Clients.All.SendingCommand(Id, _pendingSendingCommandSeqId); });
-                };
-                Serial.ReplyReceived += async (sender, e) =>
-                {
-                    if (IsConnected && IsJoystick)
-                    {
-                        await OnCreateHub().Clients.All.Received(Id, e.Info);
-                    }
-                };
-            }
+                    await OnCreateHub().Clients.All.Received(Id, e.Info);
+                }
+            };
         }
-
-        readonly DelayedExecution _delayExecuteQueueChanged = new DelayedExecution();
-        int                       _pendingLastQueueLength;
-
-        readonly DelayedExecution _delayExecuteSendingCommand = new DelayedExecution();
-        int                       _pendingSendingCommandSeqId;
-
-        #endregion
-
-        #region Properties
-
-        public int Id { get; set; }
-
-        public string PortName { get; set; }
-
-        public ISerial Serial { get; set; }
-
-        public bool IsJoystick { get; set; }
-
-        public bool IsConnected => Serial?.IsConnected ?? false;
-
-        public bool IsAborted => Serial?.Aborted ?? false;
-
-        public bool IsSingleStep => Serial?.Pause ?? false;
-
-        public string GCodeCommandPrefix { get; set; } = "";
-
-        public int CommandsInQueue => Serial?.CommandsInQueue ?? 0;
-
-        #endregion
     }
+
+    readonly DelayedExecution _delayExecuteQueueChanged = new DelayedExecution();
+    int                       _pendingLastQueueLength;
+
+    readonly DelayedExecution _delayExecuteSendingCommand = new DelayedExecution();
+    int                       _pendingSendingCommandSeqId;
+
+    #endregion
+
+    #region Properties
+
+    public int Id { get; set; }
+
+    public string PortName { get; set; }
+
+    public ISerial Serial { get; set; }
+
+    public bool IsJoystick { get; set; }
+
+    public bool IsConnected => Serial?.IsConnected ?? false;
+
+    public bool IsAborted => Serial?.Aborted ?? false;
+
+    public bool IsSingleStep => Serial?.Pause ?? false;
+
+    public string GCodeCommandPrefix { get; set; } = "";
+
+    public int CommandsInQueue => Serial?.CommandsInQueue ?? 0;
+
+    #endregion
 }

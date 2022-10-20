@@ -14,22 +14,21 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Logic.Abstraction
+namespace CNCLib.Logic.Abstraction;
+
+using System.Threading.Tasks;
+
+using Framework.Logic.Abstraction;
+
+public interface IMachineManager : ICrudManager<DTO.Machine, int>
 {
-    using System.Threading.Tasks;
+    Task<DTO.Machine> DefaultAsync();
+    Task<int>         GetDefaultAsync();
+    Task              SetDefaultAsync(int defaultMachineId);
 
-    using Framework.Logic.Abstraction;
+    Task<string> TranslateJoystickMessageAsync(int machineId, string joystickMessage);
 
-    public interface IMachineManager : ICrudManager<DTO.Machine, int>
-    {
-        Task<DTO.Machine> Default();
-        Task<int>         GetDefault();
-        Task              SetDefault(int defaultMachineId);
+    string TranslateJoystickMessage(DTO.Machine machine, string joystickMessage);
 
-        Task<string> TranslateJoystickMessage(int machineId, string joystickMessage);
-
-        string TranslateJoystickMessage(DTO.Machine machine, string joystickMessage);
-
-        DTO.Machine UpdateFromEeprom(DTO.Machine machine, uint[] eepromValues);
-    }
+    DTO.Machine UpdateFromEeprom(DTO.Machine machine, uint[] eepromValues);
 }

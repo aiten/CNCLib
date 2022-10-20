@@ -14,75 +14,101 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WebAPI.Controllers
+namespace CNCLib.WebAPI.Controllers;
+
+using System;
+using System.IO;
+using System.Threading.Tasks;
+
+using CNCLib.GCode.Generate;
+using CNCLib.GCode.Generate.Load;
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Shared;
+
+public class GCodeLoadHelper
 {
-    using System;
-    using System.IO;
-    using System.Threading.Tasks;
+    private readonly IUserFileManager   _fileManager;
+    private readonly ICNCLibUserContext _userContext;
 
-    using CNCLib.GCode.Generate;
-    using CNCLib.GCode.Generate.Load;
-    using CNCLib.Logic.Abstraction;
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Shared;
-
-    public class GCodeLoadHelper
+    public GCodeLoadHelper(IUserFileManager fileManager, ICNCLibUserContext userContext)
     {
-        private readonly IUserFileManager   _fileManager;
-        private readonly ICNCLibUserContext _userContext;
+        _fileManager = fileManager;
+        _userContext = userContext;
+    }
 
-        public GCodeLoadHelper(IUserFileManager fileManager, ICNCLibUserContext userContext)
+    public async Task<LoadBase> CallLoad(LoadOptions opt, bool writeIntermediateFiles)
+    {
+        var loadBase = (opt.FileContent == null) ? CallLoadWithFileName(opt) : CallLoadWithContent(opt);
+
+        if (writeIntermediateFiles && !string.IsNullOrEmpty(opt.GCodeWriteToFileName))
         {
-            _fileManager = fileManager;
-            _userContext = userContext;
+            await CallWriteToDb("render.nc",   loadBase, (load, ms) => load.WriteGCodeFile(ms));
+            await CallWriteToDb("render.cb",   loadBase, (load, ms) => load.WriteCamBamFile(ms));
+            await CallWriteToDb("render.hpgl", loadBase, (load, ms) => load.WriteImportInfoFile(ms));
         }
 
-        public async Task<LoadBase> CallLoad(LoadOptions opt, bool writeIntermediateFiles)
-        {
-            var loadBase = (opt.FileContent == null) ? CallLoadWithFileName(opt) : CallLoadWithContent(opt);
+        return loadBase;
+    }
 
-            if (writeIntermediateFiles && !string.IsNullOrEmpty(opt.GCodeWriteToFileName))
+    private async Task CallWriteToDb(string dbFileName, LoadBase load, Action<LoadBase, StreamWriter> write)
+    {
+        using (var memoryStream = new MemoryStream())
+        using (var sw = new StreamWriter(memoryStream))
+        {
+            write(load, sw);
+            await sw.FlushAsync();
+
+            var userFileDto = new UserFile()
             {
-                await CallWriteToDb("render.nc",   loadBase, (load, ms) => load.WriteGCodeFile(ms));
-                await CallWriteToDb("render.cb",   loadBase, (load, ms) => load.WriteCamBamFile(ms));
-                await CallWriteToDb("render.hpgl", loadBase, (load, ms) => load.WriteImportInfoFile(ms));
+                FileName = dbFileName,
+                UserId   = _userContext.UserId,
+                Content  = memoryStream.ToArray()
+            };
+
+            var fileIdFromUri = await _fileManager.GetFileIdAsync(dbFileName);
+            if (fileIdFromUri > 0)
+            {
+                userFileDto.UserFileId = fileIdFromUri;
+                var fileIdFromValue = await _fileManager.GetFileIdAsync(dbFileName);
+                await _fileManager.UpdateAsync(userFileDto);
             }
-
-            return loadBase;
-        }
-
-        private async Task CallWriteToDb(string dbFileName, LoadBase load, Action<LoadBase, StreamWriter> write)
-        {
-            using (var memoryStream = new MemoryStream())
-            using (var sw = new StreamWriter(memoryStream))
+            else
             {
-                write(load, sw);
-                await sw.FlushAsync();
-
-                var userFileDto = new UserFile()
-                {
-                    FileName = dbFileName,
-                    UserId   = _userContext.UserId,
-                    Content  = memoryStream.ToArray()
-                };
-
-                var fileIdFromUri = await _fileManager.GetFileId(dbFileName);
-                if (fileIdFromUri > 0)
-                {
-                    userFileDto.UserFileId = fileIdFromUri;
-                    var fileIdFromValue = await _fileManager.GetFileId(dbFileName);
-                    await _fileManager.Update(userFileDto);
-                }
-                else
-                {
-                    await _fileManager.Add(userFileDto);
-                }
+                await _fileManager.AddAsync(userFileDto);
             }
         }
+    }
 
-        private LoadBase CallLoadWithFileName(LoadOptions opt)
+    private LoadBase CallLoadWithFileName(LoadOptions opt)
+    {
+        var load = LoadBase.Create(opt);
+
+        if (load == null)
         {
-            var load = LoadBase.Create(opt);
+            return null;
+        }
+
+        load.Load();
+        return load;
+    }
+
+    private LoadBase CallLoadWithContent(LoadOptions opt)
+    {
+        var filename    = opt.FileName;
+        var fileContent = opt.FileContent;
+
+        string pathFileName = Path.GetFileName(filename);
+        string tmpFile      = Path.GetTempPath() + pathFileName;
+
+        opt.FileName             = tmpFile;
+        opt.ImageWriteToFileName = null;
+
+        try
+        {
+            File.WriteAllBytes(tmpFile, fileContent);
+
+            LoadBase load = LoadBase.Create(opt);
 
             if (load == null)
             {
@@ -92,36 +118,9 @@ namespace CNCLib.WebAPI.Controllers
             load.Load();
             return load;
         }
-
-        private LoadBase CallLoadWithContent(LoadOptions opt)
+        finally
         {
-            var filename    = opt.FileName;
-            var fileContent = opt.FileContent;
-
-            string pathFileName = Path.GetFileName(filename);
-            string tmpFile      = Path.GetTempPath() + pathFileName;
-
-            opt.FileName             = tmpFile;
-            opt.ImageWriteToFileName = null;
-
-            try
-            {
-                File.WriteAllBytes(tmpFile, fileContent);
-
-                LoadBase load = LoadBase.Create(opt);
-
-                if (load == null)
-                {
-                    return null;
-                }
-
-                load.Load();
-                return load;
-            }
-            finally
-            {
-                File.Delete(tmpFile);
-            }
+            File.Delete(tmpFile);
         }
     }
 }

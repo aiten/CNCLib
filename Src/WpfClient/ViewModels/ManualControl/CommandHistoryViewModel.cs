@@ -14,79 +14,78 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.ViewModels.ManualControl
+namespace CNCLib.WpfClient.ViewModels.ManualControl;
+
+using System;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
+
+using CNCLib.WpfClient.Models;
+
+using Framework.Wpf.Helpers;
+
+public class CommandHistoryViewModel : DetailViewModel
 {
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Windows.Input;
+    private readonly Global _global;
 
-    using CNCLib.WpfClient.Models;
-
-    using Framework.Wpf.Helpers;
-
-    public class CommandHistoryViewModel : DetailViewModel
+    public CommandHistoryViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
     {
-        private readonly Global _global;
-
-        public CommandHistoryViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
-        {
-            _global = global;
-        }
-
-        public const string CommandHistoryFile = @"%USERPROFILE%\Documents\Command.txt";
-
-        #region Properties
-
-        private ObservableCollection<SentCNCCommand> _commandHistoryCollection;
-
-        public ObservableCollection<SentCNCCommand> CommandHistoryCollection
-        {
-            get => _commandHistoryCollection;
-            set => SetProperty(ref _commandHistoryCollection, value);
-        }
-
-        #endregion
-
-        #region Commands / CanCommands
-
-        public void RefreshAfterCommand()
-        {
-            RefreshCommandHistory();
-        }
-
-        public void RefreshCommandHistory()
-        {
-            var results = new ObservableCollection<SentCNCCommand>();
-
-            foreach (var rc in _global.Com.Current.CommandHistoryCopy)
-            {
-                DateTime sentTime = rc.SentTime ?? DateTime.Today;
-
-                results.Add(
-                    new SentCNCCommand
-                    {
-                        CommandDate = sentTime,
-                        CommandText = rc.CommandText,
-                        Result      = rc.ResultText
-                    });
-            }
-
-            CommandHistoryCollection = results;
-        }
-
-        public void ClearCommandHistory()
-        {
-            _global.Com.Current.ClearCommandHistory();
-            RefreshCommandHistory();
-        }
-
-        #endregion
-
-        #region ICommand
-
-        public ICommand RefreshHistoryCommand => new DelegateCommand(RefreshCommandHistory, CanSend);
-        public ICommand ClearHistoryCommand   => new DelegateCommand(ClearCommandHistory,   CanSend);
-
-        #endregion
+        _global = global;
     }
+
+    public const string CommandHistoryFile = @"%USERPROFILE%\Documents\Command.txt";
+
+    #region Properties
+
+    private ObservableCollection<SentCNCCommand> _commandHistoryCollection;
+
+    public ObservableCollection<SentCNCCommand> CommandHistoryCollection
+    {
+        get => _commandHistoryCollection;
+        set => SetProperty(ref _commandHistoryCollection, value);
+    }
+
+    #endregion
+
+    #region Commands / CanCommands
+
+    public void RefreshAfterCommand()
+    {
+        RefreshCommandHistory();
+    }
+
+    public void RefreshCommandHistory()
+    {
+        var results = new ObservableCollection<SentCNCCommand>();
+
+        foreach (var rc in _global.Com.Current.CommandHistoryCopy)
+        {
+            DateTime sentTime = rc.SentTime ?? DateTime.Today;
+
+            results.Add(
+                new SentCNCCommand
+                {
+                    CommandDate = sentTime,
+                    CommandText = rc.CommandText,
+                    Result      = rc.ResultText
+                });
+        }
+
+        CommandHistoryCollection = results;
+    }
+
+    public void ClearCommandHistory()
+    {
+        _global.Com.Current.ClearCommandHistory();
+        RefreshCommandHistory();
+    }
+
+    #endregion
+
+    #region ICommand
+
+    public ICommand RefreshHistoryCommand => new DelegateCommand(RefreshCommandHistory, CanSend);
+    public ICommand ClearHistoryCommand   => new DelegateCommand(ClearCommandHistory,   CanSend);
+
+    #endregion
 }

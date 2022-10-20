@@ -14,53 +14,52 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Serial.WebAPI.Hubs
+namespace CNCLib.Serial.WebAPI.Hubs;
+
+using System;
+using System.Threading.Tasks;
+
+using Microsoft.AspNetCore.SignalR;
+
+public class CNCLibHub : Hub<ICNCLibHubClient>
 {
-    using System;
-    using System.Threading.Tasks;
-
-    using Microsoft.AspNetCore.SignalR;
-
-    public class CNCLibHub : Hub<ICNCLibHubClient>
+    public override Task OnDisconnectedAsync(Exception exception)
     {
-        public override Task OnDisconnectedAsync(Exception exception)
-        {
-            return base.OnDisconnectedAsync(exception);
-        }
+        return base.OnDisconnectedAsync(exception);
+    }
 
-        public async Task HeartBeat()
-        {
-            await Clients.All.HeartBeat();
-        }
+    public async Task HeartBeat()
+    {
+        await Clients.All.HeartBeat();
+    }
 
-        public async Task QueueEmpty(int id)
-        {
-            await Clients.All.QueueEmpty(id);
-        }
+    public async Task QueueEmpty(int id)
+    {
+        await Clients.All.QueueEmpty(id);
+    }
 
-        public async Task QueueChanged(int id, int queueLength)
-        {
-            await Clients.All.QueueChanged(id, queueLength);
-        }
+    public async Task QueueChanged(int id, int queueLength)
+    {
+        await Clients.All.QueueChanged(id, queueLength);
+    }
 
-        public async Task SendingCommand(int id, int seqId)
-        {
-            await Clients.All.SendingCommand(id, seqId);
-        }
+    public async Task SendingCommand(int id, int seqId)
+    {
+        await Clients.All.SendingCommand(id, seqId);
+    }
 
-        public async Task Received(int id, string info)
-        {
-            await Clients.All.Received(id, info);
-        }
+    public async Task Received(int id, string info)
+    {
+        await Clients.All.Received(id, info);
+    }
 
-        public async Task Connected(int id)
-        {
-            await Clients.All.Connected(id);
-        }
+    public async Task Connected(int id)
+    {
+        await Clients.All.Connected(id);
+    }
 
-        public async Task Disconnected(int id)
-        {
-            await Clients.All.Disconnected(id);
-        }
+    public async Task Disconnected(int id)
+    {
+        await Clients.All.Disconnected(id);
     }
 }

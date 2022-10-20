@@ -14,43 +14,42 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository.Migrations.Startup
+namespace CNCLib.Repository.Migrations.Startup;
+
+using CNCLib.Repository.Context;
+using CNCLib.Repository.SqlServer;
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+public class Startup
 {
-    using CNCLib.Repository.Context;
-    using CNCLib.Repository.SqlServer;
-
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
-
-    public class Startup
+    public Startup(IConfiguration configuration)
     {
-        public Startup(IConfiguration configuration)
+        Configuration = configuration;
+    }
+
+    public IConfiguration Configuration { get; }
+
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddControllers();
+        services.AddDbContext<CNCLibContext>(options => SqlServerDatabaseTools.OptionBuilder(options));
+        //services.AddDbContext<CNCLibContext>(options => SqliteDatabaseTools.OptionBuilder(options));
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        if (env.IsDevelopment())
         {
-            Configuration = configuration;
+            app.UseDeveloperExceptionPage();
         }
 
-        public IConfiguration Configuration { get; }
+        app.UseRouting();
 
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddControllers();
-            services.AddDbContext<CNCLibContext>(options => SqlServerDatabaseTools.OptionBuilder(options));
-            //services.AddDbContext<CNCLibContext>(options => SqliteDatabaseTools.OptionBuilder(options));
-        }
-
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseRouting();
-
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-        }
+        app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
     }
 }

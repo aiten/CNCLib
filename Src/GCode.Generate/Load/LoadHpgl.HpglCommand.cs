@@ -14,40 +14,39 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.GCode.Generate.Load
+namespace CNCLib.GCode.Generate.Load;
+
+using Framework.Drawing;
+
+public partial class LoadHpgl
 {
-    using Framework.Drawing;
-
-    public partial class LoadHpgl
+    class HpglCommand
     {
-        class HpglCommand
+        public enum HpglCommandType
         {
-            public enum HpglCommandType
-            {
-                PenUp,
-                PenDown,
-                Other
-            }
+            PenUp,
+            PenDown,
+            Other
+        }
 
-            public HpglCommandType CommandType { get; set; } = HpglCommandType.Other;
+        public HpglCommandType CommandType { get; set; } = HpglCommandType.Other;
 
-            public bool IsPenCommand =>
-                CommandType == HpglCommandType.PenUp || CommandType == HpglCommandType.PenDown;
+        public bool IsPenCommand =>
+            CommandType == HpglCommandType.PenUp || CommandType == HpglCommandType.PenDown;
 
-            public bool    IsPenDownCommand      => CommandType == HpglCommandType.PenDown;
-            public bool    IsPointToValid        => IsPenCommand;
-            public Point3D PointFrom             { get; set; }
-            public Point3D PointTo               { get; set; }
-            public double? LineAngle             { get; set; }
-            public double? DiffLineAngleWithNext { get; set; }
-            public string  CommandString         { get; set; }
+        public bool    IsPenDownCommand      => CommandType == HpglCommandType.PenDown;
+        public bool    IsPointToValid        => IsPenCommand;
+        public Point3D PointFrom             { get; set; }
+        public Point3D PointTo               { get; set; }
+        public double? LineAngle             { get; set; }
+        public double? DiffLineAngleWithNext { get; set; }
+        public string  CommandString         { get; set; }
 
-            public void ResetCalculated()
-            {
-                PointFrom             = null;
-                DiffLineAngleWithNext = null;
-                LineAngle             = null;
-            }
+        public void ResetCalculated()
+        {
+            PointFrom             = null;
+            DiffLineAngleWithNext = null;
+            LineAngle             = null;
         }
     }
 }

@@ -14,48 +14,47 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.Models
+namespace CNCLib.WpfClient.Models;
+
+using System;
+
+using Framework.Wpf.Helpers;
+
+public class SentCNCCommand : NotificationObject
 {
-    using System;
+    #region CommandText
 
-    using Framework.Wpf.Helpers;
+    private string _commandText;
 
-    public class SentCNCCommand : NotificationObject
+    public string CommandText
     {
-        #region CommandText
-
-        private string _commandText;
-
-        public string CommandText
-        {
-            get => _commandText;
-            set => SetProperty(ref _commandText, value);
-        }
-
-        #endregion
-
-        #region CommandDate
-
-        private DateTime _commandDate;
-
-        public DateTime CommandDate
-        {
-            get => _commandDate;
-            set => SetProperty(ref _commandDate, value);
-        }
-
-        #endregion
-
-        #region Result
-
-        private string _result;
-
-        public string Result
-        {
-            get => _result;
-            set => SetProperty(ref _result, value);
-        }
-
-        #endregion
+        get => _commandText;
+        set => SetProperty(ref _commandText, value);
     }
+
+    #endregion
+
+    #region CommandDate
+
+    private DateTime _commandDate;
+
+    public DateTime CommandDate
+    {
+        get => _commandDate;
+        set => SetProperty(ref _commandDate, value);
+    }
+
+    #endregion
+
+    #region Result
+
+    private string _result;
+
+    public string Result
+    {
+        get => _result;
+        set => SetProperty(ref _result, value);
+    }
+
+    #endregion
 }

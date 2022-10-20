@@ -14,87 +14,86 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.Helpers
+namespace CNCLib.WpfClient.Helpers;
+
+using System.Linq;
+
+using CNCLib.Logic.Abstraction.DTO;
+
+public static class MachineExtension
 {
-    using System.Linq;
-
-    using CNCLib.Logic.Abstraction.DTO;
-
-    public static class MachineExtension
+    public static string PrepareCommand(this Machine machine, string commandString)
     {
-        public static string PrepareCommand(this Machine machine, string commandString)
+        string prefix = machine.GetCommandPrefix();
+
+        if (string.IsNullOrEmpty(prefix))
         {
-            string prefix = machine.GetCommandPrefix();
-
-            if (string.IsNullOrEmpty(prefix))
-            {
-                return commandString;
-            }
-
-            return prefix + commandString;
+            return commandString;
         }
 
-        public static string GetCommandPrefix(this Machine machine)
-        {
-            var prefix = machine.CommandSyntax;
-            if (prefix == CommandSyntax.Hpgl)
-            {
-                return ((char)27).ToString();
-            }
+        return prefix + commandString;
+    }
 
-            return null;
+    public static string GetCommandPrefix(this Machine machine)
+    {
+        var prefix = machine.CommandSyntax;
+        if (prefix == CommandSyntax.Hpgl)
+        {
+            return ((char)27).ToString();
         }
 
-        public static string JoystickReplyReceived(this Machine machine, string trim)
+        return null;
+    }
+
+    public static string JoystickReplyReceived(this Machine machine, string trim)
+    {
+        // ;btn5		=> look for ;btn5
+        // ;btn5:x		=> x is pressCount - always incremented, look for max x in setting => modulo 
+
+        int idx;
+
+        if ((idx = trim.IndexOf(':')) < 0)
         {
-            // ;btn5		=> look for ;btn5
-            // ;btn5:x		=> x is pressCount - always incremented, look for max x in setting => modulo 
-
-            int idx;
-
-            if ((idx = trim.IndexOf(':')) < 0)
+            var mc = machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == trim);
+            if (mc != null)
             {
-                var mc = machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == trim);
-                if (mc != null)
-                {
-                    trim = mc.CommandString;
-                }
+                trim = mc.CommandString;
             }
-            else
-            {
-                string btn             = trim.Substring(0, idx + 1);
-                var    machineCommands = machine.MachineCommands.Where(m => m.JoystickMessage?.Length > idx && m.JoystickMessage.Substring(0, idx + 1) == btn).ToList();
+        }
+        else
+        {
+            string btn             = trim.Substring(0, idx + 1);
+            var    machineCommands = machine.MachineCommands.Where(m => m.JoystickMessage?.Length > idx && m.JoystickMessage.Substring(0, idx + 1) == btn).ToList();
 
-                uint max = 0;
-                foreach (var m in machineCommands)
+            uint max = 0;
+            foreach (var m in machineCommands)
+            {
+                uint val;
+                if (uint.TryParse(m.JoystickMessage.Substring(idx + 1), out val))
                 {
-                    uint val;
-                    if (uint.TryParse(m.JoystickMessage.Substring(idx + 1), out val))
+                    if (val > max)
                     {
-                        if (val > max)
-                        {
-                            max = val;
-                        }
+                        max = val;
                     }
                 }
-
-                string findCmd = $"{btn}{uint.Parse(trim.Substring(idx + 1)) % (max + 1)}";
-
-                var mc = machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == findCmd);
-                if (mc == null)
-                {
-                    // try to find ;btn3 (without :)  
-                    findCmd = trim.Substring(0, idx);
-                    mc      = machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == findCmd);
-                }
-
-                if (mc != null)
-                {
-                    trim = mc.CommandString;
-                }
             }
 
-            return trim;
+            string findCmd = $"{btn}{uint.Parse(trim.Substring(idx + 1)) % (max + 1)}";
+
+            var mc = machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == findCmd);
+            if (mc == null)
+            {
+                // try to find ;btn3 (without :)  
+                findCmd = trim.Substring(0, idx);
+                mc      = machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == findCmd);
+            }
+
+            if (mc != null)
+            {
+                trim = mc.CommandString;
+            }
         }
+
+        return trim;
     }
 }

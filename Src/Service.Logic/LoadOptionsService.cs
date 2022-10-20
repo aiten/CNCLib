@@ -14,21 +14,20 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Service.Logic
+namespace CNCLib.Service.Logic;
+
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Service.Abstraction;
+
+using Framework.Service.Logic;
+
+public class LoadOptionsService : CrudService<LoadOptions, int>, ILoadOptionsService
 {
-    using CNCLib.Logic.Abstraction;
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Service.Abstraction;
+    readonly ILoadOptionsManager _manager;
 
-    using Framework.Service.Logic;
-
-    public class LoadOptionsService : CrudService<LoadOptions, int>, ILoadOptionsService
+    public LoadOptionsService(ILoadOptionsManager manager) : base(manager)
     {
-        readonly ILoadOptionsManager _manager;
-
-        public LoadOptionsService(ILoadOptionsManager manager) : base(manager)
-        {
-            _manager = manager;
-        }
+        _manager = manager;
     }
 }

@@ -14,367 +14,366 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.UnitTest.Logic
+namespace CNCLib.UnitTest.Logic;
+
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Manager;
+using CNCLib.Repository.Abstraction;
+using CNCLib.Repository.Abstraction.Entities;
+
+using FluentAssertions;
+
+using Framework.Repository.Abstraction;
+
+using NSubstitute;
+
+using Xunit;
+
+using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;
+using MachineInitCommandDto = CNCLib.Logic.Abstraction.DTO.MachineInitCommand;
+using MachineCommandDto = CNCLib.Logic.Abstraction.DTO.MachineCommand;
+
+public class MachineManagerTests : LogicTests
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-
-    using CNCLib.Logic.Manager;
-    using CNCLib.Repository.Abstraction;
-    using CNCLib.Repository.Abstraction.Entities;
-
-    using FluentAssertions;
-
-    using Framework.Repository.Abstraction;
-
-    using NSubstitute;
-
-    using Xunit;
-
-    using MachineDto = CNCLib.Logic.Abstraction.DTO.Machine;
-    using MachineInitCommandDto = CNCLib.Logic.Abstraction.DTO.MachineInitCommand;
-    using MachineCommandDto = CNCLib.Logic.Abstraction.DTO.MachineCommand;
-
-    public class MachineManagerTests : LogicTests
+    [Fact]
+    public async Task AddMachine()
     {
-        [Fact]
-        public async Task AddMachine()
+        var unitOfWork = Substitute.For<IUnitOfWork>();
+        var rep        = Substitute.For<IMachineRepository>();
+        var repC       = Substitute.For<IConfigurationRepository>();
+
+        var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
+
+        var machineEntity1 = new MachineDto
         {
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var rep        = Substitute.For<IMachineRepository>();
-            var repC       = Substitute.For<IConfigurationRepository>();
-
-            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
-
-            var machineEntity1 = new MachineDto
+            MachineId = 1,
+            Name      = "Maxi",
+            MachineCommands = new[]
             {
-                MachineId = 1,
-                Name      = "Maxi",
-                MachineCommands = new[]
+                new MachineCommandDto
                 {
-                    new MachineCommandDto
+                    MachineId        = 1,
+                    MachineCommandId = 1,
+                    CommandName      = @"1",
+                    CommandString    = @"1",
+                    PosX             = 0,
+                    PosY             = 1
+                }
+            },
+            MachineInitCommands = new[]
+            {
+                new MachineInitCommandDto
+                {
+                    MachineId            = 1,
+                    MachineInitCommandId = 1,
+                    CommandString        = "2",
+                    SeqNo                = 1
+                }
+            }
+        };
+
+        var machineId = await ctrl.AddAsync(machineEntity1);
+
+        rep.ReceivedWithAnyArgs().AddRange(new MachineEntity[1]);
+        machineId.Should().Be(1);
+    }
+
+    [Fact]
+    public async Task UpdateMachine()
+    {
+        var unitOfWork = Substitute.For<IUnitOfWork>();
+        var rep        = Substitute.For<IMachineRepository>();
+        var repC       = Substitute.For<IConfigurationRepository>();
+
+        var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
+
+        var machineEntity1 = new MachineEntity
+        {
+            MachineId           = 11,
+            Name                = "Maxi",
+            MachineCommands     = new List<MachineCommandEntity>(),
+            MachineInitCommands = new MachineInitCommandEntity[0]
+        };
+        rep.GetAsync(11).Returns(machineEntity1);
+        rep.GetTrackingAsync(Arg.Any<IEnumerable<int>>()).Returns(new[] { machineEntity1 });
+
+        var machine = await ctrl.GetAsync(11);
+        machine.Name = "SuperMaxi";
+
+        await ctrl.UpdateAsync(machine);
+
+        //await rep.Received().UpdateAsync(11, Arg.Is<MachineEntity>(x => x.Name == "SuperMaxi"));
+    }
+
+    [Fact]
+    public async Task DeleteMachine()
+    {
+        var unitOfWork = Substitute.For<IUnitOfWork>();
+        var rep        = Substitute.For<IMachineRepository>();
+        var repC       = Substitute.For<IConfigurationRepository>();
+
+        var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
+
+        var machineEntity1 = new MachineEntity
+        {
+            MachineId           = 11,
+            Name                = "Maxi",
+            MachineCommands     = new List<MachineCommandEntity>(),
+            MachineInitCommands = new MachineInitCommandEntity[0]
+        };
+        rep.GetAsync(1).Returns(machineEntity1);
+
+        var machine = await ctrl.GetAsync(1);
+        machine.Name = "SuperMaxi";
+
+        await ctrl.DeleteAsync(machine);
+
+        rep.Received().DeleteRange(Arg.Is<IEnumerable<MachineEntity>>(x => x.First().Name == "SuperMaxi"));
+        rep.Received().DeleteRange(Arg.Is<IEnumerable<MachineEntity>>(x => x.First().MachineId == 11));
+    }
+
+    [Fact]
+    public async Task GetMachinesNone()
+    {
+        var unitOfWork = Substitute.For<IUnitOfWork>();
+        var rep        = Substitute.For<IMachineRepository>();
+        var repC       = Substitute.For<IConfigurationRepository>();
+
+        var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
+
+        var machineEntity = new MachineEntity[0];
+        rep.GetAllAsync().Returns(machineEntity);
+
+        var machines = (await ctrl.GetAllAsync()).ToArray();
+        machines.Should().HaveCount(0);
+    }
+
+    [Fact]
+    public async Task GetMachinesOne()
+    {
+        var unitOfWork  = Substitute.For<IUnitOfWork>();
+        var rep         = Substitute.For<IMachineRepository>();
+        var repC        = Substitute.For<IConfigurationRepository>();
+        var userContext = new CNCLibUserContext();
+
+        var ctrl = new MachineManager(unitOfWork, rep, repC, userContext, Mapper);
+
+        var machineEntity = new[]
+        {
+            new MachineEntity
+            {
+                MachineId           = 1,
+                Name                = "Maxi",
+                BufferSize          = 115200,
+                UserId              = userContext.UserId,
+                MachineCommands     = new List<MachineCommandEntity>(),
+                MachineInitCommands = new MachineInitCommandEntity[0]
+            }
+        };
+        rep.GetByUserAsync(userContext.UserId).Returns(machineEntity);
+
+        var machines = (await ctrl.GetAllAsync()).ToArray();
+        machines.Should().HaveCount(1);
+        machines[0].MachineId.Should().Be(1);
+        machines[0].Name.Should().Be("Maxi");
+        machines[0].BufferSize.Should().Be(115200);
+        machines[0].MachineCommands.Should().NotBeNull();
+        machines[0].MachineInitCommands.Should().NotBeNull();
+        machines[0].MachineCommands.Should().HaveCount(0);
+        machines[0].MachineInitCommands.Should().HaveCount(0);
+    }
+
+    [Fact]
+    public async Task GetMachinesMany()
+    {
+        var unitOfWork  = Substitute.For<IUnitOfWork>();
+        var rep         = Substitute.For<IMachineRepository>();
+        var repC        = Substitute.For<IConfigurationRepository>();
+        var userContext = new CNCLibUserContext();
+
+        var ctrl = new MachineManager(unitOfWork, rep, repC, userContext, Mapper);
+
+        var machineEntity = new[]
+        {
+            new MachineEntity
+            {
+                MachineId           = 1,
+                Name                = "Maxi",
+                BufferSize          = 115200,
+                MachineCommands     = new List<MachineCommandEntity>(),
+                MachineInitCommands = new List<MachineInitCommandEntity>(),
+                UserId              = userContext.UserId
+            },
+            new MachineEntity
+            {
+                MachineId  = 2,
+                Name       = "Maxi",
+                BufferSize = 115200,
+                UserId     = userContext.UserId,
+                MachineCommands = new List<MachineCommandEntity>()
+                {
+                    new MachineCommandEntity
                     {
-                        MachineId        = 1,
+                        MachineId        = 2,
                         MachineCommandId = 1,
-                        CommandName      = @"1",
-                        CommandString    = @"1",
-                        PosX             = 0,
-                        PosY             = 1
+                        CommandName      = "Test",
+                        CommandString    = "f"
                     }
                 },
-                MachineInitCommands = new[]
+                MachineInitCommands = new List<MachineInitCommandEntity>()
                 {
-                    new MachineInitCommandDto
+                    new MachineInitCommandEntity
                     {
-                        MachineId            = 1,
+                        MachineId            = 2,
                         MachineInitCommandId = 1,
-                        CommandString        = "2",
-                        SeqNo                = 1
+                        SeqNo                = 0,
+                        CommandString        = "f"
                     }
                 }
-            };
+            }
+        };
 
-            var machineId = await ctrl.Add(machineEntity1);
+        rep.GetByUserAsync(userContext.UserId).Returns(machineEntity);
 
-            rep.ReceivedWithAnyArgs().AddRange(new MachineEntity[1]);
-            machineId.Should().Be(1);
-        }
+        var machines = (await ctrl.GetAllAsync()).ToArray();
+        machines.Should().HaveCount(2);
+        machines[0].MachineId.Should().Be(1);
+        machines[0].Name.Should().Be("Maxi");
+        machines[0].BufferSize.Should().Be(115200);
+        machines[1].MachineCommands.Should().HaveCount(1);
+        machines[1].MachineInitCommands.Should().HaveCount(1);
+        machines[0].MachineCommands.Should().HaveCount(0);
+        machines[0].MachineInitCommands.Should().HaveCount(0);
+        machines[1].MachineCommands.First().CommandName.Should().Be("Test");
+        machines[1].MachineCommands.First().CommandString.Should().Be("f");
+        machines[1].MachineInitCommands.First().SeqNo.Should().Be(0);
+        machines[1].MachineInitCommands.First().CommandString.Should().Be("f");
+    }
 
-        [Fact]
-        public async Task UpdateMachine()
+    [Fact]
+    public async Task QueryOneMachinesFound()
+    {
+        var unitOfWork = Substitute.For<IUnitOfWork>();
+        var rep        = Substitute.For<IMachineRepository>();
+        var repC       = Substitute.For<IConfigurationRepository>();
+
+        var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
+
+        var machineEntity1 = new MachineEntity
         {
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var rep        = Substitute.For<IMachineRepository>();
-            var repC       = Substitute.For<IConfigurationRepository>();
-
-            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
-
-            var machineEntity1 = new MachineEntity
-            {
-                MachineId           = 11,
-                Name                = "Maxi",
-                MachineCommands     = new List<MachineCommandEntity>(),
-                MachineInitCommands = new MachineInitCommandEntity[0]
-            };
-            rep.Get(11).Returns(machineEntity1);
-            rep.GetTracking(Arg.Any<IEnumerable<int>>()).Returns(new[] { machineEntity1 });
-
-            var machine = await ctrl.Get(11);
-            machine.Name = "SuperMaxi";
-
-            await ctrl.Update(machine);
-
-            //await rep.Received().Update(11, Arg.Is<MachineEntity>(x => x.Name == "SuperMaxi"));
-        }
-
-        [Fact]
-        public async Task DeleteMachine()
+            MachineId           = 1,
+            Name                = "Maxi",
+            MachineCommands     = new List<MachineCommandEntity>(),
+            MachineInitCommands = new MachineInitCommandEntity[0]
+        };
+        var machineEntity2 = new MachineEntity
         {
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var rep        = Substitute.For<IMachineRepository>();
-            var repC       = Substitute.For<IConfigurationRepository>();
+            MachineId           = 2,
+            Name                = "Mini",
+            MachineCommands     = new List<MachineCommandEntity>(),
+            MachineInitCommands = new MachineInitCommandEntity[0]
+        };
+        rep.GetAsync(1).Returns(machineEntity1);
+        rep.GetAsync(2).Returns(machineEntity2);
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
+        var machine = await ctrl.GetAsync(1);
+        machineEntity1.Name.Should().Be(machine.Name);
+        machineEntity1.MachineId.Should().Be(machine.MachineId);
+        machine.MachineCommands.Should().NotBeNull();
+        machine.MachineInitCommands.Should().NotBeNull();
+        machine.MachineCommands.Should().HaveCount(0);
+        machine.MachineInitCommands.Should().HaveCount(0);
+    }
 
-            var machineEntity1 = new MachineEntity
-            {
-                MachineId           = 11,
-                Name                = "Maxi",
-                MachineCommands     = new List<MachineCommandEntity>(),
-                MachineInitCommands = new MachineInitCommandEntity[0]
-            };
-            rep.Get(1).Returns(machineEntity1);
+    [Fact]
+    public async Task QueryOneMachinesNotFound()
+    {
+        var unitOfWork = Substitute.For<IUnitOfWork>();
+        var rep        = Substitute.For<IMachineRepository>();
+        var repC       = Substitute.For<IConfigurationRepository>();
 
-            var machine = await ctrl.Get(1);
-            machine.Name = "SuperMaxi";
+        var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
 
-            await ctrl.Delete(machine);
-
-            rep.Received().DeleteRange(Arg.Is<IEnumerable<MachineEntity>>(x => x.First().Name == "SuperMaxi"));
-            rep.Received().DeleteRange(Arg.Is<IEnumerable<MachineEntity>>(x => x.First().MachineId == 11));
-        }
-
-        [Fact]
-        public async Task GetMachinesNone()
+        var machineEntity1 = new MachineEntity
         {
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var rep        = Substitute.For<IMachineRepository>();
-            var repC       = Substitute.For<IConfigurationRepository>();
-
-            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
-
-            var machineEntity = new MachineEntity[0];
-            rep.GetAll().Returns(machineEntity);
-
-            var machines = (await ctrl.GetAll()).ToArray();
-            machines.Should().HaveCount(0);
-        }
-
-        [Fact]
-        public async Task GetMachinesOne()
+            MachineId           = 1,
+            Name                = "Maxi",
+            MachineCommands     = new List<MachineCommandEntity>(),
+            MachineInitCommands = new MachineInitCommandEntity[0]
+        };
+        var machineEntity2 = new MachineEntity
         {
-            var unitOfWork  = Substitute.For<IUnitOfWork>();
-            var rep         = Substitute.For<IMachineRepository>();
-            var repC        = Substitute.For<IConfigurationRepository>();
-            var userContext = new CNCLibUserContext();
+            MachineId           = 2,
+            Name                = "Mini",
+            MachineCommands     = new List<MachineCommandEntity>(),
+            MachineInitCommands = new MachineInitCommandEntity[0]
+        };
+        rep.GetAsync(1).Returns(machineEntity1);
+        rep.GetAsync(2).Returns(machineEntity2);
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, userContext, Mapper);
+        var machine = await ctrl.GetAsync(3);
+        machine.Should().BeNull();
+    }
 
-            var machineEntity = new[]
-            {
-                new MachineEntity
-                {
-                    MachineId           = 1,
-                    Name                = "Maxi",
-                    BufferSize          = 115200,
-                    UserId              = userContext.UserId,
-                    MachineCommands     = new List<MachineCommandEntity>(),
-                    MachineInitCommands = new MachineInitCommandEntity[0]
-                }
-            };
-            rep.GetByUser(userContext.UserId).Returns(machineEntity);
+    [Fact]
+    public async Task DefaultMachine()
+    {
+        var unitOfWork = Substitute.For<IUnitOfWork>();
+        var rep        = Substitute.For<IMachineRepository>();
+        var repC       = Substitute.For<IConfigurationRepository>();
 
-            var machines = (await ctrl.GetAll()).ToArray();
-            machines.Should().HaveCount(1);
-            machines[0].MachineId.Should().Be(1);
-            machines[0].Name.Should().Be("Maxi");
-            machines[0].BufferSize.Should().Be(115200);
-            machines[0].MachineCommands.Should().NotBeNull();
-            machines[0].MachineInitCommands.Should().NotBeNull();
-            machines[0].MachineCommands.Should().HaveCount(0);
-            machines[0].MachineInitCommands.Should().HaveCount(0);
-        }
+        var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
 
-        [Fact]
-        public async Task GetMachinesMany()
-        {
-            var unitOfWork  = Substitute.For<IUnitOfWork>();
-            var rep         = Substitute.For<IMachineRepository>();
-            var repC        = Substitute.For<IConfigurationRepository>();
-            var userContext = new CNCLibUserContext();
+        var machine = await ctrl.DefaultAsync();
+        machine.Should().NotBeNull();
+        machine.Name.Should().Be("New");
+    }
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, userContext, Mapper);
+    [Fact]
+    public async Task GetDefaultMachine()
+    {
+        var unitOfWork = Substitute.For<IUnitOfWork>();
+        var rep        = Substitute.For<IMachineRepository>();
+        var repC       = Substitute.For<IConfigurationRepository>();
 
-            var machineEntity = new[]
-            {
-                new MachineEntity
-                {
-                    MachineId           = 1,
-                    Name                = "Maxi",
-                    BufferSize          = 115200,
-                    MachineCommands     = new List<MachineCommandEntity>(),
-                    MachineInitCommands = new List<MachineInitCommandEntity>(),
-                    UserId              = userContext.UserId
-                },
-                new MachineEntity
-                {
-                    MachineId  = 2,
-                    Name       = "Maxi",
-                    BufferSize = 115200,
-                    UserId     = userContext.UserId,
-                    MachineCommands = new List<MachineCommandEntity>()
-                    {
-                        new MachineCommandEntity
-                        {
-                            MachineId        = 2,
-                            MachineCommandId = 1,
-                            CommandName      = "Test",
-                            CommandString    = "f"
-                        }
-                    },
-                    MachineInitCommands = new List<MachineInitCommandEntity>()
-                    {
-                        new MachineInitCommandEntity
-                        {
-                            MachineId            = 2,
-                            MachineInitCommandId = 1,
-                            SeqNo                = 0,
-                            CommandString        = "f"
-                        }
-                    }
-                }
-            };
+        var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
 
-            rep.GetByUser(userContext.UserId).Returns(machineEntity);
+        repC.GetAsync(1, "Environment", "DefaultMachineId").Returns(new ConfigurationEntity { Value = "14" });
+        int dm = await ctrl.GetDefaultAsync();
 
-            var machines = (await ctrl.GetAll()).ToArray();
-            machines.Should().HaveCount(2);
-            machines[0].MachineId.Should().Be(1);
-            machines[0].Name.Should().Be("Maxi");
-            machines[0].BufferSize.Should().Be(115200);
-            machines[1].MachineCommands.Should().HaveCount(1);
-            machines[1].MachineInitCommands.Should().HaveCount(1);
-            machines[0].MachineCommands.Should().HaveCount(0);
-            machines[0].MachineInitCommands.Should().HaveCount(0);
-            machines[1].MachineCommands.First().CommandName.Should().Be("Test");
-            machines[1].MachineCommands.First().CommandString.Should().Be("f");
-            machines[1].MachineInitCommands.First().SeqNo.Should().Be(0);
-            machines[1].MachineInitCommands.First().CommandString.Should().Be("f");
-        }
+        dm.Should().Be(14);
+    }
 
-        [Fact]
-        public async Task QueryOneMachinesFound()
-        {
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var rep        = Substitute.For<IMachineRepository>();
-            var repC       = Substitute.For<IConfigurationRepository>();
+    [Fact]
+    public async Task GetDefaultMachineNotSet()
+    {
+        var unitOfWork = Substitute.For<IUnitOfWork>();
+        var rep        = Substitute.For<IMachineRepository>();
+        var repC       = Substitute.For<IConfigurationRepository>();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
+        var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
 
-            var machineEntity1 = new MachineEntity
-            {
-                MachineId           = 1,
-                Name                = "Maxi",
-                MachineCommands     = new List<MachineCommandEntity>(),
-                MachineInitCommands = new MachineInitCommandEntity[0]
-            };
-            var machineEntity2 = new MachineEntity
-            {
-                MachineId           = 2,
-                Name                = "Mini",
-                MachineCommands     = new List<MachineCommandEntity>(),
-                MachineInitCommands = new MachineInitCommandEntity[0]
-            };
-            rep.Get(1).Returns(machineEntity1);
-            rep.Get(2).Returns(machineEntity2);
+        repC.GetAsync(1, "Environment", "DefaultMachineId").Returns((ConfigurationEntity)null);
 
-            var machine = await ctrl.Get(1);
-            machineEntity1.Name.Should().Be(machine.Name);
-            machineEntity1.MachineId.Should().Be(machine.MachineId);
-            machine.MachineCommands.Should().NotBeNull();
-            machine.MachineInitCommands.Should().NotBeNull();
-            machine.MachineCommands.Should().HaveCount(0);
-            machine.MachineInitCommands.Should().HaveCount(0);
-        }
+        (await ctrl.GetDefaultAsync()).Should().Be(-1);
+    }
 
-        [Fact]
-        public async Task QueryOneMachinesNotFound()
-        {
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var rep        = Substitute.For<IMachineRepository>();
-            var repC       = Substitute.For<IConfigurationRepository>();
+    [Fact]
+    public async Task SetDefaultMachine()
+    {
+        var unitOfWork = Substitute.For<IUnitOfWork>();
+        var rep        = Substitute.For<IMachineRepository>();
+        var repC       = Substitute.For<IConfigurationRepository>();
 
-            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
+        var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
 
-            var machineEntity1 = new MachineEntity
-            {
-                MachineId           = 1,
-                Name                = "Maxi",
-                MachineCommands     = new List<MachineCommandEntity>(),
-                MachineInitCommands = new MachineInitCommandEntity[0]
-            };
-            var machineEntity2 = new MachineEntity
-            {
-                MachineId           = 2,
-                Name                = "Mini",
-                MachineCommands     = new List<MachineCommandEntity>(),
-                MachineInitCommands = new MachineInitCommandEntity[0]
-            };
-            rep.Get(1).Returns(machineEntity1);
-            rep.Get(2).Returns(machineEntity2);
+        await ctrl.SetDefaultAsync(15);
 
-            var machine = await ctrl.Get(3);
-            machine.Should().BeNull();
-        }
+        repC.GetAsync(1, "Environment", "DefaultMachineId").Returns(new ConfigurationEntity { Value = "14" });
 
-        [Fact]
-        public async Task DefaultMachine()
-        {
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var rep        = Substitute.For<IMachineRepository>();
-            var repC       = Substitute.For<IConfigurationRepository>();
-
-            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
-
-            var machine = await ctrl.Default();
-            machine.Should().NotBeNull();
-            machine.Name.Should().Be("New");
-        }
-
-        [Fact]
-        public async Task GetDefaultMachine()
-        {
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var rep        = Substitute.For<IMachineRepository>();
-            var repC       = Substitute.For<IConfigurationRepository>();
-
-            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
-
-            repC.Get(1, "Environment", "DefaultMachineId").Returns(new ConfigurationEntity { Value = "14" });
-            int dm = await ctrl.GetDefault();
-
-            dm.Should().Be(14);
-        }
-
-        [Fact]
-        public async Task GetDefaultMachineNotSet()
-        {
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var rep        = Substitute.For<IMachineRepository>();
-            var repC       = Substitute.For<IConfigurationRepository>();
-
-            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
-
-            repC.Get(1, "Environment", "DefaultMachineId").Returns((ConfigurationEntity)null);
-
-            (await ctrl.GetDefault()).Should().Be(-1);
-        }
-
-        [Fact]
-        public async Task SetDefaultMachine()
-        {
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var rep        = Substitute.For<IMachineRepository>();
-            var repC       = Substitute.For<IConfigurationRepository>();
-
-            var ctrl = new MachineManager(unitOfWork, rep, repC, new CNCLibUserContext(), Mapper);
-
-            await ctrl.SetDefault(15);
-
-            repC.Get(1, "Environment", "DefaultMachineId").Returns(new ConfigurationEntity { Value = "14" });
-
-            await repC.Received().Store(Arg.Is<ConfigurationEntity>(x => x.Group == "Environment" && x.Name == "DefaultMachineId" && x.Value == "15"));
-        }
+        await repC.Received().StoreAsync(Arg.Is<ConfigurationEntity>(x => x.Group == "Environment" && x.Name == "DefaultMachineId" && x.Value == "15"));
     }
 }

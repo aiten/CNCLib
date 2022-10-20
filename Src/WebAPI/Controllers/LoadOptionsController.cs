@@ -14,71 +14,70 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WebAPI.Controllers
+namespace CNCLib.WebAPI.Controllers;
+
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Shared;
+
+using Framework.WebAPI.Controller;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+[Authorize]
+[Route("api/[controller]")]
+public class LoadOptionsController : Controller
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+    private readonly ILoadOptionsManager _manager;
+    private readonly ICNCLibUserContext  _userContext;
 
-    using CNCLib.Logic.Abstraction;
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Shared;
-
-    using Framework.WebAPI.Controller;
-
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
-
-    [Authorize]
-    [Route("api/[controller]")]
-    public class LoadOptionsController : Controller
+    public LoadOptionsController(ILoadOptionsManager manager, ICNCLibUserContext userContext)
     {
-        private readonly ILoadOptionsManager _manager;
-        private readonly ICNCLibUserContext  _userContext;
-
-        public LoadOptionsController(ILoadOptionsManager manager, ICNCLibUserContext userContext)
-        {
-            _manager     = manager;
-            _userContext = userContext;
-        }
-
-        #region default REST
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<LoadOptions>>> Get()
-        {
-            return await this.GetAll(_manager);
-        }
-
-        [HttpGet("default")]
-        public ActionResult<LoadOptions> GetNewDefault()
-        {
-            return new LoadOptions();
-        }
-
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<LoadOptions>> Get(int id)
-        {
-            return await this.Get<LoadOptions, int>(_manager, id);
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<LoadOptions>> Add([FromBody] LoadOptions value)
-        {
-            return await this.Add<LoadOptions, int>(_manager, value);
-        }
-
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult> Update(int id, [FromBody] LoadOptions value)
-        {
-            return await this.Update<LoadOptions, int>(_manager, id, value.Id, value);
-        }
-
-        [HttpDelete("{id:int}")]
-        public async Task<ActionResult> Delete(int id)
-        {
-            return await this.Delete<LoadOptions, int>(_manager, id);
-        }
-
-        #endregion
+        _manager     = manager;
+        _userContext = userContext;
     }
+
+    #region default REST
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<LoadOptions>>> Get()
+    {
+        return await this.GetAll(_manager);
+    }
+
+    [HttpGet("default")]
+    public ActionResult<LoadOptions> GetNewDefault()
+    {
+        return new LoadOptions();
+    }
+
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<LoadOptions>> Get(int id)
+    {
+        return await this.Get<LoadOptions, int>(_manager, id);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<LoadOptions>> Add([FromBody] LoadOptions value)
+    {
+        return await this.Add<LoadOptions, int>(_manager, value);
+    }
+
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult> Update(int id, [FromBody] LoadOptions value)
+    {
+        return await this.Update<LoadOptions, int>(_manager, id, value.Id, value);
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<ActionResult> Delete(int id)
+    {
+        return await this.Delete<LoadOptions, int>(_manager, id);
+    }
+
+    #endregion
 }

@@ -14,34 +14,33 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.UnitTest.Logic
+namespace CNCLib.UnitTest.Logic;
+
+using AutoMapper;
+
+using CNCLib.Logic;
+
+using Framework.UnitTest;
+
+public class LogicTests : UnitTestBase
 {
-    using AutoMapper;
+    public static IMapper Mapper { get; private set; }
 
-    using CNCLib.Logic;
-
-    using Framework.UnitTest;
-
-    public class LogicTests : UnitTestBase
+    protected LogicTests()
     {
-        public static IMapper Mapper { get; private set; }
-
-        protected LogicTests()
+        if (Mapper == null)
         {
-            if (Mapper == null)
-            {
-                var config = new MapperConfiguration(
-                    cfg =>
-                    {
-                        cfg.AddProfile<LogicAutoMapperProfile>();
+            var config = new MapperConfiguration(
+                cfg =>
+                {
+                    cfg.AddProfile<LogicAutoMapperProfile>();
 
-                        //                cfg.AddProfile<WpfAutoMapperProfile>();
-                        //                cfg.AddProfile<GCodeGUIAutoMapperProfile>();
-                    });
-                config.AssertConfigurationIsValid();
+                    //                cfg.AddProfile<WpfAutoMapperProfile>();
+                    //                cfg.AddProfile<GCodeGUIAutoMapperProfile>();
+                });
+            config.AssertConfigurationIsValid();
 
-                Mapper = config.CreateMapper();
-            }
+            Mapper = config.CreateMapper();
         }
     }
 }

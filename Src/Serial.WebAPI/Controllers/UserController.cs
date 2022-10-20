@@ -14,35 +14,34 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Serial.WebAPI.Controllers
+namespace CNCLib.Serial.WebAPI.Controllers;
+
+using System.Threading.Tasks;
+
+using Framework.Logic.Abstraction;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+[Route("api/[controller]")]
+public class UserController : Controller
 {
-    using System.Threading.Tasks;
+    private IAuthenticationManager _authenticationManager;
 
-    using Framework.Logic.Abstraction;
-
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
-
-    [Route("api/[controller]")]
-    public class UserController : Controller
+    public UserController(IAuthenticationManager authenticationManager)
     {
-        private IAuthenticationManager _authenticationManager;
+        _authenticationManager = authenticationManager;
+    }
 
-        public UserController(IAuthenticationManager authenticationManager)
+    [AllowAnonymous]
+    [HttpGet("isValidUser")]
+    public async Task<ActionResult> IsValidUser(string userName, string password)
+    {
+        if ((await _authenticationManager.AuthenticateAsync(userName, password)) == null)
         {
-            _authenticationManager = authenticationManager;
+            return Forbid();
         }
 
-        [AllowAnonymous]
-        [HttpGet("isValidUser")]
-        public async Task<ActionResult> IsValidUser(string userName, string password)
-        {
-            if ((await _authenticationManager.Authenticate(userName, password)) == null)
-            {
-                return Forbid();
-            }
-
-            return Ok();
-        }
+        return Ok();
     }
 }

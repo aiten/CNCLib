@@ -14,53 +14,52 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Service.Logic
+namespace CNCLib.Service.Logic;
+
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Service.Abstraction;
+
+using Framework.Service.Logic;
+
+public class MachineService : CrudService<Machine, int>, IMachineService
 {
-    using System.Threading.Tasks;
+    readonly IMachineManager _manager;
 
-    using CNCLib.Logic.Abstraction;
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Service.Abstraction;
-
-    using Framework.Service.Logic;
-
-    public class MachineService : CrudService<Machine, int>, IMachineService
+    public MachineService(IMachineManager manager) : base(manager)
     {
-        readonly IMachineManager _manager;
+        _manager = manager;
+    }
 
-        public MachineService(IMachineManager manager) : base(manager)
-        {
-            _manager = manager;
-        }
+    public async Task<Machine> Default()
+    {
+        return await _manager.DefaultAsync();
+    }
 
-        public async Task<Machine> Default()
-        {
-            return await _manager.Default();
-        }
+    public async Task<int> GetDefault()
+    {
+        return await _manager.GetDefaultAsync();
+    }
 
-        public async Task<int> GetDefault()
-        {
-            return await _manager.GetDefault();
-        }
+    public async Task SetDefault(int machineId)
+    {
+        await _manager.SetDefaultAsync(machineId);
+    }
 
-        public async Task SetDefault(int machineId)
-        {
-            await _manager.SetDefault(machineId);
-        }
+    public async Task<string> TranslateJoystickMessage(int machineId, string joystickMessage)
+    {
+        return await _manager.TranslateJoystickMessageAsync(machineId, joystickMessage);
+    }
 
-        public async Task<string> TranslateJoystickMessage(int machineId, string joystickMessage)
-        {
-            return await _manager.TranslateJoystickMessage(machineId, joystickMessage);
-        }
+    public async Task<string> TranslateJoystickMessage(Machine machine, string joystickMessage)
+    {
+        return await Task.FromResult(_manager.TranslateJoystickMessage(machine, joystickMessage));
+    }
 
-        public async Task<string> TranslateJoystickMessage(Machine machine, string joystickMessage)
-        {
-            return await Task.FromResult(_manager.TranslateJoystickMessage(machine, joystickMessage));
-        }
-
-        public async Task<Machine> UpdateFromEeprom(Machine machine, uint[] eepromValues)
-        {
-            return await Task.FromResult(_manager.UpdateFromEeprom(machine, eepromValues));
-        }
+    public async Task<Machine> UpdateFromEeprom(Machine machine, uint[] eepromValues)
+    {
+        return await Task.FromResult(_manager.UpdateFromEeprom(machine, eepromValues));
     }
 }

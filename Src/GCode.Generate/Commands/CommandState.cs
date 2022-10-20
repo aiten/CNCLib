@@ -14,24 +14,23 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.GCode.Generate.Commands
+namespace CNCLib.GCode.Generate.Commands;
+
+using System.Collections.Generic;
+
+public class CommandState
 {
-    using System.Collections.Generic;
+    public bool UseLaser    { get; set; } = false;
+    public bool LaserOn     { get; set; } = false;
+    public bool SpindleOn   { get; set; } = false;
+    public bool CoolantOn   { get; set; } = false;
+    public Pane CurrentPane { get; set; } = Pane.XYPane;
 
-    public class CommandState
-    {
-        public bool UseLaser    { get; set; } = false;
-        public bool LaserOn     { get; set; } = false;
-        public bool SpindleOn   { get; set; } = false;
-        public bool CoolantOn   { get; set; } = false;
-        public Pane CurrentPane { get; set; } = Pane.XYPane;
+    public bool IsSelected { get; set; } = true;
 
-        public bool IsSelected { get; set; } = true;
+    public Command.Variable G82R { get; set; }
+    public Command.Variable G82P { get; set; }
+    public Command.Variable G82Z { get; set; }
 
-        public Command.Variable G82R { get; set; }
-        public Command.Variable G82P { get; set; }
-        public Command.Variable G82Z { get; set; }
-
-        public Dictionary<int, double> ParameterValues { get; private set; } = new Dictionary<int, double>();
-    }
+    public Dictionary<int, double> ParameterValues { get; private set; } = new Dictionary<int, double>();
 }

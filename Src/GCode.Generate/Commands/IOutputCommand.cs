@@ -14,36 +14,35 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.GCode.Generate.Commands
+namespace CNCLib.GCode.Generate.Commands;
+
+using System;
+
+using Framework.Drawing;
+
+[Flags]
+public enum DrawType
 {
-    using System;
+    NoDraw   = 0,
+    Draw     = 1,
+    Cut      = 2, // Go or G1,G2,G3
+    Laser    = 4,
+    Selected = 8, // e.g. current (focused or in work) commands
+    Done     = 16
+}
 
-    using Framework.Drawing;
+public enum Pane
+{
+    XYPane,
+    XZPane,
+    YZPane
+}
 
-    [Flags]
-    public enum DrawType
-    {
-        NoDraw   = 0,
-        Draw     = 1,
-        Cut      = 2, // Go or G1,G2,G3
-        Laser    = 4,
-        Selected = 8, // e.g. current (focused or in work) commands
-        Done     = 16
-    }
+public interface IOutputCommand
+{
+    void DrawLine(Command cmd, object param, DrawType drawType, Point3D ptFrom, Point3D ptTo);
 
-    public enum Pane
-    {
-        XYPane,
-        XZPane,
-        YZPane
-    }
+    void DrawArc(Command cmd, object param, DrawType drawType, Point3D ptFrom, Point3D ptTo, Point3D ptIJK, bool clockwise, Pane pane);
 
-    public interface IOutputCommand
-    {
-        void DrawLine(Command cmd, object param, DrawType drawType, Point3D ptFrom, Point3D ptTo);
-
-        void DrawArc(Command cmd, object param, DrawType drawType, Point3D ptFrom, Point3D ptTo, Point3D ptIJK, bool clockwise, Pane pane);
-
-        void DrawEllipse(Command cmd, object param, DrawType drawType, Point3D ptCenter, int radiusX, int radiusY);
-    }
+    void DrawEllipse(Command cmd, object param, DrawType drawType, Point3D ptCenter, int radiusX, int radiusY);
 }

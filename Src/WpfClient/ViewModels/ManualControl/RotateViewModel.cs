@@ -14,82 +14,81 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.ViewModels.ManualControl
+namespace CNCLib.WpfClient.ViewModels.ManualControl;
+
+using System.Windows.Input;
+
+using CNCLib.WpfClient.Helpers;
+
+using Framework.Wpf.Helpers;
+
+public class RotateViewModel : DetailViewModel
 {
-    using System.Windows.Input;
+    private readonly Global _global;
 
-    using CNCLib.WpfClient.Helpers;
-
-    using Framework.Wpf.Helpers;
-
-    public class RotateViewModel : DetailViewModel
+    public RotateViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
     {
-        private readonly Global _global;
-
-        public RotateViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
-        {
-            _global = global;
-        }
-
-        #region Properties
-
-        #endregion
-
-        #region Commands / CanCommands
-
-        public bool CanSendRotate()
-        {
-            return CanSend() && _global.Machine.Rotate;
-        }
-
-        public void SendG69()
-        {
-            RunAndUpdate(() => { _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "g69"); });
-        }
-
-        public void SendG68X0Y0R90()
-        {
-            RunAndUpdate(() => { _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "g68 x0y0r90"); });
-        }
-
-        public void SendG68X0Y0R270()
-        {
-            RunAndUpdate(() => { _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "g68 x0y0r270"); });
-        }
-
-        public void SendG6810()
-        {
-            RunAndUpdate(() => { _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "g68.10"); });
-        }
-
-        public void SendG6811()
-        {
-            RunAndUpdate(() => { _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "g68.11"); });
-        }
-
-        public void SendG6813()
-        {
-            RunAndUpdate(() => { _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "g68.13 j0k0"); });
-        }
-
-        public void SendG6814()
-        {
-            RunAndUpdate(() => { _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "g68.14 i0"); });
-        }
-
-        #endregion
-
-        #region ICommand
-
-        public ICommand SendG69Command         => new DelegateCommand(SendG69,         CanSendRotate);
-        public ICommand SendG68X0Y0R90Command  => new DelegateCommand(SendG68X0Y0R90,  CanSendRotate);
-        public ICommand SendG68X0Y0R270Command => new DelegateCommand(SendG68X0Y0R270, CanSendRotate);
-
-        public ICommand SendG6810Command => new DelegateCommand(SendG6810, CanSendRotate);
-        public ICommand SendG6811Command => new DelegateCommand(SendG6811, CanSendRotate);
-        public ICommand SendG6813Command => new DelegateCommand(SendG6813, CanSendRotate);
-        public ICommand SendG6814Command => new DelegateCommand(SendG6814, CanSendRotate);
-
-        #endregion
+        _global = global;
     }
+
+    #region Properties
+
+    #endregion
+
+    #region Commands / CanCommands
+
+    public bool CanSendRotate()
+    {
+        return CanSend() && _global.Machine.Rotate;
+    }
+
+    public void SendG69()
+    {
+        RunAndUpdate(() => { _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "g69"); });
+    }
+
+    public void SendG68X0Y0R90()
+    {
+        RunAndUpdate(() => { _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "g68 x0y0r90"); });
+    }
+
+    public void SendG68X0Y0R270()
+    {
+        RunAndUpdate(() => { _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "g68 x0y0r270"); });
+    }
+
+    public void SendG6810()
+    {
+        RunAndUpdate(() => { _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "g68.10"); });
+    }
+
+    public void SendG6811()
+    {
+        RunAndUpdate(() => { _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "g68.11"); });
+    }
+
+    public void SendG6813()
+    {
+        RunAndUpdate(() => { _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "g68.13 j0k0"); });
+    }
+
+    public void SendG6814()
+    {
+        RunAndUpdate(() => { _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "g68.14 i0"); });
+    }
+
+    #endregion
+
+    #region ICommand
+
+    public ICommand SendG69Command         => new DelegateCommand(SendG69,         CanSendRotate);
+    public ICommand SendG68X0Y0R90Command  => new DelegateCommand(SendG68X0Y0R90,  CanSendRotate);
+    public ICommand SendG68X0Y0R270Command => new DelegateCommand(SendG68X0Y0R270, CanSendRotate);
+
+    public ICommand SendG6810Command => new DelegateCommand(SendG6810, CanSendRotate);
+    public ICommand SendG6811Command => new DelegateCommand(SendG6811, CanSendRotate);
+    public ICommand SendG6813Command => new DelegateCommand(SendG6813, CanSendRotate);
+    public ICommand SendG6814Command => new DelegateCommand(SendG6814, CanSendRotate);
+
+    #endregion
 }

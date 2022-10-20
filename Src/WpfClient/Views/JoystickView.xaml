@@ -8,7 +8,7 @@
     <DockPanel>
         <StackPanel Margin="10,10,10,10" DockPanel.Dock="Bottom">
             <StackPanel Orientation="Horizontal">
-                <Button Command="{Binding SaveJoystickCommand}" Content="Save" Width="60" />
+                <Button Command="{Binding SaveJoystickCommand}" Content="SaveAsync" Width="60" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" />
         </StackPanel>

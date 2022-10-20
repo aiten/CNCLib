@@ -14,186 +14,185 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.GCode.Generate.Load
+namespace CNCLib.GCode.Generate.Load;
+
+using System;
+
+using CNCLib.GCode.Generate.Commands;
+using CNCLib.Logic.Abstraction.DTO;
+
+using Framework.Drawing;
+using Framework.Tools;
+
+public class LoadImage : LoadImageBase
 {
-    using System;
+    double _shiftLaserOn;
+    double _shiftLaserOff;
 
-    using CNCLib.GCode.Generate.Commands;
-    using CNCLib.Logic.Abstraction.DTO;
-
-    using Framework.Drawing;
-    using Framework.Tools;
-
-    public class LoadImage : LoadImageBase
+    public override void Load()
     {
-        double _shiftLaserOn;
-        double _shiftLaserOff;
+        PreLoad();
 
-        public override void Load()
+        AddCommentForLaser();
+
+        //            const double SHIFT = Math.PI / 16.0;
+        //            const double SHIFT = Math.PI / 8.0;
+        const double SHIFT = 0;
+
+        _shiftLaserOn  = -SHIFT * (double)LoadOptions.LaserSize;
+        _shiftLaserOff = SHIFT * (double)LoadOptions.LaserSize;
+
+        using (var bx = new System.Drawing.Bitmap(IOHelper.ExpandEnvironmentVariables(LoadOptions.FileName)))
         {
-            PreLoad();
-
-            AddCommentForLaser();
-
-            //            const double SHIFT = Math.PI / 16.0;
-            //            const double SHIFT = Math.PI / 8.0;
-            const double SHIFT = 0;
-
-            _shiftLaserOn  = -SHIFT * (double)LoadOptions.LaserSize;
-            _shiftLaserOff = SHIFT * (double)LoadOptions.LaserSize;
-
-            using (var bx = new System.Drawing.Bitmap(IOHelper.ExpandEnvironmentVariables(LoadOptions.FileName)))
+            System.Drawing.Bitmap b;
+            switch (bx.PixelFormat)
             {
-                System.Drawing.Bitmap b;
-                switch (bx.PixelFormat)
-                {
-                    case System.Drawing.Imaging.PixelFormat.Format1bppIndexed:
-                    case System.Drawing.Imaging.PixelFormat.Format4bppIndexed:
-                        b = ScaleImage(bx);
-                        break;
+                case System.Drawing.Imaging.PixelFormat.Format1bppIndexed:
+                case System.Drawing.Imaging.PixelFormat.Format4bppIndexed:
+                    b = ScaleImage(bx);
+                    break;
 
-                    case System.Drawing.Imaging.PixelFormat.Format32bppArgb:
-                    case System.Drawing.Imaging.PixelFormat.Format32bppPArgb:
-                    case System.Drawing.Imaging.PixelFormat.Format32bppRgb:
-                    case System.Drawing.Imaging.PixelFormat.Format24bppRgb:
+                case System.Drawing.Imaging.PixelFormat.Format32bppArgb:
+                case System.Drawing.Imaging.PixelFormat.Format32bppPArgb:
+                case System.Drawing.Imaging.PixelFormat.Format32bppRgb:
+                case System.Drawing.Imaging.PixelFormat.Format24bppRgb:
 
-                        b = ConvertImage(ScaleImage(bx));
-                        break;
+                    b = ConvertImage(ScaleImage(bx));
+                    break;
 
-                    default: throw new ArgumentException("Bitmap.PixelFormat not supported");
-                }
-
-                if (b.PixelFormat != System.Drawing.Imaging.PixelFormat.Format1bppIndexed && b.PixelFormat != System.Drawing.Imaging.PixelFormat.Format4bppIndexed)
-                {
-                    throw new ArgumentException("Bitmap must be Format1bbp");
-                }
-
-                WriteGCode(b);
+                default: throw new ArgumentException("Bitmap.PixelFormat not supported");
             }
 
-            PostLoad();
-        }
-
-        private System.Drawing.Bitmap ConvertImage(System.Drawing.Bitmap bx)
-        {
-            System.Drawing.Bitmap b = bx;
-
-            switch (LoadOptions.Dither)
+            if (b.PixelFormat != System.Drawing.Imaging.PixelFormat.Format1bppIndexed && b.PixelFormat != System.Drawing.Imaging.PixelFormat.Format4bppIndexed)
             {
-                case LoadOptions.DitherFilter.FloydSteinbergDither:
-                    AddComment("Image Converted with FloydSteinbergDither");
-                    AddComment("GrayThreshold", LoadOptions.GrayThreshold);
-                    b = new FloydSteinbergDither { GrayThreshold = LoadOptions.GrayThreshold }.Process(b);
-                    break;
-                case LoadOptions.DitherFilter.NewspaperDither:
-                    AddComment("Image Converted with NewspaperDither");
-                    AddComment("GrayThreshold", LoadOptions.GrayThreshold);
-                    AddComment("Dithersize",    LoadOptions.NewspaperDitherSize);
-                    b = new NewspaperDither
-                    {
-                        GrayThreshold = LoadOptions.GrayThreshold,
-                        DotSize       = LoadOptions.NewspaperDitherSize
-                    }.Process(b);
-                    break;
+                throw new ArgumentException("Bitmap must be Format1bbp");
             }
 
-            return b;
+            WriteGCode(b);
         }
 
-        protected override void WriteGCode()
+        PostLoad();
+    }
+
+    private System.Drawing.Bitmap ConvertImage(System.Drawing.Bitmap bx)
+    {
+        System.Drawing.Bitmap b = bx;
+
+        switch (LoadOptions.Dither)
         {
-            ForceLaserOff();
-            int black = System.Drawing.Color.Black.ToArgb();
-            int lastY = -1;
-
-            for (int y = 0; y < SizeY; y++)
-            {
-                bool wasLaserOn  = true;
-                bool lastLaserOn = false;
-
-                for (int x = 0; x < SizeX; x++)
+            case LoadOptions.DitherFilter.FloydSteinbergDither:
+                AddComment("Image Converted with FloydSteinbergDither");
+                AddComment("GrayThreshold", LoadOptions.GrayThreshold);
+                b = new FloydSteinbergDither { GrayThreshold = LoadOptions.GrayThreshold }.Process(b);
+                break;
+            case LoadOptions.DitherFilter.NewspaperDither:
+                AddComment("Image Converted with NewspaperDither");
+                AddComment("GrayThreshold", LoadOptions.GrayThreshold);
+                AddComment("Dithersize",    LoadOptions.NewspaperDitherSize);
+                b = new NewspaperDither
                 {
-                    var col = Bitmap.GetPixel(x, y);
+                    GrayThreshold = LoadOptions.GrayThreshold,
+                    DotSize       = LoadOptions.NewspaperDitherSize
+                }.Process(b);
+                break;
+        }
 
-                    bool isLaserOn = col.ToArgb() == black;
+        return b;
+    }
 
-                    if (LoadOptions.ImageInvert)
-                    {
-                        isLaserOn = !isLaserOn;
-                    }
+    protected override void WriteGCode()
+    {
+        ForceLaserOff();
+        int black = System.Drawing.Color.Black.ToArgb();
+        int lastY = -1;
 
-                    if (isLaserOn != wasLaserOn && x != 0)
-                    {
-                        AddCommandX(x, y, ref lastY, wasLaserOn);
-                        wasLaserOn = isLaserOn;
-                    }
-                    else if (x == 0)
-                    {
-                        wasLaserOn = isLaserOn;
-                        if (isLaserOn)
-                        {
-                            AddCommandX(x, y, ref lastY, false);
-                        }
-                    }
+        for (int y = 0; y < SizeY; y++)
+        {
+            bool wasLaserOn  = true;
+            bool lastLaserOn = false;
 
-                    lastLaserOn = isLaserOn;
+            for (int x = 0; x < SizeX; x++)
+            {
+                var col = Bitmap.GetPixel(x, y);
 
+                bool isLaserOn = col.ToArgb() == black;
+
+                if (LoadOptions.ImageInvert)
+                {
+                    isLaserOn = !isLaserOn;
+                }
+
+                if (isLaserOn != wasLaserOn && x != 0)
+                {
+                    AddCommandX(x, y, ref lastY, wasLaserOn);
+                    wasLaserOn = isLaserOn;
+                }
+                else if (x == 0)
+                {
+                    wasLaserOn = isLaserOn;
                     if (isLaserOn)
                     {
-                        LaserOn();
-                    }
-                    else
-                    {
-                        LaserOff();
+                        AddCommandX(x, y, ref lastY, false);
                     }
                 }
 
-                if (lastLaserOn)
+                lastLaserOn = isLaserOn;
+
+                if (isLaserOn)
                 {
-                    AddCommandX(SizeX, y, ref lastY, wasLaserOn);
+                    LaserOn();
                 }
-
-                LaserOff();
+                else
+                {
+                    LaserOff();
+                }
             }
-        }
 
-        private void AddCommandX(int x, int y, ref int lastY, bool laserOn)
+            if (lastLaserOn)
+            {
+                AddCommandX(SizeX, y, ref lastY, wasLaserOn);
+            }
+
+            LaserOff();
+        }
+    }
+
+    private void AddCommandX(int x, int y, ref int lastY, bool laserOn)
+    {
+        // start laser a bit later but switch it off earlier
+        double shift = laserOn ? _shiftLaserOff : _shiftLaserOn;
+
+        if (y != lastY)
         {
-            // start laser a bit later but switch it off earlier
-            double shift = laserOn ? _shiftLaserOff : _shiftLaserOn;
+            var    cy = new G00Command();
+            double x1 = (x * PixelSizeX) + ShiftX + shift - (double)LoadOptions.LaserAccDist;
 
-            if (y != lastY)
-            {
-                var    cy = new G00Command();
-                double x1 = (x * PixelSizeX) + ShiftX + shift - (double)LoadOptions.LaserAccDist;
-
-                cy.AddVariable('X', ToGCode(x1));
-                cy.AddVariable('Y', ToGCode((SizeY - y - 1) * PixelSizeY + ShiftY));
-                lastY = y;
-                Commands.Add(cy);
-            }
-
-            Command cx;
-
-            // if we have no laser on/off we switch with g01 and g00
-            bool useG1 = HaveLaserOnOffCommand() || laserOn;
-            if (useG1)
-            {
-                cx = new G01Command();
-            }
-            else
-            {
-                cx = new G00Command();
-            }
-
-            cx.AddVariable('X', ToGCode((x * PixelSizeX) + ShiftX + shift));
-
-            if (!useG1)
-            {
-                cx.AddVariableNoValue('F');
-            }
-
-            Commands.Add(cx);
+            cy.AddVariable('X', ToGCode(x1));
+            cy.AddVariable('Y', ToGCode((SizeY - y - 1) * PixelSizeY + ShiftY));
+            lastY = y;
+            Commands.Add(cy);
         }
+
+        Command cx;
+
+        // if we have no laser on/off we switch with g01 and g00
+        bool useG1 = HaveLaserOnOffCommand() || laserOn;
+        if (useG1)
+        {
+            cx = new G01Command();
+        }
+        else
+        {
+            cx = new G00Command();
+        }
+
+        cx.AddVariable('X', ToGCode((x * PixelSizeX) + ShiftX + shift));
+
+        if (!useG1)
+        {
+            cx.AddVariableNoValue('F');
+        }
+
+        Commands.Add(cx);
     }
 }

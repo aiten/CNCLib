@@ -14,142 +14,141 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.GCode.Generate.CamBam
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Xml;
-    using System.Xml.Schema;
-    using System.Xml.Serialization;
+namespace CNCLib.GCode.Generate.CamBam;
 
-    [XmlRoot("CADFile", IsNullable = false)]
-    public class CamBam
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
+
+[XmlRoot("CADFile", IsNullable = false)]
+public class CamBam
+{
+    [XmlAttribute("name")]
+    public string Name { get; set; } = @"CNCLib";
+
+    [XmlAttribute("version")]
+    public string Version { get; set; } = "0.9.8.0";
+
+    [XmlType("layer")]
+    public class Layer
     {
         [XmlAttribute("name")]
-        public string Name { get; set; } = @"CNCLib";
+        public string Name { get; set; }
 
-        [XmlAttribute("version")]
-        public string Version { get; set; } = "0.9.8.0";
+        [XmlAttribute("color")]
+        public string Color { get; set; }
 
-        [XmlType("layer")]
-        public class Layer
+        [XmlArray(ElementName = "objects")]
+        public List<PLine> PLines { get; set; } = new List<PLine>();
+
+        public PLine AddPLine()
         {
-            [XmlAttribute("name")]
-            public string Name { get; set; }
+            var pline = new PLine { Id = PLines.Count + 1 };
+            PLines.Add(pline);
+            return pline;
+        }
+    }
 
-            [XmlAttribute("color")]
-            public string Color { get; set; }
+    [XmlArray("layers")]
+    public List<Layer> Layers { get; set; } = new List<Layer>();
 
-            [XmlArray(ElementName = "objects")]
-            public List<PLine> PLines { get; set; } = new List<PLine>();
+    public Layer AddLayer()
+    {
+        var l = new Layer();
+        Layers.Add(l);
+        return l;
+    }
 
-            public PLine AddPLine()
+    [XmlType("pline")]
+    public class PLine
+    {
+        [XmlAttribute("id")]
+        public int Id { get; set; }
+
+        [XmlAttribute("Closed")]
+        public bool Closed { get; set; }
+
+        [XmlArray(ElementName = "pts")]
+        [XmlArrayItem(ElementName = "p")]
+        public List<PLinePoints> Pts { get; set; } = new List<PLinePoints>();
+
+        public void CheckAndSetClosed()
+        {
+            if (Pts.Count > 2)
             {
-                var pline = new PLine { Id = PLines.Count + 1 };
-                PLines.Add(pline);
-                return pline;
+                if (Pts[0].CompareTo(Pts[Pts.Count - 1]) == 0)
+                {
+                    Pts.RemoveAt(Pts.Count - 1);
+                    Closed = true;
+                    return;
+                }
+            }
+
+            Closed = false;
+        }
+    }
+
+    public class PLinePoints : IXmlSerializable, IComparable<PLinePoints>
+    {
+        public double? X  { get; set; }
+        public double? Y  { get; set; }
+        public double? Z  { get; set; }
+        public double  X0 => X ?? 0.0;
+        public double  Y0 => Y ?? 0.0;
+        public double  Z0 => Z ?? 0.0;
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteString($@"{X0.ToString(CultureInfo.InvariantCulture)},{Y0.ToString(CultureInfo.InvariantCulture)},{Z0.ToString(CultureInfo.InvariantCulture)}");
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            string[] fields = reader.ReadElementContentAsString().Split(',');
+            if (fields.Length > 0 && !string.IsNullOrEmpty(fields[0]))
+            {
+                X = double.Parse(fields[0], CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                X = null;
+            }
+
+            if (fields.Length > 1 && !string.IsNullOrEmpty(fields[1]))
+            {
+                Y = double.Parse(fields[1], CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                Y = null;
+            }
+
+            if (fields.Length > 2 && !string.IsNullOrEmpty(fields[2]))
+            {
+                Z = double.Parse(fields[2], CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                Z = null;
             }
         }
 
-        [XmlArray("layers")]
-        public List<Layer> Layers { get; set; } = new List<Layer>();
-
-        public Layer AddLayer()
+        public XmlSchema GetSchema()
         {
-            var l = new Layer();
-            Layers.Add(l);
-            return l;
+            return null;
         }
 
-        [XmlType("pline")]
-        public class PLine
+        public int CompareTo(PLinePoints other)
         {
-            [XmlAttribute("id")]
-            public int Id { get; set; }
-
-            [XmlAttribute("Closed")]
-            public bool Closed { get; set; }
-
-            [XmlArray(ElementName     = "pts")]
-            [XmlArrayItem(ElementName = "p")]
-            public List<PLinePoints> Pts { get; set; } = new List<PLinePoints>();
-
-            public void CheckAndSetClosed()
+            if (X == other.X && Y == other.Y && Z == other.Z)
             {
-                if (Pts.Count > 2)
-                {
-                    if (Pts[0].CompareTo(Pts[Pts.Count - 1]) == 0)
-                    {
-                        Pts.RemoveAt(Pts.Count - 1);
-                        Closed = true;
-                        return;
-                    }
-                }
-
-                Closed = false;
-            }
-        }
-
-        public class PLinePoints : IXmlSerializable, IComparable<PLinePoints>
-        {
-            public double? X  { get; set; }
-            public double? Y  { get; set; }
-            public double? Z  { get; set; }
-            public double  X0 => X ?? 0.0;
-            public double  Y0 => Y ?? 0.0;
-            public double  Z0 => Z ?? 0.0;
-
-            public void WriteXml(XmlWriter writer)
-            {
-                writer.WriteString($@"{X0.ToString(CultureInfo.InvariantCulture)},{Y0.ToString(CultureInfo.InvariantCulture)},{Z0.ToString(CultureInfo.InvariantCulture)}");
+                return 0;
             }
 
-            public void ReadXml(XmlReader reader)
-            {
-                string[] fields = reader.ReadElementContentAsString().Split(',');
-                if (fields.Length > 0 && !string.IsNullOrEmpty(fields[0]))
-                {
-                    X = double.Parse(fields[0], CultureInfo.InvariantCulture);
-                }
-                else
-                {
-                    X = null;
-                }
-
-                if (fields.Length > 1 && !string.IsNullOrEmpty(fields[1]))
-                {
-                    Y = double.Parse(fields[1], CultureInfo.InvariantCulture);
-                }
-                else
-                {
-                    Y = null;
-                }
-
-                if (fields.Length > 2 && !string.IsNullOrEmpty(fields[2]))
-                {
-                    Z = double.Parse(fields[2], CultureInfo.InvariantCulture);
-                }
-                else
-                {
-                    Z = null;
-                }
-            }
-
-            public XmlSchema GetSchema()
-            {
-                return null;
-            }
-
-            public int CompareTo(PLinePoints other)
-            {
-                if (X == other.X && Y == other.Y && Z == other.Z)
-                {
-                    return 0;
-                }
-
-                return 1;
-            }
+            return 1;
         }
     }
 }

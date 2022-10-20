@@ -14,16 +14,15 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.UnitTest.Logic
+namespace CNCLib.UnitTest.Logic;
+
+public class DynItemManagerTestClass
 {
-    public class DynItemManagerTestClass
-    {
-        public int      IntProperty         { get; set; }
-        public string   StringProperty      { get; set; }
-        public double   DoubleProperty      { get; set; }
-        public decimal  DecimalProperty     { get; set; }
-        public int?     IntNullProperty     { get; set; }
-        public double?  DoubleNullProperty  { get; set; }
-        public decimal? DecimalNullProperty { get; set; }
-    }
+    public int      IntProperty         { get; set; }
+    public string   StringProperty      { get; set; }
+    public double   DoubleProperty      { get; set; }
+    public decimal  DecimalProperty     { get; set; }
+    public int?     IntNullProperty     { get; set; }
+    public double?  DoubleNullProperty  { get; set; }
+    public decimal? DecimalNullProperty { get; set; }
 }

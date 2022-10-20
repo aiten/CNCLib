@@ -14,103 +14,102 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient
+namespace CNCLib.WpfClient;
+
+using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Service.Abstraction;
+using CNCLib.Shared;
+
+using Framework.Dependency;
+using Framework.Tools;
+
+using Microsoft.Extensions.DependencyInjection;
+
+public class CNCLibUserContext : ICNCLibUserContext
 {
-    using System;
-    using System.Security.Claims;
-    using System.Threading.Tasks;
-
-    using CNCLib.Logic.Abstraction;
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Service.Abstraction;
-    using CNCLib.Shared;
-
-    using Framework.Dependency;
-    using Framework.Tools;
-
-    using Microsoft.Extensions.DependencyInjection;
-
-    public class CNCLibUserContext : ICNCLibUserContext
+    public CNCLibUserContext(string userName = null)
     {
-        public CNCLibUserContext(string userName = null)
+        if (userName == null)
         {
-            if (userName == null)
-            {
-                userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
-            }
-
-            UserId  = 1;
-            User    = CreatePrincipal(userName, UserId);
-            IsAdmin = true;
-
-            UserName          = userName; // Environment.UserName;
-            EncryptedPassword = Base64Helper.StringToBase64(UserName);
+            userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
         }
 
-        private ClaimsPrincipal CreatePrincipal(string userName, int userId)
+        UserId  = 1;
+        User    = CreatePrincipal(userName, UserId);
+        IsAdmin = true;
+
+        UserName          = userName; // Environment.UserName;
+        EncryptedPassword = Base64Helper.StringToBase64(UserName);
+    }
+
+    private ClaimsPrincipal CreatePrincipal(string userName, int userId)
+    {
+        var claims = new[]
         {
-            var claims = new[]
+            new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+            new Claim(ClaimTypes.Name,           userName),
+            new Claim(CNCLibClaimTypes.IsAdmin,  "true"),
+        };
+        var identity = new ClaimsIdentity(claims, "BasicAuthentication");
+
+        return new ClaimsPrincipal(identity);
+    }
+
+    public ClaimsPrincipal User { get; private set; }
+
+    public string UserName { get; private set; }
+
+    public string EncryptedPassword { get; private set; }
+
+    public string Password => Base64Helper.StringFromBase64(EncryptedPassword ?? "");
+
+    public int  UserId  { get; private set; }
+    public bool IsAdmin { get; private set; }
+
+    public async Task InitUserContext()
+    {
+        await InitUserContext(UserName);
+    }
+
+    public async Task InitUserContext(string userName, string password = null)
+    {
+        try
+        {
+            UserName          = userName;
+            EncryptedPassword = Base64Helper.StringToBase64(password ?? UserName);
+
+            using (var scope = AppService.ServiceProvider.CreateScope())
             {
-                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-                new Claim(ClaimTypes.Name,           userName),
-                new Claim(CNCLibClaimTypes.IsAdmin,  "true"),
-            };
-            var identity = new ClaimsIdentity(claims, "BasicAuthentication");
+                var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
 
-            return new ClaimsPrincipal(identity);
-        }
+                var userOk = await userService.IsValidUser(userName, Password);
+                var user   = await userService.GetCurrentUser();
 
-        public ClaimsPrincipal User { get; private set; }
-
-        public string UserName { get; private set; }
-
-        public string EncryptedPassword { get; private set; }
-
-        public string Password => Base64Helper.StringFromBase64(EncryptedPassword ?? "");
-
-        public int  UserId  { get; private set; }
-        public bool IsAdmin { get; private set; }
-
-        public async Task InitUserContext()
-        {
-            await InitUserContext(UserName);
-        }
-
-        public async Task InitUserContext(string userName, string password = null)
-        {
-            try
-            {
-                UserName          = userName;
-                EncryptedPassword = Base64Helper.StringToBase64(password ?? UserName);
-
-                using (var scope = AppService.ServiceProvider.CreateScope())
+                if (user == null)
                 {
-                    var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
+                    user        = new User();
+                    user.Name   = UserName;
+                    user.UserId = await userService.AddAsync(user);
+                }
 
-                    var userOk = await userService.IsValidUser(userName, Password);
-                    var user   = await userService.GetCurrentUser();
+                UserId = user.UserId;
+                User   = CreatePrincipal(UserName, UserId);
 
-                    if (user == null)
-                    {
-                        user        = new User();
-                        user.Name   = UserName;
-                        user.UserId = await userService.Add(user);
-                    }
-
-                    UserId = user.UserId;
-                    User   = CreatePrincipal(UserName, UserId);
-
-                    if (password == null)
-                    {
-                        EncryptedPassword = Base64Helper.StringToBase64(UserName);
-                    }
+                if (password == null)
+                {
+                    EncryptedPassword = Base64Helper.StringToBase64(UserName);
                 }
             }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-                throw;
-            }
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception);
+            throw;
         }
     }
 }

@@ -14,25 +14,24 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Service.Abstraction
+namespace CNCLib.Service.Abstraction;
+
+using System;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction.DTO;
+
+using Framework.Service.Abstraction;
+
+public interface IMachineService : IDisposable, ICrudService<Machine, int>
 {
-    using System;
-    using System.Threading.Tasks;
+    Task<Machine> Default();
+    Task<int>     GetDefault();
+    Task          SetDefault(int defaultMachineId);
 
-    using CNCLib.Logic.Abstraction.DTO;
+    Task<string> TranslateJoystickMessage(int machineId, string joystickMessage);
 
-    using Framework.Service.Abstraction;
+    Task<string> TranslateJoystickMessage(Machine machine, string joystickMessage);
 
-    public interface IMachineService : IDisposable, ICrudService<Machine, int>
-    {
-        Task<Machine> Default();
-        Task<int>     GetDefault();
-        Task          SetDefault(int defaultMachineId);
-
-        Task<string> TranslateJoystickMessage(int machineId, string joystickMessage);
-
-        Task<string> TranslateJoystickMessage(Machine machine, string joystickMessage);
-
-        Task<Machine> UpdateFromEeprom(Machine machine, uint[] eepromValues);
-    }
+    Task<Machine> UpdateFromEeprom(Machine machine, uint[] eepromValues);
 }

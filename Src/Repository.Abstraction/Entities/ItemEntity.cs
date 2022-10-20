@@ -14,18 +14,17 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository.Abstraction.Entities
+namespace CNCLib.Repository.Abstraction.Entities;
+
+using System.Collections.Generic;
+
+public class ItemEntity
 {
-    using System.Collections.Generic;
+    public int        ItemId    { get; set; }
+    public int        UserId    { get; set; }
+    public UserEntity User      { get; set; }
+    public string     Name      { get; set; }
+    public string     ClassName { get; set; }
 
-    public class ItemEntity
-    {
-        public int        ItemId    { get; set; }
-        public int        UserId    { get; set; }
-        public UserEntity User      { get; set; }
-        public string     Name      { get; set; }
-        public string     ClassName { get; set; }
-
-        public ICollection<ItemPropertyEntity> ItemProperties { get; set; }
-    }
+    public ICollection<ItemPropertyEntity> ItemProperties { get; set; }
 }

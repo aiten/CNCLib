@@ -14,78 +14,77 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.GCode.Generate.Parser
+namespace CNCLib.GCode.Generate.Parser;
+
+using Framework.Parser;
+
+public class GCodeParser : Framework.Parser.Parser
 {
-    using Framework.Parser;
+    readonly string MESSAGE_GCODE_CommentNestingError = "Comment nesting error";
 
-    public class GCodeParser : Framework.Parser.Parser
+    public GCodeParser(ParserStreamReader reader) : base(reader)
     {
-        readonly string MESSAGE_GCODE_CommentNestingError = "Comment nesting error";
+    }
 
-        public GCodeParser(ParserStreamReader reader) : base(reader)
+    public static bool IsCommentStart(char ch)
+    {
+        return ch == '(' || ch == '*' || ch == ';';
+    }
+
+    ////////////////////////////////////////////////////////////
+
+    public char SkipSpacesOrComment()
+    {
+        switch (SkipSpaces())
         {
+            case '(':
+                SkipCommentNested();
+                break;
+            case '*':
+            case ';':
+                SkipCommentSingleLine();
+                break;
         }
 
-        public static bool IsCommentStart(char ch)
-        {
-            return ch == '(' || ch == '*' || ch == ';';
-        }
+        return Reader.NextChar;
+    }
 
-        ////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////
 
-        public char SkipSpacesOrComment()
-        {
-            switch (SkipSpaces())
-            {
-                case '(':
-                    SkipCommentNested();
-                    break;
-                case '*':
-                case ';':
-                    SkipCommentSingleLine();
-                    break;
-            }
+    void SkipCommentSingleLine()
+    {
+        ReadToEnd();
+    }
 
-            return Reader.NextChar;
-        }
-
-        ////////////////////////////////////////////////////////////
-
-        void SkipCommentSingleLine()
-        {
-            ReadToEnd();
-        }
-
-        void SkipCommentNested()
-        {
-            int cnt = 0;
+    void SkipCommentNested()
+    {
+        int cnt = 0;
 
 //            char* start = (char*)Reader->GetBuffer();
 
-            for (char ch = Reader.NextChar; ch != 0; ch = Reader.Next())
+        for (char ch = Reader.NextChar; ch != 0; ch = Reader.Next())
+        {
+            switch (ch)
             {
-                switch (ch)
+                case ')':
                 {
-                    case ')':
+                    cnt--;
+                    if (cnt == 0)
                     {
-                        cnt--;
-                        if (cnt == 0)
-                        {
-                            Reader.Next();
+                        Reader.Next();
 
 //                            CommentMessage(start);
-                            return;
-                        }
-
-                        break;
+                        return;
                     }
-                    case '(':
-                        cnt++;
-                        break;
-                }
-            }
 
-            Error(MESSAGE_GCODE_CommentNestingError);
+                    break;
+                }
+                case '(':
+                    cnt++;
+                    break;
+            }
         }
+
+        Error(MESSAGE_GCODE_CommentNestingError);
     }
 }

@@ -38,9 +38,9 @@
                                           ItemsSource="{Binding AllLoadOptions}" DisplayMemberPath="SettingName" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="120,10,0,0">
-                                <Button Command="{Binding SaveSettingCommand}" Content="Save" Width="60" />
-                                <Button Command="{Binding SaveAsSettingCommand}" Content="Save as" Width="60" />
-                                <Button Command="{Binding DeleteSettingCommand}" Content="Delete" Width="60" />
+                                <Button Command="{Binding SaveSettingCommand}" Content="SaveAsync" Width="60" />
+                                <Button Command="{Binding SaveAsSettingCommand}" Content="SaveAsync as" Width="60" />
+                                <Button Command="{Binding DeleteSettingCommand}" Content="DeleteAsync" Width="60" />
                                 <Button Command="{Binding ExportSettingCommand}" Content="Export" Width="60" />
                                 <Button Command="{Binding ImportSettingCommand}" Content="Import" Width="60" />
                             </StackPanel>
@@ -69,7 +69,7 @@
                     <GroupBox Header="Output">
                         <StackPanel Margin="5,5,0,0">
                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                                <Label Content="Save GCode to" Width="120" />
+                                <Label Content="SaveAsync GCode to" Width="120" />
                                 <TextBox Text="{Binding LoadOptionsValue.GCodeWriteToFileName}"
                                          VerticalContentAlignment="Center" />
                                 <Button Command="{Binding BrowseGCodeFileNameCommand}" Content="?" />
@@ -87,7 +87,8 @@
                                          VerticalContentAlignment="Center" MinWidth="100" />
                                 <Label Content="gcode" />
                             </StackPanel>
-                            <CheckBox Content="Add line numbers" IsChecked="{Binding LoadOptionsValue.AddLineNumbers}"
+                            <CheckBox Content="AddAsync line numbers"
+                                      IsChecked="{Binding LoadOptionsValue.AddLineNumbers}"
                                       Margin="120,5,0,0" />
                             <CheckBox Content="Substitute G82" IsChecked="{Binding LoadOptionsValue.SubstG82}"
                                       Margin="120,5,0,0" />
@@ -316,7 +317,7 @@
                             <CheckBox Content="Invert image" IsChecked="{Binding LoadOptionsValue.ImageInvert}"
                                       Margin="120,5,0,10" />
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="Save image to" Width="120" />
+                                <Label Content="SaveAsync image to" Width="120" />
                                 <TextBox Text="{Binding LoadOptionsValue.ImageWriteToFileName}"
                                          VerticalContentAlignment="Center" />
                                 <Button Command="{Binding BrowseImageFileNameCommand}" Content="?" />

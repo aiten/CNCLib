@@ -14,179 +14,178 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.ViewModels.ManualControl
+namespace CNCLib.WpfClient.ViewModels.ManualControl;
+
+using System.Globalization;
+using System.Windows;
+using System.Windows.Input;
+
+using CNCLib.WpfClient.Helpers;
+
+using Framework.Arduino.SerialCommunication;
+using Framework.Wpf.Helpers;
+
+public class AxisViewModel : DetailViewModel
 {
-    using System.Globalization;
-    using System.Windows;
-    using System.Windows.Input;
+    private readonly Global _global;
 
-    using CNCLib.WpfClient.Helpers;
-
-    using Framework.Arduino.SerialCommunication;
-    using Framework.Wpf.Helpers;
-
-    public class AxisViewModel : DetailViewModel
+    public AxisViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
     {
-        private readonly Global _global;
-
-        public AxisViewModel(IManualControlViewModel vm, Global global) : base(vm, global)
+        _global = global;
+        _global.PropertyChanged += (sender, e) =>
         {
-            _global = global;
-            _global.PropertyChanged += (sender, e) =>
+            if (e.PropertyName == "Machine")
             {
-                if (e.PropertyName == "Machine")
-                {
-                    MachineChanged();
-                }
-            };
-        }
+                MachineChanged();
+            }
+        };
+    }
 
-        #region Properties
+    #region Properties
 
-        public int     AxisIndex { get; set; }
-        public string  AxisName  => _global.Machine.GetAxisName(AxisIndex);
-        public decimal Size      => _global.Machine.GetSize(AxisIndex);
+    public int     AxisIndex { get; set; }
+    public string  AxisName  => _global.Machine.GetAxisName(AxisIndex);
+    public decimal Size      => _global.Machine.GetSize(AxisIndex);
 
-        //public decimal ProbeSize { get { return _global.Machine.GetProbeSize(AxisIndex); } }
-        public bool HomeIsMax { get; set; }
+    //public decimal ProbeSize { get { return _global.Machine.GetProbeSize(AxisIndex); } }
+    public bool HomeIsMax { get; set; }
 
-        private string  _param = "0";
-        public  decimal ParamDec => decimal.Parse(Param);
+    private string  _param = "0";
+    public  decimal ParamDec => decimal.Parse(Param);
 
-        public string Param
-        {
-            get => _param;
-            set => SetProperty(ref _param, value);
-        }
+    public string Param
+    {
+        get => _param;
+        set => SetProperty(ref _param, value);
+    }
 
-        private string _pos = "";
+    private string _pos = "";
 
-        public string Pos
-        {
-            get => _pos;
-            set => SetProperty(ref _pos, value);
-        }
+    public string Pos
+    {
+        get => _pos;
+        set => SetProperty(ref _pos, value);
+    }
 
-        private string _relPos = "";
+    private string _relPos = "";
 
-        public string RelPos
-        {
-            get => _relPos;
-            set => SetProperty(ref _relPos, value);
-        }
+    public string RelPos
+    {
+        get => _relPos;
+        set => SetProperty(ref _relPos, value);
+    }
 
-        public bool Enabled => _global.Machine.Axis > AxisIndex && Size > 0m;
+    public bool Enabled => _global.Machine.Axis > AxisIndex && Size > 0m;
 
-        public Visibility Visibility => IsDesignTime || Enabled ? Visibility.Visible : Visibility.Hidden;
+    public Visibility Visibility => IsDesignTime || Enabled ? Visibility.Visible : Visibility.Hidden;
 
-        private void MachineChanged()
-        {
-            RaisePropertyChanged(nameof(Enabled));
-            RaisePropertyChanged(nameof(Visibility));
-        }
+    private void MachineChanged()
+    {
+        RaisePropertyChanged(nameof(Enabled));
+        RaisePropertyChanged(nameof(Visibility));
+    }
 
-        #endregion
+    #endregion
 
-        #region Commands / CanCommands
+    #region Commands / CanCommands
 
-        private void SendMoveCommand(string dist)
-        {
-            RunAndUpdate(() => { _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "g91 g0" + AxisName + dist + " g90"); });
-        }
+    private void SendMoveCommand(string dist)
+    {
+        RunAndUpdate(() => { _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "g91 g0" + AxisName + dist + " g90"); });
+    }
 
-        private void SendProbeCommand(int axisIndex)
-        {
-            RunAndUpdate(async () => { await _global.Com.Current.SendProbeCommandAsync(_global.Machine, AxisIndex); });
-        }
+    private void SendProbeCommand(int axisIndex)
+    {
+        RunAndUpdate(async () => { await _global.Com.Current.SendProbeCommandAsync(_global.Machine, AxisIndex); });
+    }
 
-        public void SendRefMove()
-        {
-            RunAndUpdate(() => { _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "g28 " + AxisName + "0"); });
-        }
+    public void SendRefMove()
+    {
+        RunAndUpdate(() => { _global.Com.Current.PrepareAndQueueCommand(_global.Machine, "g28 " + AxisName + "0"); });
+    }
 
-        public void SendG92()
-        {
-            RunAndUpdate(() => { _global.Com.Current.QueueCommand("g92 " + AxisName + ParamDec.ToString(CultureInfo.InvariantCulture)); });
-        }
+    public void SendG92()
+    {
+        RunAndUpdate(() => { _global.Com.Current.QueueCommand("g92 " + AxisName + ParamDec.ToString(CultureInfo.InvariantCulture)); });
+    }
 
-        public void SendG31()
-        {
-            SendProbeCommand(AxisIndex);
-        }
+    public void SendG31()
+    {
+        SendProbeCommand(AxisIndex);
+    }
 
-        public void SendHome()
-        {
-            RunAndUpdate(
-                () =>
-                {
-                    if (HomeIsMax)
-                    {
-                        _global.Com.Current.QueueCommand("g53 g0" + AxisName + "#" + (5161 + AxisIndex).ToString());
-                    }
-                    else
-                    {
-                        _global.Com.Current.QueueCommand("g53 g0" + AxisName + "0");
-                    }
-                });
-        }
-
-        public bool CanSendCommand()
-        {
-            return CanSend() && Enabled;
-        }
-
-        public bool CanSendCommandPlotter()
-        {
-            return CanSendGCode() && Enabled;
-        }
-
-        #endregion
-
-        #region ICommands
-
-        public ICommand SendPlus100Command =>
-            new DelegateCommand(() => SendMoveCommand("100"), () => CanSendCommand() && Size >= 100.0m);
-
-        public ICommand SendPlus10Command =>
-            new DelegateCommand(() => SendMoveCommand("10"), () => CanSendCommand() && Size >= 10.0m);
-
-        public ICommand SendPlus1Command =>
-            new DelegateCommand(() => SendMoveCommand("1"), () => CanSendCommand() && Size >= 1.0m);
-
-        public ICommand SendPlus01Command =>
-            new DelegateCommand(() => SendMoveCommand("0.1"), () => CanSendCommand() && Size >= 0.1m);
-
-        public ICommand SendPlus001Command =>
-            new DelegateCommand(() => SendMoveCommand("0.01"), () => CanSendCommand() && Size >= 0.01m);
-
-        public ICommand SendMinus100Command =>
-            new DelegateCommand(() => SendMoveCommand("-100"), () => CanSendCommand() && Size >= 100.0m);
-
-        public ICommand SendMinus10Command =>
-            new DelegateCommand(() => SendMoveCommand("-10"), () => CanSendCommand() && Size >= 10.0m);
-
-        public ICommand SendMinus1Command =>
-            new DelegateCommand(() => SendMoveCommand("-1"), () => CanSendCommand() && Size >= 1.0m);
-
-        public ICommand SendMinus01Command =>
-            new DelegateCommand(() => SendMoveCommand("-0.1"), () => CanSendCommand() && Size >= 0.1m);
-
-        public ICommand SendMinus001Command =>
-            new DelegateCommand(() => SendMoveCommand("-0.01"), () => CanSendCommand() && Size >= 0.01m);
-
-        public ICommand SendRefMoveCommand => new DelegateCommand(SendRefMove, CanSendCommand);
-
-        public ICommand SendG92Command => new DelegateCommand(
-            SendG92,
+    public void SendHome()
+    {
+        RunAndUpdate(
             () =>
             {
-                decimal dummy;
-                return CanSendCommandPlotter() && decimal.TryParse(Param, out dummy);
+                if (HomeIsMax)
+                {
+                    _global.Com.Current.QueueCommand("g53 g0" + AxisName + "#" + (5161 + AxisIndex).ToString());
+                }
+                else
+                {
+                    _global.Com.Current.QueueCommand("g53 g0" + AxisName + "0");
+                }
             });
-
-        public ICommand SendG31Command  => new DelegateCommand(SendG31,  CanSendCommandPlotter);
-        public ICommand SendHomeCommand => new DelegateCommand(SendHome, CanSendCommandPlotter);
-
-        #endregion
     }
+
+    public bool CanSendCommand()
+    {
+        return CanSend() && Enabled;
+    }
+
+    public bool CanSendCommandPlotter()
+    {
+        return CanSendGCode() && Enabled;
+    }
+
+    #endregion
+
+    #region ICommands
+
+    public ICommand SendPlus100Command =>
+        new DelegateCommand(() => SendMoveCommand("100"), () => CanSendCommand() && Size >= 100.0m);
+
+    public ICommand SendPlus10Command =>
+        new DelegateCommand(() => SendMoveCommand("10"), () => CanSendCommand() && Size >= 10.0m);
+
+    public ICommand SendPlus1Command =>
+        new DelegateCommand(() => SendMoveCommand("1"), () => CanSendCommand() && Size >= 1.0m);
+
+    public ICommand SendPlus01Command =>
+        new DelegateCommand(() => SendMoveCommand("0.1"), () => CanSendCommand() && Size >= 0.1m);
+
+    public ICommand SendPlus001Command =>
+        new DelegateCommand(() => SendMoveCommand("0.01"), () => CanSendCommand() && Size >= 0.01m);
+
+    public ICommand SendMinus100Command =>
+        new DelegateCommand(() => SendMoveCommand("-100"), () => CanSendCommand() && Size >= 100.0m);
+
+    public ICommand SendMinus10Command =>
+        new DelegateCommand(() => SendMoveCommand("-10"), () => CanSendCommand() && Size >= 10.0m);
+
+    public ICommand SendMinus1Command =>
+        new DelegateCommand(() => SendMoveCommand("-1"), () => CanSendCommand() && Size >= 1.0m);
+
+    public ICommand SendMinus01Command =>
+        new DelegateCommand(() => SendMoveCommand("-0.1"), () => CanSendCommand() && Size >= 0.1m);
+
+    public ICommand SendMinus001Command =>
+        new DelegateCommand(() => SendMoveCommand("-0.01"), () => CanSendCommand() && Size >= 0.01m);
+
+    public ICommand SendRefMoveCommand => new DelegateCommand(SendRefMove, CanSendCommand);
+
+    public ICommand SendG92Command => new DelegateCommand(
+        SendG92,
+        () =>
+        {
+            decimal dummy;
+            return CanSendCommandPlotter() && decimal.TryParse(Param, out dummy);
+        });
+
+    public ICommand SendG31Command  => new DelegateCommand(SendG31,  CanSendCommandPlotter);
+    public ICommand SendHomeCommand => new DelegateCommand(SendHome, CanSendCommandPlotter);
+
+    #endregion
 }

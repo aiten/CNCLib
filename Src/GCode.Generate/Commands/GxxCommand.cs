@@ -14,41 +14,40 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.GCode.Generate.Commands
+namespace CNCLib.GCode.Generate.Commands;
+
+[IsGCommand("GXX")]
+public class GxxCommand : Command
 {
-    [IsGCommand("GXX")]
-    public class GxxCommand : Command
+    #region crt + factory
+
+    public GxxCommand()
     {
-        #region crt + factory
-
-        public GxxCommand()
-        {
-            Code = "";
-        }
-
-        #endregion
-
-        #region GCode
-
-        public override void SetCode(string code)
-        {
-            Code = code;
-        }
-
-        #endregion
-
-        #region Draw
-
-        public override void Draw(IOutputCommand output, CommandState state, object param)
-        {
-            if (state.UseLaser == false && string.IsNullOrEmpty(GCodeAdd) == false && GCodeAdd.StartsWith("; LaserOnCommand"))
-            {
-                state.UseLaser = true;
-            }
-
-            base.Draw(output, state, param);
-        }
-
-        #endregion
+        Code = "";
     }
+
+    #endregion
+
+    #region GCode
+
+    public override void SetCode(string code)
+    {
+        Code = code;
+    }
+
+    #endregion
+
+    #region Draw
+
+    public override void Draw(IOutputCommand output, CommandState state, object param)
+    {
+        if (state.UseLaser == false && string.IsNullOrEmpty(GCodeAdd) == false && GCodeAdd.StartsWith("; LaserOnCommand"))
+        {
+            state.UseLaser = true;
+        }
+
+        base.Draw(output, state, param);
+    }
+
+    #endregion
 }

@@ -14,30 +14,30 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.Views
+namespace CNCLib.WpfClient.Views;
+
+using System;
+using System.Threading.Tasks;
+using System.Windows.Controls;
+
+using CNCLib.WpfClient.ViewModels;
+
+using Framework.Dependency;
+using Framework.Wpf.Views;
+
+/// <summary>
+/// Interaction logic for SetupPage.xaml
+/// </summary>
+public partial class SetupPage : Page
 {
-    using System;
-    using System.Threading.Tasks;
-    using System.Windows.Controls;
-
-    using CNCLib.WpfClient.ViewModels;
-
-    using Framework.Dependency;
-    using Framework.Wpf.Views;
-
-    /// <summary>
-    /// Interaction logic for SetupPage.xaml
-    /// </summary>
-    public partial class SetupPage : Page
+    public SetupPage()
     {
-        public SetupPage()
-        {
-            var vm = AppService.GetRequiredService<SetupWindowViewModel>();
-            DataContext = vm;
+        var vm = AppService.GetRequiredService<SetupWindowViewModel>();
+        DataContext = vm;
 
-            InitializeComponent();
+        InitializeComponent();
 
-            this.DefaultInitForBaseViewModel();
+        this.DefaultInitForBaseViewModel();
 /*
             RoutedEventHandler loaded =null;
 			loaded = new RoutedEventHandler(async (object v, RoutedEventArgs e) =>
@@ -49,54 +49,53 @@ namespace CNCLib.WpfClient.Views
 
 			Loaded += loaded;
 */
-            if (vm.EditMachine == null)
+        if (vm.EditMachine == null)
+        {
+            vm.EditMachine = mId =>
             {
-                vm.EditMachine = mId =>
+                var dlg = new MachineView();
+                if (dlg.DataContext is MachineViewModel viewModel)
                 {
-                    var dlg = new MachineView();
-                    if (dlg.DataContext is MachineViewModel viewModel)
-                    {
-                        Task.Run(() => { viewModel.LoadMachine(mId).ConfigureAwait(false).GetAwaiter().GetResult(); }).Wait();
-                        dlg.ShowDialog();
-                    }
-                };
-            }
-
-            if (vm.ShowEeprom == null)
-            {
-                vm.ShowEeprom = () =>
-                {
-                    var dlg       = new EepromView();
-                    var viewModel = dlg.DataContext as EepromViewModel;
+                    Task.Run(() => { viewModel.LoadMachine(mId).ConfigureAwait(false).GetAwaiter().GetResult(); }).Wait();
                     dlg.ShowDialog();
-                };
-            }
+                }
+            };
+        }
 
-            if (vm.EditJoystick == null)
+        if (vm.ShowEeprom == null)
+        {
+            vm.ShowEeprom = () =>
             {
-                vm.EditJoystick = () =>
-                {
-                    var dlg       = new JoystickView();
-                    var viewModel = dlg.DataContext as JoystickViewModel;
-                    dlg.ShowDialog();
-                };
-            }
+                var dlg       = new EepromView();
+                var viewModel = dlg.DataContext as EepromViewModel;
+                dlg.ShowDialog();
+            };
+        }
 
-            if (vm.Login == null)
+        if (vm.EditJoystick == null)
+        {
+            vm.EditJoystick = () =>
             {
-                vm.Login = () =>
-                {
-                    var dlg       = new LoginView();
-                    var viewModel = dlg.DataContext as LoginViewModel;
-                    viewModel.UserName = vm.UserName;
-                    if (dlg.ShowDialog() ?? false)
-                    {
-                        return new Tuple<string, string>(viewModel.UserName, viewModel.Password);
-                    }
+                var dlg       = new JoystickView();
+                var viewModel = dlg.DataContext as JoystickViewModel;
+                dlg.ShowDialog();
+            };
+        }
 
-                    return null;
-                };
-            }
+        if (vm.Login == null)
+        {
+            vm.Login = () =>
+            {
+                var dlg       = new LoginView();
+                var viewModel = dlg.DataContext as LoginViewModel;
+                viewModel.UserName = vm.UserName;
+                if (dlg.ShowDialog() ?? false)
+                {
+                    return new Tuple<string, string>(viewModel.UserName, viewModel.Password);
+                }
+
+                return null;
+            };
         }
     }
 }

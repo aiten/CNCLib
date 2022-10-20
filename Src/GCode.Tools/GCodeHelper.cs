@@ -14,50 +14,49 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.GCode.Tools
+namespace CNCLib.GCode.Tools;
+
+using System;
+
+public class GCodeHelper
 {
-    using System;
-
-    public class GCodeHelper
+    public static int AxisNameToIndex(string axisName)
     {
-        public static int AxisNameToIndex(string axisName)
+        if (axisName.Length == 1)
         {
-            if (axisName.Length == 1)
-            {
-                return AxisNameToIndex(axisName[0]);
-            }
-
-            return -1;
+            return AxisNameToIndex(axisName[0]);
         }
 
-        public static int AxisNameToIndex(char axisName)
-        {
-            switch (char.ToUpper(axisName))
-            {
-                case 'X': return 0;
-                case 'Y': return 1;
-                case 'Z': return 2;
-                case 'A': return 3;
-                case 'B': return 4;
-                case 'C': return 5;
-            }
+        return -1;
+    }
 
-            return -1;
+    public static int AxisNameToIndex(char axisName)
+    {
+        switch (char.ToUpper(axisName))
+        {
+            case 'X': return 0;
+            case 'Y': return 1;
+            case 'Z': return 2;
+            case 'A': return 3;
+            case 'B': return 4;
+            case 'C': return 5;
         }
 
-        public static string IndexToAxisName(int axis)
-        {
-            switch (axis)
-            {
-                case 0: return "X";
-                case 1: return "Y";
-                case 2: return "Z";
-                case 3: return "A";
-                case 4: return "B";
-                case 5: return "C";
-            }
+        return -1;
+    }
 
-            throw new ArgumentOutOfRangeException(nameof(axis), axis, @"axis index must be < 6");
+    public static string IndexToAxisName(int axis)
+    {
+        switch (axis)
+        {
+            case 0: return "X";
+            case 1: return "Y";
+            case 2: return "Z";
+            case 3: return "A";
+            case 4: return "B";
+            case 5: return "C";
         }
+
+        throw new ArgumentOutOfRangeException(nameof(axis), axis, @"axis index must be < 6");
     }
 }

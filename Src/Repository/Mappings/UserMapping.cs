@@ -14,29 +14,28 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository.Mappings
+namespace CNCLib.Repository.Mappings;
+
+using CNCLib.Repository.Abstraction.Entities;
+
+using Framework.Repository.Mappings;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+public static class UserMapping
 {
-    using CNCLib.Repository.Abstraction.Entities;
-
-    using Framework.Repository.Mappings;
-
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-    public static class UserMapping
+    public static void Map(this EntityTypeBuilder<UserEntity> entity)
     {
-        public static void Map(this EntityTypeBuilder<UserEntity> entity)
-        {
-            entity.ToTable("User");
+        entity.ToTable("User");
 
-            entity.HasKey(m => m.UserId);
+        entity.HasKey(m => m.UserId);
 
-            entity.HasIndex(e => e.Name).IsUnique();
+        entity.HasIndex(e => e.Name).IsUnique();
 
-            entity.Property(m => m.Name).AsRequiredText(128);
-            entity.Property(m => m.Password).AsText(255);
-            entity.Property(e => e.Created);
-            entity.Property(e => e.LastLogin);
-        }
+        entity.Property(m => m.Name).AsRequiredText(128);
+        entity.Property(m => m.Password).AsText(255);
+        entity.Property(e => e.Created);
+        entity.Property(e => e.LastLogin);
     }
 }

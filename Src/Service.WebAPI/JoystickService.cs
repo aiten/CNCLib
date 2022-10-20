@@ -14,33 +14,32 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Service.WebAPI
+namespace CNCLib.Service.WebAPI;
+
+using System.Net.Http;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Service.Abstraction;
+
+using Framework.Service.WebAPI;
+
+public class JoystickService : CrudServiceBase<Joystick, int>, IJoystickService
 {
-    using System.Net.Http;
-    using System.Threading.Tasks;
-
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Service.Abstraction;
-
-    using Framework.Service.WebAPI;
-
-    public class JoystickService : CrudServiceBase<Joystick, int>, IJoystickService
+    public JoystickService(HttpClient httpClient) : base(httpClient)
     {
-        public JoystickService(HttpClient httpClient) : base(httpClient)
-        {
-            BaseApi = @"api/Joystick";
-        }
+        BaseApi = @"api/Joystick";
+    }
 
-        protected override int GetKey(Joystick value) => value.Id;
+    protected override int GetKey(Joystick value) => value.Id;
 
-        public async Task<Joystick> Default()
+    public async Task<Joystick> Default()
+    {
+        using (var scope = CreateScope())
         {
-            using (var scope = CreateScope())
-            {
-                var response = await scope.Instance.GetAsync(CreatePathBuilder().AddPath("default").Build());
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadAsAsync<Joystick>();
-            }
+            var response = await scope.Instance.GetAsync(CreatePathBuilder().AddPath("default").Build());
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsAsync<Joystick>();
         }
     }
 }

@@ -14,72 +14,71 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WebAPI.Controllers
+namespace CNCLib.WebAPI.Controllers;
+
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction;
+using CNCLib.Logic.Abstraction.DTO;
+using CNCLib.Shared;
+
+using Framework.WebAPI.Controller;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+[Authorize]
+[Route("api/[controller]")]
+public class JoystickController : Controller
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+    private readonly IJoystickManager   _manager;
+    private readonly ICNCLibUserContext _userContext;
 
-    using CNCLib.Logic.Abstraction;
-    using CNCLib.Logic.Abstraction.DTO;
-    using CNCLib.Shared;
-
-    using Framework.WebAPI.Controller;
-
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
-
-    [Authorize]
-    [Route("api/[controller]")]
-    public class JoystickController : Controller
+    public JoystickController(IJoystickManager manager, ICNCLibUserContext userContext)
     {
-        private readonly IJoystickManager   _manager;
-        private readonly ICNCLibUserContext _userContext;
-
-        public JoystickController(IJoystickManager manager, ICNCLibUserContext userContext)
-        {
-            _manager     = manager;
-            _userContext = userContext;
-        }
-
-        #region default REST
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Joystick>>> Get()
-        {
-            return await this.GetAll(_manager);
-        }
-
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<Joystick>> Get(int id)
-        {
-            return await this.Get<Joystick, int>(_manager, id);
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<Joystick>> Add([FromBody] Joystick value)
-        {
-            return await this.Add<Joystick, int>(_manager, value);
-        }
-
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult> Update(int id, [FromBody] Joystick value)
-        {
-            return await this.Update<Joystick, int>(_manager, id, value.Id, value);
-        }
-
-        [HttpDelete("{id:int}")]
-        public async Task<ActionResult> Delete(int id)
-        {
-            return await this.Delete<Joystick, int>(_manager, id);
-        }
-
-        [HttpGet("default")]
-        public async Task<ActionResult<Joystick>> Default()
-        {
-            var joystick = await _manager.Default();
-            return await this.NotFoundOrOk(joystick);
-        }
-
-        #endregion
+        _manager     = manager;
+        _userContext = userContext;
     }
+
+    #region default REST
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Joystick>>> Get()
+    {
+        return await this.GetAll(_manager);
+    }
+
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<Joystick>> Get(int id)
+    {
+        return await this.Get<Joystick, int>(_manager, id);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<Joystick>> Add([FromBody] Joystick value)
+    {
+        return await this.Add<Joystick, int>(_manager, value);
+    }
+
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult> Update(int id, [FromBody] Joystick value)
+    {
+        return await this.Update<Joystick, int>(_manager, id, value.Id, value);
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<ActionResult> Delete(int id)
+    {
+        return await this.Delete<Joystick, int>(_manager, id);
+    }
+
+    [HttpGet("default")]
+    public async Task<ActionResult<Joystick>> Default()
+    {
+        var joystick = await _manager.DefaultAsync();
+        return await this.NotFoundOrOk(joystick);
+    }
+
+    #endregion
 }

@@ -14,20 +14,19 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository.Abstraction
+namespace CNCLib.Repository.Abstraction;
+
+using System.Threading.Tasks;
+
+using CNCLib.Repository.Abstraction.Entities;
+
+using Framework.Repository.Abstraction;
+
+public interface IConfigurationRepository : ICrudRepository<ConfigurationEntity, int>
 {
-    using System.Threading.Tasks;
+    Task<ConfigurationEntity> GetAsync(int userId, string group, string name);
 
-    using CNCLib.Repository.Abstraction.Entities;
+    Task StoreAsync(ConfigurationEntity cfg);
 
-    using Framework.Repository.Abstraction;
-
-    public interface IConfigurationRepository : ICrudRepository<ConfigurationEntity, int>
-    {
-        Task<ConfigurationEntity> Get(int userId, string group, string name);
-
-        Task Store(ConfigurationEntity cfg);
-
-        Task DeleteByUser(int userId);
-    }
+    Task DeleteByUserAsync(int userId);
 }

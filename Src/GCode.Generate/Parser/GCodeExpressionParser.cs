@@ -14,105 +14,104 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.GCode.Generate.Parser
+namespace CNCLib.GCode.Generate.Parser;
+
+using System.Collections.Generic;
+
+using Framework.Parser;
+
+public class GCodeExpressionParser : ExpressionParser
 {
-    using System.Collections.Generic;
-
-    using Framework.Parser;
-
-    public class GCodeExpressionParser : ExpressionParser
+    public GCodeExpressionParser(ParserStreamReader reader) : base(reader)
     {
-        public GCodeExpressionParser(ParserStreamReader reader) : base(reader)
+        LeftParenthesis  = '[';
+        RightParenthesis = ']';
+    }
+
+    public Dictionary<int, double> ParameterValues { get; set; }
+
+    protected override void ScanNextToken()
+    {
+        char ch = Reader.NextChar;
+        while (ch != 0)
         {
-            LeftParenthesis  = '[';
-            RightParenthesis = ']';
+            if (ch == ';' || ch == '(') // comment
+            {
+                ch = new GCodeParser(Reader).SkipSpacesOrComment();
+                Error("NotImplemented yet");
+            }
+            else
+            {
+                break;
+            }
         }
 
-        public Dictionary<int, double> ParameterValues { get; set; }
-
-        protected override void ScanNextToken()
+        if (ch == '\0')
         {
-            char ch = Reader.NextChar;
-            while (ch != 0)
-            {
-                if (ch == ';' || ch == '(') // comment
-                {
-                    ch = new GCodeParser(Reader).SkipSpacesOrComment();
-                    Error("NotImplemented yet");
-                }
-                else
-                {
-                    break;
-                }
-            }
-
-            if (ch == '\0')
-            {
-                _state._detailToken = TokenType.EndOfLineSy;
-                return;
-            }
-
-            base.ScanNextToken();
+            _state._detailToken = TokenType.EndOfLineSy;
+            return;
         }
 
-        protected override string ReadIdent()
-        {
-            // read variable name of gcode : #1 or #<_x>
+        base.ScanNextToken();
+    }
 
-            char ch = NextChar;
-            if (ch == '#')
+    protected override string ReadIdent()
+    {
+        // read variable name of gcode : #1 or #<_x>
+
+        char ch = NextChar;
+        if (ch == '#')
+        {
+            // start of GCODE variable => format #1 or #<_x>
+            ch = Next();
+
+            if (ch == '<')
             {
-                // start of GCODE variable => format #1 or #<_x>
                 ch = Next();
-
-                if (ch == '<')
+                var ident = ReadString('>');
+                if (NextChar == '>')
                 {
-                    ch = Next();
-                    var ident = ReadString('>');
-                    if (NextChar == '>')
-                    {
-                        Next();
-                        return $"#<{ident}>";
-                    }
+                    Next();
+                    return $"#<{ident}>";
+                }
 
-                    Error("> expected");
-                    return "";
-                }
-                else
-                {
-                    _state._number = GetInt();
-                    return $"#{_state._number}";
-                }
+                Error("> expected");
+                return "";
             }
-
-            return base.ReadIdent();
-        }
-
-        protected override bool IsIdentStart(char ch)
-        {
-            return ch == '#' || base.IsIdentStart(ch);
-        } // start of function or variable
-
-        protected override bool EvalVariable(string varName, ref double answer)
-        {
-            if (varName[0] == '#')
+            else
             {
-                // assigned in ReadIdent
+                _state._number = GetInt();
+                return $"#{_state._number}";
+            }
+        }
 
-                if (varName[1] == '<')
-                {
-                    return false;
-                }
-                else
-                {
-                    int paramNo = int.Parse(varName.TrimStart('#'));
-                    answer = ParameterValues.ContainsKey(paramNo) ? ParameterValues[paramNo] : 0.0;
-                }
+        return base.ReadIdent();
+    }
 
-                return true;
+    protected override bool IsIdentStart(char ch)
+    {
+        return ch == '#' || base.IsIdentStart(ch);
+    } // start of function or variable
+
+    protected override bool EvalVariable(string varName, ref double answer)
+    {
+        if (varName[0] == '#')
+        {
+            // assigned in ReadIdent
+
+            if (varName[1] == '<')
+            {
+                return false;
+            }
+            else
+            {
+                int paramNo = int.Parse(varName.TrimStart('#'));
+                answer = ParameterValues.ContainsKey(paramNo) ? ParameterValues[paramNo] : 0.0;
             }
 
-            return base.EvalVariable(varName, ref answer);
+            return true;
         }
+
+        return base.EvalVariable(varName, ref answer);
     }
 }

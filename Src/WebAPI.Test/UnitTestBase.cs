@@ -14,12 +14,11 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WebAPI.Test
+namespace CNCLib.WebAPI.Test;
+
+/// <summary>
+/// Base class for *all* unit tests. 
+/// </summary>
+public abstract class UnitTestBase
 {
-    /// <summary>
-    /// Base class for *all* unit tests. 
-    /// </summary>
-    public abstract class UnitTestBase
-    {
-    }
 }

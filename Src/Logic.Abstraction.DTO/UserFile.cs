@@ -14,16 +14,15 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Logic.Abstraction.DTO
+namespace CNCLib.Logic.Abstraction.DTO;
+
+public class UserFile
 {
-    public class UserFile
-    {
-        public int UserFileId { get; set; }
+    public int UserFileId { get; set; }
 
-        public int UserId { get; set; }
+    public int UserId { get; set; }
 
-        public string FileName { get; set; }
+    public string FileName { get; set; }
 
-        public byte[] Content { get; set; }
-    }
+    public byte[] Content { get; set; }
 }

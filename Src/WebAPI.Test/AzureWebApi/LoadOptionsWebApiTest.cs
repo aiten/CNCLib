@@ -14,125 +14,124 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WebAPI.Test.AzureWebApi
+namespace CNCLib.WebAPI.Test.AzureWebApi;
+
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction.DTO;
+
+using FluentAssertions;
+
+using Xunit;
+
+public class LoadOptionsWebApiTest : AzureWebApiTest
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Http;
-    using System.Threading.Tasks;
+    private readonly string api = "/api/loadoptions";
 
-    using CNCLib.Logic.Abstraction.DTO;
-
-    using FluentAssertions;
-
-    using Xunit;
-
-    public class LoadOptionsWebApiTest : AzureWebApiTest
+    private async Task<IEnumerable<LoadOptions>> GetAll()
     {
-        private readonly string api = "/api/loadoptions";
+        var client   = GetHttpClient();
+        var response = await client.GetAsync(api);
 
-        private async Task<IEnumerable<LoadOptions>> GetAll()
+        response.EnsureSuccessStatusCode();
+
+        return await response.Content.ReadAsAsync<IList<LoadOptions>>();
+    }
+
+    [Fact]
+    public async Task GetOption1()
+    {
+        var all = await GetAll();
+        all.Should().HaveCountGreaterThan(0);
+
+        var first = all.First();
+
+        var client = GetHttpClient();
+
+        var response = await client.GetAsync($"{api}/{first.Id}");
+
+        response.IsSuccessStatusCode.Should().BeTrue();
+
+        if (response.IsSuccessStatusCode)
         {
-            var client   = GetHttpClient();
-            var response = await client.GetAsync(api);
+            var l = await response.Content.ReadAsAsync<LoadOptions>();
 
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsAsync<IList<LoadOptions>>();
+            l.Should().NotBeNull();
         }
+    }
 
-        [Fact]
-        public async Task GetOption1()
+    private async Task Cleanup(string settingName)
+    {
+        var client = GetHttpClient();
+
+        var responseGet = await client.GetAsync(api);
+
+        var all = await responseGet.Content.ReadAsAsync<IEnumerable<LoadOptions>>();
+
+        var setting = all.FirstOrDefault(s => s.SettingName == settingName);
+        if (setting != null)
         {
-            var all = await GetAll();
-            all.Should().HaveCountGreaterThan(0);
-
-            var first = all.First();
-
-            var client = GetHttpClient();
-
-            var response = await client.GetAsync($"{api}/{first.Id}");
-
-            response.IsSuccessStatusCode.Should().BeTrue();
-
-            if (response.IsSuccessStatusCode)
-            {
-                var l = await response.Content.ReadAsAsync<LoadOptions>();
-
-                l.Should().NotBeNull();
-            }
+            await client.DeleteAsync($"{api}/{setting.Id}");
         }
+    }
 
-        private async Task Cleanup(string settingName)
+    [Fact]
+    public async Task CreateDeleteOption()
+    {
+        await Cleanup("Settingname");
+        await Cleanup("ComHA");
+
+        var client = GetHttpClient();
+
+        var m = new LoadOptions { SettingName = "Settingname" };
+
+        var response = await client.PostAsJsonAsync(api, m);
+        response.IsSuccessStatusCode.Should().BeTrue();
+
+        if (response.IsSuccessStatusCode)
         {
-            var client = GetHttpClient();
+            var newUri = response.Headers.Location;
 
-            var responseGet = await client.GetAsync(api);
+            // HTTPGET again
+            var responseGet = await client.GetAsync(newUri);
+            responseGet.IsSuccessStatusCode.Should().BeTrue();
 
-            var all = await responseGet.Content.ReadAsAsync<IEnumerable<LoadOptions>>();
-
-            var setting = all.FirstOrDefault(s => s.SettingName == settingName);
-            if (setting != null)
+            if (responseGet.IsSuccessStatusCode)
             {
-                await client.DeleteAsync($"{api}/{setting.Id}");
-            }
-        }
+                var mget = await responseGet.Content.ReadAsAsync<LoadOptions>();
 
-        [Fact]
-        public async Task CreateDeleteOption()
-        {
-            await Cleanup("Settingname");
-            await Cleanup("ComHA");
+                mget.SettingName.Should().Be("Settingname");
 
-            var client = GetHttpClient();
+                // HTTP PUT
+                mget.SettingName = "ComHA";
+                var responsePut = await client.PutAsJsonAsync(newUri, mget);
 
-            var m = new LoadOptions { SettingName = "Settingname" };
+                // HTTPGET again2
+                var responseGet2 = await client.GetAsync(newUri);
+                responseGet2.IsSuccessStatusCode.Should().BeTrue();
 
-            var response = await client.PostAsJsonAsync(api, m);
-            response.IsSuccessStatusCode.Should().BeTrue();
-
-            if (response.IsSuccessStatusCode)
-            {
-                var newUri = response.Headers.Location;
-
-                // HTTPGET again
-                var responseGet = await client.GetAsync(newUri);
-                responseGet.IsSuccessStatusCode.Should().BeTrue();
-
-                if (responseGet.IsSuccessStatusCode)
+                if (responseGet2.IsSuccessStatusCode)
                 {
-                    var mget = await responseGet.Content.ReadAsAsync<LoadOptions>();
+                    var mget2 = await responseGet2.Content.ReadAsAsync<LoadOptions>();
 
-                    mget.SettingName.Should().Be("Settingname");
+                    mget2.SettingName.Should().Be("ComHA");
+                }
 
-                    // HTTP PUT
-                    mget.SettingName = "ComHA";
-                    var responsePut = await client.PutAsJsonAsync(newUri, mget);
+                // HTTP DELETE
+                response = await client.DeleteAsync(newUri);
 
-                    // HTTPGET again2
-                    var responseGet2 = await client.GetAsync(newUri);
-                    responseGet2.IsSuccessStatusCode.Should().BeTrue();
+                // HTTPGET again3
+                var responseGet3 = await client.GetAsync(newUri);
+                responseGet3.StatusCode.Should().Be(HttpStatusCode.NotFound);
 
-                    if (responseGet2.IsSuccessStatusCode)
-                    {
-                        var mget2 = await responseGet2.Content.ReadAsAsync<LoadOptions>();
-
-                        mget2.SettingName.Should().Be("ComHA");
-                    }
-
-                    // HTTP DELETE
-                    response = await client.DeleteAsync(newUri);
-
-                    // HTTPGET again3
-                    var responseGet3 = await client.GetAsync(newUri);
-                    responseGet3.StatusCode.Should().Be(HttpStatusCode.NotFound);
-
-                    if (responseGet3.IsSuccessStatusCode)
-                    {
-                        var mget3 = await responseGet3.Content.ReadAsAsync<LoadOptions>();
-                        mget3.Should().BeNull();
-                    }
+                if (responseGet3.IsSuccessStatusCode)
+                {
+                    var mget3 = await responseGet3.Content.ReadAsAsync<LoadOptions>();
+                    mget3.Should().BeNull();
                 }
             }
         }

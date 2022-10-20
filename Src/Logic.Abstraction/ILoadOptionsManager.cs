@@ -14,11 +14,10 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Logic.Abstraction
-{
-    using Framework.Logic.Abstraction;
+namespace CNCLib.Logic.Abstraction;
 
-    public interface ILoadOptionsManager : ICrudManager<DTO.LoadOptions, int>
-    {
-    }
+using Framework.Logic.Abstraction;
+
+public interface ILoadOptionsManager : ICrudManager<DTO.LoadOptions, int>
+{
 }

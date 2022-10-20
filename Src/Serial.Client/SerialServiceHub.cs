@@ -14,75 +14,74 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Serial.Client
+namespace CNCLib.Serial.Client;
+
+using System.Net.Http;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading;
+using System.Threading.Tasks;
+
+using Framework.Arduino.SerialCommunication.Abstraction;
+
+using Microsoft.AspNetCore.SignalR.Client;
+
+public class SerialServiceHub : MyServiceBase
 {
-    using System.Net.Http;
-    using System.Net.Security;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Threading;
-    using System.Threading.Tasks;
-
-    using Framework.Arduino.SerialCommunication.Abstraction;
-
-    using Microsoft.AspNetCore.SignalR.Client;
-
-    public class SerialServiceHub : MyServiceBase
+    public SerialServiceHub(string adr, ISerial serial)
     {
-        public SerialServiceHub(string adr, ISerial serial)
+        WebServerUri = adr + "serialSignalR/";
+        _serial      = serial;
+    }
+
+    HubConnection           _connection;
+    CancellationTokenSource _cts;
+    ISerial                 _serial;
+
+    public async Task Stop()
+    {
+        if (_connection != null)
         {
-            WebServerUri = adr + "serialSignalR/";
-            _serial      = serial;
+            await _connection.DisposeAsync();
+            _connection = null;
+        }
+    }
+
+    public async Task<HubConnection> Start()
+    {
+        bool ValidateCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        {
+            return true;
         }
 
-        HubConnection           _connection;
-        CancellationTokenSource _cts;
-        ISerial                 _serial;
-
-        public async Task Stop()
-        {
-            if (_connection != null)
-            {
-                await _connection.DisposeAsync();
-                _connection = null;
-            }
-        }
-
-        public async Task<HubConnection> Start()
-        {
-            bool ValidateCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
-            {
-                return true;
-            }
-
-            _connection = new HubConnectionBuilder().WithUrl(WebServerUri,
-                    options =>
+        _connection = new HubConnectionBuilder().WithUrl(WebServerUri,
+                options =>
+                {
+                    options.WebSocketConfiguration = (config) => { config.RemoteCertificateValidationCallback = ValidateCertificate; };
+                    options.HttpMessageHandlerFactory = (handler) =>
                     {
-                        options.WebSocketConfiguration = (config) => { config.RemoteCertificateValidationCallback = ValidateCertificate; };
-                        options.HttpMessageHandlerFactory = (handler) =>
+                        if (handler is HttpClientHandler clientHandler)
                         {
-                            if (handler is HttpClientHandler clientHandler)
-                            {
-                                clientHandler.ServerCertificateCustomValidationCallback = ValidateCertificate;
-                            }
+                            clientHandler.ServerCertificateCustomValidationCallback = ValidateCertificate;
+                        }
 
-                            return handler;
-                        };
-                    })
+                        return handler;
+                    };
+                })
 //              .WithConsoleLogger()
 //              .WithMessagePackProtocol()
 //              .WithTransport(TransportType.All)
-                .Build();
+            .Build();
 
-            await _connection.StartAsync();
-            _cts = new CancellationTokenSource();
+        await _connection.StartAsync();
+        _cts = new CancellationTokenSource();
 
-            _connection.Closed += e =>
-            {
-                _cts.Cancel();
-                return Task.CompletedTask;
-            };
+        _connection.Closed += e =>
+        {
+            _cts.Cancel();
+            return Task.CompletedTask;
+        };
 
-            return _connection;
-        }
+        return _connection;
     }
 }

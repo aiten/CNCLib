@@ -14,17 +14,16 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.WpfClient.Models
+namespace CNCLib.WpfClient.Models;
+
+public class MachineCommand
 {
-    public class MachineCommand
-    {
-        public         int     MachineCommandId { get; set; }
-        public         string  CommandName      { get; set; }
-        public         string  CommandString    { get; set; }
-        public         int?    PosX             { get; set; }
-        public         int?    PosY             { get; set; }
-        public         string  JoystickMessage  { get; set; }
-        public         int     MachineId        { get; set; }
-        public virtual Machine Machine          { get; set; }
-    }
+    public         int     MachineCommandId { get; set; }
+    public         string  CommandName      { get; set; }
+    public         string  CommandString    { get; set; }
+    public         int?    PosX             { get; set; }
+    public         int?    PosY             { get; set; }
+    public         string  JoystickMessage  { get; set; }
+    public         int     MachineId        { get; set; }
+    public virtual Machine Machine          { get; set; }
 }

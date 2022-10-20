@@ -14,29 +14,28 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Service.Abstraction
+namespace CNCLib.Service.Abstraction;
+
+using System;
+using System.Threading.Tasks;
+
+using CNCLib.Logic.Abstraction.DTO;
+
+using Framework.Service.Abstraction;
+
+public interface IUserService : IDisposable, ICrudService<User, int>
 {
-    using System;
-    using System.Threading.Tasks;
+    Task<User> GetByName(string username);
 
-    using CNCLib.Logic.Abstraction.DTO;
+    Task<User> GetCurrentUser();
 
-    using Framework.Service.Abstraction;
+    Task<bool> IsValidUser(string username, string password);
 
-    public interface IUserService : IDisposable, ICrudService<User, int>
-    {
-        Task<User> GetByName(string username);
+    Task<string> Register(string username, string password);
 
-        Task<User> GetCurrentUser();
+    Task Leave();
 
-        Task<bool> IsValidUser(string username, string password);
+    Task InitData();
 
-        Task<string> Register(string username, string password);
-
-        Task Leave();
-
-        Task InitData();
-
-        Task Cleanup();
-    }
+    Task Cleanup();
 }

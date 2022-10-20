@@ -14,26 +14,25 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.GCode.Generate.Commands
+namespace CNCLib.GCode.Generate.Commands;
+
+[IsGCommand("G4,G04")]
+public class G04Command : Command
 {
-    [IsGCommand("G4,G04")]
-    public class G04Command : Command
+    #region crt + factory
+
+    public G04Command()
     {
-        #region crt + factory
-
-        public G04Command()
-        {
-            Code = "G4";
-        }
-
-        #endregion
-
-        #region GCode
-
-        #endregion
-
-        #region Draw
-
-        #endregion
+        Code = "G4";
     }
+
+    #endregion
+
+    #region GCode
+
+    #endregion
+
+    #region Draw
+
+    #endregion
 }

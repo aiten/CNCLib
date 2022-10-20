@@ -14,28 +14,27 @@
   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-namespace CNCLib.Repository.Context
+namespace CNCLib.Repository.Context;
+
+using System;
+using System.Collections.Generic;
+
+using CNCLib.Repository.Abstraction.Entities;
+
+using Framework.Repository.Tools;
+
+public class CNCLibDbImporter : DbImporter
 {
-    using System;
-    using System.Collections.Generic;
+    protected Dictionary<int, UserEntity>                        _userMap;
+    protected Dictionary<int, UserFileEntity>                    _userFileMap;
+    protected Dictionary<int, MachineEntity>                     _machineMap;
+    protected Dictionary<int, MachineCommandEntity>              _machineCommandMap;
+    protected Dictionary<int, MachineInitCommandEntity>          _machineInitMap;
+    protected Dictionary<int, ItemEntity>                        _itemMap;
+    protected Dictionary<Tuple<int, string>, ItemPropertyEntity> _itemPropertyMap;
+    protected Dictionary<int, ConfigurationEntity>               _configurationMap;
 
-    using CNCLib.Repository.Abstraction.Entities;
-
-    using Framework.Repository.Tools;
-
-    public class CNCLibDbImporter : DbImporter
+    public CNCLibDbImporter(CNCLibContext context) : base(context)
     {
-        protected Dictionary<int, UserEntity>                        _userMap;
-        protected Dictionary<int, UserFileEntity>                    _userFileMap;
-        protected Dictionary<int, MachineEntity>                     _machineMap;
-        protected Dictionary<int, MachineCommandEntity>              _machineCommandMap;
-        protected Dictionary<int, MachineInitCommandEntity>          _machineInitMap;
-        protected Dictionary<int, ItemEntity>                        _itemMap;
-        protected Dictionary<Tuple<int, string>, ItemPropertyEntity> _itemPropertyMap;
-        protected Dictionary<int, ConfigurationEntity>               _configurationMap;
-
-        public CNCLibDbImporter(CNCLibContext context) : base(context)
-        {
-        }
     }
 }
