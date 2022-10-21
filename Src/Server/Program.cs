@@ -22,14 +22,12 @@ namespace CNCLib.Server
 
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Hosting;
-
-    using NLog;
-    using NLog.Web;
 
     using System.IO;
     using System.Reflection;
+
+    using Framework.NLogTools;
 
     public class Program
     {
@@ -37,22 +35,8 @@ namespace CNCLib.Server
 
         public static void Main(string[] args)
         {
-            var logDir = Microsoft.Azure.Web.DataProtection.Util.IsAzureEnvironment()
-                ? $"{BaseDirectory}/data/logs"
-                : $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib.Server/logs";
+            var logger = Framework.NLogTools.ConfigurationExtensions.ConfigureNLogLocation("CNCLib.Server", Assembly.GetExecutingAssembly());
 
-            if (!Directory.Exists(logDir))
-            {
-                Directory.CreateDirectory(logDir);
-            }
-
-            GlobalDiagnosticsContext.Set("logDir", logDir);
-
-            var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
-
-#if DEBUG
-            LogManager.ThrowExceptions = true;
-#endif
             try
             {
                 ProgramUtilities.StartWebService(args, CreateHostBuilder);
@@ -77,12 +61,7 @@ namespace CNCLib.Server
                     webBuilder
                         .UseConfiguration(hostConfig)
                         .UseStartup<Startup>()
-                        .ConfigureLogging(logging =>
-                        {
-                            logging.ClearProviders();
-                            logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
-                        })
-                        .UseNLog();
+                        .ConfigureAndUseNLog();
                 });
         }
     }

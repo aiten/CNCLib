@@ -39,6 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Framework\NLogTools\NLogTools.csproj" />
     <ProjectReference Include="..\Framework\Repository\Repository.csproj" />
     <ProjectReference Include="..\Framework\Schedule\Schedule.csproj" />
     <ProjectReference Include="..\Framework\WebAPI.Host\WebAPI.Host.csproj" />

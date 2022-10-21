@@ -18,20 +18,14 @@ namespace CNCLib.Serial.Server
 {
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Hosting;
-    using Microsoft.Extensions.Hosting.WindowsServices;
-
-    using NLog.Web;
 
     using System;
     using System.IO;
     using System.Reflection;
-    using System.Runtime.InteropServices;
 
+    using Framework.NLogTools;
     using Framework.WebAPI.Host;
-
-    using NLog;
 
     public class Program
     {
@@ -39,28 +33,8 @@ namespace CNCLib.Serial.Server
 
         public static void Main(string[] args)
         {
-#if DEBUG
-            LogManager.ThrowExceptions = true;
-#endif
-            string logDir = string.Empty;
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                logDir = "/var/log/CNCLib.Serial.Server";
-            }
-            else
-            {
-                var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                if (!Directory.Exists(localAppData) || WindowsServiceHelpers.IsWindowsService())
-                {
-                    // service user
-                    localAppData = Environment.GetEnvironmentVariable("ProgramData");
-                }
+            var logger = Framework.NLogTools.ConfigurationExtensions.ConfigureNLogLocation("CNCLib.Serial.Server", Assembly.GetExecutingAssembly());
 
-                logDir = $"{localAppData}/CNCLib.Serial.Server/logs";
-            }
-
-            GlobalDiagnosticsContext.Set("logDir", logDir);
-            var logger = NLogBuilder.ConfigureNLog("NLog.config").GetCurrentClassLogger();
             try
             {
                 logger.Info("Starting (Main)");
@@ -88,12 +62,7 @@ namespace CNCLib.Serial.Server
                     webBuilder
                         .UseConfiguration(hostConfig)
                         .UseStartup<Startup>()
-                        .ConfigureLogging(logging =>
-                        {
-                            logging.ClearProviders();
-                            logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
-                        })
-                        .UseNLog();
+                        .ConfigureAndUseNLog();
                 });
         }
     }

@@ -30,13 +30,17 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="Properties\**" />
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="Properties\**" />
+    <EmbeddedResource Remove="Properties\**" />
     <None Remove="$(SpaRoot)**" />
+    <None Remove="Properties\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
-
   <ItemGroup>
+    <ProjectReference Include="..\Framework\NLogTools\NLogTools.csproj" />
     <ProjectReference Include="..\Framework\Tools\Tools.csproj" />
     <ProjectReference Include="..\Framework\Arduino\Arduino.csproj" />
     <ProjectReference Include="..\Framework\WebAPI.Host\WebAPI.Host.csproj" />
