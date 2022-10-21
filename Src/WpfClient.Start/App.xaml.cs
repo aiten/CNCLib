@@ -26,13 +26,18 @@ using AutoMapper;
 
 using CNCLib.GCode.GUI;
 using CNCLib.Logic;
+using CNCLib.Logic.Client;
+using CNCLib.Repository;
 using CNCLib.Repository.Context;
 using CNCLib.Repository.SqLite;
+using CNCLib.Service.Logic;
 using CNCLib.Shared;
 
+using Framework.Arduino.SerialCommunication;
 using Framework.Localization;
 using Framework.Dependency;
-using Framework.Startup;
+using Framework.Logic;
+using Framework.Tools;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -47,28 +52,6 @@ public partial class App : Application
 
     private void AppStartup(object sender, StartupEventArgs e)
     {
-        var localizationCollector = new LocalizationCollector();
-        var moduleInit            = new InitializationManager();
-
-        moduleInit.Add(new Framework.Tools.ModuleInitializer());
-        moduleInit.Add(new Framework.Arduino.SerialCommunication.ModuleInitializer());
-        moduleInit.Add(new Framework.Logic.ModuleInitializer()
-        {
-            MapperConfiguration =
-                new MapperConfiguration(
-                    cfg =>
-                    {
-                        cfg.AddProfile<LogicAutoMapperProfile>();
-                        cfg.AddProfile<WpfAutoMapperProfile>();
-                        cfg.AddProfile<GCodeGUIAutoMapperProfile>();
-                    })
-        });
-        moduleInit.Add(new CNCLib.Logic.ModuleInitializer());
-        moduleInit.Add(new CNCLib.Logic.Client.ModuleInitializer());
-        moduleInit.Add(new CNCLib.Repository.ModuleInitializer() { OptionsAction = SqliteDatabaseTools.OptionBuilder });
-        moduleInit.Add(new CNCLib.Service.Logic.ModuleInitializer());
-        moduleInit.Add(new CNCLib.WpfClient.ModuleInitializer());
-
         string connectString = SqliteDatabaseTools.SetEnvironment(false);
 
         GlobalDiagnosticsContext.Set("logDir",           $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib/logs");
@@ -88,9 +71,22 @@ public partial class App : Application
         AppService.ServiceCollection
             .AddTransient<ILoggerFactory, LoggerFactory>()
             .AddTransient(typeof(ILogger<>), typeof(Logger<>))
-            .AddSingleton((ICNCLibUserContext)userContext);
-
-        moduleInit.Initialize(AppService.ServiceCollection, localizationCollector);
+            .AddSingleton((ICNCLibUserContext)userContext)
+            .AddArduinoSerial()
+            .AddFrwTools()
+            .AddFrwLogic(
+                new MapperConfiguration(
+                    cfg =>
+                    {
+                        cfg.AddProfile<LogicAutoMapperProfile>();
+                        cfg.AddProfile<WpfAutoMapperProfile>();
+                        cfg.AddProfile<GCodeGUIAutoMapperProfile>();
+                    }))
+            .AddCNCLibLogic()
+            .AddCNCLibLogicClient()
+            .AddCNCLibRepository(SqliteDatabaseTools.OptionBuilder)
+            .AddCNCLibServicesLogic()
+            .AddWpfClient();
 
         AppService.BuildServiceProvider();
 

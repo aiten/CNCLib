@@ -23,30 +23,26 @@ using CNCLib.Service.Abstraction;
 
 using Framework.Localization.Abstraction;
 using Framework.Service.WebAPI;
-using Framework.Startup.Abstraction;
+
 
 using Microsoft.Extensions.DependencyInjection;
 
-public class ModuleInitializer : IModuleInitializer
+public static class ModuleInitializer 
 {
-    public Action<HttpClient> ConfigureHttpClient { get; set; }
-
-    public void AddServices(IServiceCollection services)
+    public static IServiceCollection AddCNCLibServicesWeb(this IServiceCollection services, Action<HttpClient> configureHttpClient)
     {
-        AddConfigureClientBuilder(services.AddHttpClient<IMachineService, MachineService>(ConfigureHttpClient));
-        AddConfigureClientBuilder(services.AddHttpClient<IEepromConfigurationService, EepromConfigurationService>(ConfigureHttpClient));
-        AddConfigureClientBuilder(services.AddHttpClient<IItemService, ItemService>(ConfigureHttpClient));
-        AddConfigureClientBuilder(services.AddHttpClient<ILoadOptionsService, LoadOptionsService>(ConfigureHttpClient));
-        AddConfigureClientBuilder(services.AddHttpClient<IUserService, UserService>(ConfigureHttpClient));
-        AddConfigureClientBuilder(services.AddHttpClient<IJoystickService, JoystickService>(ConfigureHttpClient));
+        AddConfigureClientBuilder(services.AddHttpClient<IMachineService, MachineService>(configureHttpClient));
+        AddConfigureClientBuilder(services.AddHttpClient<IEepromConfigurationService, EepromConfigurationService>(configureHttpClient));
+        AddConfigureClientBuilder(services.AddHttpClient<IItemService, ItemService>(configureHttpClient));
+        AddConfigureClientBuilder(services.AddHttpClient<ILoadOptionsService, LoadOptionsService>(configureHttpClient));
+        AddConfigureClientBuilder(services.AddHttpClient<IUserService, UserService>(configureHttpClient));
+        AddConfigureClientBuilder(services.AddHttpClient<IJoystickService, JoystickService>(configureHttpClient));
+
+        return services;
     }
 
     private static IHttpClientBuilder AddConfigureClientBuilder(IHttpClientBuilder builder)
     {
         return builder.ConfigurePrimaryHttpMessageHandler(HttpClientHelper.CreateHttpClientHandlerIgnoreSSLCertificatesError);
-    }
-
-    public void AddTranslationResources(ILocalizationCollector localisation)
-    {
     }
 }

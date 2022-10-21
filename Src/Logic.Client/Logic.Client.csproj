@@ -5,7 +5,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Framework\Localization\Localization.csproj" />
     <ProjectReference Include="..\Framework\Pattern\Pattern.csproj" />
-    <ProjectReference Include="..\Framework\Startup\Startup.csproj" />
     <ProjectReference Include="..\Logic.Abstraction.DTO\Logic.Abstraction.DTO.csproj">    </ProjectReference>
     <ProjectReference Include="..\Service.Abstraction\Service.Abstraction.csproj" />
   </ItemGroup>

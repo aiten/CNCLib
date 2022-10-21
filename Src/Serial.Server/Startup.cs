@@ -25,10 +25,11 @@ namespace CNCLib.Serial.Server
     using CNCLib.Serial.WebAPI.Manager;
     using CNCLib.Serial.WebAPI.SerialPort;
 
+    using Framework.Arduino.SerialCommunication;
     using Framework.Dependency;
     using Framework.Localization;
     using Framework.Logic.Abstraction;
-    using Framework.Startup;
+    using Framework.Tools;
     using Framework.Tools.Password;
     using Framework.WebAPI.Filter;
 
@@ -64,14 +65,7 @@ namespace CNCLib.Serial.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var moduleInit = new InitializationManager();
-
-            moduleInit.Add(new Framework.Tools.ModuleInitializer());
-            moduleInit.Add(new Framework.Arduino.SerialCommunication.ModuleInitializer());
-
             var controllerAssembly = typeof(InfoController).Assembly;
-
-            var localizationCollector = new LocalizationCollector();
 
             services.AddCors(options => options.AddPolicy(CorsAllowAllName, options => options.SetIsOriginAllowed(x => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
 
@@ -86,7 +80,6 @@ namespace CNCLib.Serial.Server
                         options.Filters.AddService<UnhandledExceptionFilter>();
                         options.Filters.AddService<MethodCallLogFilter>();
                     })
-                .SetCompatibilityVersion(CompatibilityVersion.Latest)
                 .AddNewtonsoftJson(
                     options =>
                         options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
@@ -132,7 +125,8 @@ namespace CNCLib.Serial.Server
                 c.IncludeXmlComments(xmlPath);
             });
 
-            moduleInit.Initialize(services, localizationCollector);
+            services.AddArduinoSerial();
+            services.AddFrwTools();
 
             AppService.ServiceCollection = services;
             AppService.BuildServiceProvider();

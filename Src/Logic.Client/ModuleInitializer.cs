@@ -17,19 +17,14 @@
 namespace CNCLib.Logic.Client;
 
 using Framework.Dependency;
-using Framework.Localization.Abstraction;
-using Framework.Startup.Abstraction;
 
 using Microsoft.Extensions.DependencyInjection;
 
-public class ModuleInitializer : IModuleInitializer
+public static class ModuleInitializer
 {
-    public void AddServices(IServiceCollection services)
+    public static IServiceCollection AddCNCLibLogicClient(this IServiceCollection services)
     {
-        services.AddAssemblyIncludingInternals(ServiceLifetime.Transient, typeof(Logic.Client.DynItemController).Assembly);
-    }
-
-    public void AddTranslationResources(ILocalizationCollector localisation)
-    {
+        return
+            services.AddAssemblyIncludingInternals(ServiceLifetime.Transient, typeof(Logic.Client.DynItemController).Assembly);
     }
 }

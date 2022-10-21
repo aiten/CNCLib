@@ -26,13 +26,15 @@ using System.Windows.Markup;
 using AutoMapper;
 
 using CNCLib.GCode.GUI;
+using CNCLib.Logic.Client;
 using CNCLib.Service.Abstraction;
+using CNCLib.Service.WebAPI;
 using CNCLib.Shared;
 
+using Framework.Arduino.SerialCommunication;
 using Framework.Dependency;
-using Framework.Localization;
+using Framework.Logic;
 using Framework.Service.WebAPI;
-using Framework.Startup;
 using Framework.Tools;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -51,34 +53,6 @@ public partial class App : Application
         var                userContextRW = new CNCLibUserContext();
         ICNCLibUserContext userContext   = userContextRW;
 
-        var localizationCollector = new LocalizationCollector();
-        var moduleInit            = new InitializationManager();
-
-        moduleInit.Add(new Framework.Tools.ModuleInitializer());
-        moduleInit.Add(new Framework.Arduino.SerialCommunication.ModuleInitializer());
-        moduleInit.Add(new Framework.Logic.ModuleInitializer()
-        {
-            MapperConfiguration =
-                new MapperConfiguration(
-                    cfg =>
-                    {
-                        cfg.AddProfile<WpfAutoMapperProfile>();
-                        cfg.AddProfile<GCodeGUIAutoMapperProfile>();
-                    })
-        });
-        moduleInit.Add(new CNCLib.Logic.Client.ModuleInitializer());
-        moduleInit.Add(new CNCLib.WpfClient.ModuleInitializer());
-        moduleInit.Add(new CNCLib.Service.WebAPI.ModuleInitializer()
-        {
-            ConfigureHttpClient = httpClient =>
-            {
-                HttpClientHelper.PrepareHttpClient(httpClient, @"https://cnclib.azurewebsites.net");
-                httpClient.DefaultRequestHeaders.Authorization =
-                    new AuthenticationHeaderValue(
-                        "Basic", Base64Helper.StringToBase64($"{userContextRW.UserName}:{userContextRW.Password}"));
-            }
-        });
-
         GlobalDiagnosticsContext.Set("logDir", $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/CNCLib.Web/logs");
 
         _logger.Info(@"Starting ...");
@@ -88,9 +62,27 @@ public partial class App : Application
         AppService.ServiceCollection
             .AddTransient<ILoggerFactory, LoggerFactory>()
             .AddTransient(typeof(ILogger<>), typeof(Logger<>))
-            .AddSingleton(userContext);
-
-        moduleInit.Initialize(AppService.ServiceCollection, localizationCollector);
+            .AddSingleton(userContext)
+            .AddArduinoSerial()
+            .AddFrwTools()
+            .AddArduinoSerial()
+            .AddFrwLogic(
+                new MapperConfiguration(
+                    cfg =>
+                    {
+                        cfg.AddProfile<WpfAutoMapperProfile>();
+                        cfg.AddProfile<GCodeGUIAutoMapperProfile>();
+                    }))
+            .AddCNCLibLogicClient()
+            .AddWpfClient()
+            .AddCNCLibServicesWeb(
+                httpClient =>
+                {
+                    HttpClientHelper.PrepareHttpClient(httpClient, @"https://cnclib.azurewebsites.net");
+                    httpClient.DefaultRequestHeaders.Authorization =
+                        new AuthenticationHeaderValue(
+                            "Basic", Base64Helper.StringToBase64($"{userContextRW.UserName}:{userContextRW.Password}"));
+                });
 
         AppService.BuildServiceProvider();
 

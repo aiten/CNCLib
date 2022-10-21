@@ -21,31 +21,25 @@ using System;
 using CNCLib.Repository.Context;
 
 using Framework.Dependency;
-using Framework.Localization.Abstraction;
 using Framework.Repository;
 using Framework.Repository.Abstraction;
-using Framework.Startup.Abstraction;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-public class ModuleInitializer : IModuleInitializer
+public static class ModuleInitializer
 {
-    public Action<DbContextOptionsBuilder> OptionsAction { get; set; }
-
-    public void AddServices(IServiceCollection services)
+    public static IServiceCollection AddCNCLibRepository(this IServiceCollection services, Action<DbContextOptionsBuilder> optionsAction)
     {
         var options = new DbContextOptionsBuilder<CNCLibContext>();
-        OptionsAction(options);
+        optionsAction(options);
 
         services.AddSingleton<DbContextOptions<CNCLibContext>>(options.Options);
         services.AddScoped<CNCLibContext, CNCLibContext>();
         services.AddScoped<IUnitOfWork, UnitOfWork<CNCLibContext>>();
 
         services.AddAssemblyIncludingInternals(ServiceLifetime.Transient, typeof(Repository.MachineRepository).Assembly);
-    }
 
-    public void AddTranslationResources(ILocalizationCollector localisation)
-    {
+        return services;
     }
 }

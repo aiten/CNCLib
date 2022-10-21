@@ -24,9 +24,12 @@ namespace CNCLib.Server
 
     using CNCLib.Logic;
     using CNCLib.Logic.Abstraction;
+    using CNCLib.Logic.Client;
     using CNCLib.Logic.Manager;
+    using CNCLib.Repository;
     using CNCLib.Repository.Context;
     using CNCLib.Repository.SqLite;
+    using CNCLib.Service.Logic;
     using CNCLib.Shared;
     using CNCLib.WebAPI;
     using CNCLib.WebAPI.Controllers;
@@ -36,17 +39,17 @@ namespace CNCLib.Server
     using Framework.Dependency;
     using Framework.Localization;
     using Framework.Localization.Abstraction;
+    using Framework.Logic;
     using Framework.Logic.Abstraction;
     using Framework.Schedule;
     using Framework.Schedule.Abstraction;
-    using Framework.Startup;
+    using Framework.Tools;
     using Framework.Tools.Password;
     using Framework.WebAPI.Filter;
 
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.SignalR;
     using Microsoft.AspNetCore.SpaServices.AngularCli;
     using Microsoft.Extensions.Configuration;
@@ -88,18 +91,6 @@ namespace CNCLib.Server
         public void ConfigureServices(IServiceCollection services)
         {
             var localizationCollector = new LocalizationCollector();
-            var moduleInit            = new InitializationManager();
-
-            moduleInit.Add(new CNCLib.Logic.ModuleInitializer());
-            moduleInit.Add(new CNCLib.Logic.Client.ModuleInitializer());
-            moduleInit.Add(new CNCLib.Repository.ModuleInitializer() { OptionsAction = SqliteDatabaseTools.OptionBuilder });
-            moduleInit.Add(new CNCLib.Service.Logic.ModuleInitializer());
-            moduleInit.Add(new Framework.Tools.ModuleInitializer());
-            moduleInit.Add(new Framework.Schedule.ModuleInitializer());
-            moduleInit.Add(new Framework.Logic.ModuleInitializer()
-            {
-                MapperConfiguration = new MapperConfiguration(cfg => { cfg.AddProfile<LogicAutoMapperProfile>(); })
-            });
 
             var controllerAssembly = typeof(CambamController).Assembly;
 
@@ -123,7 +114,6 @@ namespace CNCLib.Server
                         options.Filters.AddService<MethodCallLogFilter>();
                         options.Filters.AddService<SetUserContextFilter>();
                     })
-                .SetCompatibilityVersion(CompatibilityVersion.Latest)
                 .AddNewtonsoftJson(
                     options =>
                         options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
@@ -168,7 +158,14 @@ namespace CNCLib.Server
                 c.OperationFilter<SecurityRequirementsOperationFilter>(true, "basic");
             });
 
-            moduleInit.Initialize(services, localizationCollector);
+            services.AddCNCLibLogic()
+                .AddCNCLibLogicClient()
+                .AddCNCLibRepository(SqliteDatabaseTools.OptionBuilder)
+                .AddCNCLibServicesLogic()
+                .AddFrwTools()
+                .AddFrwSchedule()
+                .AddFrwLogic(new MapperConfiguration(cfg => { cfg.AddProfile<LogicAutoMapperProfile>(); }));
+
 
             services.AddScoped<ICNCLibUserContext, CNCLibUserContext>();
 

@@ -21,22 +21,22 @@ using CNCLib.Logic.Statistics;
 using Framework.Dependency;
 using Framework.Localization.Abstraction;
 using Framework.Schedule;
-using Framework.Startup.Abstraction;
 
 using Microsoft.Extensions.DependencyInjection;
 
-public class ModuleInitializer : IModuleInitializer
+public static class ModuleInitializer
 {
-    public void AddServices(IServiceCollection services)
+    public static IServiceCollection AddCNCLibLogic(this IServiceCollection services)
     {
-        services
-            .AddAssemblyIncludingInternals(ServiceLifetime.Transient, typeof(Manager.MachineManager).Assembly)
-            .AddScoped<JobParamContainer>()
-            .AddSingleton<CallStatisticCache>();
+        return
+            services
+                .AddAssemblyIncludingInternals(ServiceLifetime.Transient, typeof(Manager.MachineManager).Assembly)
+                .AddScoped<JobParamContainer>()
+                .AddSingleton<CallStatisticCache>();
     }
 
-    public void AddTranslationResources(ILocalizationCollector localisation)
+    public static void AddTranslationResources(this ILocalizationCollector localization)
     {
-        localisation.Resources.Add(ErrorMessages.ResourceManager);
+        localization.Resources.Add(ErrorMessages.ResourceManager);
     }
 }
