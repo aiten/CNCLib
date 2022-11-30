@@ -33,7 +33,7 @@ namespace CNCLib.Serial.Server
 
         public static void Main(string[] args)
         {
-            var logger = Framework.NLogTools.ConfigurationExtensions.ConfigureNLogLocation("CNCLib.Serial.Server", Assembly.GetExecutingAssembly());
+            var logger = Framework.NLogTools.NLogConfigExtensions.ConfigureNLogLocation("CNCLib.Serial.Server", Assembly.GetExecutingAssembly());
 
             try
             {
