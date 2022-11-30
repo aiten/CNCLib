@@ -35,7 +35,7 @@ namespace CNCLib.Server
 
         public static void Main(string[] args)
         {
-            var logger = Framework.NLogTools.ConfigurationExtensions.ConfigureNLogLocation("CNCLib.Server", Assembly.GetExecutingAssembly());
+            var logger = Framework.NLogTools.NLogConfigExtensions.ConfigureNLogLocation("CNCLib.Server", Assembly.GetExecutingAssembly());
 
             try
             {
