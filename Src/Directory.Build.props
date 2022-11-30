@@ -3,7 +3,7 @@
 	<PropertyGroup Label="Versioning">
 		<Authors>Herbert Aitenbichler</Authors>
 		<Company>Herbert Aitenbichler</Company>
-		<VersionPrefix>1.5.5</VersionPrefix>
+		<VersionPrefix>1.6.0</VersionPrefix>
 		<Copyright>Herbert Aitenbichler</Copyright>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 	</PropertyGroup>
@@ -12,10 +12,10 @@
 
 		<SolutionNamespace>CNCLib</SolutionNamespace>
 
-		<TargetFrameworkForProject>net6.0</TargetFrameworkForProject>
-		<TargetFrameworkForApp>net6.0</TargetFrameworkForApp>
-		<TargetFrameworkForUnitTest>net6.0</TargetFrameworkForUnitTest>
-		<TargetFrameworkForWpf>net6.0-windows</TargetFrameworkForWpf>
+		<TargetFrameworkForProject>net7.0</TargetFrameworkForProject>
+		<TargetFrameworkForApp>net7.0</TargetFrameworkForApp>
+		<TargetFrameworkForUnitTest>net7.0</TargetFrameworkForUnitTest>
+		<TargetFrameworkForWpf>net7.0-windows</TargetFrameworkForWpf>
 
 	</PropertyGroup>
 
