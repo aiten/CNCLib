@@ -20,8 +20,8 @@ import { SerialCommand } from '../models/serial.command';
 import { SerialPortDefinition } from '../models/serial.port.definition';
 import { SerialServerService } from '../services/serial-server.service';
 import { HubConnection, HubConnectionBuilder, HttpTransportType, LogLevel } from '@microsoft/signalr';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 
 @Component({
   selector: 'serialportpending',
