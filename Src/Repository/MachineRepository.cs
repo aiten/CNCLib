@@ -43,19 +43,19 @@ public class MachineRepository : CrudRepository<CNCLibContext, MachineEntity, in
             PrimaryWhereIn = (query, keys) => query.Where(item => keys.Contains(item.MachineId))
         };
 
-    protected override IQueryable<MachineEntity> AddInclude(IQueryable<MachineEntity> query)
+    protected override IQueryable<MachineEntity> AddInclude(IQueryable<MachineEntity> query, params string[] includeProperties)
     {
-        return query.Include(x => x.MachineCommands).Include(x => x.MachineInitCommands).Include(x => x.User);
+        return base.AddInclude(query, includeProperties).Include(x => x.MachineCommands).Include(x => x.MachineInitCommands).Include(x => x.User);
     }
 
-    protected override void AssignValuesGraph(MachineEntity trackingEntity, MachineEntity values)
+    protected override async Task AssignValuesGraphAsync(MachineEntity trackingEntity, MachineEntity values)
     {
-        base.AssignValuesGraph(trackingEntity, values);
-        Sync(trackingEntity.MachineCommands,
+        await base.AssignValuesGraphAsync(trackingEntity, values);
+        await SyncAsync(trackingEntity.MachineCommands,
             values.MachineCommands,
             (x, y) => x.MachineCommandId > 0 && x.MachineCommandId == y.MachineCommandId,
             x => x.Machine = null);
-        Sync(trackingEntity.MachineInitCommands,
+        await SyncAsync(trackingEntity.MachineInitCommands,
             values.MachineInitCommands,
             (x, y) => x.MachineInitCommandId > 0 && x.MachineInitCommandId == y.MachineInitCommandId,
             x => x.Machine = null);
@@ -67,7 +67,7 @@ public class MachineRepository : CrudRepository<CNCLibContext, MachineEntity, in
 
     public async Task<IList<MachineEntity>> GetByUserAsync(int userId)
     {
-        return await QueryWithInclude.Where(m => m.UserId == userId).ToListAsync();
+        return await QueryWithInclude().Where(m => m.UserId == userId).ToListAsync();
     }
 
     public async Task<IList<int>> GetIdByUserAsync(int userId)
@@ -77,7 +77,7 @@ public class MachineRepository : CrudRepository<CNCLibContext, MachineEntity, in
 
     public async Task DeleteByUserAsync(int userId)
     {
-        var machines = await TrackingQueryWithInclude.Where(m => m.UserId == userId).ToListAsync();
+        var machines = await TrackingQueryWithInclude().Where(m => m.UserId == userId).ToListAsync();
         DeleteEntities(machines);
     }
 

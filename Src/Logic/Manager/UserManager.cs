@@ -143,7 +143,7 @@ public class UserManager : CrudManager<User, int, UserEntity>, IUserManager
                 Created  = _currentDate.Now
             };
 
-            _repository.Add(userEntity);
+            await _repository.AddAsync(userEntity);
 
             await trans.SaveChangesAsync();
 
@@ -213,7 +213,7 @@ public class UserManager : CrudManager<User, int, UserEntity>, IUserManager
         {
             await DeleteData(_userContext.UserId);
 
-            _repository.Delete(await _repository.GetTrackingAsync(_userContext.UserId));
+            await _repository.DeleteAsync(await _repository.GetTrackingAsync(_userContext.UserId));
 
             await CommitTransactionAsync(trans);
         }
@@ -231,7 +231,7 @@ public class UserManager : CrudManager<User, int, UserEntity>, IUserManager
             {
                 await DeleteData(userEntity.UserId);
 
-                _repository.Delete(await _repository.GetTrackingAsync(userEntity.UserId));
+                await _repository.DeleteAsync(await _repository.GetTrackingAsync(userEntity.UserId));
             }
 
             await CommitTransactionAsync(trans);
@@ -251,7 +251,7 @@ public class UserManager : CrudManager<User, int, UserEntity>, IUserManager
                 m => m.Name.ToLower(),
                 (m, _) => m);
 
-            _machineRepository.DeleteRange(sameMachines);
+            await _machineRepository.DeleteRangeAsync(sameMachines);
 
             await _unitOfWork.SaveChangesAsync();
             await _initRepository.AddDefaultMachinesAsync(_userContext.UserId);
@@ -273,7 +273,7 @@ public class UserManager : CrudManager<User, int, UserEntity>, IUserManager
                 item => item.Name.ToLower(),
                 (item, _) => item);
 
-            _itemRepository.DeleteRange(sameItems);
+            await _itemRepository.DeleteRangeAsync(sameItems);
 
             var userFiles = await _userFileRepository.GetTrackingAsync(await _userFileRepository.GetIdByUserAsync(_userContext.UserId));
 
@@ -282,7 +282,7 @@ public class UserManager : CrudManager<User, int, UserEntity>, IUserManager
                 f => f.FileName.ToLower(),
                 (r, _) => r);
 
-            _userFileRepository.DeleteRange(sameFiles);
+            await _userFileRepository.DeleteRangeAsync(sameFiles);
 
             await _unitOfWork.SaveChangesAsync();
             await _initRepository.AddDefaultItemsAsync(_userContext.UserId);

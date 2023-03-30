@@ -93,10 +93,10 @@ public class UserFileManager : CrudManager<UserFile, int, UserFileEntity>, IUser
         entity.UploadTime = _currentDateTime.Now;
     }
 
-    protected override void UpdateEntity(UserFileEntity entityInDb, UserFileEntity values)
+    protected override async Task UpdateEntityAsync(UserFileEntity entityInDb, UserFileEntity values)
     {
         values.UploadTime = _currentDateTime.Now;
-        base.UpdateEntity(entityInDb, values);
+        await base.UpdateEntityAsync(entityInDb, values);
     }
 
     protected override Task<IList<UserFileEntity>> GetAllEntitiesAsync()

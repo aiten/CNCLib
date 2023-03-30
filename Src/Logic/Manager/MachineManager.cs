@@ -66,14 +66,14 @@ public class MachineManager : CrudManager<Machine, int, MachineEntity>, IMachine
         base.AddEntity(entityInDb);
     }
 
-    protected override void UpdateEntity(MachineEntity entityInDb, MachineEntity values)
+    protected override async Task UpdateEntityAsync(MachineEntity entityInDb, MachineEntity values)
     {
         // do not overwrite user!
 
         values.UserId = entityInDb.UserId;
         values.User   = entityInDb.User;
 
-        base.UpdateEntity(entityInDb, values);
+        await base.UpdateEntityAsync(entityInDb, values);
     }
 
     #region DefaultAsync machine

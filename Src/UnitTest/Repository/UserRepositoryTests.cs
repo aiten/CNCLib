@@ -143,7 +143,7 @@ public class UserRepositoryTests : RepositoryTests
         using (var ctx = CreateTestContext().CreateTestDbContext())
         {
             var entityToAdd = new UserEntity() { Name = existingUserName };
-            ctx.Repository.Add(entityToAdd);
+            await ctx.Repository.AddAsync(entityToAdd);
 
             //[SkippableFact(typeof(DbUpdateException))]
 

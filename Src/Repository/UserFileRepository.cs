@@ -50,7 +50,7 @@ public class UserFileRepository : CrudRepository<CNCLibContext, UserFileEntity, 
 
     public async Task<IList<UserFileEntity>> GetByUserAsync(int userId)
     {
-        return await QueryWithInclude.Where(f => f.UserId == userId).ToListAsync();
+        return await QueryWithInclude().Where(f => f.UserId == userId).ToListAsync();
     }
 
     public async Task<IList<int>> GetIdByUserAsync(int userId)
@@ -60,7 +60,7 @@ public class UserFileRepository : CrudRepository<CNCLibContext, UserFileEntity, 
 
     public async Task DeleteByUserAsync(int userId)
     {
-        var userFiles = await TrackingQueryWithInclude.Where(m => m.UserId == userId).ToListAsync();
+        var userFiles = await TrackingQueryWithInclude().Where(m => m.UserId == userId).ToListAsync();
         DeleteEntities(userFiles);
     }
 
@@ -98,7 +98,7 @@ public class UserFileRepository : CrudRepository<CNCLibContext, UserFileEntity, 
 
     public async Task<UserFileEntity> GetByNameAsync(int userId, string fileName)
     {
-        return await QueryWithInclude.FirstOrDefaultAsync(f => f.UserId == userId && f.FileName == fileName);
+        return await QueryWithInclude().FirstOrDefaultAsync(f => f.UserId == userId && f.FileName == fileName);
     }
 
     public async Task<long> GetTotalUserFileSizeAsync(int userId)
