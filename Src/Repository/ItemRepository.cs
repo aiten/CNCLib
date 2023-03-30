@@ -43,15 +43,15 @@ public class ItemRepository : CrudRepository<CNCLibContext, ItemEntity, int>, II
             PrimaryWhereIn = (query, keys) => query.Where(item => keys.Contains(item.ItemId))
         };
 
-    protected override IQueryable<ItemEntity> AddInclude(IQueryable<ItemEntity> query)
+    protected override IQueryable<ItemEntity> AddInclude(IQueryable<ItemEntity> query, params string[] includeProperties)
     {
-        return query.Include(x => x.ItemProperties).Include(x => x.User);
+        return base.AddInclude(query, includeProperties).Include(x => x.ItemProperties).Include(x => x.User);
     }
 
-    protected override void AssignValuesGraph(ItemEntity trackingEntity, ItemEntity values)
+    protected override async Task AssignValuesGraphAsync(ItemEntity trackingEntity, ItemEntity values)
     {
-        base.AssignValuesGraph(trackingEntity, values);
-        Sync(trackingEntity.ItemProperties,
+        await base.AssignValuesGraphAsync(trackingEntity, values);
+        await SyncAsync(trackingEntity.ItemProperties,
             values.ItemProperties,
             (x, y) => x.ItemId > 0 && x.ItemId == y.ItemId && x.Name == y.Name,
             x => x.Item = null);
@@ -63,7 +63,7 @@ public class ItemRepository : CrudRepository<CNCLibContext, ItemEntity, int>, II
 
     public async Task<IList<ItemEntity>> GetByUserAsync(int userId)
     {
-        return await QueryWithInclude.Where(m => m.UserId == userId).ToListAsync();
+        return await QueryWithInclude().Where(m => m.UserId == userId).ToListAsync();
     }
 
     public async Task<IList<int>> GetIdByUserAsync(int userId)
@@ -73,13 +73,13 @@ public class ItemRepository : CrudRepository<CNCLibContext, ItemEntity, int>, II
 
     public async Task DeleteByUserAsync(int userId)
     {
-        var items = await TrackingQueryWithInclude.Where(m => m.UserId == userId).ToListAsync();
+        var items = await TrackingQueryWithInclude().Where(m => m.UserId == userId).ToListAsync();
         DeleteEntities(items);
     }
 
     public async Task<IList<ItemEntity>> GetAsync(int userId, string typeIdString)
     {
-        return await QueryWithInclude
+        return await QueryWithInclude()
             .Where(i => i.UserId == userId && i.ClassName == typeIdString)
             .Include(d => d.ItemProperties)
             .ToListAsync();

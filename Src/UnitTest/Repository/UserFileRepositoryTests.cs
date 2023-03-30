@@ -129,7 +129,7 @@ public class UserFileRepositoryTests : RepositoryTests
         using (var ctx = CreateTestContext().CreateTestDbContext())
         {
             var entityToAdd = new UserFileEntity() { FileName = existingUserName, UserId = 1, Content = new byte[] { 1 } };
-            ctx.Repository.Add(entityToAdd);
+            await ctx.Repository.AddAsync(entityToAdd);
 
             //[SkippableFact(typeof(DbUpdateException))]
 

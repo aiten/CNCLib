@@ -54,7 +54,7 @@ public class UserRepository : CrudRepository<CNCLibContext, UserEntity, int>, IU
         {
             // add new
 
-            AddEntity(user);
+            await AddEntityAsync(user);
         }
         else
         {

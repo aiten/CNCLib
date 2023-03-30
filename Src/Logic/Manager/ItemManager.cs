@@ -59,14 +59,14 @@ public class ItemManager : CrudManager<Item, int, ItemEntity>, IItemManager
         base.AddEntity(entityInDb);
     }
 
-    protected override void UpdateEntity(ItemEntity entityInDb, ItemEntity values)
+    protected override async Task UpdateEntityAsync(ItemEntity entityInDb, ItemEntity values)
     {
         // do not overwrite user!
 
         values.UserId = entityInDb.UserId;
         values.User   = entityInDb.User;
 
-        base.UpdateEntity(entityInDb, values);
+        await base.UpdateEntityAsync(entityInDb, values);
     }
 
     public async Task<IEnumerable<Item>> GetByClassNameAsync(string classname)

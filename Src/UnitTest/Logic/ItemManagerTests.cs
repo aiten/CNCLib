@@ -125,6 +125,6 @@ public class ItemManagerTests : LogicTests
         await ctrl.DeleteAsync(item);
 
         //assert
-        rep.Received().DeleteRange(Arg.Is<IEnumerable<ItemEntity>>(x => x.First().ItemId == item.ItemId));
+        await rep.Received().DeleteRangeAsync(Arg.Is<IEnumerable<ItemEntity>>(x => x.First().ItemId == item.ItemId));
     }
 }

@@ -77,7 +77,7 @@ public class MachineManagerTests : LogicTests
 
         var machineId = await ctrl.AddAsync(machineEntity1);
 
-        rep.ReceivedWithAnyArgs().AddRange(new MachineEntity[1]);
+        await rep.ReceivedWithAnyArgs().AddRangeAsync(new MachineEntity[1]);
         machineId.Should().Be(1);
     }
 
@@ -131,8 +131,8 @@ public class MachineManagerTests : LogicTests
 
         await ctrl.DeleteAsync(machine);
 
-        rep.Received().DeleteRange(Arg.Is<IEnumerable<MachineEntity>>(x => x.First().Name == "SuperMaxi"));
-        rep.Received().DeleteRange(Arg.Is<IEnumerable<MachineEntity>>(x => x.First().MachineId == 11));
+        await rep.Received().DeleteRangeAsync(Arg.Is<IEnumerable<MachineEntity>>(x => x.First().Name == "SuperMaxi"));
+        await rep.Received().DeleteRangeAsync(Arg.Is<IEnumerable<MachineEntity>>(x => x.First().MachineId == 11));
     }
 
     [Fact]
