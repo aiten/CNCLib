@@ -53,7 +53,7 @@ public class ConfigurationRepository : CrudRepository<CNCLibContext, Configurati
             // add new
 
             cInDb = configuration;
-            AddEntity(cInDb);
+            await AddEntityAsync(cInDb);
         }
         else
         {
@@ -67,7 +67,7 @@ public class ConfigurationRepository : CrudRepository<CNCLibContext, Configurati
 
     public async Task DeleteByUserAsync(int userId)
     {
-        var machines = await TrackingQueryWithInclude.Where(m => m.UserId == userId).ToListAsync();
+        var machines = await TrackingQueryWithInclude().Where(m => m.UserId == userId).ToListAsync();
         DeleteEntities(machines);
     }
 

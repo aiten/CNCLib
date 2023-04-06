@@ -396,7 +396,7 @@
                                              VerticalContentAlignment="Center" HorizontalAlignment="Right" />
                                 </StackPanel>
                                 <UniformGrid Margin="5,0,0,0" Rows="1" Columns="3">
-                                    <Button Command="{Binding WorkOffset.GetG54Command}" Content="GetAsync" />
+                                    <Button Command="{Binding WorkOffset.GetG54Command}" Content="Get" />
                                     <Button Command="{Binding WorkOffset.SetG54Command}" Content="Set" />
                                     <Button Command="{Binding WorkOffset.SetG54RelCommand}" Content="Rel" />
                                 </UniformGrid>
@@ -419,7 +419,7 @@
                                              VerticalContentAlignment="Center" HorizontalAlignment="Right" />
                                 </StackPanel>
                                 <UniformGrid Margin="5,0,0,0" Rows="1" Columns="3">
-                                    <Button Command="{Binding WorkOffset.GetG55Command}" Content="GetAsync" />
+                                    <Button Command="{Binding WorkOffset.GetG55Command}" Content="Get" />
                                     <Button Command="{Binding WorkOffset.SetG55Command}" Content="Set" />
                                     <Button Command="{Binding WorkOffset.SetG55RelCommand}" Content="Rel" />
                                 </UniformGrid>
@@ -442,7 +442,7 @@
                                              VerticalContentAlignment="Center" HorizontalAlignment="Right" />
                                 </StackPanel>
                                 <UniformGrid Margin="5,0,0,0" Rows="1" Columns="3">
-                                    <Button Command="{Binding WorkOffset.GetG56Command}" Content="GetAsync" />
+                                    <Button Command="{Binding WorkOffset.GetG56Command}" Content="Get" />
                                     <Button Command="{Binding WorkOffset.SetG56Command}" Content="Set" />
                                     <Button Command="{Binding WorkOffset.SetG56RelCommand}" Content="Rel" />
                                 </UniformGrid>
@@ -465,7 +465,7 @@
                                              VerticalContentAlignment="Center" HorizontalAlignment="Right" />
                                 </StackPanel>
                                 <UniformGrid Margin="5,0,0,0" Rows="1" Columns="3">
-                                    <Button Command="{Binding WorkOffset.GetG57Command}" Content="GetAsync" />
+                                    <Button Command="{Binding WorkOffset.GetG57Command}" Content="Get" />
                                     <Button Command="{Binding WorkOffset.SetG57Command}" Content="Set" />
                                     <Button Command="{Binding WorkOffset.SetG57RelCommand}" Content="Rel" />
                                 </UniformGrid>
@@ -488,7 +488,7 @@
                                              VerticalContentAlignment="Center" HorizontalAlignment="Right" />
                                 </StackPanel>
                                 <UniformGrid Margin="5,0,0,0" Rows="1" Columns="3">
-                                    <Button Command="{Binding WorkOffset.GetG58Command}" Content="GetAsync" />
+                                    <Button Command="{Binding WorkOffset.GetG58Command}" Content="Get" />
                                     <Button Command="{Binding WorkOffset.SetG58Command}" Content="Set" />
                                     <Button Command="{Binding WorkOffset.SetG58RelCommand}" Content="Rel" />
                                 </UniformGrid>
@@ -511,7 +511,7 @@
                                              VerticalContentAlignment="Center" HorizontalAlignment="Right" />
                                 </StackPanel>
                                 <UniformGrid Margin="5,0,0,0" Rows="1" Columns="3">
-                                    <Button Command="{Binding WorkOffset.GetG59Command}" Content="GetAsync" />
+                                    <Button Command="{Binding WorkOffset.GetG59Command}" Content="Get" />
                                     <Button Command="{Binding WorkOffset.SetG59Command}" Content="Set" />
                                     <Button Command="{Binding WorkOffset.SetG59RelCommand}" Content="Rel" />
                                 </UniformGrid>
@@ -559,7 +559,7 @@
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Width="100" Margin="0,0,5,0">
-                            <Button Command="{Binding SD.AddToFileCommand}" Content="AddAsync To File"
+                            <Button Command="{Binding SD.AddToFileCommand}" Content="Add To File"
                                     Margin="0,40,0,0" />
                         </StackPanel>
                     </StackPanel>
