@@ -19,7 +19,7 @@ import { LoadOptions } from "../../models/load-options";
 import { CNCLibLoadOptionService } from '../../services/CNCLib-load-option.service';
 
 import { Router } from '@angular/router';
-import { MatLegacyDialog as MatDialog } from "@angular/material/legacy-dialog";
+import { MatDialog } from "@angular/material/dialog";
 import { gcodeURL } from '../../app.global';
 
 import { MessageBoxComponent } from "../../modal/message-box/message-box.component";

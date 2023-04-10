@@ -19,7 +19,7 @@ import { LoadOptions, EHoleType, ELoadType, PenType, SmoothTypeEnum, ConvertType
 import { UntypedFormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CNCLibLoadOptionService } from '../../services/CNCLib-load-option.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MatLegacyDialog as MatDialog } from "@angular/material/legacy-dialog";
+import { MatDialog } from "@angular/material/dialog";
 
 import { saveAs } from 'file-saver';
 

@@ -18,7 +18,7 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormGroup, FormArray, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
-import { MatLegacyDialog as MatDialog } from "@angular/material/legacy-dialog";
+import { MatDialog } from "@angular/material/dialog";
 
 
 import { Machine } from '../../models/machine';
