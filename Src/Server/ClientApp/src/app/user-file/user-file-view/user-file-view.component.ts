@@ -27,7 +27,7 @@ import { MessageBoxResult } from "../../modal/message-box-data";
 
 import { CNCLibUserFileService } from '../../services/CNCLib-userFile.service';
 
-import { MatLegacyDialog as MatDialog } from "@angular/material/legacy-dialog";
+import { MatDialog } from "@angular/material/dialog";
 
 import { UserFileGlobal } from '../user-file.global';
 

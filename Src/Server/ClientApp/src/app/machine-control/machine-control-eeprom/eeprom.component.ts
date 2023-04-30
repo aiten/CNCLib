@@ -16,7 +16,7 @@
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UntypedFormGroup, FormArray, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { MatLegacyDialog as MatDialog } from "@angular/material/legacy-dialog";
+import { MatDialog } from "@angular/material/dialog";
 
 import { SerialServerConnection } from '../../serial-server/serial-server-connection';
 import { JoystickServerConnection } from '../../serial-server/joystick-server-connection';

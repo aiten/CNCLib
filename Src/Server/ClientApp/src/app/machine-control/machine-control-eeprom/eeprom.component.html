@@ -40,7 +40,7 @@
 
     <div class="row">
 
-      <mat-card class="input-col">
+      <mat-card appearance="outlined" class="input-col">
 
         <mat-card-title>Info (read only)</mat-card-title>
 
@@ -125,7 +125,7 @@
 
       </mat-card>
 
-      <mat-card class="input-col">
+      <mat-card appearance="outlined" class="input-col">
 
         <mat-card-title>General</mat-card-title>
 
@@ -193,7 +193,7 @@
         </div>
       </mat-card>
 
-      <mat-card *ngIf="isPlotter()" class="input-col">
+      <mat-card appearance="outlined" *ngIf="isPlotter()" class="input-col">
 
         <mat-card-title>Plotter</mat-card-title>
 
@@ -300,7 +300,7 @@
 
       </mat-card>
 
-      <mat-card *ngFor="let item of [].constructor(eeprom.numAxis); let i = index" class="input-col" formArrayName="axis">
+      <mat-card appearance="outlined" *ngFor="let item of [].constructor(eeprom.numAxis); let i = index" class="input-col" formArrayName="axis">
 
         <div [formGroupName]="i">
 
