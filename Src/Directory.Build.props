@@ -25,4 +25,8 @@
 		<RootNamespace>$(SolutionNamespace).$(MSBuildProjectName)</RootNamespace>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<NoWarn>CA1416;1591</NoWarn>
+	</PropertyGroup>
+
 </Project>
