@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Framework\Drawing\Drawing.csproj" />
     <ProjectReference Include="..\GCode.Generate\GCode.Generate.csproj" />
   </ItemGroup>

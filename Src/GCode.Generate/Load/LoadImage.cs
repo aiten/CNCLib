@@ -24,6 +24,8 @@ using CNCLib.Logic.Abstraction.DTO;
 using Framework.Drawing;
 using Framework.Tools;
 
+using SkiaSharp;
+
 public class LoadImage : LoadImageBase
 {
     double _shiftLaserOn;
@@ -42,41 +44,20 @@ public class LoadImage : LoadImageBase
         _shiftLaserOn  = -SHIFT * (double)LoadOptions.LaserSize;
         _shiftLaserOff = SHIFT * (double)LoadOptions.LaserSize;
 
-        using (var bx = new System.Drawing.Bitmap(IOHelper.ExpandEnvironmentVariables(LoadOptions.FileName)))
+        using (var bitmap = ImageHelperExtensions.LoadFromFile(IOHelper.ExpandEnvironmentVariables(LoadOptions.FileName)))
         {
-            System.Drawing.Bitmap b;
-            switch (bx.PixelFormat)
-            {
-                case System.Drawing.Imaging.PixelFormat.Format1bppIndexed:
-                case System.Drawing.Imaging.PixelFormat.Format4bppIndexed:
-                    b = ScaleImage(bx);
-                    break;
+            var bitmapScaled    = ScaleImage(bitmap);
+            var bitmapConverted = ConvertImage(bitmapScaled);
 
-                case System.Drawing.Imaging.PixelFormat.Format32bppArgb:
-                case System.Drawing.Imaging.PixelFormat.Format32bppPArgb:
-                case System.Drawing.Imaging.PixelFormat.Format32bppRgb:
-                case System.Drawing.Imaging.PixelFormat.Format24bppRgb:
-
-                    b = ConvertImage(ScaleImage(bx));
-                    break;
-
-                default: throw new ArgumentException("Bitmap.PixelFormat not supported");
-            }
-
-            if (b.PixelFormat != System.Drawing.Imaging.PixelFormat.Format1bppIndexed && b.PixelFormat != System.Drawing.Imaging.PixelFormat.Format4bppIndexed)
-            {
-                throw new ArgumentException("Bitmap must be Format1bbp");
-            }
-
-            WriteGCode(b);
+            WriteGCode(bitmapConverted);
         }
 
         PostLoad();
     }
 
-    private System.Drawing.Bitmap ConvertImage(System.Drawing.Bitmap bx)
+    private SKBitmap ConvertImage(SKBitmap bx)
     {
-        System.Drawing.Bitmap b = bx;
+        SKBitmap b = bx;
 
         switch (LoadOptions.Dither)
         {
@@ -103,7 +84,7 @@ public class LoadImage : LoadImageBase
     protected override void WriteGCode()
     {
         ForceLaserOff();
-        int black = System.Drawing.Color.Black.ToArgb();
+        var black = SKColors.Black;
         int lastY = -1;
 
         for (int y = 0; y < SizeY; y++)
@@ -115,7 +96,7 @@ public class LoadImage : LoadImageBase
             {
                 var col = Bitmap.GetPixel(x, y);
 
-                bool isLaserOn = col.ToArgb() == black;
+                bool isLaserOn = col == black;
 
                 if (LoadOptions.ImageInvert)
                 {

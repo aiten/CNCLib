@@ -28,8 +28,6 @@ public class CamBamExport
     {
         public string Name { get; set; }
 
-        public System.Drawing.Color Color { get; set; }
-
         public List<Object> Objects { get; set; } = new List<Object>();
     }
 

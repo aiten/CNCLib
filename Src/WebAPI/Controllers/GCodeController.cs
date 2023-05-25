@@ -36,6 +36,8 @@ using CNCLib.WebAPI.Models;
 using Framework.Drawing;
 using Framework.WebAPI.Controller;
 
+using SkiaSharp;
+
 [Route("api/[controller]")]
 public class GCodeController : Controller
 {
@@ -96,15 +98,15 @@ public class GCodeController : Controller
             KeepRatio  = opt.KeepRatio,
         };
 
-        if (!string.IsNullOrEmpty(opt.MachineColor)) gCodeDraw.MachineColor       = System.Drawing.ColorTranslator.FromHtml(opt.MachineColor);
-        if (!string.IsNullOrEmpty(opt.LaserOnColor)) gCodeDraw.LaserOnColor       = System.Drawing.ColorTranslator.FromHtml(opt.LaserOnColor);
-        if (!string.IsNullOrEmpty(opt.LaserOffColor)) gCodeDraw.LaserOffColor     = System.Drawing.ColorTranslator.FromHtml(opt.LaserOffColor);
-        if (!string.IsNullOrEmpty(opt.CutColor)) gCodeDraw.CutColor               = System.Drawing.ColorTranslator.FromHtml(opt.CutColor);
-        if (!string.IsNullOrEmpty(opt.CutDotColor)) gCodeDraw.CutDotColor         = System.Drawing.ColorTranslator.FromHtml(opt.CutDotColor);
-        if (!string.IsNullOrEmpty(opt.CutEllipseColor)) gCodeDraw.CutEllipseColor = System.Drawing.ColorTranslator.FromHtml(opt.CutEllipseColor);
-        if (!string.IsNullOrEmpty(opt.CutArcColor)) gCodeDraw.CutArcColor         = System.Drawing.ColorTranslator.FromHtml(opt.CutArcColor);
-        if (!string.IsNullOrEmpty(opt.FastMoveColor)) gCodeDraw.FastMoveColor     = System.Drawing.ColorTranslator.FromHtml(opt.FastMoveColor);
-        if (!string.IsNullOrEmpty(opt.HelpLineColor)) gCodeDraw.HelpLineColor     = System.Drawing.ColorTranslator.FromHtml(opt.HelpLineColor);
+        if (!string.IsNullOrEmpty(opt.MachineColor)) gCodeDraw.MachineColor       = SKColor.Parse(opt.MachineColor);
+        if (!string.IsNullOrEmpty(opt.LaserOnColor)) gCodeDraw.LaserOnColor       = SKColor.Parse(opt.LaserOnColor);
+        if (!string.IsNullOrEmpty(opt.LaserOffColor)) gCodeDraw.LaserOffColor     = SKColor.Parse(opt.LaserOffColor);
+        if (!string.IsNullOrEmpty(opt.CutColor)) gCodeDraw.CutColor               = SKColor.Parse(opt.CutColor);
+        if (!string.IsNullOrEmpty(opt.CutDotColor)) gCodeDraw.CutDotColor         = SKColor.Parse(opt.CutDotColor);
+        if (!string.IsNullOrEmpty(opt.CutEllipseColor)) gCodeDraw.CutEllipseColor = SKColor.Parse(opt.CutEllipseColor);
+        if (!string.IsNullOrEmpty(opt.CutArcColor)) gCodeDraw.CutArcColor         = SKColor.Parse(opt.CutArcColor);
+        if (!string.IsNullOrEmpty(opt.FastMoveColor)) gCodeDraw.FastMoveColor     = SKColor.Parse(opt.FastMoveColor);
+        if (!string.IsNullOrEmpty(opt.HelpLineColor)) gCodeDraw.HelpLineColor     = SKColor.Parse(opt.HelpLineColor);
 
         if (opt.Rotate3DVect != null && opt.Rotate3DVect.Count() == 3)
         {
@@ -117,7 +119,7 @@ public class GCodeController : Controller
         var bitmap   = gCodeDraw.DrawToBitmap(commands);
 
         var memoryStream = new MemoryStream();
-        bitmap.Save(memoryStream, ImageFormat.Png);
+        bitmap.Save(memoryStream, SKEncodedImageFormat.Png);
         memoryStream.Position = 0;
         var fileName = "preview.png";
         return File(memoryStream, this.GetContentType(fileName), fileName);
@@ -141,15 +143,15 @@ public class GCodeController : Controller
             OffsetZ         = 0,
             CutterSize      = gCodeDraw.CutterSize,
             LaserSize       = gCodeDraw.LaserSize,
-            MachineColor    = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.MachineColor),
-            LaserOnColor    = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.LaserOnColor),
-            LaserOffColor   = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.LaserOffColor),
-            CutColor        = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.CutColor),
-            CutDotColor     = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.CutDotColor),
-            CutEllipseColor = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.CutEllipseColor),
-            CutArcColor     = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.CutArcColor),
-            FastMoveColor   = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.FastMoveColor),
-            HelpLineColor   = System.Drawing.ColorTranslator.ToHtml(gCodeDraw.HelpLineColor),
+            MachineColor    = gCodeDraw.MachineColor.ToString(),
+            LaserOnColor    = gCodeDraw.LaserOnColor.ToString(),
+            LaserOffColor   = gCodeDraw.LaserOffColor.ToString(),
+            CutColor        = gCodeDraw.CutColor.ToString(),
+            CutDotColor     = gCodeDraw.CutDotColor.ToString(),
+            CutEllipseColor = gCodeDraw.CutEllipseColor.ToString(),
+            CutArcColor     = gCodeDraw.CutArcColor.ToString(),
+            FastMoveColor   = gCodeDraw.FastMoveColor.ToString(),
+            HelpLineColor   = gCodeDraw.HelpLineColor.ToString(),
             Rotate3DAngle   = 0,
             Rotate3DVect    = new List<double> { 0.0, 0.0, 1.0 },
             RenderSizeX     = 800,

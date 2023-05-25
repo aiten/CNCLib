@@ -113,7 +113,7 @@ public class LoadOptions
 
     //IMG
 
-    public string ImageWriteToFileName { get; set; } = @"%USERPROFILE%\Documents\image.bmp";
+    public string ImageWriteToFileName { get; set; } = @"%USERPROFILE%\Documents\image.png";
 
     public byte GrayThreshold { get; set; } = 127;
 

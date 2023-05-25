@@ -28,6 +28,8 @@ using CNCLib.GCode.Generate.Commands;
 
 using Framework.Drawing;
 
+using SkiaSharp;
+
 /// <summary>
 /// Interaction logic for GCodeUserControl.xaml
 /// </summary>
@@ -608,9 +610,9 @@ public partial class GCodeUserControl : System.Windows.Controls.UserControl
 
     #region private
 
-    private static System.Drawing.Color ColorToColor(Color color)
+    private static SKColor ColorToColor(Color color)
     {
-        return System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
+        return new (color.R, color.G, color.B, color.A);
     }
 
     private void DrawCommands(DrawingContext context)
@@ -628,7 +630,7 @@ public partial class GCodeUserControl : System.Windows.Controls.UserControl
 
         var curBitmap = _bitmapDraw.DrawToBitmap(Commands);
         var stream    = new MemoryStream();
-        curBitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+        curBitmap.Save(stream, SKEncodedImageFormat.Png);
         var cc = new ImageSourceConverter().ConvertFrom(stream);
         context.DrawImage((ImageSource)cc, new Rect(0, 0, ActualWidth, ActualHeight));
         curBitmap.Dispose();

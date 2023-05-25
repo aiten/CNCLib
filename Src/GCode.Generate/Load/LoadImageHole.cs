@@ -21,7 +21,10 @@ using System;
 using CNCLib.GCode.Generate.Commands;
 using CNCLib.Logic.Abstraction.DTO;
 
+using Framework.Drawing;
 using Framework.Tools;
+
+using SkiaSharp;
 
 public class LoadImageHole : LoadImageBase
 {
@@ -45,28 +48,11 @@ public class LoadImageHole : LoadImageBase
 
         AddCommentForLaser();
 
-        using (var bx = new System.Drawing.Bitmap(IOHelper.ExpandEnvironmentVariables(LoadOptions.FileName)))
+        using (var bitmap = ImageHelperExtensions.LoadFromFile(IOHelper.ExpandEnvironmentVariables(LoadOptions.FileName)))
         {
-            System.Drawing.Bitmap b;
-            switch (bx.PixelFormat)
-            {
-                case System.Drawing.Imaging.PixelFormat.Format1bppIndexed:
-                    b = ScaleImage(bx);
-                    break;
+            var bitmapScaled    = ScaleImage(bitmap);
 
-                case System.Drawing.Imaging.PixelFormat.Format32bppArgb:
-                case System.Drawing.Imaging.PixelFormat.Format32bppPArgb:
-                case System.Drawing.Imaging.PixelFormat.Format32bppRgb:
-                case System.Drawing.Imaging.PixelFormat.Format24bppRgb:
-                case System.Drawing.Imaging.PixelFormat.Format8bppIndexed:
-
-                    b = ScaleImage(bx);
-                    break;
-
-                default: throw new ArgumentException("Bitmap.PixelFormat not supported");
-            }
-
-            WriteGCode(b);
+            WriteGCode(bitmapScaled);
         }
 
         PostLoad();
@@ -177,7 +163,7 @@ public class LoadImageHole : LoadImageBase
             for (int dy = 0; dy < ImageToDotSizeY; dy++)
             {
                 var col = Bitmap.GetPixel((int)(x + dx), (int)(y + dy));
-                colorSum += FindNearestColorGrayScale(col.R, col.G, col.B);
+                colorSum += FindNearestColorGrayScale(col.Red, col.Green, col.Blue);
             }
         }
 

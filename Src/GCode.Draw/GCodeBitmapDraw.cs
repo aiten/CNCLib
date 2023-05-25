@@ -18,11 +18,12 @@ namespace CNCLib.GCode.Draw;
 
 using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 
 using CNCLib.GCode.Generate.Commands;
 
 using Framework.Drawing;
+
+using SkiaSharp;
 
 public class GCodeBitmapDraw : IOutputCommand
 {
@@ -149,7 +150,7 @@ public class GCodeBitmapDraw : IOutputCommand
         }
     }
 
-    public Color MachineColor
+    public SKColor MachineColor
     {
         get => _machineColor;
         set
@@ -159,7 +160,7 @@ public class GCodeBitmapDraw : IOutputCommand
         }
     }
 
-    public Color LaserOnColor
+    public SKColor LaserOnColor
     {
         get => _laserOnColor;
         set
@@ -169,7 +170,7 @@ public class GCodeBitmapDraw : IOutputCommand
         }
     }
 
-    public Color LaserOffColor
+    public SKColor LaserOffColor
     {
         get => _laserOffColor;
         set
@@ -179,7 +180,7 @@ public class GCodeBitmapDraw : IOutputCommand
         }
     }
 
-    public Color CutColor
+    public SKColor CutColor
     {
         get => _cutColor;
         set
@@ -189,7 +190,7 @@ public class GCodeBitmapDraw : IOutputCommand
         }
     }
 
-    public Color CutDotColor
+    public SKColor CutDotColor
     {
         get => _cutDotColor;
         set
@@ -199,7 +200,7 @@ public class GCodeBitmapDraw : IOutputCommand
         }
     }
 
-    public Color CutEllipseColor
+    public SKColor CutEllipseColor
     {
         get => _cutEllipseColor;
         set
@@ -209,7 +210,7 @@ public class GCodeBitmapDraw : IOutputCommand
         }
     }
 
-    public Color CutArcColor
+    public SKColor CutArcColor
     {
         get => _cutArcColor;
         set
@@ -219,7 +220,7 @@ public class GCodeBitmapDraw : IOutputCommand
         }
     }
 
-    public Color FastMoveColor
+    public SKColor FastMoveColor
     {
         get => _fastColor;
         set
@@ -229,7 +230,7 @@ public class GCodeBitmapDraw : IOutputCommand
         }
     }
 
-    public Color HelpLineColor
+    public SKColor HelpLineColor
     {
         get => _helpLineColor;
         set
@@ -286,15 +287,15 @@ public class GCodeBitmapDraw : IOutputCommand
     double _cutterSize = 0;
     double _laserSize  = 0.254;
 
-    Color _machineColor    = Color.Black;
-    Color _laserOnColor    = Color.Red;
-    Color _laserOffColor   = Color.Orange;
-    Color _cutColor        = Color.LightGray;
-    Color _cutDotColor     = Color.Blue;
-    Color _cutEllipseColor = Color.Cyan;
-    Color _cutArcColor     = Color.Beige;
-    Color _fastColor       = Color.Green;
-    Color _helpLineColor   = Color.LightGray;
+    SKColor _machineColor    = SKColors.Black;
+    SKColor _laserOnColor    = SKColors.Red;
+    SKColor _laserOffColor   = SKColors.Orange;
+    SKColor _cutColor        = SKColors.LightGray;
+    SKColor _cutDotColor     = SKColors.Blue;
+    SKColor _cutEllipseColor = SKColors.Cyan;
+    SKColor _cutArcColor     = SKColors.Beige;
+    SKColor _fastColor       = SKColors.Green;
+    SKColor _helpLineColor   = SKColors.LightGray;
 
     Rotate3D _rotate3D;
 
@@ -366,7 +367,7 @@ public class GCodeBitmapDraw : IOutputCommand
         return new Point3D(z * _rotateZscaleX + a / _rotateScaleX, z * _rotateZscaleY + b / _rotateScaleY, z);
     }
 
-    PointF ToClientF(Point3D pt)
+    SKPoint ToClientF(Point3D pt)
     {
         pt = _rotate3D.Rotate(pt);
 
@@ -375,7 +376,7 @@ public class GCodeBitmapDraw : IOutputCommand
 
         //double z = ((double)((double)(pt.Z ?? 0) - (double)OffsetZ) * Zoom) * _ratioZ;
 
-        return new PointF((float)x, (float)y);
+        return new SKPoint((float)x, (float)y);
     }
 
     double ToClientSizeX(double X)
@@ -417,45 +418,47 @@ public class GCodeBitmapDraw : IOutputCommand
         {
             float fastSize = 0.5f;
 
-            _helpLinePen   = new Pen(_helpLineColor, (float)(fastSize / 2.0));
-            _helpLinePen10 = new Pen(_helpLineColor, (float)(fastSize * 4));
+            float GetSafeStrokeWidth(float strokeWidth)
+            {
+                return strokeWidth < 1 ? 0f : fastSize;
+            }
+
+            _helpLinePen = new SKPaint
+            {
+                Color       = _helpLineColor,
+                StrokeWidth = GetSafeStrokeWidth(fastSize / 2.0f)
+            };
+            _helpLinePen10 = new SKPaint
+            {
+                Color       = _helpLineColor,
+                StrokeWidth = (float)(fastSize * 4)
+            };
 
             InitPen(_selected, c => c);
-            InitPen(_dithered, c => Color.FromArgb(25, c));
+            InitPen(_dithered, c => c.WithAlpha(25));
 
             _needReInit = false;
         }
     }
 
-    void InitPen(PenSet set, Func<Color, Color> colorConverter)
+    void InitPen(PenSet set, Func<SKColor, SKColor> colorConverter)
     {
         float cutSize  = CutterSize > 0 ? (float)ToClientSizeX(CutterSize) : 2;
         float fastSize = 0.5f;
 
-        set._cutPen = new Pen(colorConverter(CutColor), cutSize)
-        {
-            StartCap = LineCap.Round,
-            EndCap   = LineCap.Round
-        };
+        set._cutPen = new SKPaint { Color = colorConverter(CutColor), StrokeWidth = cutSize, StrokeCap = SKStrokeCap.Round };
 
-        set._cutDotPen     = new Pen(colorConverter(CutDotColor),     cutSize);
-        set._cutEllipsePen = new Pen(colorConverter(CutEllipseColor), cutSize);
-        set._cutArcPen = new Pen(colorConverter(CutArcColor), cutSize)
-        {
-            StartCap = LineCap.Round,
-            EndCap   = LineCap.Round
-        };
+        set._cutDotPen     = new SKPaint { Color = colorConverter(CutDotColor), StrokeWidth     = cutSize };
+        set._cutEllipsePen = new SKPaint { Color = colorConverter(CutEllipseColor), StrokeWidth = cutSize };
+        set._cutArcPen     = new SKPaint { Color = colorConverter(CutArcColor), StrokeWidth     = cutSize, StrokeCap = SKStrokeCap.Round };
 
         set._cutPens = new[] { set._cutPen, set._cutDotPen, set._cutEllipsePen, set._cutArcPen };
 
-        set._fastPen   = new Pen(colorConverter(FastMoveColor), fastSize);
-        set._noMovePen = new Pen(colorConverter(Color.Blue),    fastSize);
-        set._laserCutPen = new Pen(colorConverter(LaserOnColor), (float)ToClientSizeX(LaserSize))
-        {
-            StartCap = LineCap.Round,
-            EndCap   = LineCap.Round
-        };
-        set._laserFastPen = new Pen(colorConverter(LaserOffColor), (float)(fastSize / 2.0));
+        set._fastPen     = new SKPaint { Color = colorConverter(FastMoveColor), StrokeWidth = fastSize };
+        set._noMovePen   = new SKPaint { Color = colorConverter(SKColors.Blue), StrokeWidth = fastSize };
+        set._laserCutPen = new SKPaint { Color = colorConverter(LaserOnColor), StrokeWidth  = (float)ToClientSizeX(LaserSize), StrokeCap = SKStrokeCap.Round };
+
+        set._laserFastPen = new SKPaint { Color = colorConverter(LaserOffColor), StrokeWidth = (float)(fastSize / 2.0) };
     }
 
     Tuple<Point3D, Point3D> CalcMinMax(CommandList commands)
@@ -501,68 +504,67 @@ public class GCodeBitmapDraw : IOutputCommand
         return new Tuple<Point3D, Point3D>(pointMin, pointMax);
     }
 
-    public Bitmap DrawToBitmap(CommandList commands)
+    public SKBitmap DrawToBitmap(CommandList commands)
     {
         InitPen();
 
-        var curBitmap = new Bitmap(RenderSize.Width, RenderSize.Height);
+        var curBitmap = new SKBitmap(RenderSize.Width, RenderSize.Height);
 
-        Graphics g1 = Graphics.FromImage(curBitmap);
-        g1.InterpolationMode  = InterpolationMode.NearestNeighbor;
-        g1.SmoothingMode      = SmoothingMode.None;
-        g1.PixelOffsetMode    = PixelOffsetMode.None;
-        g1.CompositingQuality = CompositingQuality.HighSpeed;
-        g1.TextRenderingHint  = System.Drawing.Text.TextRenderingHint.SingleBitPerPixel;
-
-        if (SizeX == 0.0 || SizeY == 0.0 || SizeZ == 0.0)
+        using (SKCanvas canvas = new SKCanvas(curBitmap))
         {
-            var minMax = CalcMinMax(commands);
-
-            SizeX = minMax.Item2.X ?? SizeX;
-            SizeY = minMax.Item2.Y ?? SizeY;
-            SizeZ = minMax.Item2.Z ?? SizeZ;
-        }
-
-        // var ee = new PaintEventArgs(g1, new Rectangle());
-
-        var pts = new[]
-        {
-            ToClientF(new Point3D(0, 0, 0)), ToClientF(new Point3D(0, SizeY, 0)), ToClientF(new Point3D(SizeX, SizeY, 0)), ToClientF(new Point3D(SizeX, 0, 0))
-        };
-        g1.FillPolygon(new SolidBrush(MachineColor), pts);
-
-        // draw axis
-
-        g1.DrawLine(new Pen(Color.Red,   0.25f), ToClientF(new Point3D(-SizeX * 0.1, 0,            0)),            ToClientF(new Point3D(SizeX * 1.1, 0,           0)));
-        g1.DrawLine(new Pen(Color.Green, 0.25f), ToClientF(new Point3D(0,            -SizeY * 0.1, 0)),            ToClientF(new Point3D(0,           SizeY * 1.1, 0)));
-        g1.DrawLine(new Pen(Color.Blue,  0.25f), ToClientF(new Point3D(0,            0,            -SizeZ * 0.1)), ToClientF(new Point3D(0,           0,           SizeZ * 1.1)));
-
-        for (int i = 1;; i++)
-        {
-            double x = i * 10.0;
-            if (x > SizeX)
+            if (SizeX == 0.0 || SizeY == 0.0 || SizeZ == 0.0)
             {
-                break;
+                var minMax = CalcMinMax(commands);
+
+                SizeX = minMax.Item2.X ?? double.Max(SizeX, 50.0);
+                SizeY = minMax.Item2.Y ?? double.Max(SizeY, 50.0);
+                SizeZ = minMax.Item2.Z ?? double.Max(SizeZ, 20.0);
             }
 
-            g1.DrawLine(((i % 10) == 0) ? _helpLinePen10 : _helpLinePen, ToClientF(new Point3D(i * 10.0, 0, 0)), ToClientF(new Point3D(i * 10.0, SizeY, 0)));
-        }
+            // draw machine
 
-        for (int i = 1;; i++)
-        {
-            double y = i * 10.0;
-            if (y > SizeY)
+            var path = new SKPath();
+            path.MoveTo(ToClientF(new Point3D(0,     0,     0)));
+            path.LineTo(ToClientF(new Point3D(0,     SizeY, 0)));
+            path.LineTo(ToClientF(new Point3D(SizeX, SizeY, 0)));
+            path.LineTo(ToClientF(new Point3D(SizeX, 0,     0)));
+            path.Close();
+
+            canvas.DrawPath(path, new SKPaint { Color = MachineColor, Style = SKPaintStyle.Fill });
+
+            // draw axis
+
+            canvas.DrawLine(ToClientF(new Point3D(-SizeX * 0.1, 0,            0)),            ToClientF(new Point3D(SizeX * 1.1, 0,           0)),           new SKPaint { Color = SKColors.Red, StrokeWidth   = 0f });
+            canvas.DrawLine(ToClientF(new Point3D(0,            -SizeY * 0.1, 0)),            ToClientF(new Point3D(0,           SizeY * 1.1, 0)),           new SKPaint { Color = SKColors.Green, StrokeWidth = 0f });
+            canvas.DrawLine(ToClientF(new Point3D(0,            0,            -SizeZ * 0.1)), ToClientF(new Point3D(0,           0,           SizeZ * 1.1)), new SKPaint { Color = SKColors.Blue, StrokeWidth  = 0f });
+
+            for (int i = 1;; i++)
             {
-                break;
+                double x = i * 10.0;
+                if (x > SizeX)
+                {
+                    break;
+                }
+
+                canvas.DrawLine(ToClientF(new Point3D(i * 10.0, 0, 0)), ToClientF(new Point3D(i * 10.0, SizeY, 0)), ((i % 10) == 0) ? _helpLinePen10 : _helpLinePen);
             }
 
-            g1.DrawLine(((i % 10) == 0) ? _helpLinePen10 : _helpLinePen, ToClientF(new Point3D(0, i * 10.0, 0)), ToClientF(new Point3D(SizeX, i * 10.0, 0)));
+            for (int i = 1;; i++)
+            {
+                double y = i * 10.0;
+                if (y > SizeY)
+                {
+                    break;
+                }
+
+                canvas.DrawLine(ToClientF(new Point3D(0, i * 10.0, 0)), ToClientF(new Point3D(SizeX, i * 10.0, 0)), ((i % 10) == 0) ? _helpLinePen10 : _helpLinePen);
+            }
+
+
+            commands?.Paint(this, canvas);
+
+            return curBitmap;
         }
-
-        commands?.Paint(this, g1);
-
-        g1.Dispose();
-        return curBitmap;
     }
 
     private void CalcRatio()
@@ -591,19 +593,19 @@ public class GCodeBitmapDraw : IOutputCommand
 
     private class PenSet
     {
-        public Pen   _noMovePen;
-        public Pen   _cutEllipsePen;
-        public Pen   _cutArcPen;
-        public Pen   _cutPen;
-        public Pen   _cutDotPen;
-        public Pen[] _cutPens;
-        public Pen   _fastPen;
-        public Pen   _laserCutPen;
-        public Pen   _laserFastPen;
+        public SKPaint   _noMovePen;
+        public SKPaint   _cutEllipsePen;
+        public SKPaint   _cutArcPen;
+        public SKPaint   _cutPen;
+        public SKPaint   _cutDotPen;
+        public SKPaint[] _cutPens;
+        public SKPaint   _fastPen;
+        public SKPaint   _laserCutPen;
+        public SKPaint   _laserFastPen;
     };
 
-    public Pen _helpLinePen;
-    public Pen _helpLinePen10;
+    public SKPaint _helpLinePen;
+    public SKPaint _helpLinePen10;
 
     readonly PenSet _dithered = new PenSet();
     readonly PenSet _selected = new PenSet();
@@ -615,27 +617,27 @@ public class GCodeBitmapDraw : IOutputCommand
             return;
         }
 
-        var g = (Graphics)param;
+        var g = (SKCanvas)param;
 
         var from = ToClientF(ptFrom);
         var to   = ToClientF(ptTo);
 
         if (PreDrawLineOrArc(param, drawType, from, to))
         {
-            g.DrawLine(GetPen(drawType, LineDrawType.Line), from, to);
+            g.DrawLine(from, to, GetPen(drawType, LineDrawType.Line));
         }
     }
 
-    void Line(object param, Pen pen, Point3D ptFrom, Point3D ptTo)
+    void Line(object param, SKPaint pen, Point3D ptFrom, Point3D ptTo)
     {
-        var g = (Graphics)param;
+        var g = (SKCanvas)param;
 
         var from = ToClientF(ptFrom);
         var to   = ToClientF(ptTo);
 
         if (from.Equals(to) == false)
         {
-            g.DrawLine(pen, from, to);
+            g.DrawLine(from, to, pen);
         }
     }
 
@@ -646,9 +648,9 @@ public class GCodeBitmapDraw : IOutputCommand
             return;
         }
 
-        var g    = (Graphics)param;
+        var g    = (SKCanvas)param;
         var from = ToClientF(ptCenter);
-        g.DrawEllipse(GetPen(drawType, LineDrawType.Ellipse), from.X - radiusX / 2, from.Y - radiusY / 2, radiusX, radiusY);
+        g.DrawOval(from.X - radiusX / 2, from.Y - radiusY / 2, radiusX, radiusY, GetPen(drawType, LineDrawType.Ellipse));
     }
 
     public void DrawArc(Command cmd, object param, DrawType drawType, Point3D ptFrom, Point3D ptTo, Point3D ptIJK, bool clockwise, Pane pane)
@@ -681,7 +683,7 @@ public class GCodeBitmapDraw : IOutputCommand
 
     private void Arc(Command cmd, object param, DrawType drawType, Point3D ptFrom, Point3D ptTo, double offset0, double offset1, int axis_0, int axis_1, int axis_linear, bool isClockwise)
     {
-        Pen pen = GetPen(drawType, LineDrawType.Arc);
+        var pen = GetPen(drawType, LineDrawType.Arc);
 
         var    current      = new Point3D(ptFrom.X0, ptFrom.Y0, ptFrom.Z0);
         var    last         = new Point3D(ptFrom.X0, ptFrom.Y0, ptFrom.Z0);
@@ -804,19 +806,19 @@ public class GCodeBitmapDraw : IOutputCommand
         Line(param, pen, last, ptTo);
     }
 
-    private bool PreDrawLineOrArc(object param, DrawType drawType, PointF from, PointF to)
+    private bool PreDrawLineOrArc(object param, DrawType drawType, SKPoint from, SKPoint to)
     {
-        var g = (Graphics)param;
+        var g = (SKCanvas)param;
 
         if (from.Equals(to))
         {
             if ((drawType & DrawType.Laser) == DrawType.Laser)
             {
-                g.DrawEllipse(GetPen(drawType, LineDrawType.Dot), @from.X, @from.Y, 1, 1);
+                g.DrawOval(@from.X, @from.Y, 1, 1, GetPen(drawType, LineDrawType.Dot));
             }
             else
             {
-                g.DrawEllipse(GetPen(drawType, LineDrawType.Dot), @from.X, @from.Y, 4, 4);
+                g.DrawOval(@from.X, @from.Y, 4, 4, GetPen(drawType, LineDrawType.Dot));
             }
 
             return false;
@@ -849,7 +851,7 @@ public class GCodeBitmapDraw : IOutputCommand
         Arc     = 3
     }
 
-    private Pen GetPen(DrawType moveType, LineDrawType drawType)
+    private SKPaint GetPen(DrawType moveType, LineDrawType drawType)
     {
         PenSet set = (moveType & DrawType.Selected) == DrawType.Selected ? _selected : _dithered;
 
