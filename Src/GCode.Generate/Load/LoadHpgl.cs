@@ -425,7 +425,7 @@ public partial class LoadHpgl : LoadBase
         if (list.Any())
         {
             var firstFrom = list.First().PointFrom;
-            using (var sw = new StreamWriter(Environment.ExpandEnvironmentVariables($"%TMP%\\CNCLib_Line{lineIdx}.plt")))
+            using (var sw = new StreamWriter(Environment.ExpandEnvironmentVariables($"%TEMP%\\CNCLib_Line{lineIdx}.plt")))
             {
                 sw.WriteLine($"PU {(int)(firstFrom.X0 * 40)},{(int)(firstFrom.Y0 * 40)}");
                 foreach (var cmd in list)

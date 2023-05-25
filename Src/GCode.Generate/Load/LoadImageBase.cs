@@ -22,6 +22,8 @@ using CNCLib.GCode.Generate.Commands;
 
 using Framework.Drawing;
 
+using SkiaSharp;
+
 public abstract class LoadImageBase : LoadBase
 {
     protected         double PixelSizeX { get; private set; } = 1;
@@ -34,29 +36,39 @@ public abstract class LoadImageBase : LoadBase
     protected double ShiftX { get; private set; } = 0;
     protected double ShiftY { get; private set; } = 0;
 
-    protected System.Drawing.Bitmap Bitmap { get; private set; }
+    protected double DpiX { get; private set; } = 66.7;
+    protected double DpiY { get; private set; } = 66.7;
 
-    protected void WriteGCode(System.Drawing.Bitmap b)
+    protected SKBitmap Bitmap { get; private set; }
+
+    protected override void PreLoad()
     {
-        Bitmap     = b;
-        SizeX      = b.Width;
-        SizeY      = b.Height;
-        PixelSizeX = 25.4 / b.HorizontalResolution;
-        PixelSizeY = 25.4 / b.VerticalResolution;
+        base.PreLoad();
+
+        DpiX = (double)(LoadOptions.ImageDPIX ?? 66.7m);
+        DpiY = (double)(LoadOptions.ImageDPIY ?? 66.7m);
+
+        PixelSizeX = 25.4 / DpiX;
+        PixelSizeY = 25.4 / DpiY;
+    }
+
+    protected void WriteGCode(SKBitmap b)
+    {
+        Bitmap = b;
+        SizeX  = b.Width;
+        SizeY  = b.Height;
 
         ShiftX = (double)LoadOptions.LaserSize / 2.0;
         ShiftY = (double)LoadOptions.LaserSize / 2.0;
 
         if (!string.IsNullOrEmpty(LoadOptions.ImageWriteToFileName))
         {
-            b.Save(Environment.ExpandEnvironmentVariables(LoadOptions.ImageWriteToFileName), System.Drawing.Imaging.ImageFormat.Bmp);
+            b.Save(Environment.ExpandEnvironmentVariables(LoadOptions.ImageWriteToFileName), SKEncodedImageFormat.Png, 100);
         }
 
-        AddComment("Image.Width",                     b.Width);
-        AddComment("Image.Height",                    b.Width);
-        AddComment("Image.HorizontalResolution(DPI)", b.HorizontalResolution);
-        AddComment("Image.VerticalResolution(DPI)",   b.VerticalResolution);
-        AddComment("ImageInvert",                     LoadOptions.ImageInvert.ToString());
+        AddComment("Image.Width",  b.Width);
+        AddComment("Image.Height", b.Width);
+        AddComment("ImageInvert",  LoadOptions.ImageInvert.ToString());
 
         if (LoadOptions.MoveSpeed.HasValue)
         {
@@ -65,29 +77,31 @@ public abstract class LoadImageBase : LoadBase
             Commands.Add(setSpeed);
         }
 
+        if (!string.IsNullOrEmpty(LoadOptions.ImageWriteToFileName))
+        {
+            b.Save(Environment.ExpandEnvironmentVariables(@"%TEMP%\Converted.png"), SKEncodedImageFormat.Png, 100);
+        }
+
         WriteGCode();
     }
 
     protected abstract void WriteGCode();
 
-    protected System.Drawing.Bitmap ScaleImage(System.Drawing.Bitmap bx)
+    protected SKBitmap ScaleImage(SKBitmap bx)
     {
-        System.Drawing.Bitmap b      = bx;
-        decimal               scaleX = LoadOptions.ScaleX;
-        decimal               scaleY = LoadOptions.ScaleY;
-
-        var dpiX = (double)(LoadOptions.ImageDPIX ?? (decimal)b.HorizontalResolution);
-        var dpiY = (double)(LoadOptions.ImageDPIY ?? (decimal)b.VerticalResolution);
+        SKBitmap b      = bx;
+        decimal  scaleX = LoadOptions.ScaleX;
+        decimal  scaleY = LoadOptions.ScaleY;
 
         if (LoadOptions.AutoScale)
         {
             AddComment("AutoScaleKeepRatio", LoadOptions.AutoScaleKeepRatio.ToString());
             AddComment("AutoScaleX",         LoadOptions.AutoScaleSizeX);
             AddComment("AutoScaleY",         LoadOptions.AutoScaleSizeY);
-            AddComment("DPI_X",              dpiX);
-            AddComment("DPI_Y",              dpiY);
-            double scaleDPIX = dpiX;
-            double scaleDPIY = dpiY;
+            AddComment("DPI_X",              DpiX);
+            AddComment("DPI_Y",              DpiY);
+            double scaleDPIX = DpiX;
+            double scaleDPIY = DpiY;
             if (PixelDistX > 0.0)
             {
                 double dotSize = 25.4 / scaleDPIX + PixelDistX;
@@ -121,8 +135,7 @@ public abstract class LoadImageBase : LoadBase
         {
             AddComment("ScaleX", scaleX);
             AddComment("ScaleY", scaleY);
-            b = ImageHelper.ScaleTo(bx, (int)(b.Width * scaleX), (int)(b.Height * scaleY));
-            b.SetResolution((float)dpiX, (float)dpiY);
+            b = bx.ScaleTo((int)(b.Width * scaleX), (int)(b.Height * scaleY));
         }
 
         return b;
