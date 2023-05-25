@@ -40,7 +40,7 @@
   <ItemGroup>
     <PackageReference Include="NLog.WindowsIdentity" Version="5.0.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
-    <PackageReference Include="System.Management" Version="7.0.0" />
+    <PackageReference Include="System.Management" Version="7.0.1" />
   </ItemGroup>
 
 </Project>

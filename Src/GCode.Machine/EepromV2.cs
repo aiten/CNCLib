@@ -48,7 +48,7 @@ public class EepromV2 : EepromV1
         SpindleFadeTime  = (EValueOffsets32V2.Values8Bit1 << 8) + 3
     }
 
-    public enum EValueOffsets16
+    public enum EValueOffsets16V2
     {
         MaxSpindleSpeed = (EValueOffsets32V2.Values16Bit1 << 8) + 00,
         JerkSpeed       = (EValueOffsets32V2.Values16Bit1 << 8) + 01,
@@ -78,18 +78,18 @@ public class EepromV2 : EepromV1
             ReadFromAxis(eeprom, i);
         }
 
-        eeprom.MaxSpindleSpeed = GetValue16((uint)EValueOffsets16.MaxSpindleSpeed);
+        eeprom.MaxSpindleSpeed = GetValue16((uint)EValueOffsets16V2.MaxSpindleSpeed);
         eeprom.SpindleFadeTime = GetValue8((uint)EValueOffsets8V2.SpindleFadeTime);
 
         eeprom.RefMoveStepRate       = GetValue32((uint)EValueOffsets32V2.RefMoveStepRate);
         eeprom.MoveAwayFromReference = GetValue32((uint)EValueOffsets32V2.MoveAwayFromReference);
 
         eeprom.MaxStepRate = GetValue32((uint)EValueOffsets32V2.MaxStepRate);
-        eeprom.Acc         = GetValue16((uint)EValueOffsets16.Acc);
-        eeprom.Dec         = GetValue16((uint)EValueOffsets16.Dec);
-        eeprom.JerkSpeed   = GetValue16((uint)EValueOffsets16.JerkSpeed);
+        eeprom.Acc         = GetValue16((uint)EValueOffsets16V2.Acc);
+        eeprom.Dec         = GetValue16((uint)EValueOffsets16V2.Dec);
+        eeprom.JerkSpeed   = GetValue16((uint)EValueOffsets16V2.JerkSpeed);
 
-        eeprom.StepperOffTimeout = GetValue16((uint)EValueOffsets16.StepperTimeout);
+        eeprom.StepperOffTimeout = GetValue16((uint)EValueOffsets16V2.StepperTimeout);
 
         eeprom.StepsPerMm1000 = BitConverter.ToSingle(BitConverter.GetBytes(GetValue32((uint)EValueOffsets32V2.StepsPerMm1000)), 0);
     }
@@ -103,18 +103,18 @@ public class EepromV2 : EepromV1
             WriteToAxis(eeprom, i);
         }
 
-        SetValue16((uint)EValueOffsets16.MaxSpindleSpeed, eeprom.MaxSpindleSpeed);
+        SetValue16((uint)EValueOffsets16V2.MaxSpindleSpeed, eeprom.MaxSpindleSpeed);
         SetValue8((uint)EValueOffsets8V2.SpindleFadeTime, eeprom.SpindleFadeTime);
 
         SetValue32((uint)EValueOffsets32V2.RefMoveStepRate,       eeprom.RefMoveStepRate);
         SetValue32((uint)EValueOffsets32V2.MoveAwayFromReference, eeprom.MoveAwayFromReference);
 
         SetValue32((uint)EValueOffsets32V2.MaxStepRate, eeprom.MaxStepRate);
-        SetValue16((uint)EValueOffsets16.Acc,       eeprom.Acc);
-        SetValue16((uint)EValueOffsets16.Dec,       eeprom.Dec);
-        SetValue16((uint)EValueOffsets16.JerkSpeed, eeprom.JerkSpeed);
+        SetValue16((uint)EValueOffsets16V2.Acc,       eeprom.Acc);
+        SetValue16((uint)EValueOffsets16V2.Dec,       eeprom.Dec);
+        SetValue16((uint)EValueOffsets16V2.JerkSpeed, eeprom.JerkSpeed);
 
-        SetValue16((uint)EValueOffsets16.StepperTimeout, eeprom.StepperOffTimeout);
+        SetValue16((uint)EValueOffsets16V2.StepperTimeout, eeprom.StepperOffTimeout);
 
         SetValue32((uint)EValueOffsets32V2.StepsPerMm1000, BitConverter.ToUInt32(BitConverter.GetBytes(eeprom.StepsPerMm1000), 0));
     }
