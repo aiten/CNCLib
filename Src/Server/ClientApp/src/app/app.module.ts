@@ -111,8 +111,7 @@ import { SerialPortHistoryPreviewGlobal } from "./serialporthistory/models/seria
     PreviewGlobal,
     SerialPortHistoryPreviewGlobal,
   ],
-  bootstrap: [AppComponent],
-  entryComponents: [MessageBoxComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule {
   constructor(library: FaIconLibrary) {
