@@ -9,8 +9,8 @@ Unicode true
 
 # These three must be integers
 !define VERSIONMAJOR 1
-!define VERSIONMINOR 6
-!define VERSIONBUILD 3 
+!define VERSIONMINOR 7
+!define VERSIONBUILD 0 
 
 !define HELPURL "https://github.com/aiten/CNCLib" # "Support Information" link
 !define UPDATEURL "https://github.com/aiten/CNCLib" # "Product Updates" link

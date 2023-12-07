@@ -217,3 +217,5 @@ Thumbs.db
 /Tools/Csv
 
 .angular
+
+!/Src/NsisSetup/nsis/Bin

@@ -17,7 +17,7 @@
             "main": "src/main.ts",
             "tsConfig": "src/tsconfig.app.json",
             "progress": true,
-            "polyfills": "src/polyfills.ts",
+            "polyfills": ["zone.js"],
             "assets": [
               "src/assets"
             ],
@@ -29,7 +29,10 @@
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/popper.js/dist/umd/popper.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js"
-            ]
+            ],
+            "allowedCommonJsDependencies": [
+              "moment"
+           ]            
           },
           "configurations": {
             "production": {
@@ -78,7 +81,7 @@
           "options": {
             "main": "src/test.ts",
             "karmaConfig": "./karma.conf.js",
-            "polyfills": "src/polyfills.ts",
+            "polyfills": ["zone.js"],
             "tsConfig": "src/tsconfig.spec.json",
             "scripts": [
             ],
@@ -139,5 +142,8 @@
     "@schematics/angular:directive": {
       "prefix": "app"
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
