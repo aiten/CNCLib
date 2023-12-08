@@ -46,6 +46,7 @@ TBM     Track bar
 UDM     Up-down control
 HKM     Hot key control
 IPM     IP address control
+NCM     Network address control
 -----------------------------------
 
 NOT included messages (WM_USER + X)
@@ -53,8 +54,6 @@ NOT included messages (WM_USER + X)
 CBEM    Extended combo box control
 CDM     Common dialog box
 DL      Drag list box
-DTM     Date and time picker control
-MCM     Month calendar control
 PGM     Pager control
 PSM     Property sheet
 RB      Rebar control
@@ -238,7 +237,8 @@ TVM     Tree-view control
 !define /math EM_GETOPTIONS      ${WM_USER} + 78
 !define /math EM_SETUNDOLIMIT    ${WM_USER} + 82 ; v2+
 !define /math EM_AUTOURLDETECT   ${WM_USER} + 91
-!define /math EM_SETEDITSTYLE    ${WM_USER} + 204 ; v3+
+!define /Math EM_SETTEXTEX       ${WM_USER} + 97 ; v3+
+!define /math EM_SETEDITSTYLE    ${WM_USER} + 204
 !define /math EM_SETFONTSIZE     ${WM_USER} + 223
 
 !define EN_MSGFILTER 0x0700
@@ -320,7 +320,7 @@ TVM     Tree-view control
 !define WM_CLEAR                        0x0303
 !define WM_CLOSE                        0x0010
 !define WM_COMMAND                      0x0111
-!define WM_COMMNOTIFY                   0x0044  # no longer suported
+!define WM_COMMNOTIFY                   0x0044  # no longer supported
 !define WM_COMPACTING                   0x0041
 !define WM_COMPAREITEM                  0x0039
 !define WM_CONTEXTMENU                  0x007B
@@ -822,6 +822,69 @@ ${_NSIS_DEFAW} ACM_OPEN
 !define /math IPM_SETRANGE     ${WM_USER} + 103
 !define /math IPM_SETFOCUS     ${WM_USER} + 104
 !define /math IPM_ISBLANK      ${WM_USER} + 105
+
+#NetworkAddress control#
+!define /math NCM_GETADDRESS ${WM_USER} + 1 ; Vista+
+!define /math NCM_SETALLOWTYPE ${WM_USER} + 2
+!define /math NCM_GETALLOWTYPE ${WM_USER} + 3
+!define /math NCM_DISPLAYERRORTIP ${WM_USER} + 4
+
+#Month calendar control#
+!define MCM_FIRST 0x1000
+!define /math MCM_GETCURSEL       ${MCM_FIRST} + 1
+!define /math MCM_SETCURSEL       ${MCM_FIRST} + 2
+!define /math MCM_GETMAXSELCOUNT  ${MCM_FIRST} + 3
+!define /math MCM_SETMAXSELCOUNT  ${MCM_FIRST} + 4
+!define /math MCM_GETSELRANGE     ${MCM_FIRST} + 5
+!define /math MCM_SETSELRANGE     ${MCM_FIRST} + 6
+!define /math MCM_GETMONTHRANGE   ${MCM_FIRST} + 7
+!define /math MCM_SETDAYSTATE     ${MCM_FIRST} + 8
+!define /math MCM_GETMINREQRECT   ${MCM_FIRST} + 9
+!define /math MCM_SETCOLOR            ${MCM_FIRST} + 10
+!define /math MCM_GETCOLOR            ${MCM_FIRST} + 11
+!define /math MCM_SETTODAY    ${MCM_FIRST} + 12
+!define /math MCM_GETTODAY    ${MCM_FIRST} + 13
+!define /math MCM_HITTEST          ${MCM_FIRST} + 14
+!define /math MCM_SETFIRSTDAYOFWEEK ${MCM_FIRST} + 15
+!define /math MCM_GETFIRSTDAYOFWEEK ${MCM_FIRST} + 16
+!define /math MCM_GETRANGE ${MCM_FIRST} + 17
+!define /math MCM_SETRANGE ${MCM_FIRST} + 18
+!define /math MCM_GETMONTHDELTA ${MCM_FIRST} + 19
+!define /math MCM_SETMONTHDELTA ${MCM_FIRST} + 20
+!define /math MCM_GETMAXTODAYWIDTH ${MCM_FIRST} + 21
+!define MCM_SETUNICODEFORMAT ${CCM_SETUNICODEFORMAT} ; IE4+
+!define MCM_GETUNICODEFORMAT ${CCM_SETUNICODEFORMAT} ; IE4+
+!define /math MCM_GETCURRENTVIEW ${MCM_FIRST} + 22 ; Vista+
+!define /math MCM_GETCALENDARCOUNT ${MCM_FIRST} + 23
+!define /math MCM_GETCALENDARGRIDINFO ${MCM_FIRST} + 24
+!define /math MCM_GETCALID ${MCM_FIRST} + 27
+!define /math MCM_SETCALID ${MCM_FIRST} + 28
+!define /math MCM_SIZERECTTOMIN ${MCM_FIRST} + 29
+!define /math MCM_SETCALENDARBORDER ${MCM_FIRST} + 30
+!define /math MCM_GETCALENDARBORDER ${MCM_FIRST} + 31
+!define /math MCM_SETCURRENTVIEW ${MCM_FIRST} + 32
+!define MCN_SELCHANGE   -749
+!define MCN_GETDAYSTATE -747
+!define MCN_SELECT      -746
+!define MCN_VIEWCHANGE  -750 ; Vista+?
+
+#DateTime control#
+!define DTM_FIRST 0x1000
+!define /math DTM_GETSYSTEMTIME ${DTM_FIRST} + 1
+!define /math DTM_SETSYSTEMTIME ${DTM_FIRST} + 2
+!define /math DTM_SETFORMATA ${DTM_FIRST} + 5
+!define /math DTM_SETFORMATW ${DTM_FIRST} + 50
+${_NSIS_DEFAW} DTM_SETFORMAT
+!define /math DTM_GETMONTHCAL ${DTM_FIRST} + 8
+!define /math DTM_SETMCFONT ${DTM_FIRST} + 9 ; IE4+?
+!define /math DTM_GETMCFONT ${DTM_FIRST} + 10 ; IE4+?
+!define /math DTM_SETMCSTYLE ${DTM_FIRST} + 11 ; Vista+?
+!define /math DTM_GETMCSTYLE ${DTM_FIRST} + 12 ; Vista+?
+!define /math DTM_CLOSEMONTHCAL ${DTM_FIRST} + 13 ; Vista+?
+!define DTN_DATETIMECHANGE -759
+!define /IfNDef GDT_ERROR -1
+!define /IfNDef GDT_VALID 0
+!define /IfNDef GDT_NONE 1
 
 !verbose pop
 !endif

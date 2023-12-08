@@ -1,6 +1,6 @@
 Param(
 	[Parameter(Mandatory=$False)]
-    [string]$SourceBinFolder = "..\CNCLib.Serial.Server\bin\Debug\netcoreapp3.1"
+    [string]$SourceBinFolder = "..\Serial.Server\bin\Debug\net8.0"
 )
 
 $OutputDir = "./Output"

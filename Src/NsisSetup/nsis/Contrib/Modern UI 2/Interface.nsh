@@ -49,6 +49,7 @@ Var mui.Button.Back
     !insertmacro MUI_DEFAULT MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\modern-install.ico"
     !insertmacro MUI_DEFAULT MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
     !insertmacro MUI_DEFAULT MUI_BGCOLOR "FFFFFF"
+    !insertmacro MUI_DEFAULT MUI_TEXTCOLOR "000000"
 
     ;Map *_NOSTRETCH legacy define to the correct *_STRETCH value
     !verbose push 2
@@ -213,12 +214,14 @@ Var mui.Button.Back
       ${if} $(^RTL) == 1
 
         File "/oname=$PLUGINSDIR\modern-header.bmp" "${MUI_HEADERIMAGE_${UN}BITMAP_RTL}"
+        !pragma verifyloadimage "${MUI_HEADERIMAGE_${UN}BITMAP_RTL}"
         !insertmacro MUI_HEADERIMAGE_INITHELPER_LOADIMAGE "${UN}" "_RTL" ${IMGRESID} "$PLUGINSDIR\modern-header.bmp"
 
       ${else}
     !endif
 
         File "/oname=$PLUGINSDIR\modern-header.bmp" "${MUI_HEADERIMAGE_${UN}BITMAP}"
+        !pragma verifyloadimage "${MUI_HEADERIMAGE_${UN}BITMAP}"
         !insertmacro MUI_HEADERIMAGE_INITHELPER_LOADIMAGE "${UN}" "" ${IMGRESID} "$PLUGINSDIR\modern-header.bmp"
 
     !ifdef MUI_HEADERIMAGE_${UN}BITMAP_RTL
@@ -241,11 +244,11 @@ Var mui.Button.Back
   GetDlgItem $mui.Header.SubText $HWNDPARENT 1038
 
   !ifndef MUI_HEADER_TRANSPARENT_TEXT
-    SetCtlColors $mui.Header.Text "" "${MUI_BGCOLOR}"
-    SetCtlColors $mui.Header.SubText "" "${MUI_BGCOLOR}"
+    SetCtlColors $mui.Header.Text "${MUI_TEXTCOLOR}" "${MUI_BGCOLOR}"
+    SetCtlColors $mui.Header.SubText "${MUI_TEXTCOLOR}" "${MUI_BGCOLOR}"
   !else
-    SetCtlColors $mui.Header.Text "" "transparent"
-    SetCtlColors $mui.Header.SubText "" "transparent"
+    SetCtlColors $mui.Header.Text "${MUI_TEXTCOLOR}" "transparent"
+    SetCtlColors $mui.Header.SubText "${MUI_TEXTCOLOR}" "transparent"
   !endif
 
   ;Header image

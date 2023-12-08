@@ -5,7 +5,7 @@ LangFile.nsh
 Header file to create language files that can be
 included with a single command.
 
-Copyright 2008-2018 Joost Verburg, Anders Kjersem
+Copyright 2008-2023 Joost Verburg, Anders Kjersem
 
 * Either LANGFILE_INCLUDE or LANGFILE_INCLUDE_WITHDEFAULT
   can be called from the script to include a language file.
@@ -106,7 +106,7 @@ Copyright 2008-2018 Joost Verburg, Anders Kjersem
   ; NATIVENAME: Native name of language. (In Unicode)
   ; NATIVEASCIINAME: Native name of language using only ASCII, "=" if it is the same as NATIVENAME
 
-  ; Example: LANGFILE "Swedish" = "Svenska" =
+  ; Example: LANGFILE "Swedish" = "Svenska" = (This is the same as LANGFILE "Swedish" "Swedish" "Svenska" "Svenska")
   ; For more examples, see French.nsh, Greek.nsh and PortugueseBR.nsh
 
   !ifdef LANGFILE_SETNAMES

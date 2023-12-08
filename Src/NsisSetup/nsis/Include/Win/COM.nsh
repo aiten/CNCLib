@@ -48,6 +48,19 @@ ${EndIf}
 !verbose push
 !verbose 3
 
+!define /ifndef STGM_READ 0
+!define /ifndef STGM_WRITE 1
+!define /ifndef STGM_READWRITE 2
+!define /ifndef STGM_SHARE_DENY_NONE  0x00000040
+!define /ifndef STGM_SHARE_DENY_READ  0x00000030
+!define /ifndef STGM_SHARE_DENY_WRITE 0x00000020
+!define /ifndef STGM_SHARE_EXCLUSIVE  0x00000010
+!define /ifndef STGM_PRIORITY         0x00040000
+!define /ifndef STGM_CREATE      0x00001000
+!define /ifndef STGM_CONVERT     0x00020000
+!define /ifndef STGM_FAILIFTHERE 0
+!define /ifndef STGM_DELETEONRELEASE 0x04000000
+
 !define /ifndef CLSCTX_INPROC_SERVER 0x1
 !define /ifndef CLSCTX_INPROC_HANDLER 0x2
 !define /ifndef CLSCTX_LOCAL_SERVER 0x4
@@ -101,8 +114,24 @@ ${NSISCOMIFACEDECL}IUnknown Release 2 ()i
 ${NSISCOMIFACEDECL}IPersist GetClassID 3 (g)i
 !endif
 
+!ifndef IID_IPersistStream
+!define IID_IPersistStream {00000109-0000-0000-C000-000000000046} ; IPersist>
+${NSISCOMIFACEDECL}IPersistStream IsDirty 4 ()i
+${NSISCOMIFACEDECL}IPersistStream Load 5 (p,i)i
+${NSISCOMIFACEDECL}IPersistStream Save 6 (p,i)i
+${NSISCOMIFACEDECL}IPersistStream GetSizeMax 7 (*l)i
+!endif
+!ifndef IID_IPersistStreamInit
+!define IID_IPersistStreamInit {7FD52380-4E07-101B-AE2D-08002B2EC713} ; IPersist>
+${NSISCOMIFACEDECL}IPersistStreamInit IsDirty 4 ()i
+${NSISCOMIFACEDECL}IPersistStreamInit Load 5 (p,i)i
+${NSISCOMIFACEDECL}IPersistStreamInit Save 6 (p,i)i
+${NSISCOMIFACEDECL}IPersistStreamInit GetSizeMax 7 (*l)i
+${NSISCOMIFACEDECL}IPersistStreamInit InitNew 8 ()i
+!endif
+
 !ifndef IID_IPersistFile
-!define IID_IPersistFile {0000010b-0000-0000-C000-000000000046}
+!define IID_IPersistFile {0000010b-0000-0000-C000-000000000046} ; IPersist>
 ${NSISCOMIFACEDECL}IPersistFile IsDirty 4 ()i
 ${NSISCOMIFACEDECL}IPersistFile Load 5 (w,i)i
 ${NSISCOMIFACEDECL}IPersistFile Save 6 (w,i)i
@@ -203,6 +232,65 @@ ${NSISCOMIFACEDECL}IShellItem Compare 7 (p,i,*i)i
 ${NSISCOMIFACEDECL}IStartMenuPinnedList RemoveFromList 3 (p)i
 !endif
 
+!ifndef CLSID_ApplicationDestinations
+!define CLSID_ApplicationDestinations {86c14003-4d6b-4ef3-a7b4-0506663b2e68}
+!endif
+!ifndef IID_IApplicationDestinations
+!define IID_IApplicationDestinations {12337D35-94C6-48A0-BCE7-6A9C69D4D600} ;[Seven+]
+${NSISCOMIFACEDECL}IApplicationDestinations SetAppID 3 (w)i
+${NSISCOMIFACEDECL}IApplicationDestinations RemoveDestination 4 (p)i ; IShellItem or IShellLink 
+${NSISCOMIFACEDECL}IApplicationDestinations RemoveAllDestinations 5 ()i
+!endif
+
+!ifndef CLSID_DestinationList
+!define CLSID_DestinationList {77f10cf0-3db5-4966-b520-b7c54fd35ed6}
+!endif
+!ifndef IID_ICustomDestinationList
+!define IID_ICustomDestinationList {6332debf-87b5-4670-90c0-5e57b408a49e} ;[Seven+]
+${NSISCOMIFACEDECL}ICustomDestinationList SetAppID 3 (w)i
+${NSISCOMIFACEDECL}ICustomDestinationList BeginList 4 (*i,g,*p)i ; IObjectArray or IEnumObjects
+${NSISCOMIFACEDECL}ICustomDestinationList AppendCategory 5 (w,p)i ; IObjectArray*
+${NSISCOMIFACEDECL}ICustomDestinationList AppendKnownCategory 6 (i)i
+${NSISCOMIFACEDECL}ICustomDestinationList AddUserTasks 7 (p)i ; IObjectArray*
+${NSISCOMIFACEDECL}ICustomDestinationList CommitList 8 ()i
+${NSISCOMIFACEDECL}ICustomDestinationList GetRemovedDestinations 9 (g,*p)i ; IObjectCollection
+${NSISCOMIFACEDECL}ICustomDestinationList DeleteList 10 (w)i
+${NSISCOMIFACEDECL}ICustomDestinationList AbortList 11 ()i
+!endif
+
+!ifndef CLSID_EnumerableObjectCollection
+!define CLSID_EnumerableObjectCollection {2d3468c1-36a7-43b6-ac24-d3f02fd9607a}
+!endif
+!ifndef IID_IObjectArray
+!define IID_IObjectArray {92CA9DCD-5622-4bba-A805-5E9F541BD8C9}
+${NSISCOMIFACEDECL}IObjectArray GetCount 3 (*i)i
+${NSISCOMIFACEDECL}IObjectArray GetAt 4 (i,g,*p)i
+!endif
+
+!ifndef IID_IObjectCollection
+!define IID_IObjectCollection {5632b1a4-e38a-400a-928a-d4cd63230295} ; IObjectArray>
+${NSISCOMIFACEDECL}IObjectCollection AddObject 5 (p)i ; IUnknown*
+${NSISCOMIFACEDECL}IObjectCollection AddFromArray 6 (p)i ; IObjectArray*
+${NSISCOMIFACEDECL}IObjectCollection RemoveObjectAt 7 (i)i
+${NSISCOMIFACEDECL}IObjectCollection Clear 8 ()i
+!endif
+
+!ifndef IID_IEnumObjects
+!define IID_IEnumObjects {2c1c7e2e-2d0e-4059-831e-1e6f82335c2e}
+${NSISCOMIFACEDECL}IEnumObjects Next 3 (i,g,*p,*i)i
+${NSISCOMIFACEDECL}IEnumObjects Skip 4 (i)i
+${NSISCOMIFACEDECL}IEnumObjects Reset 5 ()i
+${NSISCOMIFACEDECL}IEnumObjects Clone 6 (*p)i
+!endif
+
+!ifndef IID_IEnumUnknown
+!define IID_IEnumUnknown {00000100-0000-0000-C000-000000000046}
+${NSISCOMIFACEDECL}IEnumUnknown Next 3 (i,*p,*i)i
+${NSISCOMIFACEDECL}IEnumUnknown Skip 4 (i)i
+${NSISCOMIFACEDECL}IEnumUnknown Reset 5 ()i
+${NSISCOMIFACEDECL}IEnumUnknown Clone 6 (*p)i
+!endif
+
 !ifndef IID_IPropertyStore
 !define IID_IPropertyStore {886D8EEB-8CF2-4446-8D02-CDBA1DBDCF99}
 ${NSISCOMIFACEDECL}IPropertyStore GetCount 3 (*i)i
@@ -210,6 +298,30 @@ ${NSISCOMIFACEDECL}IPropertyStore GetAt 4 (i,p)i
 ${NSISCOMIFACEDECL}IPropertyStore GetValue 5 (p,p)i
 ${NSISCOMIFACEDECL}IPropertyStore SetValue 6 (p,p)i
 ${NSISCOMIFACEDECL}IPropertyStore Commit 7 ()i
+!endif
+
+!ifndef IID_IPropertyStorage
+!define IID_IPropertyStorage {00000138-0000-0000-C000-000000000046}
+${NSISCOMIFACEDECL}IPropertyStorage ReadMultiple 3 (i,p,p)i
+${NSISCOMIFACEDECL}IPropertyStorage WriteMultiple 4 (i,p,p,i)i
+${NSISCOMIFACEDECL}IPropertyStorage DeleteMultiple 5 (i,p)i
+${NSISCOMIFACEDECL}IPropertyStorage ReadPropertyNames 6 (p,p)i
+${NSISCOMIFACEDECL}IPropertyStorage WritePropertyNames 7 (i,p,p)i
+${NSISCOMIFACEDECL}IPropertyStorage DeletePropertyNames 8 (i,p)i
+${NSISCOMIFACEDECL}IPropertyStorage Commit 9 (i)i ; Note: Some implementations might return E_NOTIMPL
+${NSISCOMIFACEDECL}IPropertyStorage Revert 10 ()i
+${NSISCOMIFACEDECL}IPropertyStorage Enum 11 (*p)i
+${NSISCOMIFACEDECL}IPropertyStorage SetTimes 12 (p,p,p)i
+${NSISCOMIFACEDECL}IPropertyStorage SetClass 13 (g)i
+${NSISCOMIFACEDECL}IPropertyStorage Stat 14 (p)i
+!endif
+
+!ifndef IID_IPropertySetStorage
+!define IID_IPropertySetStorage {0000013A-0000-0000-C000-000000000046}
+${NSISCOMIFACEDECL}IPropertySetStorage Create 3 (g,g,i,i,*p)i
+${NSISCOMIFACEDECL}IPropertySetStorage Open 4 (g,i,*p)i
+${NSISCOMIFACEDECL}IPropertySetStorage Delete 5 (g)i
+${NSISCOMIFACEDECL}IPropertySetStorage Enum 6 (*p)i
 !endif
 
 !ifndef CLSID_ApplicationAssociationRegistration
@@ -258,6 +370,22 @@ ${NSISCOMIFACEDECL}IGameExplorer2 CheckAccess 5 (w,*i)i
 !define IID_IGameStatisticsMgr {AFF3EA11-E70E-407d-95DD-35E612C41CE2} ;[Seven+]
 ${NSISCOMIFACEDECL}IGameStatisticsMgr GetGameStatistics 3 (w,i,*i,*p)i
 ${NSISCOMIFACEDECL}IGameStatisticsMgr RemoveGameStatistics 4 (w)i
+!endif
+
+!ifndef CLSID_InternetShortcut
+!define CLSID_InternetShortcut {FBF23B40-E3F0-101B-8488-00AA003E56F8}
+!endif
+!ifndef IID_IUniformResourceLocator
+!define IID_IUniformResourceLocatorA {FBF23B80-E3F0-101B-8488-00AA003E56F8}
+!define IID_IUniformResourceLocatorW {CABB0DA0-DA57-11CF-9974-0020AFD79762}
+!ifdef NSIS_UNICODE
+!define IID_IUniformResourceLocator ${IID_IUniformResourceLocatorW}
+!else
+!define IID_IUniformResourceLocator ${IID_IUniformResourceLocatorA}
+!endif
+${NSISCOMIFACEDECL}IUniformResourceLocator SetURL 3 (t,i)i
+${NSISCOMIFACEDECL}IUniformResourceLocator GetURL 4 (*p)i
+${NSISCOMIFACEDECL}IUniformResourceLocator InvokeCommand 5 (p)i
 !endif
 
 !verbose pop

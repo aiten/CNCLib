@@ -1,7 +1,7 @@
 ﻿;Language: English (1033)
 ;By Joost Verburg
 
-!insertmacro LANGFILE "English" = "English" =
+!insertmacro LANGFILE "English" "English" "English" "English" ; See \Include\LangFile.nsh for a description of these parameters
 
 !ifdef MUI_WELCOMEPAGE
   ${LangFileString} MUI_TEXT_WELCOME_INFO_TITLE "Welcome to $(^NameDA) Setup"
@@ -123,7 +123,7 @@
 !ifdef MULTIUSER_INSTALLMODEPAGE
   ${LangFileString} MULTIUSER_TEXT_INSTALLMODE_TITLE "Choose Users"
   ${LangFileString} MULTIUSER_TEXT_INSTALLMODE_SUBTITLE "Choose for which users you want to install $(^NameDA)."
-  ${LangFileString} MULTIUSER_INNERTEXT_INSTALLMODE_TOP "Select whether you want to install $(^NameDA) for yourself only or for all users of this computer. $(^ClickNext)"
+  ${LangFileString} MULTIUSER_INNERTEXT_INSTALLMODE_TOP "Select whether you want to install $(^NameDA) only for yourself or for all users of this computer. $(^ClickNext)"
   ${LangFileString} MULTIUSER_INNERTEXT_INSTALLMODE_ALLUSERS "Install for anyone using this computer"
   ${LangFileString} MULTIUSER_INNERTEXT_INSTALLMODE_CURRENTUSER "Install just for me"
 !endif

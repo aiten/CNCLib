@@ -96,7 +96,7 @@
 ; be initialized to the default section's index.
 ;
 ; As this macro uses $R0 and $R1 you can't use those two as the
-; varible which will keep the selected section.
+; variable which will keep the selected section.
 
 !macro StartRadioButtons var
 
@@ -148,7 +148,7 @@
 ;
 ; Written by Robert Kehl
 ;
-; For details, see http://nsis.sourceforge.net/wiki/SetSectionInInstType%2C_ClearSectionInInstType
+; For details, see https://nsis.sourceforge.io/wiki/SetSectionInInstType%2C_ClearSectionInInstType
 ;
 ; Use the defines below for the WANTED_INSTTYPE parameter.
 
