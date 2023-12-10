@@ -25,7 +25,7 @@ public class CNCLibDefaultData : CNCLibDbImporter
 {
     public CNCLibDefaultData(CNCLibContext context) : base(context)
     {
-        CsvDir = $@"{System.AppContext.BaseDirectory}\DefaultData";
+        CsvDir = $@"{System.AppContext.BaseDirectory}DefaultData";
     }
 
     public IList<MachineEntity> GetDefaultMachines()

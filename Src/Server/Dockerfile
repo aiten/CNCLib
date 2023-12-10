@@ -62,3 +62,7 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "CNCLib.Server.dll"]
+RUN mkdir /app/data
+USER 0
+RUN mkdir /var/log/CNCLib.Server
+RUN chmod 0777 /var/log/CNCLib.Server

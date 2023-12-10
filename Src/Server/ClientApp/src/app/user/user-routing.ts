@@ -15,7 +15,7 @@
 */
 
 //import { UserFormComponent } from './user-form/user-form.component';
-import { UserComponent } from './User.component';
+import { UserComponent } from './user.component';
 
 import { CNCLibLoggedinService } from '../services/CNCLib-loggedin.service';
 import { LoginComponent } from "./login/login.component";
