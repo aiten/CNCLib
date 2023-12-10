@@ -18,8 +18,6 @@ namespace CNCLib.Repository.Context;
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
 
 using CNCLib.Repository.Abstraction.Entities;
 
@@ -27,7 +25,7 @@ public class CNCLibDefaultData : CNCLibDbImporter
 {
     public CNCLibDefaultData(CNCLibContext context) : base(context)
     {
-        CsvDir = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\DefaultData";
+        CsvDir = $@"{System.AppContext.BaseDirectory}\DefaultData";
     }
 
     public IList<MachineEntity> GetDefaultMachines()

@@ -24,14 +24,13 @@ namespace CNCLib.Server
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Hosting;
 
-    using System.IO;
     using System.Reflection;
 
     using Framework.NLogTools;
 
     public class Program
     {
-        protected static string BaseDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
+        protected static string BaseDirectory => System.AppContext.BaseDirectory;
 
         public static void Main(string[] args)
         {

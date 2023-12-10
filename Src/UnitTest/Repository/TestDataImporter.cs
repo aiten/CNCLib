@@ -16,9 +16,6 @@
 
 namespace CNCLib.UnitTest.Repository;
 
-using System.IO;
-using System.Reflection;
-
 using CNCLib.Repository.Abstraction.Entities;
 using CNCLib.Repository.Context;
 
@@ -26,7 +23,7 @@ public class TestDataImporter : CNCLibDbImporter
 {
     public TestDataImporter(CNCLibContext context) : base(context)
     {
-        CsvDir = $@"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\Repository\TestData";
+        CsvDir = $@"{System.AppContext.BaseDirectory}\Repository\TestData";
     }
 
     public void Import()

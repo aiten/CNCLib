@@ -22,7 +22,6 @@ using System.Linq;
 using CNCLib.Repository.Abstraction.Entities;
 using CNCLib.Repository.Mappings;
 
-using Framework.Dependency;
 using Framework.Repository.Abstraction.Entities;
 using Framework.Repository.Mappings;
 

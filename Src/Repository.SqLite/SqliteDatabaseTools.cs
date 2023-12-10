@@ -17,8 +17,6 @@
 namespace CNCLib.Repository.SqLite;
 
 using System;
-using System.IO;
-using System.Reflection;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -34,7 +32,7 @@ public class SqliteDatabaseTools
 
         if (isAzure)
         {
-            string baseDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
+            string baseDirectory = System.AppContext.BaseDirectory;
             dbFolder   = $@"{baseDirectory}\data";
             dbFileName = "CNCLibAzure.db";
         }
