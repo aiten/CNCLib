@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.UnitTest.Logic;
@@ -43,7 +43,7 @@ public class DynItemManagerTests : LogicTests
     {
         var srv = CreateMock<IItemService>();
 
-        var itemEntity = new Item[0];
+        var itemEntity = Array.Empty<Item>();
         srv.GetAllAsync().Returns(itemEntity);
 
         var ctrl = new DynItemController(srv);
@@ -59,7 +59,7 @@ public class DynItemManagerTests : LogicTests
 
         var itemEntity = new[]
         {
-            new Item { ItemId = 1, Name = "Test1" }, new Item { ItemId = 2, Name = "Test2" }
+            new Item { ItemId = 1, Name = "Test1", ClassName = "x" }, new Item { ItemId = 2, Name = "Test2", ClassName = "x" }
         };
         srv.GetAllAsync().Returns(itemEntity);
 
@@ -83,12 +83,12 @@ public class DynItemManagerTests : LogicTests
 
         var itemEntity = new[]
         {
-            new Item { ItemId = 1, Name = "Test1" }, new Item { ItemId = 2, Name = "Test2" }
+            new Item { ItemId = 1, Name = "Test1", ClassName = "x" }, new Item { ItemId = 2, Name = "Test2", ClassName = "x" }
         };
         srv.GetByClassNameAsync(DynItemController.GetClassName(typeof(string))).Returns(itemEntity);
 
         var ctrl = new DynItemController(srv);
-        var all  = await ctrl.GetAllAsync(typeof(string));
+        var all  = (await ctrl.GetAllAsync(typeof(string))).ToList();
 
         all.Should().HaveCount(2);
         all.FirstOrDefault().Should().BeEquivalentTo(
@@ -104,7 +104,7 @@ public class DynItemManagerTests : LogicTests
     public async Task GetItem()
     {
         var srv = CreateMock<IItemService>();
-        srv.GetAsync(1).Returns(new Item { ItemId = 1, Name = "Test1" });
+        srv.GetAsync(1).Returns(new Item { ItemId = 1, Name = "Test1", ClassName = "x" });
 
         var ctrl = new DynItemController(srv);
         var all  = await ctrl.GetAsync(1);
@@ -144,7 +144,7 @@ public class DynItemManagerTests : LogicTests
         item.Should().NotBeNull();
         item.Should().BeOfType(typeof(DynItemManagerTestClass));
 
-        var item2 = (DynItemManagerTestClass)item;
+        var item2 = (DynItemManagerTestClass)item!;
 
         item2.StringProperty.Should().Be("Hallo", item2.StringProperty);
         item2.IntProperty.Should().Be(1);
@@ -161,7 +161,7 @@ public class DynItemManagerTests : LogicTests
         {
             ItemId    = 1,
             Name      = "Hallo",
-            ClassName = typeof(DynItemManagerTestClass).AssemblyQualifiedName,
+            ClassName = typeof(DynItemManagerTestClass).AssemblyQualifiedName!,
             ItemProperties = new[]
             {
                 new ItemProperty { ItemId = 1, Name = "StringProperty", Value                        = "Hallo" },
@@ -197,10 +197,10 @@ public class DynItemManagerTests : LogicTests
 
         await srv.Received().AddAsync(Arg.Is<Item>(x => x.Name == "Hallo"));
         await srv.Received().AddAsync(Arg.Is<Item>(x => x.ItemId == 0));
-        await srv.Received().AddAsync(Arg.Is<Item>(x => x.ItemProperties.Count == 7));
-        await srv.Received().AddAsync(Arg.Is<Item>(x => x.ItemProperties.FirstOrDefault(y => y.Name == "StringProperty").Value == "Hallo"));
-        await srv.Received().AddAsync(Arg.Is<Item>(x => x.ItemProperties.FirstOrDefault(y => y.Name == "DoubleProperty").Value == "1.234"));
-        await srv.Received().AddAsync(Arg.Is<Item>(x => x.ItemProperties.FirstOrDefault(y => y.Name == "DecimalNullProperty").Value == "9.876"));
+        await srv.Received().AddAsync(Arg.Is<Item>(x => x.ItemProperties!.Count == 7));
+        await srv.Received().AddAsync(Arg.Is<Item>(x => x.ItemProperties!.First(y => y.Name == "StringProperty").Value == "Hallo"));
+        await srv.Received().AddAsync(Arg.Is<Item>(x => x.ItemProperties!.First(y => y.Name == "DoubleProperty").Value == "1.234"));
+        await srv.Received().AddAsync(Arg.Is<Item>(x => x.ItemProperties!.First(y => y.Name == "DecimalNullProperty").Value == "9.876"));
     }
 
     [Fact]
@@ -239,7 +239,7 @@ public class DynItemManagerTests : LogicTests
 
         //assert
         await srv.Received().GetAsync(1);
-        await srv.DidNotReceiveWithAnyArgs().DeleteAsync((Item)null);
+        await srv.DidNotReceiveWithAnyArgs().DeleteAsync(Arg.Any<Item>());
     }
 
     [Fact]
@@ -256,7 +256,7 @@ public class DynItemManagerTests : LogicTests
 
         //assert
         await srv.Received().UpdateAsync(Arg.Is<Item>(x => x.ItemId == 1));
-        await srv.Received().UpdateAsync(Arg.Is<Item>(x => x.ItemProperties.FirstOrDefault(y => y.Name == "IntProperty").Value == "1"));
-        await srv.DidNotReceiveWithAnyArgs().DeleteAsync((Item)null);
+        await srv.Received().UpdateAsync(Arg.Is<Item>(x => x.ItemProperties!.First(y => y.Name == "IntProperty").Value == "1"));
+        await srv.DidNotReceiveWithAnyArgs().DeleteAsync(Arg.Any<Item>());
     }
 }

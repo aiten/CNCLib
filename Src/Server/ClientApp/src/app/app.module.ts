@@ -30,7 +30,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { MaterialModule } from './material.module';
 
-import { NgxFilesizeModule } from 'ngx-filesize';
+//import { NgxFilesizeModule } from 'ngx-filesize';
 
 import { MessageBoxComponent } from './modal/message-box/message-box.component';
 
@@ -76,7 +76,7 @@ import { SerialPortHistoryPreviewGlobal } from "./serialporthistory/models/seria
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     BrowserAnimationsModule,
     ColorPickerModule,
-    NgxFilesizeModule,    
+  //  NgxFilesizeModule,    
     HttpClientModule,
     FormsModule,
     FontAwesomeModule,

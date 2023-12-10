@@ -3,19 +3,20 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.UnitTest.Logic;
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -42,9 +43,9 @@ public class ItemManagerTests : LogicTests
         var unitOfWork = Substitute.For<IUnitOfWork>();
         var rep        = Substitute.For<IItemRepository>();
 
-        var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Mapper);
+        var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Mapper!);
 
-        var itemEntity = new ItemEntity[0];
+        var itemEntity = Array.Empty<ItemEntity>();
         rep.GetAllAsync().Returns(itemEntity);
 
         var all = (await ctrl.GetAllAsync()).ToArray();
@@ -58,11 +59,12 @@ public class ItemManagerTests : LogicTests
         var rep         = Substitute.For<IItemRepository>();
         var userContext = new CNCLibUserContext();
 
-        var ctrl = new ItemManager(unitOfWork, rep, userContext, Mapper);
+        var ctrl = new ItemManager(unitOfWork, rep, userContext, Mapper!);
 
         var itemEntity = new[]
         {
-            new ItemEntity { ItemId = 1, Name = "Test1", UserId = userContext.UserId }, new ItemEntity { ItemId = 2, Name = "Test2", UserId = userContext.UserId }
+            new ItemEntity { ItemId = 1, Name = "Test1", UserId = userContext.UserId, ClassName = "x" },
+            new ItemEntity { ItemId = 2, Name = "Test2", UserId = userContext.UserId, ClassName = "x" }
         };
         rep.GetByUserAsync(userContext.UserId).Returns(itemEntity);
 
@@ -82,9 +84,9 @@ public class ItemManagerTests : LogicTests
         var unitOfWork = Substitute.For<IUnitOfWork>();
         var rep        = Substitute.For<IItemRepository>();
 
-        var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Mapper);
+        var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Mapper!);
 
-        rep.GetAsync(1).Returns(new ItemEntity { ItemId = 1, Name = "Test1" });
+        rep.GetAsync(1).Returns(new ItemEntity { ItemId = 1, Name = "Test1", ClassName = "x" });
 
         var all = await ctrl.GetAsync(1);
 
@@ -101,7 +103,7 @@ public class ItemManagerTests : LogicTests
         var unitOfWork = Substitute.For<IUnitOfWork>();
         var rep        = Substitute.For<IItemRepository>();
 
-        var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Mapper);
+        var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Mapper!);
 
         var all = await ctrl.GetAsync(10);
 
@@ -116,9 +118,9 @@ public class ItemManagerTests : LogicTests
         var unitOfWork = Substitute.For<IUnitOfWork>();
         var rep        = Substitute.For<IItemRepository>();
 
-        var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Mapper);
+        var ctrl = new ItemManager(unitOfWork, rep, new CNCLibUserContext(), Mapper!);
 
-        var item = new ItemDto { ItemId = 3000, Name = "Hallo" };
+        var item = new ItemDto { ItemId = 3000, Name = "Hallo", ClassName = "x" };
 
         //act
 

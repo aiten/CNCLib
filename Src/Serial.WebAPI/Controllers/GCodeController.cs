@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.Serial.WebAPI.Controllers;
@@ -49,7 +49,7 @@ public class GCodeController : Controller
             return NotFound();
         }
 
-        var paramValue = await port.Serial.GetParameterValueAsync(paramNo, port.GCodeCommandPrefix);
+        var paramValue = await port.Serial!.GetParameterValueAsync(paramNo, port.GCodeCommandPrefix);
 
         return Ok(paramValue);
     }
@@ -69,7 +69,7 @@ public class GCodeController : Controller
             return NotFound();
         }
 
-        var position = await port.Serial.GetPosition(port.GCodeCommandPrefix);
+        var position = await port.Serial!.GetPosition(port.GCodeCommandPrefix);
 
         return Ok(position);
     }
@@ -99,7 +99,7 @@ public class GCodeController : Controller
             return new BadRequestResult();
         }
 
-        await port.Serial.SendProbeCommandAsync(axisName, probeSize, probeDist, probeDistUp, probeFeed);
+        await port.Serial!.SendProbeCommandAsync(axisName, probeSize, probeDist, probeDistUp, probeFeed);
 
         return Ok();
     }
@@ -123,7 +123,7 @@ public class GCodeController : Controller
             return NotFound();
         }
 
-        var eeprom = await port.Serial.GetEpromValues(GCodeSerial.DefaultEpromTimeout);
+        var eeprom = await port.Serial!.GetEpromValues(GCodeSerial.DefaultEpromTimeout);
 
         return Ok(eeprom);
     }
@@ -148,7 +148,7 @@ public class GCodeController : Controller
 
         if (ee.IsValid)
         {
-            await port.Serial.WriteEepromValues(ee);
+            await port.Serial!.WriteEepromValues(ee);
         }
 
         return Ok();
@@ -170,7 +170,7 @@ public class GCodeController : Controller
             return NotFound();
         }
 
-        var eeprom = await port.Serial.EraseEeprom();
+        var eeprom = await port.Serial!.EraseEeprom();
 
         return Ok(eeprom);
     }
@@ -200,7 +200,7 @@ public class GCodeController : Controller
     public ActionResult<UInt32[]> GetEepromInfo([FromBody] Eeprom eeprom)
     {
         var eePromV0 = EepromExtensions.CreateMachineEeprom(eeprom.Values);
-        eePromV0.WriteTo(eeprom);
+        eePromV0!.WriteTo(eeprom);
         return Ok(eeprom.Values);
     }
 

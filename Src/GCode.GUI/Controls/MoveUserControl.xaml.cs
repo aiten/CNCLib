@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.GCode.GUI.Controls;
@@ -37,9 +37,9 @@ public partial class MoveUserControl : UserControl, INotifyPropertyChanged
 
     #region INPC
 
-    public virtual event PropertyChangedEventHandler PropertyChanged;
+    public virtual event PropertyChangedEventHandler? PropertyChanged;
 
-    protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+    protected void RaisePropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
@@ -48,7 +48,7 @@ public partial class MoveUserControl : UserControl, INotifyPropertyChanged
 
     #region Commands
 
-    public static readonly DependencyProperty LeftCommandProperty = DependencyProperty.Register("Left", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
+    public static readonly DependencyProperty LeftCommandProperty = DependencyProperty.Register(nameof(Left), typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
 
     public ICommand Left
     {
@@ -56,7 +56,7 @@ public partial class MoveUserControl : UserControl, INotifyPropertyChanged
         set => SetValue(LeftCommandProperty, value);
     }
 
-    public static readonly DependencyProperty RightCommandProperty = DependencyProperty.Register("Right", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
+    public static readonly DependencyProperty RightCommandProperty = DependencyProperty.Register(nameof(Right), typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
 
     public ICommand Right
     {
@@ -64,7 +64,7 @@ public partial class MoveUserControl : UserControl, INotifyPropertyChanged
         set => SetValue(RightCommandProperty, value);
     }
 
-    public static readonly DependencyProperty UpCommandProperty = DependencyProperty.Register("Up", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
+    public static readonly DependencyProperty UpCommandProperty = DependencyProperty.Register(nameof(Up), typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
 
     public ICommand Up
     {
@@ -72,7 +72,7 @@ public partial class MoveUserControl : UserControl, INotifyPropertyChanged
         set => SetValue(UpCommandProperty, value);
     }
 
-    public static readonly DependencyProperty DownCommandProperty = DependencyProperty.Register("Down", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
+    public static readonly DependencyProperty DownCommandProperty = DependencyProperty.Register(nameof(Down), typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
 
     public ICommand Down
     {
@@ -80,7 +80,7 @@ public partial class MoveUserControl : UserControl, INotifyPropertyChanged
         set => SetValue(DownCommandProperty, value);
     }
 
-    public static readonly DependencyProperty ZUpCommandProperty = DependencyProperty.Register("ZUp", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
+    public static readonly DependencyProperty ZUpCommandProperty = DependencyProperty.Register(nameof(ZUp), typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
 
     public ICommand ZUp
     {
@@ -88,7 +88,7 @@ public partial class MoveUserControl : UserControl, INotifyPropertyChanged
         set => SetValue(ZUpCommandProperty, value);
     }
 
-    public static readonly DependencyProperty ZDownCommandProperty = DependencyProperty.Register("ZDown", typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
+    public static readonly DependencyProperty ZDownCommandProperty = DependencyProperty.Register(nameof(ZDown), typeof(ICommand), typeof(MoveUserControl), new PropertyMetadata(default(ICommand)));
 
     public ICommand ZDown
     {

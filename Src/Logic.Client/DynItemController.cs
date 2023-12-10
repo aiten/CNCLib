@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.Logic.Client;
@@ -36,45 +36,45 @@ public class DynItemController : DisposeWrapper, IDynItemController
         _itemService = itemService;
     }
 
-    public async Task<DynItem> GetAsync(int id)
+    public async Task<DynItem?> GetAsync(int id)
     {
-        Item item = await _itemService.GetAsync(id);
+        var item = await _itemService.GetAsync(id);
         return item == null ? null : Convert(item);
     }
 
     public async Task<IEnumerable<DynItem>> GetAllAsync(Type t)
     {
-        IEnumerable<Item> allItems = await _itemService.GetByClassNameAsync(GetClassName(t));
-        return Convert(allItems);
+        var allItems = await _itemService.GetByClassNameAsync(GetClassName(t));
+        return Convert(allItems)!;
     }
 
     public async Task<IEnumerable<DynItem>> GetAllAsync()
     {
-        IEnumerable<Item> allItems = await _itemService.GetAllAsync();
-        return Convert(allItems);
+        var allItems = await _itemService.GetAllAsync();
+        return Convert(allItems)!;
     }
 
-    public async Task<object> CreateAsync(int id)
+    public async Task<object?> CreateAsync(int id)
     {
-        Item item = await _itemService.GetAsync(id);
+        var item = await _itemService.GetAsync(id);
 
         if (item == null)
         {
             return null;
         }
 
-        Type t   = Type.GetType(item.ClassName);
-        var  obj = Activator.CreateInstance(t ?? throw new InvalidOperationException());
+        var t   = Type.GetType(item.ClassName) ?? throw new InvalidOperationException();
+        var obj = Activator.CreateInstance(t) ?? throw new InvalidOperationException();
 
-        foreach (ItemProperty ip in item.ItemProperties)
+        foreach (var ip in item.ItemProperties!)
         {
-            AssignProperty(obj, ip, t.GetProperty(ip.Name));
+            AssignProperty(obj, ip, t.GetProperty(ip.Name)!);
         }
 
         return obj;
     }
 
-    private static void AssignProperty(object obj, ItemProperty ip, PropertyInfo pi)
+    private static void AssignProperty(object obj, ItemProperty ip, PropertyInfo? pi)
     {
         if (pi != null && pi.CanWrite)
         {
@@ -84,11 +84,11 @@ public class DynItemController : DisposeWrapper, IDynItemController
             }
             else if (pi.PropertyType == typeof(int))
             {
-                pi.SetValue(obj, int.Parse(ip.Value));
+                pi.SetValue(obj, int.Parse(ip.Value!));
             }
             else if (pi.PropertyType == typeof(byte))
             {
-                pi.SetValue(obj, byte.Parse(ip.Value));
+                pi.SetValue(obj, byte.Parse(ip.Value!));
             }
             else if (pi.PropertyType == typeof(bool))
             {
@@ -96,15 +96,15 @@ public class DynItemController : DisposeWrapper, IDynItemController
             }
             else if (pi.PropertyType == typeof(decimal))
             {
-                pi.SetValue(obj, decimal.Parse(ip.Value, CultureInfo.InvariantCulture));
+                pi.SetValue(obj, decimal.Parse(ip.Value!, CultureInfo.InvariantCulture));
             }
             else if (pi.PropertyType == typeof(float))
             {
-                pi.SetValue(obj, double.Parse(ip.Value, CultureInfo.InvariantCulture));
+                pi.SetValue(obj, double.Parse(ip.Value!, CultureInfo.InvariantCulture));
             }
             else if (pi.PropertyType == typeof(double))
             {
-                pi.SetValue(obj, double.Parse(ip.Value, CultureInfo.InvariantCulture));
+                pi.SetValue(obj, double.Parse(ip.Value!, CultureInfo.InvariantCulture));
             }
             else if (pi.PropertyType == typeof(int?))
             {
@@ -138,7 +138,7 @@ public class DynItemController : DisposeWrapper, IDynItemController
             }
             else if (pi.PropertyType.IsEnum)
             {
-                pi.SetValue(obj, Enum.Parse(pi.PropertyType, ip.Value));
+                pi.SetValue(obj, Enum.Parse(pi.PropertyType, ip.Value!));
             }
             else if (pi.PropertyType == typeof(byte[]))
             {
@@ -165,10 +165,10 @@ public class DynItemController : DisposeWrapper, IDynItemController
         {
             if (pi.CanWrite && pi.CanRead)
             {
-                string value = null;
+                string? value = null;
                 if (pi.PropertyType == typeof(string))
                 {
-                    object str = pi.GetValue(obj);
+                    object? str = pi.GetValue(obj);
                     if (str != null)
                     {
                         value = (string)str;
@@ -176,23 +176,23 @@ public class DynItemController : DisposeWrapper, IDynItemController
                 }
                 else if (pi.PropertyType == typeof(int) || pi.PropertyType == typeof(byte))
                 {
-                    value = pi.GetValue(obj).ToString();
+                    value = pi.GetValue(obj)!.ToString();
                 }
                 else if (pi.PropertyType == typeof(bool))
                 {
-                    value = (bool)pi.GetValue(obj) ? "true" : "false";
+                    value = (bool)pi.GetValue(obj)! ? "true" : "false";
                 }
                 else if (pi.PropertyType == typeof(decimal))
                 {
-                    value = ((decimal)pi.GetValue(obj)).ToString(CultureInfo.InvariantCulture);
+                    value = ((decimal)pi.GetValue(obj)!).ToString(CultureInfo.InvariantCulture);
                 }
                 else if (pi.PropertyType == typeof(float))
                 {
-                    value = ((float)pi.GetValue(obj)).ToString(CultureInfo.InvariantCulture);
+                    value = ((float)pi.GetValue(obj)!).ToString(CultureInfo.InvariantCulture);
                 }
                 else if (pi.PropertyType == typeof(double))
                 {
-                    value = ((double)pi.GetValue(obj)).ToString(CultureInfo.InvariantCulture);
+                    value = ((double)pi.GetValue(obj)!).ToString(CultureInfo.InvariantCulture);
                 }
                 else if (pi.PropertyType == typeof(int?))
                 {
@@ -220,11 +220,11 @@ public class DynItemController : DisposeWrapper, IDynItemController
                 }
                 else if (pi.PropertyType.IsEnum)
                 {
-                    value = pi.GetValue(obj).ToString();
+                    value = pi.GetValue(obj)!.ToString();
                 }
                 else if (pi.PropertyType == typeof(byte[]))
                 {
-                    var bytes = (byte[])pi.GetValue(obj);
+                    var bytes = (byte[])pi.GetValue(obj)!;
                     if (bytes != null)
                     {
                         value = System.Convert.ToBase64String(bytes);
@@ -280,7 +280,7 @@ public class DynItemController : DisposeWrapper, IDynItemController
         return item;
     }
 
-    private static IEnumerable<DynItem> Convert(IEnumerable<Item> allItems)
+    private static IEnumerable<DynItem>? Convert(IEnumerable<Item>? allItems)
     {
         if (allItems == null)
         {
@@ -303,7 +303,7 @@ public class DynItemController : DisposeWrapper, IDynItemController
 
     public static string GetClassName(Type t)
     {
-        string[] names = t.AssemblyQualifiedName.Split(',');
+        string[] names = t.AssemblyQualifiedName!.Split(',');
         return names[0].Trim() + "," + names[1].Trim();
     }
 }

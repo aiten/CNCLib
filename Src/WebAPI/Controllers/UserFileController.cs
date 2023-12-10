@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.WebAPI.Controllers;
@@ -59,7 +59,7 @@ public class UserFileController : Controller
     {
         var dto = await _manager.GetAsync(await GetKey(fileName));
 
-        if (dto == null)
+        if (dto == null || dto.Content == null)
         {
             return NotFound();
         }
@@ -72,9 +72,9 @@ public class UserFileController : Controller
 
     public class UserFile
     {
-        public string FileName { get; set; }
+        public string? FileName { get; set; }
 
-        public IFormFile Image { get; set; }
+        public IFormFile? Image { get; set; }
     }
 
     [HttpPost]
@@ -85,7 +85,7 @@ public class UserFileController : Controller
         if (userFileDto != null)
         {
             var userFile     = await this.Add(_manager, userFileDto);
-            var userFileInfo = await _manager.GetFileInfoAsync((UserFileDto)((CreatedResult)userFile.Result).Value);
+            var userFileInfo = (await _manager.GetFileInfoAsync((UserFileDto)((CreatedResult)userFile.Result!).Value!))!;
             var newUri       = this.GetCurrentUri() + "/" + userFileDto.FileName;
             return Created(newUri, userFileInfo);
         }
@@ -104,7 +104,7 @@ public class UserFileController : Controller
             if (fileIdFromUri > 0)
             {
                 userFileDto.UserFileId = fileIdFromUri;
-                var fileIdFromValue = await _manager.GetFileIdAsync(value.FileName);
+                var fileIdFromValue = await _manager.GetFileIdAsync(value.FileName!);
                 await this.Update(_manager, fileIdFromUri, fileIdFromValue, userFileDto);
             }
             else
@@ -136,8 +136,8 @@ public class UserFileController : Controller
     {
         using (var memoryStream = new MemoryStream())
         {
-            value.Image.CopyTo(memoryStream);
-            return new UserFileDto() { UserId = _userContext.UserId, FileName = value.FileName, Content = memoryStream.ToArray() };
+            value.Image!.CopyTo(memoryStream);
+            return new UserFileDto() { UserId = _userContext.UserId, FileName = value.FileName!, Content = memoryStream.ToArray() };
         }
     }
 

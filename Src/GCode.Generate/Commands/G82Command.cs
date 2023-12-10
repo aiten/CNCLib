@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.GCode.Generate.Commands;
@@ -49,7 +49,7 @@ public class G82Command : DrillCommand
         // (G04 P0)
         // G00 Z0.5000
 
-        Variable r = GetVariable('R');
+        var r = GetVariable('R');
         if (r == null)
         {
             r = state.G82R;
@@ -59,7 +59,7 @@ public class G82Command : DrillCommand
             state.G82R = r.ShallowCopy();
         }
 
-        Variable p = GetVariable('P');
+        var p = GetVariable('P');
         if (p == null)
         {
             p = state.G82P;
@@ -69,7 +69,7 @@ public class G82Command : DrillCommand
             state.G82P = p.ShallowCopy();
         }
 
-        Variable z = GetVariable('Z');
+        var z = GetVariable('Z');
         if (z == null)
         {
             z = state.G82Z;
@@ -87,7 +87,7 @@ public class G82Command : DrillCommand
         list.Add(move1);
 
         var move2 = new G01Command();
-        move2.AddVariable('Z', z);
+        move2.AddVariable('Z', z!);
         CopyVariable('F', move2);
         list.Add(move2);
 
@@ -99,7 +99,7 @@ public class G82Command : DrillCommand
         }
 
         var move4 = new G00Command();
-        move4.AddVariable('Z', r);
+        move4.AddVariable('Z', r!);
         list.Add(move4);
 
         return list.ToArray();

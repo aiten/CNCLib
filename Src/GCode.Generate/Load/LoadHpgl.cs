@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.GCode.Generate.Load;
@@ -39,9 +39,9 @@ public partial class LoadHpgl : LoadBase
         var list = new List<HpglCommand>();
         using (StreamReader sr = GetStreamReader())
         {
-            string line;
-            var    last    = new Point3D();
-            bool   isPenUp = true;
+            string? line;
+            var     last    = new Point3D();
+            bool    isPenUp = true;
 
             while ((line = sr.ReadLine()) != null)
             {
@@ -215,7 +215,7 @@ public partial class LoadHpgl : LoadBase
                 break;
         }
 
-        AddComment("Speed", LoadOptions.MoveSpeed.ToString());
+        AddComment("Speed", LoadOptions.MoveSpeed.ToString()!);
 
         if (LoadOptions.PenMoveType == LoadOptions.PenType.ZMove)
         {
@@ -293,7 +293,7 @@ public partial class LoadHpgl : LoadBase
                 }
                 else
                 {
-                    LoadPenDown(Adjust(cmd.PointFrom));
+                    LoadPenDown(Adjust(cmd.PointFrom!));
                 }
 
                 _lastIsPenUp = isPenUp;
@@ -420,11 +420,11 @@ public partial class LoadHpgl : LoadBase
 
     #region Debug-Helpers
 
-    private void WriteLineToFile(IEnumerable<HpglCommand> list, int lineIdx)
+    private void WriteLineToFile(IList<HpglCommand> list, int lineIdx)
     {
         if (list.Any())
         {
-            var firstFrom = list.First().PointFrom;
+            var firstFrom = list.First().PointFrom!;
             using (var sw = new StreamWriter(Environment.ExpandEnvironmentVariables($"%TEMP%\\CNCLib_Line{lineIdx}.plt")))
             {
                 sw.WriteLine($"PU {(int)(firstFrom.X0 * 40)},{(int)(firstFrom.Y0 * 40)}");

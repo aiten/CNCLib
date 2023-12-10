@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.GCode.GUI.Controls;
@@ -20,6 +20,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -33,7 +34,7 @@ using SkiaSharp;
 /// <summary>
 /// Interaction logic for GCodeUserControl.xaml
 /// </summary>
-public partial class GCodeUserControl : System.Windows.Controls.UserControl
+public partial class GCodeUserControl : UserControl
 {
     private readonly GCodeBitmapDraw _bitmapDraw = new GCodeBitmapDraw();
 
@@ -53,7 +54,7 @@ public partial class GCodeUserControl : System.Windows.Controls.UserControl
     public double SizeX { get; set; } = 140.0;
     public double SizeY { get; set; } = 45.0;
 
-    public static readonly DependencyProperty GotoPosCommandProperty = DependencyProperty.Register("GotoPos", typeof(ICommand), typeof(GCodeUserControl), new PropertyMetadata(default(ICommand)));
+    public static readonly DependencyProperty GotoPosCommandProperty = DependencyProperty.Register(nameof(GotoPos), typeof(ICommand), typeof(GCodeUserControl), new PropertyMetadata(default(ICommand)));
 
     public ICommand GotoPos
     {
@@ -64,7 +65,7 @@ public partial class GCodeUserControl : System.Windows.Controls.UserControl
     /// <summary>
     /// Command Property
     /// </summary>
-    public static DependencyProperty CommandsProperty = DependencyProperty.Register("Commands", typeof(CommandList), typeof(GCodeUserControl), new PropertyMetadata(OnCommandsChanged));
+    public static DependencyProperty CommandsProperty = DependencyProperty.Register(nameof(Commands), typeof(CommandList), typeof(GCodeUserControl), new PropertyMetadata(OnCommandsChanged));
 
     public CommandList Commands
     {
@@ -83,7 +84,7 @@ public partial class GCodeUserControl : System.Windows.Controls.UserControl
     /// <summary>
     /// Zoom Property
     /// </summary>
-    public static DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(OnZoomChanged));
+    public static DependencyProperty ZoomProperty = DependencyProperty.Register(nameof(Zoom), typeof(double), typeof(GCodeUserControl), new PropertyMetadata(OnZoomChanged));
 
     public double Zoom
     {
@@ -115,7 +116,7 @@ public partial class GCodeUserControl : System.Windows.Controls.UserControl
     /// <summary>
     /// OffsetX Property
     /// </summary>
-    public static DependencyProperty OffsetXProperty = DependencyProperty.Register("OffsetX", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(0.0, OnOffsetXChanged));
+    public static DependencyProperty OffsetXProperty = DependencyProperty.Register(nameof(OffsetX), typeof(double), typeof(GCodeUserControl), new PropertyMetadata(0.0, OnOffsetXChanged));
 
     public double OffsetX
     {
@@ -133,7 +134,7 @@ public partial class GCodeUserControl : System.Windows.Controls.UserControl
     /// <summary>
     /// OffsetY Property
     /// </summary>
-    public static DependencyProperty OffsetYProperty = DependencyProperty.Register("OffsetY", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(0.0, OnOffsetYChanged));
+    public static DependencyProperty OffsetYProperty = DependencyProperty.Register(nameof(OffsetY), typeof(double), typeof(GCodeUserControl), new PropertyMetadata(0.0, OnOffsetYChanged));
 
     public double OffsetY
     {
@@ -151,7 +152,7 @@ public partial class GCodeUserControl : System.Windows.Controls.UserControl
     /// <summary>
     /// RotateAngle Property
     /// </summary>
-    public static DependencyProperty RotateAngleProperty = DependencyProperty.Register("RotateAngle", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(0.0, OnRotateAngleChanged));
+    public static DependencyProperty RotateAngleProperty = DependencyProperty.Register(nameof(RotateAngle), typeof(double), typeof(GCodeUserControl), new PropertyMetadata(0.0, OnRotateAngleChanged));
 
     public double RotateAngle
     {
@@ -170,7 +171,7 @@ public partial class GCodeUserControl : System.Windows.Controls.UserControl
     /// RotateAngle Property
     /// </summary>
     public static DependencyProperty RotateVectorProperty =
-        DependencyProperty.Register("RotateVector", typeof(double[]), typeof(GCodeUserControl), new PropertyMetadata(new double[] { 0, 0, 1 }, OnRotateVectorChanged));
+        DependencyProperty.Register(nameof(RotateVector), typeof(double[]), typeof(GCodeUserControl), new PropertyMetadata(new double[] { 0, 0, 1 }, OnRotateVectorChanged));
 
     public double[] RotateVector
     {
@@ -193,7 +194,7 @@ public partial class GCodeUserControl : System.Windows.Controls.UserControl
     /// MachineColor Property
     /// </summary>
     public static DependencyProperty MachineColorProperty =
-        DependencyProperty.Register("MachineColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Black, OnMachineColorChanged));
+        DependencyProperty.Register(nameof(MachineColor), typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Black, OnMachineColorChanged));
 
     public Color MachineColor
     {
@@ -212,7 +213,7 @@ public partial class GCodeUserControl : System.Windows.Controls.UserControl
     /// LaserOnColor Property
     /// </summary>
     public static DependencyProperty LaserOnColorProperty =
-        DependencyProperty.Register("LaserOnColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Red, OnLaserOnColorChanged));
+        DependencyProperty.Register(nameof(LaserOnColor), typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Red, OnLaserOnColorChanged));
 
     public Color LaserOnColor
     {
@@ -231,7 +232,7 @@ public partial class GCodeUserControl : System.Windows.Controls.UserControl
     /// LaserOffColor Property
     /// </summary>
     public static DependencyProperty LaserOffColorProperty =
-        DependencyProperty.Register("LaserOffColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnLaserOffColorChanged));
+        DependencyProperty.Register(nameof(LaserOffColor), typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnLaserOffColorChanged));
 
     public Color LaserOffColor
     {
@@ -249,7 +250,7 @@ public partial class GCodeUserControl : System.Windows.Controls.UserControl
     /// <summary>
     /// CutColor Property
     /// </summary>
-    public static DependencyProperty CutColorProperty = DependencyProperty.Register("CutColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnCutColorChanged));
+    public static DependencyProperty CutColorProperty = DependencyProperty.Register(nameof(CutColor), typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnCutColorChanged));
 
     public Color CutColor
     {
@@ -268,7 +269,7 @@ public partial class GCodeUserControl : System.Windows.Controls.UserControl
     /// CutDotColor Property
     /// </summary>
     public static DependencyProperty CutDotColorProperty =
-        DependencyProperty.Register("CutDotColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnCutDotColorChanged));
+        DependencyProperty.Register(nameof(CutDotColor), typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnCutDotColorChanged));
 
     public Color CutDotColor
     {
@@ -287,7 +288,7 @@ public partial class GCodeUserControl : System.Windows.Controls.UserControl
     /// CutArcColor Property
     /// </summary>
     public static DependencyProperty CutEllipseColorProperty =
-        DependencyProperty.Register("CutEllipseColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnCutEllipseColorChanged));
+        DependencyProperty.Register(nameof(CutEllipseColor), typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnCutEllipseColorChanged));
 
     public Color CutEllipseColor
     {
@@ -306,7 +307,7 @@ public partial class GCodeUserControl : System.Windows.Controls.UserControl
     /// CutArcColor Property
     /// </summary>
     public static DependencyProperty CutArcColorProperty =
-        DependencyProperty.Register("CutArcColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnCutArcColorChanged));
+        DependencyProperty.Register(nameof(CutArcColor), typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnCutArcColorChanged));
 
     public Color CutArcColor
     {
@@ -325,7 +326,7 @@ public partial class GCodeUserControl : System.Windows.Controls.UserControl
     /// HelpLineColor Property
     /// </summary>
     public static DependencyProperty FastMoveColorProperty =
-        DependencyProperty.Register("FastMoveColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnFastMoveColorChanged));
+        DependencyProperty.Register(nameof(FastMoveColor), typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnFastMoveColorChanged));
 
     public Color FastMoveColor
     {
@@ -344,7 +345,7 @@ public partial class GCodeUserControl : System.Windows.Controls.UserControl
     /// HelpLineColor Property
     /// </summary>
     public static DependencyProperty HelpLineColorProperty =
-        DependencyProperty.Register("HelpLineColor", typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnHelpLineColorChanged));
+        DependencyProperty.Register(nameof(HelpLineColor), typeof(Color), typeof(GCodeUserControl), new PropertyMetadata(Colors.Orange, OnHelpLineColorChanged));
 
     public Color HelpLineColor
     {
@@ -364,7 +365,7 @@ public partial class GCodeUserControl : System.Windows.Controls.UserControl
     /// <summary>
     /// LaserSize Property
     /// </summary>
-    public static DependencyProperty LaserSizeProperty = DependencyProperty.Register("LaserSize", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(0.25, OnLaserSizeChanged));
+    public static DependencyProperty LaserSizeProperty = DependencyProperty.Register(nameof(LaserSize), typeof(double), typeof(GCodeUserControl), new PropertyMetadata(0.25, OnLaserSizeChanged));
 
     public double LaserSize
     {
@@ -382,7 +383,7 @@ public partial class GCodeUserControl : System.Windows.Controls.UserControl
     /// <summary>
     /// CutterSize Property
     /// </summary>
-    public static DependencyProperty CutterSizeProperty = DependencyProperty.Register("CutterSize", typeof(double), typeof(GCodeUserControl), new PropertyMetadata(0.0, OnCutterSizeChanged));
+    public static DependencyProperty CutterSizeProperty = DependencyProperty.Register(nameof(CutterSize), typeof(double), typeof(GCodeUserControl), new PropertyMetadata(0.0, OnCutterSizeChanged));
 
     public double CutterSize
     {
@@ -439,7 +440,7 @@ public partial class GCodeUserControl : System.Windows.Controls.UserControl
     private EDraggingType _draggingType = EDraggingType.NoDragging;
 
     private Point     _mouseDownPos;
-    private Point3D   _mouseDownCNCPos;
+    private Point3D?  _mouseDownCNCPos;
     private double    _mouseDownCNCOffsetX;
     private double    _mouseDownCNCOffsetY;
     private Stopwatch _sw = new Stopwatch();
@@ -532,8 +533,8 @@ public partial class GCodeUserControl : System.Windows.Controls.UserControl
                 _bitmapDraw.OffsetX = _mouseDownCNCOffsetX; // faster: do not assign with Dependent Property
                 _bitmapDraw.OffsetY = _mouseDownCNCOffsetY;
                 var    c    = _bitmapDraw.FromClient(pt); // recalculate with orig offset
-                double newX = _mouseDownCNCOffsetX - (c.X0 - _mouseDownCNCPos.X0);
-                double newY = _mouseDownCNCOffsetY + (c.Y0 - _mouseDownCNCPos.Y0);
+                double newX = _mouseDownCNCOffsetX - (c.X0 - _mouseDownCNCPos!.X0);
+                double newY = _mouseDownCNCOffsetY + (c.Y0 - _mouseDownCNCPos!.Y0);
                 _bitmapDraw.OffsetX = newX;
                 _bitmapDraw.OffsetY = newY;
                 break;
@@ -612,7 +613,7 @@ public partial class GCodeUserControl : System.Windows.Controls.UserControl
 
     private static SKColor ColorToColor(Color color)
     {
-        return new (color.R, color.G, color.B, color.A);
+        return new(color.R, color.G, color.B, color.A);
     }
 
     private void DrawCommands(DrawingContext context)
@@ -632,7 +633,7 @@ public partial class GCodeUserControl : System.Windows.Controls.UserControl
         var stream    = new MemoryStream();
         curBitmap.Save(stream, SKEncodedImageFormat.Png);
         var cc = new ImageSourceConverter().ConvertFrom(stream);
-        context.DrawImage((ImageSource)cc, new Rect(0, 0, ActualWidth, ActualHeight));
+        context.DrawImage((ImageSource)cc!, new Rect(0, 0, ActualWidth, ActualHeight));
         curBitmap.Dispose();
     }
 

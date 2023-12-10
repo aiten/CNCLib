@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.Serial.Client;
@@ -31,8 +31,8 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 public class SerialService : MyServiceBase, ISerial
 {
-    protected readonly string           _api = @"api/SerialPort";
-    private            SerialServiceHub _serviceHub;
+    protected readonly string            _api = @"api/SerialPort";
+    private            SerialServiceHub? _serviceHub;
 
     private async Task InitServiceHub()
     {
@@ -70,7 +70,7 @@ public class SerialService : MyServiceBase, ISerial
 
     public int PortId { get; private set; } = -1;
 
-    private async Task<SerialPortDefinition> GetSerialPortDefinition(HttpClient client, string portName)
+    private async Task<SerialPortDefinition?> GetSerialPortDefinition(HttpClient client, string portName)
     {
         // first ge all ports
         var responseAll = await client.GetAsync($@"{_api}");
@@ -83,7 +83,7 @@ public class SerialService : MyServiceBase, ISerial
         return null;
     }
 
-    private async Task<SerialPortDefinition> RefreshAndGetSerialPortDefinition(HttpClient client, string portName)
+    private async Task<SerialPortDefinition?> RefreshAndGetSerialPortDefinition(HttpClient client, string portName)
     {
         var responseAll = await client.PostAsJsonAsync($@"{_api}/refresh", "dummy");
         if (responseAll.IsSuccessStatusCode)
@@ -95,7 +95,7 @@ public class SerialService : MyServiceBase, ISerial
         return null;
     }
 
-    public async Task ConnectAsync(string portName, string serverName, string userName, string password)
+    public async Task ConnectAsync(string portName, string? serverName, string? userName, string? password)
     {
         if (WaitForSend != null || CommandSent != null || WaitCommandSent != null || ReplyReceived != null || ReplyOk != null || ReplyError != null || ReplyInfo != null || ReplyUnknown != null)
         {
@@ -104,14 +104,15 @@ public class SerialService : MyServiceBase, ISerial
 
         if (!string.IsNullOrEmpty(portName))
         {
+            serverName ??= string.Empty;
             if (!serverName.EndsWith('/'))
             {
                 serverName += '/';
             }
 
             WebServerUri = serverName;
-            UserName     = userName;
-            Password     = password;
+            UserName     = userName ?? string.Empty;
+            Password     = password ?? string.Empty;
 
             using (var scope = CreateScope())
             {
@@ -191,9 +192,9 @@ public class SerialService : MyServiceBase, ISerial
         throw new Exception("ResumeAfterAbort to SerialPort failed");
     }
 
-    public async Task<IEnumerable<SerialCommand>> QueueCommandsAsync(IEnumerable<string> lines)
+    public async Task<IEnumerable<SerialCommand>> QueueCommandsAsync(IEnumerable<string>? lines)
     {
-        if (PortId >= 0)
+        if (PortId >= 0 && lines != null)
         {
             using (var scope = CreateScope())
             {
@@ -210,9 +211,9 @@ public class SerialService : MyServiceBase, ISerial
         throw new Exception("Queue to SerialPort failed");
     }
 
-    public async Task<IEnumerable<SerialCommand>> SendCommandsAsync(IEnumerable<string> lines, int waitForMilliseconds)
+    public async Task<IEnumerable<SerialCommand>> SendCommandsAsync(IEnumerable<string>? lines, int waitForMilliseconds)
     {
-        if (PortId >= 0)
+        if (PortId >= 0 && lines != null)
         {
             using (var scope = CreateScope())
             {
@@ -240,40 +241,40 @@ public class SerialService : MyServiceBase, ISerial
         throw new NotImplementedException();
     }
 
-    Task<string> ISerial.WaitUntilResponseAsync(int maxMilliseconds)
+    Task<string?> ISerial.WaitUntilResponseAsync(int maxMilliseconds)
     {
         throw new NotImplementedException();
     }
 
-    public event CommandEventHandler WaitForSend;
-    public event CommandEventHandler CommandSending;
-    public event CommandEventHandler CommandSent;
-    public event CommandEventHandler WaitCommandSent;
-    public event CommandEventHandler ReplyReceived;
-    public event CommandEventHandler ReplyOk;
-    public event CommandEventHandler ReplyError;
-    public event CommandEventHandler ReplyInfo;
-    public event CommandEventHandler ReplyUnknown;
-    public event CommandEventHandler CommandQueueChanged;
-    public event CommandEventHandler CommandQueueEmpty;
-    public bool                      IsConnected            { get; private set; }
-    public int                       CommandsInQueue        { get; }
-    public bool                      Pause                  { get; set; }
-    public bool                      SendNext               { get; set; }
-    public int                       BaudRate               { get; set; }
-    public bool                      DtrIsReset             { get; set; }
-    public bool                      ResetOnConnect         { get; set; }
-    public string                    OkTag                  { get; set; }
-    public string                    ErrorTag               { get; set; }
-    public string                    InfoTag                { get; set; }
-    public bool                      CommandToUpper         { get; set; }
-    public bool                      ErrorIsReply           { get; set; }
-    public int                       MaxCommandHistoryCount { get; set; }
-    public int                       ArduinoBufferSize      { get; set; }
-    public int                       ArduinoLineSize        { get; set; }
-    public bool                      Aborted                { get; }
+    public event CommandEventHandler? WaitForSend;
+    public event CommandEventHandler? CommandSending;
+    public event CommandEventHandler? CommandSent;
+    public event CommandEventHandler? WaitCommandSent;
+    public event CommandEventHandler? ReplyReceived;
+    public event CommandEventHandler? ReplyOk;
+    public event CommandEventHandler? ReplyError;
+    public event CommandEventHandler? ReplyInfo;
+    public event CommandEventHandler? ReplyUnknown;
+    public event CommandEventHandler? CommandQueueChanged;
+    public event CommandEventHandler? CommandQueueEmpty;
+    public bool                       IsConnected            { get; private set; }
+    public int                        CommandsInQueue        { get; }
+    public bool                       Pause                  { get; set; }
+    public bool                       SendNext               { get; set; }
+    public int                        BaudRate               { get; set; }
+    public bool                       DtrIsReset             { get; set; }
+    public bool                       ResetOnConnect         { get; set; }
+    public string                     OkTag                  { get; set; } = string.Empty;
+    public string                     ErrorTag               { get; set; } = string.Empty;
+    public string                     InfoTag                { get; set; } = string.Empty;
+    public bool                       CommandToUpper         { get; set; }
+    public bool                       ErrorIsReply           { get; set; }
+    public int                        MaxCommandHistoryCount { get; set; }
+    public int                        ArduinoBufferSize      { get; set; }
+    public int                        ArduinoLineSize        { get; set; }
+    public bool                       Aborted                { get; }
 
-    public SerialCommand LastCommand { get; }
+    public SerialCommand? LastCommand { get; }
 
     public void WriteCommandHistory(string filename)
     {

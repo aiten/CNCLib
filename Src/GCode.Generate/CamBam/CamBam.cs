@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.GCode.Generate.CamBam;
@@ -36,10 +36,10 @@ public class CamBam
     public class Layer
     {
         [XmlAttribute("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [XmlAttribute("color")]
-        public string Color { get; set; }
+        public string Color { get; set; } = string.Empty;
 
         [XmlArray(ElementName = "objects")]
         public List<PLine> PLines { get; set; } = new List<PLine>();
@@ -79,7 +79,7 @@ public class CamBam
         {
             if (Pts.Count > 2)
             {
-                if (Pts[0].CompareTo(Pts[Pts.Count - 1]) == 0)
+                if (Pts[0].CompareTo(Pts[^1]) == 0)
                 {
                     Pts.RemoveAt(Pts.Count - 1);
                     Closed = true;
@@ -136,14 +136,14 @@ public class CamBam
             }
         }
 
-        public XmlSchema GetSchema()
+        public XmlSchema? GetSchema()
         {
             return null;
         }
 
-        public int CompareTo(PLinePoints other)
+        public int CompareTo(PLinePoints? other)
         {
-            if (X == other.X && Y == other.Y && Z == other.Z)
+            if (other != null && X == other.X && Y == other.Y && Z == other.Z)
             {
                 return 0;
             }

@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.WpfClient.ViewModels.ManualControl;
@@ -44,8 +44,8 @@ public class AxisViewModel : DetailViewModel
     #region Properties
 
     public int     AxisIndex { get; set; }
-    public string  AxisName  => _global.Machine.GetAxisName(AxisIndex);
-    public decimal Size      => _global.Machine.GetSize(AxisIndex);
+    public string? AxisName  => _global.Machine?.GetAxisName(AxisIndex) ?? string.Empty;
+    public decimal Size      => _global.Machine?.GetSize(AxisIndex) ?? 100m;
 
     //public decimal ProbeSize { get { return _global.Machine.GetProbeSize(AxisIndex); } }
     public bool HomeIsMax { get; set; }
@@ -75,7 +75,7 @@ public class AxisViewModel : DetailViewModel
         set => SetProperty(ref _relPos, value);
     }
 
-    public bool Enabled => _global.Machine.Axis > AxisIndex && Size > 0m;
+    public bool Enabled => _global.Machine?.Axis > AxisIndex && Size > 0m;
 
     public Visibility Visibility => IsDesignTime || Enabled ? Visibility.Visible : Visibility.Hidden;
 
@@ -178,11 +178,7 @@ public class AxisViewModel : DetailViewModel
 
     public ICommand SendG92Command => new DelegateCommand(
         SendG92,
-        () =>
-        {
-            decimal dummy;
-            return CanSendCommandPlotter() && decimal.TryParse(Param, out dummy);
-        });
+        () => CanSendCommandPlotter() && decimal.TryParse(Param, out _));
 
     public ICommand SendG31Command  => new DelegateCommand(SendG31,  CanSendCommandPlotter);
     public ICommand SendHomeCommand => new DelegateCommand(SendHome, CanSendCommandPlotter);

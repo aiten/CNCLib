@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.Serial.WebAPI.Controllers;
@@ -19,7 +19,6 @@ namespace CNCLib.Serial.WebAPI.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -57,7 +56,7 @@ public class SerialPortController : Controller
         return new SerialPortDefinition()
         {
             Id              = port.Id,
-            PortName        = port.PortName,
+            PortName        = port.PortName!,
             IsConnected     = port.IsConnected,
             IsJoystick      = port.IsJoystick,
             IsAborted       = port.IsAborted,
@@ -69,7 +68,7 @@ public class SerialPortController : Controller
     #region Query/Info
 
     [HttpGet]
-    public async Task<IEnumerable<SerialPortDefinition>> Get(string portName = null)
+    public async Task<IEnumerable<SerialPortDefinition>> Get(string? portName = null)
     {
         var allPorts = SerialPortList.Ports.Select(GetDefinition);
 
@@ -105,7 +104,7 @@ public class SerialPortController : Controller
     #region Connect/Disconnect
 
     [HttpPost("{id:int}/connect")]
-    public async Task<ActionResult<SerialPortDefinition>> Connect(int id, string commandPrefix = null, int? baudRate = null, bool? dtrIsReset = true, bool? resetOnConnect = false)
+    public async Task<ActionResult<SerialPortDefinition>> Connect(int id, string? commandPrefix = null, int? baudRate = null, bool? dtrIsReset = true, bool? resetOnConnect = false)
     {
         bool dtrIsResetN0     = dtrIsReset ?? true;
         bool resetOnConnectN0 = resetOnConnect ?? false;
@@ -119,7 +118,7 @@ public class SerialPortController : Controller
 
         if (port.IsConnected)
         {
-            if (port.Serial.BaudRate == baudRateN0 && resetOnConnectN0 == false && !port.IsJoystick)
+            if (port.Serial!.BaudRate == baudRateN0 && resetOnConnectN0 == false && !port.IsJoystick)
             {
                 return Ok(GetDefinition(port));
             }
@@ -128,12 +127,12 @@ public class SerialPortController : Controller
         }
 
         port.IsJoystick            = false;
-        port.Serial.BaudRate       = baudRateN0;
+        port.Serial!.BaudRate      = baudRateN0;
         port.Serial.DtrIsReset     = dtrIsResetN0;
         port.Serial.ResetOnConnect = resetOnConnectN0;
         port.GCodeCommandPrefix    = commandPrefix ?? "";
 
-        await port.Serial.ConnectAsync(port.PortName, null, null, null);
+        await port.Serial.ConnectAsync(port.PortName!, null, null, null);
 
         await _hubContext.Clients.All.Connected(id);
 
@@ -153,21 +152,21 @@ public class SerialPortController : Controller
 
         if (port.IsConnected)
         {
-            if (port.Serial.BaudRate == baudRateN0)
+            if (port.Serial!.BaudRate == baudRateN0)
             {
                 return Ok(GetDefinition(port));
             }
 
-            await port.Serial.DisconnectAsync();
+            await port.Serial!.DisconnectAsync();
         }
 
-        port.IsJoystick            = true;
-        port.Serial.BaudRate       = baudRateN0;
-        port.Serial.DtrIsReset     = true;
-        port.Serial.ResetOnConnect = false;
-        port.GCodeCommandPrefix    = "";
+        port.IsJoystick             = true;
+        port.Serial!.BaudRate       = baudRateN0;
+        port.Serial!.DtrIsReset     = true;
+        port.Serial!.ResetOnConnect = false;
+        port.GCodeCommandPrefix     = "";
 
-        await port.Serial.ConnectAsync(port.PortName, null, null, null);
+        await port.Serial.ConnectAsync(port.PortName!, null, null, null);
 
         await _hubContext.Clients.All.Connected(id);
 
@@ -183,7 +182,7 @@ public class SerialPortController : Controller
             return NotFound();
         }
 
-        await port.Serial.DisconnectAsync();
+        await port.Serial!.DisconnectAsync();
         port.Serial = null;
 
         await _hubContext.Clients.All.Disconnected(id);
@@ -196,7 +195,7 @@ public class SerialPortController : Controller
     #region Send/Queue/Commands
 
     [HttpPost("{id:int}/queue")]
-    public async Task<ActionResult<IEnumerable<SerialCommand>>> QueueCommand(int id, [FromBody] SerialCommands commands)
+    public async Task<ActionResult<IEnumerable<SerialCommand>>> QueueCommand(int id, [FromBody] SerialCommands? commands)
     {
         var port = await SerialPortList.GetPortAndRescan(id);
 
@@ -205,12 +204,12 @@ public class SerialPortController : Controller
             return NotFound();
         }
 
-        var ret = await port.Serial.QueueCommandsAsync(commands.Commands);
+        var ret = await port.Serial!.QueueCommandsAsync(commands.Commands);
         return Ok(ret);
     }
 
     [HttpPost("{id:int}/send")]
-    public async Task<ActionResult<IEnumerable<SerialCommand>>> SendCommand(int id, [FromBody] SerialCommands commands)
+    public async Task<ActionResult<IEnumerable<SerialCommand>>> SendCommand(int id, [FromBody] SerialCommands? commands)
     {
         var port = await SerialPortList.GetPortAndRescan(id);
 
@@ -219,7 +218,7 @@ public class SerialPortController : Controller
             return NotFound();
         }
 
-        var ret = await port.Serial.SendCommandsAsync(commands.Commands, commands.TimeOut);
+        var ret = await port.Serial!.SendCommandsAsync(commands.Commands, commands.TimeOut);
         return Ok(ret);
     }
 
@@ -236,9 +235,9 @@ public class SerialPortController : Controller
         var ret = new List<SerialCommand>();
         foreach (var c in commands.Commands)
         {
-            var result = await port.Serial.SendCommandsAsync(new[] { c }, commands.TimeOut);
+            var result = (await port.Serial!.SendCommandsAsync(new[] { c }, commands.TimeOut)).ToList();
             ret.AddRange(result);
-            if (result.Any() && result.LastOrDefault().ReplyType != EReplyType.ReplyOk)
+            if (result.Any() && result.Last().ReplyType != EReplyType.ReplyOk)
             {
                 break;
             }
@@ -256,7 +255,7 @@ public class SerialPortController : Controller
             return NotFound();
         }
 
-        port.Serial.AbortCommands();
+        port.Serial!.AbortCommands();
         return Ok();
     }
 
@@ -269,7 +268,7 @@ public class SerialPortController : Controller
             return NotFound();
         }
 
-        port.Serial.ResumeAfterAbort();
+        port.Serial!.ResumeAfterAbort();
         return Ok();
     }
 
@@ -282,7 +281,7 @@ public class SerialPortController : Controller
             return NotFound();
         }
 
-        port.Serial.Pause = true;
+        port.Serial!.Pause = true;
         return Ok();
     }
 
@@ -295,7 +294,7 @@ public class SerialPortController : Controller
             return NotFound();
         }
 
-        port.Serial.Pause = false;
+        port.Serial!.Pause = false;
         return Ok();
     }
 
@@ -308,7 +307,7 @@ public class SerialPortController : Controller
             return NotFound();
         }
 
-        port.Serial.SendNext = true;
+        port.Serial!.SendNext = true;
         return Ok();
     }
 
@@ -325,7 +324,7 @@ public class SerialPortController : Controller
             return NotFound();
         }
 
-        var cmdList = port.Serial.PendingCommands;
+        var cmdList = port.Serial!.PendingCommands;
 
         if (sortDesc ?? false)
         {
@@ -348,7 +347,7 @@ public class SerialPortController : Controller
             return NotFound();
         }
 
-        port.Serial.ClearCommandHistory();
+        port.Serial!.ClearCommandHistory();
         return Ok();
     }
 
@@ -361,7 +360,7 @@ public class SerialPortController : Controller
             return NotFound();
         }
 
-        var cmdList = port.Serial.CommandHistoryCopy;
+        var cmdList = port.Serial!.CommandHistoryCopy;
 
         if (sortDesc ?? true)
         {
@@ -415,10 +414,10 @@ public class SerialPortController : Controller
         if (!string.IsNullOrEmpty(opt.FastMoveColor)) gCodeDraw.FastMoveColor     = SKColor.Parse(opt.FastMoveColor);
         if (!string.IsNullOrEmpty(opt.HelpLineColor)) gCodeDraw.HelpLineColor     = SKColor.Parse(opt.HelpLineColor);
 
-        var hisCommands = port.Serial.CommandHistoryCopy.OrderBy(x => x.SeqId).Select(c => c.CommandText);
+        var hisCommands = port.Serial!.CommandHistoryCopy.OrderBy(x => x.SeqId).Select(c => c.CommandText);
 
         var load = new LoadGCode();
-        load.Load(hisCommands.ToArray());
+        load.Load(hisCommands!.ToArray()!);
         var commands = load.Commands;
         var bitmap   = gCodeDraw.DrawToBitmap(commands);
 

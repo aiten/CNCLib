@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.GCode.Generate.Commands;
@@ -43,34 +43,34 @@ public abstract class Command
         MoveType      = CommandMoveType.NoMove;
     }
 
-    private Point3D        _calculatedEndPosition;
+    private Point3D?       _calculatedEndPosition;
     private List<Variable> _variables = new List<Variable>();
 
     #endregion
 
     #region Property
 
-    public Command NextCommand { get; set; }
-    public Command PrevCommand { get; set; }
+    public Command? NextCommand { get; set; }
+    public Command? PrevCommand { get; set; }
 
-    public Point3D CalculatedStartPosition =>
+    public Point3D? CalculatedStartPosition =>
         PrevCommand == null ? new Point3D() : PrevCommand.CalculatedEndPosition;
 
-    public Point3D CalculatedEndPosition => _calculatedEndPosition;
+    public Point3D? CalculatedEndPosition => _calculatedEndPosition;
 
     public bool            UseWithoutPrefix { get; protected set; }
     public bool            PositionValid    { get; protected set; }
     public CommandMoveType MoveType         { get; protected set; }
 
-    public string SubCode { get; protected set; }
-    public string Code    { get; protected set; }
+    public string? SubCode { get; protected set; }
+    public string? Code    { get; protected set; }
 
     public int? LineNumber { get; set; }
 
     /// <summary>
     /// ImportInfo, e.g. Hpgl Command
     /// </summary>
-    public string ImportInfo { get; set; }
+    public string? ImportInfo { get; set; }
 
     #endregion
 
@@ -80,7 +80,7 @@ public abstract class Command
     {
         public char    Name            { get; set; }
         public double? Value           { get; set; }
-        public string  Parameter       { get; set; }
+        public string? Parameter       { get; set; }
         public bool    ParameterIsTerm { get; set; }
 
         public bool ForceFloatingPoint { get; set; }
@@ -159,14 +159,14 @@ public abstract class Command
         return defaultValue;
     }
 
-    public Variable GetVariable(char name)
+    public Variable? GetVariable(char name)
     {
         return _variables.Find(n => n.Name == name);
     }
 
     public bool TryGetVariable(char name, CommandState state, out double val)
     {
-        Variable var = GetVariable(name);
+        var var = GetVariable(name);
         if (var?.Value != null)
         {
             val = var.Value.Value;
@@ -186,9 +186,9 @@ public abstract class Command
                     return true;
                 }
             }
-            else if (int.TryParse(var.Parameter, out int parameterNo) && state.ParameterValues.ContainsKey(parameterNo))
+            else if (int.TryParse(var.Parameter, out int parameterNo) && state.ParameterValues.TryGetValue(parameterNo, out var value))
             {
-                val = state.ParameterValues[parameterNo];
+                val = value;
                 return true;
             }
         }
@@ -197,9 +197,9 @@ public abstract class Command
         return false;
     }
 
-    public string TryGetVariableGCode(char name)
+    public string? TryGetVariableGCode(char name)
     {
-        Variable var = GetVariable(name);
+        var var = GetVariable(name);
         if (var?.Value != null)
         {
             return var.ToGCode();
@@ -210,7 +210,7 @@ public abstract class Command
 
     public bool CopyVariable(char name, Command dest)
     {
-        Variable var = GetVariable(name);
+        var var = GetVariable(name);
         if (var?.Value == null)
         {
             return false;
@@ -272,7 +272,7 @@ public abstract class Command
 
     public virtual void Draw(IOutputCommand output, CommandState state, object param)
     {
-        output.DrawLine(this, param, Convert(MoveType, state), CalculatedStartPosition, CalculatedEndPosition);
+        output.DrawLine(this, param, Convert(MoveType, state), CalculatedStartPosition!, CalculatedEndPosition!);
     }
 
     #endregion
@@ -283,9 +283,9 @@ public abstract class Command
     {
     } // allow generic Gxx & Mxx to set code
 
-    public string GCodeAdd { get; set; }
+    public string? GCodeAdd { get; set; }
 
-    protected string GCodeHelper(Point3D current)
+    protected string GCodeHelper(Point3D? current)
     {
         var sb = new StringBuilder();
 
@@ -309,7 +309,7 @@ public abstract class Command
             }
         }
 
-        foreach (Variable p in _variables)
+        foreach (var p in _variables)
         {
             sb.Append(' ');
             sb.Append(p.ToGCode());
@@ -333,7 +333,7 @@ public abstract class Command
         return LineNumber.HasValue ? $"N{LineNumber}{postString}" : "";
     }
 
-    public virtual string[] GetGCodeCommands(Point3D startFrom, CommandState state)
+    public virtual IEnumerable<string> GetGCodeCommands(Point3D? startFrom, CommandState? state)
     {
         var ret = new[]
         {

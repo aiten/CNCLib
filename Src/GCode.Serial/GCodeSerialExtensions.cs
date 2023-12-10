@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.GCode.Serial;
@@ -30,12 +30,12 @@ public static class GCodeSerialExtension
 
     public static async Task<decimal?> GetParameterValueAsync(this ISerial serial, int parameter, string commandPrefix)
     {
-        string message = await serial.SendCommandAndReadOKReplyAsync($"{commandPrefix}(print, #{parameter})", 10 * 1000);
+        var message = await serial.SendCommandAndReadOKReplyAsync($"{commandPrefix}(print, #{parameter})", 10 * 1000);
 
         if (!string.IsNullOrEmpty(message))
         {
             // expected response : 0\nok
-            string pos = message.Split('\n').FirstOrDefault();
+            var pos = message.Split('\n').FirstOrDefault();
             if (decimal.TryParse(pos, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal val))
             {
                 return val;
@@ -72,9 +72,9 @@ public static class GCodeSerialExtension
         return Convert(TrimMsg(msg, replace).Split(':', ','));
     }
 
-    static decimal[] TryConvert(string[] tags, string txt)
+    static decimal[]? TryConvert(string[] tags, string txt)
     {
-        string tag = tags.FirstOrDefault((s) => s.StartsWith(txt));
+        var tag = tags.FirstOrDefault((s) => s.StartsWith(txt));
         if (tag != null)
         {
             return Convert(TrimMsg(tag, txt).Split(':', ','));
@@ -85,8 +85,8 @@ public static class GCodeSerialExtension
 
     public static async Task<IEnumerable<IEnumerable<decimal>>> GetPosition(this ISerial serial, string commandPrefix)
     {
-        string message = await serial.SendCommandAndReadOKReplyAsync($"{commandPrefix}?", 10 * 1000);
-        var    ret     = new List<IEnumerable<decimal>>();
+        var message = await serial.SendCommandAndReadOKReplyAsync($"{commandPrefix}?", 10 * 1000);
+        var ret     = new List<IEnumerable<decimal>>();
 
         if (!string.IsNullOrEmpty(message))
         {

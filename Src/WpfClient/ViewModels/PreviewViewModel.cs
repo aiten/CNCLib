@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.WpfClient.ViewModels;
@@ -19,6 +19,7 @@ namespace CNCLib.WpfClient.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -207,13 +208,13 @@ public class PreviewViewModel : BaseViewModel
 
     public class GetLoadInfoArg
     {
-        public LoadOptions LoadOption { get; set; }
-        public bool        UseAzure   { get; set; }
+        public LoadOptions? LoadOption { get; set; }
+        public bool         UseAzure   { get; set; }
     }
 
-    public Func<GetLoadInfoArg, bool> GetLoadInfo { get; set; }
+    public Func<GetLoadInfoArg, bool>? GetLoadInfo { get; set; }
 
-    public Action RefreshPreview { get; set; }
+    public Action? RefreshPreview { get; set; }
 
     #endregion
 
@@ -223,7 +224,7 @@ public class PreviewViewModel : BaseViewModel
     bool        _useAzure         = false;
     bool        _loadingOrSending = false;
 
-    Command _lastCurrentCommand = null;
+    Command? _lastCurrentCommand = null;
 
     private void CommandSending(object sender, SerialEventArgs arg)
     {
@@ -242,7 +243,7 @@ public class PreviewViewModel : BaseViewModel
 
     private bool IsHpglAndPlotter()
     {
-        if (_global.Machine.CommandSyntax != CommandSyntax.Hpgl)
+        if (_global.Machine?.CommandSyntax != CommandSyntax.Hpgl)
         {
             return true;
         }
@@ -290,9 +291,8 @@ public class PreviewViewModel : BaseViewModel
         foreach (var serialCmd in serialCommands)
         {
             //var ctx = list.FirstOrDefault((ct) => ct.IdxFrom >= serialCmd.CommandIndex && ct.IdxTo <= serialCmd.CommandIndex);
-            if (cmdDict.ContainsKey(serialCmd.CommandIndex))
+            if (cmdDict.TryGetValue(serialCmd.CommandIndex, out var ctx))
             {
-                var ctx = cmdDict[serialCmd.CommandIndex];
                 ctx.SeqIdFrom = Math.Min(ctx.SeqIdFrom, serialCmd.SeqId);
                 ctx.SeqIdTo   = Math.Max(ctx.SeqIdTo, serialCmd.SeqId);
             }
@@ -312,15 +312,15 @@ public class PreviewViewModel : BaseViewModel
 
     class CommandToIndex
     {
-        public Command  Cmd         { get; set; }
-        public string[] CommandText { get; set; }
+        public Command  Cmd         { get; set; } = default!;
+        public string[] CommandText { get; set; } = default!;
         public int      SeqIdFrom   { get; set; } = int.MaxValue;
         public int      SeqIdTo     { get; set; } = int.MinValue;
         public int      IdxFrom     { get; set; }
         public int      IdxTo       { get; set; }
     }
 
-    private Dictionary<int, Command> _currentDrawSeqIdToCmd;
+    private Dictionary<int, Command>? _currentDrawSeqIdToCmd;
 
     public void SendTo()
     {
@@ -334,12 +334,12 @@ public class PreviewViewModel : BaseViewModel
                     _global.Com.Current.ClearCommandHistory();
                     var cmdDefList = new List<CommandToIndex>();
 
-                    if (_global.Machine.CommandSyntax == CommandSyntax.Hpgl && IsHpglAndPlotter())
+                    if (_global.Machine?.CommandSyntax == CommandSyntax.Hpgl && IsHpglAndPlotter())
                     {
                         Commands.ForEach(
                             cmd =>
                             {
-                                string cmdStr = cmd.ImportInfo;
+                                var cmdStr = cmd.ImportInfo;
                                 if (!string.IsNullOrEmpty(cmdStr))
                                 {
                                     cmdDefList.Add(
@@ -353,8 +353,8 @@ public class PreviewViewModel : BaseViewModel
                     }
                     else
                     {
-                        Command last  = null;
-                        var     state = new CommandState();
+                        Command? last  = null;
+                        var      state = new CommandState();
 
                         Commands.ForEach(
                             cmd =>
@@ -363,7 +363,7 @@ public class PreviewViewModel : BaseViewModel
                                     new CommandToIndex()
                                     {
                                         Cmd         = cmd,
-                                        CommandText = cmd.GetGCodeCommands(last?.CalculatedEndPosition, state)
+                                        CommandText = cmd.GetGCodeCommands(last?.CalculatedEndPosition, state).ToArray()
                                     });
                                 last = cmd;
                             });
@@ -472,9 +472,9 @@ public class PreviewViewModel : BaseViewModel
 
     #region Commands
 
-    private ICommand _loadCommand;
+    private ICommand? _loadCommand;
 
-    public ICommand LoadCommand
+    public ICommand? LoadCommand
     {
         get { return _loadCommand ?? (_loadCommand = new DelegateCommand(async () => await Load(), CanLoad)); }
     }

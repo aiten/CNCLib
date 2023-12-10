@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.Logic.Manager;
@@ -61,7 +61,7 @@ public class UserFileManager : CrudManager<UserFile, int, UserFileEntity>, IUser
         if (validation == ValidationType.AddValidation || validation == ValidationType.UpdateValidation)
         {
             const int MAXFILESIZE = 1024 * 1024 * 32;
-            if (dto.Content.Length > MAXFILESIZE)
+            if (dto.Content != null && dto.Content.Length > MAXFILESIZE)
             {
                 throw new ArgumentException(
                     ErrorMessagesLogic.ResourceManager.ToLocalizable(nameof(ErrorMessagesLogic.CNCLib_Logic_FileToBig), new object[] { MAXFILESIZE, dto.Content.Length }).Message());
@@ -74,7 +74,7 @@ public class UserFileManager : CrudManager<UserFile, int, UserFileEntity>, IUser
                 currentDbSize -= await _repository.GetUserFileSizeAsync(dto.UserFileId);
             }
 
-            currentDbSize += dto.Content.LongLength;
+            currentDbSize += dto.Content?.LongLength ?? 0;
 
             const int MAXTOTALFILESIZE = 1024 * 1024 * 100;
             if (currentDbSize > MAXTOTALFILESIZE)
@@ -109,7 +109,7 @@ public class UserFileManager : CrudManager<UserFile, int, UserFileEntity>, IUser
         return _mapper.Map<IEnumerable<UserFileInfo>>(await _repository.GetFileInfosAsync(_userContext.UserId));
     }
 
-    public async Task<UserFileInfo> GetFileInfoAsync(UserFile userFile)
+    public async Task<UserFileInfo?> GetFileInfoAsync(UserFile userFile)
     {
         return _mapper.Map<UserFileInfo>(await _repository.GetFileInfoAsync(userFile.UserFileId));
     }
@@ -119,7 +119,7 @@ public class UserFileManager : CrudManager<UserFile, int, UserFileEntity>, IUser
         return entity.UserFileId;
     }
 
-    public async Task<UserFile> GetByNameAsync(string filename)
+    public async Task<UserFile?> GetByNameAsync(string filename)
     {
         return await MapToDtoAsync(await _repository.GetByNameAsync(_userContext.UserId, filename));
     }

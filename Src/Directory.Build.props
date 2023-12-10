@@ -20,13 +20,11 @@
 	</PropertyGroup>
 
 	<PropertyGroup Label="Compiler Settings">
+		<NoWarn>CA1416;1591</NoWarn>
 		<LangVersion>latest</LangVersion>
+		<Nullable>enable</Nullable>
 		<AssemblyName>$(SolutionNamespace).$(MSBuildProjectName)</AssemblyName>
 		<RootNamespace>$(SolutionNamespace).$(MSBuildProjectName)</RootNamespace>
-	</PropertyGroup>
-
-	<PropertyGroup>
-		<NoWarn>CA1416;1591</NoWarn>
 	</PropertyGroup>
 
 </Project>

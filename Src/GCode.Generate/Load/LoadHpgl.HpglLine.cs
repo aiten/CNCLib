@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.GCode.Generate.Load;
@@ -25,9 +25,9 @@ public partial class LoadHpgl
 {
     private class HpglLine
     {
-        public IEnumerable<HpglCommand> PreCommands  { get; set; }
-        public IEnumerable<HpglCommand> Commands     { get; set; }
-        public IEnumerable<HpglCommand> PostCommands { get; set; }
+        public IEnumerable<HpglCommand>? PreCommands  { get; set; }
+        public IEnumerable<HpglCommand>? Commands     { get; set; }
+        public IEnumerable<HpglCommand>? PostCommands { get; set; }
 
         //public Polygon2D Polygon { get { Load(); return _polygon; } }
 
@@ -94,12 +94,12 @@ public partial class LoadHpgl
 
         public bool IsEmbeddedEx(HpglLine to)
         {
-            return _polygon.ArePointsInPolygon(to._polygon.Points);
+            return _polygon!.ArePointsInPolygon(to._polygon!.Points);
         }
 
         public int Level => ParentLine?.Level + 1 ?? 0;
 
-        public HpglLine ParentLine { get; set; }
+        public HpglLine? ParentLine { get; set; }
 
         private void Load()
         {
@@ -108,7 +108,7 @@ public partial class LoadHpgl
                 var points = new List<Point2D>();
                 if (Commands != null && Commands.Any())
                 {
-                    points.Add(Commands.First().PointFrom);
+                    points.Add(Commands.First().PointFrom!);
                     points.AddRange(
                         Commands.Select(
                             c => new Point2D
@@ -128,12 +128,12 @@ public partial class LoadHpgl
             }
         }
 
-        private bool      _isLoaded = false;
-        private bool      _isClosed;
-        private double    _maxX;
-        private double    _minX;
-        private double    _maxY;
-        private double    _minY;
-        private Polygon2D _polygon;
+        private bool       _isLoaded = false;
+        private bool       _isClosed;
+        private double     _maxX;
+        private double     _minX;
+        private double     _maxY;
+        private double     _minY;
+        private Polygon2D? _polygon;
     }
 }

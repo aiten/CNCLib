@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.WpfClient.ViewModels;
@@ -60,7 +60,7 @@ public class SetupWindowViewModel : BaseViewModel
     public override async Task Loaded()
     {
         await base.Loaded();
-        if (_machines == null)
+        if (_machines.Count == 0)
         {
             await LoadMachines(-1);
             await LoadJoystick();
@@ -97,7 +97,7 @@ public class SetupWindowViewModel : BaseViewModel
             defaultMachine = machines[0];
         }
 
-        Machine = defaultMachine;
+        Machine = defaultMachine!;
     }
 
     private async Task LoadJoystick()
@@ -114,11 +114,11 @@ public class SetupWindowViewModel : BaseViewModel
 
     #region GUI-forward
 
-    public Action<int> EditMachine  { get; set; }
-    public Action      EditJoystick { get; set; }
-    public Action      ShowEeprom   { get; set; }
+    public Action<int>? EditMachine  { get; set; }
+    public Action?      EditJoystick { get; set; }
+    public Action?      ShowEeprom   { get; set; }
 
-    public Func<Tuple<string, string>> Login { get; set; }
+    public Func<Tuple<string, string>?>? Login { get; set; }
 
     #endregion
 
@@ -126,7 +126,7 @@ public class SetupWindowViewModel : BaseViewModel
 
     #region Current Machine
 
-    public Machine Machine
+    public Machine? Machine
     {
         get => _selectedMachine;
         set
@@ -140,16 +140,23 @@ public class SetupWindowViewModel : BaseViewModel
         }
     }
 
-    public Joystick Joystick { get; set; }
+    public Joystick? Joystick { get; set; }
 
-    Machine _selectedMachine;
+    Machine? _selectedMachine;
 
-    private ObservableCollection<Machine> _machines;
+    private ObservableCollection<Machine> _machines = new ObservableCollection<Machine>();
 
     public ObservableCollection<Machine> Machines
     {
         get => _machines;
-        set => SetProperty(ref _machines, value);
+        set
+        {
+            _machines.Clear();
+            foreach (var m in value)
+            {
+                _machines.Add(m);
+            }
+        }
     }
 
     public bool Connected => _global.Com.Current.IsConnected;
@@ -180,9 +187,9 @@ public class SetupWindowViewModel : BaseViewModel
 
     public bool DtrIsReset => Machine != null && Machine.DtrIsReset;
 
-    public string CNCLibVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
+    public string CNCLibVersion => Assembly.GetExecutingAssembly().GetName().Version!.ToString();
 
-    public string UserName => _userContext.UserName;
+    public string? UserName => _userContext.UserName;
 
     #endregion
 
@@ -192,25 +199,25 @@ public class SetupWindowViewModel : BaseViewModel
     {
         try
         {
-            _global.Com.SetCurrent(Machine.SerialServer);
+            _global.Com.SetCurrent(Machine!.SerialServer!);
 
             _global.Com.Current.DtrIsReset     = Machine.DtrIsReset;
             _global.Com.Current.ResetOnConnect = ResetOnConnect;
 
             _global.Com.Current.CommandToUpper = Machine.CommandToUpper;
             _global.Com.Current.BaudRate       = Machine.BaudRate;
-            await _global.Com.Current.ConnectAsync(Machine.ComPort, Machine.SerialServer, Machine.SerialServerUser, Machine.SerialServerPassword);
+            await _global.Com.Current.ConnectAsync(Machine.ComPort!, Machine.SerialServer, Machine.SerialServerUser, Machine.SerialServerPassword);
             await SetGlobal();
 
             if (SendInitCommands && Machine != null)
             {
-                var initCommands = Machine.MachineInitCommands;
+                var initCommands = Machine.MachineInitCommands!;
 
                 if (initCommands.Any())
                 {
                     // wait (do not check if reset - arduino may reset even the "reset" is not specified)
                     await _global.Com.Current.WaitUntilResponseAsync(3000);
-                    await _global.Com.Current.QueueCommandsAsync(initCommands.OrderBy(cmd => cmd.SeqNo).Select(e => e.CommandString));
+                    await _global.Com.Current.QueueCommandsAsync(initCommands.OrderBy(cmd => cmd.SeqNo).Select(e => e.CommandString!));
                 }
             }
         }
@@ -232,8 +239,8 @@ public class SetupWindowViewModel : BaseViewModel
             _global.ComJoystick.DtrIsReset     = true;
             _global.ComJoystick.ResetOnConnect = true;
             _global.ComJoystick.CommandToUpper = false;
-            _global.ComJoystick.BaudRate       = Joystick.BaudRate;
-            await _global.ComJoystick.ConnectAsync(Joystick.ComPort, null, null, null);
+            _global.ComJoystick.BaudRate       = Joystick!.BaudRate;
+            await _global.ComJoystick.ConnectAsync(Joystick.ComPort!, null, null, null);
         }
         catch (Exception e)
         {
@@ -247,7 +254,7 @@ public class SetupWindowViewModel : BaseViewModel
 
     private async Task SetGlobal()
     {
-        _global.SizeX                         = Machine.SizeX;
+        _global.SizeX                         = Machine!.SizeX;
         _global.SizeY                         = Machine.SizeY;
         _global.SizeZ                         = Machine.SizeZ;
         _global.Com.Current.ArduinoBufferSize = Machine.BufferSize;
@@ -297,7 +304,7 @@ public class SetupWindowViewModel : BaseViewModel
         int mId = Machine?.MachineId ?? -1;
 
         //EditMachine?.Invoke(mId);
-        EditMachine(mId);
+        EditMachine?.Invoke(mId);
         await LoadMachines(mId);
     }
 
@@ -343,7 +350,7 @@ public class SetupWindowViewModel : BaseViewModel
         var newUser = Login?.Invoke();
         if (newUser != null && !string.IsNullOrEmpty(newUser.Item1))
         {
-            var userContextRW = _userContext as CNCLibUserContext;
+            var userContextRW = (_userContext as CNCLibUserContext)!;
             await userContextRW.InitUserContext(newUser.Item1, newUser.Item2);
             await LoadMachines(-1);
             RaisePropertyChanged(nameof(UserName));
@@ -361,18 +368,15 @@ public class SetupWindowViewModel : BaseViewModel
 
     #region Commands
 
-    public ICommand SetupMachineCommand      => new DelegateCommand(SetupMachine, CanSetupMachine);
-    public ICommand ConnectCommand           => new DelegateCommandAsync<bool>(Connect,    CanConnect);
-    public ICommand DisConnectCommand        => new DelegateCommandAsync<bool>(DisConnect, CanDisConnect);
-    public ICommand EepromCommand            => new DelegateCommand(SetEeprom, CanDisConnect);
-    public ICommand LoginCommand             => new DelegateCommandAsync<bool>(LoginUser, CanLoginUser);
-    public ICommand SetDefaultMachineCommand => new DelegateCommand(SetDefaultMachine, CanSetupMachine);
-    public ICommand ConnectJoystickCommand   => new DelegateCommandAsync<bool>(ConnectJoystick, CanConnectJoystick);
-
-    public ICommand DisConnectJoystickCommand =>
-        new DelegateCommandAsync<bool>(DisConnectJoystick, CanDisConnectJoystick);
-
-    public ICommand SetupJoystickCommand => new DelegateCommand(SetupJoystick, CanSetupJoystick);
+    public ICommand SetupMachineCommand       => new DelegateCommand(SetupMachine, CanSetupMachine);
+    public ICommand ConnectCommand            => new DelegateCommandAsync<bool>(Connect,    CanConnect);
+    public ICommand DisConnectCommand         => new DelegateCommandAsync<bool>(DisConnect, CanDisConnect);
+    public ICommand EepromCommand             => new DelegateCommand(SetEeprom, CanDisConnect);
+    public ICommand LoginCommand              => new DelegateCommandAsync<bool>(LoginUser, CanLoginUser);
+    public ICommand SetDefaultMachineCommand  => new DelegateCommand(SetDefaultMachine, CanSetupMachine);
+    public ICommand ConnectJoystickCommand    => new DelegateCommandAsync<bool>(ConnectJoystick,    CanConnectJoystick);
+    public ICommand DisConnectJoystickCommand => new DelegateCommandAsync<bool>(DisConnectJoystick, CanDisConnectJoystick);
+    public ICommand SetupJoystickCommand      => new DelegateCommand(SetupJoystick, CanSetupJoystick);
 
     #endregion
 }

@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.GCode.Generate.Load;
@@ -28,8 +28,8 @@ public partial class LoadHpgl
 {
     private class Smooth
     {
-        public LoadOptions LoadOptions { get; set; }
-        public LoadHpgl    LoadX       { get; set; }
+        public LoadOptions LoadOptions { get; set; } = default!;
+        public LoadHpgl    LoadX       { get; set; } = default!;
 
         public IList<HpglCommand> SmoothList(IList<HpglCommand> list)
         {
@@ -38,12 +38,12 @@ public partial class LoadHpgl
             int startIdx = 0;
             while (startIdx < list.Count)
             {
-                var newOpenList = list.Skip(startIdx).TakeWhile(e => !e.IsPenDownCommand);
+                var newOpenList = list.Skip(startIdx).TakeWhile(e => !e.IsPenDownCommand).ToList();
                 newList.AddRange(newOpenList);
-                startIdx += newOpenList.Count();
+                startIdx += newOpenList.Count;
 
-                var line = list.Skip(startIdx).TakeWhile(e => e.IsPenDownCommand);
-                startIdx += line.Count();
+                var line = list.Skip(startIdx).TakeWhile(e => e.IsPenDownCommand).ToList();
+                startIdx += line.Count;
 
                 newList.AddRange(SmoothLine(line));
             }
@@ -54,7 +54,7 @@ public partial class LoadHpgl
 
         int _lineIdx = 1;
 
-        private IList<HpglCommand> SmoothLine(IEnumerable<HpglCommand> line)
+        private IList<HpglCommand> SmoothLine(IList<HpglCommand> line)
         {
             if (LoadX._DEBUG)
             {
@@ -65,19 +65,19 @@ public partial class LoadHpgl
             double maxAngle = LoadOptions.SmoothMinAngle.HasValue ? (double)LoadOptions.SmoothMinAngle.Value : (45 * (Math.PI / 180));
 
             int startIdx = 0;
-            while (startIdx < line.Count())
+            while (startIdx < line.Count)
             {
                 // check for angle
-                var linePart = line.Skip(startIdx).TakeWhile(c => Math.Abs(c.DiffLineAngleWithNext ?? (0.0)) < maxAngle);
+                var linePart = line.Skip(startIdx).TakeWhile(c => Math.Abs(c.DiffLineAngleWithNext ?? (0.0)) < maxAngle).ToList();
                 if (linePart.Any())
                 {
-                    startIdx += linePart.Count();
+                    startIdx += linePart.Count;
                     list.AddRange(SplitLine(linePart));
                 }
                 else
                 {
-                    linePart =  line.Skip(startIdx).TakeWhile(c => Math.Abs(c.DiffLineAngleWithNext ?? (0.0)) >= maxAngle);
-                    startIdx += linePart.Count();
+                    linePart =  line.Skip(startIdx).TakeWhile(c => Math.Abs(c.DiffLineAngleWithNext ?? (0.0)) >= maxAngle).ToList();
+                    startIdx += linePart.Count;
                     list.AddRange(linePart);
                 }
             }
@@ -85,18 +85,18 @@ public partial class LoadHpgl
             return list;
         }
 
-        private IEnumerable<HpglCommand> SplitLine(IEnumerable<HpglCommand> line)
+        private IList<HpglCommand> SplitLine(IList<HpglCommand> line)
         {
-            if (line.Count() < 2)
+            if (line.Count < 2)
             {
                 return line;
             }
 
-            Point3D firstFrom = line.ElementAt(0).PointFrom;
+            var firstFrom = line.ElementAt(0).PointFrom;
             for (int i = 0; i < 100; i++)
             {
                 var newline = SplitLineImpl(line);
-                if (newline.Count() == line.Count())
+                if (newline.Count == line.Count)
                 {
                     return newline;
                 }
@@ -108,24 +108,24 @@ public partial class LoadHpgl
             return line;
         }
 
-        private IEnumerable<HpglCommand> SplitLineImpl(IEnumerable<HpglCommand> line)
+        private IList<HpglCommand> SplitLineImpl(IList<HpglCommand> line)
         {
-            if (line.Count() < 3)
+            if (line.Count < 3)
             {
                 return line;
             }
 
-            var         newline       = new List<HpglCommand>();
-            HpglCommand prev          = null;
-            double      minLineLength = LoadOptions.SmoothMinLineLength.HasValue ? (double)LoadOptions.SmoothMinLineLength.Value : double.MaxValue;
-            double      maxError      = LoadOptions.SmoothMaxError.HasValue ? (double)LoadOptions.SmoothMaxError.Value : 1.0 / 40.0;
+            var          newline       = new List<HpglCommand>();
+            HpglCommand? prev          = null;
+            double       minLineLength = LoadOptions.SmoothMinLineLength.HasValue ? (double)LoadOptions.SmoothMinLineLength.Value : double.MaxValue;
+            double       maxError      = LoadOptions.SmoothMaxError.HasValue ? (double)LoadOptions.SmoothMaxError.Value : 1.0 / 40.0;
             minLineLength /= (double)LoadOptions.ScaleX;
             maxError      /= (double)LoadOptions.ScaleX;
 
             foreach (var pt in line)
             {
-                double x = (pt.PointTo.X0) - (pt.PointFrom.X0);
-                double y = (pt.PointTo.Y0) - (pt.PointFrom.Y0);
+                double x = (pt.PointTo.X0) - (pt.PointFrom!.X0);
+                double y = (pt.PointTo.Y0) - (pt.PointFrom!.Y0);
 
                 double c = Math.Sqrt(x * x + y * y);
 
@@ -184,13 +184,13 @@ public partial class LoadHpgl
             return new HpglCommand
             {
                 CommandType = pt.CommandType,
-                PointTo     = new Point3D { X = pt.PointFrom.X + dx, Y = pt.PointFrom.Y + dy }
+                PointTo     = new Point3D { X = pt.PointFrom!.X + dx, Y = pt.PointFrom.Y + dy }
             };
         }
 
-        public static void CalculateAngles(IEnumerable<HpglCommand> list, Point3D firstFrom)
+        public static void CalculateAngles(IList<HpglCommand> list, Point3D? firstFrom)
         {
-            HpglCommand last = null;
+            HpglCommand? last = null;
             if (firstFrom != null)
             {
                 last = new HpglCommand

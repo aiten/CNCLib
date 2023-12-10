@@ -3,19 +3,20 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.Logic.Manager;
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -104,8 +105,8 @@ public class MachineManager : CrudManager<Machine, int, MachineEntity>, IMachine
             Coolant             = true,
             Rotate              = true,
             Laser               = false,
-            MachineCommands     = new MachineCommand[0],
-            MachineInitCommands = new MachineInitCommand[0]
+            MachineCommands     = Array.Empty<MachineCommand>(),
+            MachineInitCommands = Array.Empty<MachineInitCommand>()
         };
         return await Task.FromResult(dto);
     }
@@ -114,12 +115,12 @@ public class MachineManager : CrudManager<Machine, int, MachineEntity>, IMachine
     {
         var config = await _repositoryConfig.GetAsync(_userContext.UserId, "Environment", "DefaultMachineId");
 
-        if (config == default(ConfigurationEntity))
+        if (config == null)
         {
             return -1;
         }
 
-        return int.Parse(config.Value);
+        return int.Parse(config.Value!);
     }
 
     public async Task SetDefaultAsync(int defaultMachineId)
@@ -143,7 +144,7 @@ public class MachineManager : CrudManager<Machine, int, MachineEntity>, IMachine
     public async Task<string> TranslateJoystickMessageAsync(int machineId, string joystickMessage)
     {
         var m = await GetAsync(machineId);
-        return TranslateJoystickMessage(m, joystickMessage);
+        return m != null ? TranslateJoystickMessage(m, joystickMessage) : String.Empty;
     }
 
     public string TranslateJoystickMessage(Machine machine, string joystickMessage)
@@ -155,7 +156,7 @@ public class MachineManager : CrudManager<Machine, int, MachineEntity>, IMachine
 
         if ((idx = joystickMessage.IndexOf(':')) < 0)
         {
-            var mc = machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == joystickMessage);
+            var mc = machine.MachineCommands!.FirstOrDefault(m => m.JoystickMessage == joystickMessage);
             if (mc != null)
             {
                 joystickMessage = mc.CommandString;
@@ -164,13 +165,13 @@ public class MachineManager : CrudManager<Machine, int, MachineEntity>, IMachine
         else
         {
             var btn             = joystickMessage.Substring(0, idx + 1);
-            var machineCommands = machine.MachineCommands.Where(m => m.JoystickMessage?.Length > idx && m.JoystickMessage.Substring(0, idx + 1) == btn).ToList();
+            var machineCommands = machine.MachineCommands!.Where(m => m.JoystickMessage?.Length > idx && m.JoystickMessage.Substring(0, idx + 1) == btn).ToList();
 
             uint max = 0;
             foreach (var m in machineCommands)
             {
                 uint val;
-                if (uint.TryParse(m.JoystickMessage.Substring(idx + 1), out val))
+                if (uint.TryParse(m.JoystickMessage!.Substring(idx + 1), out val))
                 {
                     if (val > max)
                     {
@@ -181,12 +182,12 @@ public class MachineManager : CrudManager<Machine, int, MachineEntity>, IMachine
 
             var findCmd = $"{btn}{uint.Parse(joystickMessage.Substring(idx + 1)) % (max + 1)}";
 
-            var mc = machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == findCmd);
+            var mc = machine.MachineCommands!.FirstOrDefault(m => m.JoystickMessage == findCmd);
             if (mc == null)
             {
                 // try to find ;btn3 (without :)  
                 findCmd = joystickMessage.Substring(0, idx);
-                mc      = machine.MachineCommands.FirstOrDefault(m => m.JoystickMessage == findCmd);
+                mc      = machine.MachineCommands!.FirstOrDefault(m => m.JoystickMessage == findCmd);
             }
 
             if (mc != null)

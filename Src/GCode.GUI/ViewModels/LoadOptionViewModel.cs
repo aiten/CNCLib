@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.GCode.GUI.ViewModels;
@@ -85,15 +85,11 @@ public class LoadOptionViewModel : BaseViewModel
 
     private ObservableCollection<LoadOptions> _allLoadOptions = new ObservableCollection<LoadOptions>();
 
-    public ObservableCollection<LoadOptions> AllLoadOptions
-    {
-        get => _allLoadOptions;
-        set => SetProperty(ref _allLoadOptions, value);
-    }
+    public ObservableCollection<LoadOptions> AllLoadOptions => _allLoadOptions;
 
-    private LoadOptions _selectedLoadOptions = null;
+    private LoadOptions? _selectedLoadOptions = null;
 
-    public LoadOptions SelectedLoadOption
+    public LoadOptions? SelectedLoadOption
     {
         get => _selectedLoadOptions;
         set
@@ -178,7 +174,7 @@ public class LoadOptionViewModel : BaseViewModel
 
     void BrowseFileName()
     {
-        string filename = BrowseFileNameFunc?.Invoke(LoadOptionsValue.FileName, false);
+        var filename = BrowseFileNameFunc?.Invoke(LoadOptionsValue.FileName, false);
         if (filename != null)
         {
             LoadOptionsValue.FileName = filename;
@@ -188,7 +184,7 @@ public class LoadOptionViewModel : BaseViewModel
 
     void BrowseGCodeFileName()
     {
-        string filename = BrowseFileNameFunc?.Invoke(LoadOptionsValue.GCodeWriteToFileName, false);
+        var filename = BrowseFileNameFunc?.Invoke(LoadOptionsValue.GCodeWriteToFileName, false);
         if (filename != null)
         {
             LoadOptionsValue.GCodeWriteToFileName = filename;
@@ -198,7 +194,7 @@ public class LoadOptionViewModel : BaseViewModel
 
     void BrowseImageFileName()
     {
-        string filename = BrowseFileNameFunc?.Invoke(LoadOptionsValue.ImageWriteToFileName, false);
+        var filename = BrowseFileNameFunc?.Invoke(LoadOptionsValue.ImageWriteToFileName, false);
         if (filename != null)
         {
             LoadOptionsValue.ImageWriteToFileName = filename;
@@ -281,7 +277,7 @@ public class LoadOptionViewModel : BaseViewModel
 
     async Task ImportSettings()
     {
-        string filename = BrowseFileNameFunc?.Invoke(@"*.xml", false);
+        var filename = BrowseFileNameFunc?.Invoke(@"*.xml", false);
         if (filename != null)
         {
             Busy = true;
@@ -290,7 +286,7 @@ public class LoadOptionViewModel : BaseViewModel
                 using (var sr = new StreamReader(filename))
                 {
                     var serializer = new XmlSerializer(typeof(LoadOptionsDto));
-                    var opt        = (LoadOptionsDto)serializer.Deserialize(sr);
+                    var opt        = (LoadOptionsDto)serializer.Deserialize(sr)!;
                     sr.Close();
 
                     if (_allLoadOptions.FirstOrDefault(o => o.SettingName == opt.SettingName) != null)
@@ -318,7 +314,7 @@ public class LoadOptionViewModel : BaseViewModel
 
     void ExportSettings()
     {
-        string filename = BrowseFileNameFunc?.Invoke(LoadOptionsValue.SettingName + @".xml", true);
+        var filename = BrowseFileNameFunc?.Invoke(LoadOptionsValue.SettingName + @".xml", true);
         if (filename != null)
         {
             var opt = _mapper.Map<LoadOptionsDto>(SelectedLoadOption);

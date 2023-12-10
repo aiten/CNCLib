@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.GCode.Generate;
@@ -53,28 +53,31 @@ public class GCodeLoad
     {
         try
         {
-            LoadBase load = LoadBase.Create(loadInfo);
+            var load = LoadBase.Create(loadInfo);
 
-            load.LoadOptions = loadInfo;
-            load.Load();
-            Commands.Clear();
-            Commands.AddRange(load.Commands);
-            if (!string.IsNullOrEmpty(loadInfo.GCodeWriteToFileName))
+            if (load != null)
             {
-                string gcodeFileName = Environment.ExpandEnvironmentVariables(loadInfo.GCodeWriteToFileName);
-                using (var sw = File.CreateText(gcodeFileName))
+                load.LoadOptions = loadInfo;
+                load.Load();
+                Commands.Clear();
+                Commands.AddRange(load.Commands);
+                if (!string.IsNullOrEmpty(loadInfo.GCodeWriteToFileName))
                 {
-                    load.WriteGCodeFile(sw);
-                }
+                    string gcodeFileName = Environment.ExpandEnvironmentVariables(loadInfo.GCodeWriteToFileName);
+                    using (var sw = File.CreateText(gcodeFileName))
+                    {
+                        load.WriteGCodeFile(sw);
+                    }
 
-                using (var sw = File.CreateText(Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".cb"))
-                {
-                    load.WriteCamBamFile(sw);
-                }
+                    using (var sw = File.CreateText(Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".cb"))
+                    {
+                        load.WriteCamBamFile(sw);
+                    }
 
-                using (var sw = File.CreateText(Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".hpgl"))
-                {
-                    load.WriteImportInfoFile(sw);
+                    using (var sw = File.CreateText(Path.GetDirectoryName(gcodeFileName) + @"\" + Path.GetFileNameWithoutExtension(gcodeFileName) + @".hpgl"))
+                    {
+                        load.WriteImportInfoFile(sw);
+                    }
                 }
             }
         }
@@ -101,7 +104,7 @@ public class GCodeLoad
                 Commands.AddRange(load.Commands);
                 if (!string.IsNullOrEmpty(info.GCodeWriteToFileName))
                 {
-                    using (var sw = File.CreateText(Environment.ExpandEnvironmentVariables(info.GCodeWriteToFileName)))
+                    await using (var sw = File.CreateText(Environment.ExpandEnvironmentVariables(info.GCodeWriteToFileName)))
                     {
                         load.WriteGCodeFile(sw);
                     }

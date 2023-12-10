@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.GCode.Draw;
@@ -242,7 +242,7 @@ public class GCodeBitmapDraw : IOutputCommand
 
     public Rotate3D Rotate
     {
-        get => _rotate3D;
+        get => _rotate3D!;
         set
         {
             _rotate3D = value;
@@ -297,7 +297,7 @@ public class GCodeBitmapDraw : IOutputCommand
     SKColor _fastColor       = SKColors.Green;
     SKColor _helpLineColor   = SKColors.LightGray;
 
-    Rotate3D _rotate3D;
+    Rotate3D? _rotate3D;
 
     #endregion
 
@@ -369,7 +369,7 @@ public class GCodeBitmapDraw : IOutputCommand
 
     SKPoint ToClientF(Point3D pt)
     {
-        pt = _rotate3D.Rotate(pt);
+        pt = _rotate3D!.Rotate(pt);
 
         double x = ((pt.X0 - OffsetX) * Zoom) * _ratioX;
         double y = (((SizeY - (pt.Y0 + OffsetY))) * Zoom) * _ratioY;
@@ -468,7 +468,7 @@ public class GCodeBitmapDraw : IOutputCommand
 
         foreach (var cmd in commands)
         {
-            var calcEndPos = cmd.CalculatedEndPosition;
+            var calcEndPos = cmd.CalculatedEndPosition!;
 
             if ((calcEndPos.X0) > pointMax.X0)
             {
@@ -593,19 +593,19 @@ public class GCodeBitmapDraw : IOutputCommand
 
     private class PenSet
     {
-        public SKPaint   _noMovePen;
-        public SKPaint   _cutEllipsePen;
-        public SKPaint   _cutArcPen;
-        public SKPaint   _cutPen;
-        public SKPaint   _cutDotPen;
-        public SKPaint[] _cutPens;
-        public SKPaint   _fastPen;
-        public SKPaint   _laserCutPen;
-        public SKPaint   _laserFastPen;
+        public SKPaint?   _noMovePen;
+        public SKPaint?   _cutEllipsePen;
+        public SKPaint?   _cutArcPen;
+        public SKPaint?   _cutPen;
+        public SKPaint?   _cutDotPen;
+        public SKPaint[]? _cutPens;
+        public SKPaint?   _fastPen;
+        public SKPaint?   _laserCutPen;
+        public SKPaint?   _laserFastPen;
     };
 
-    public SKPaint _helpLinePen;
-    public SKPaint _helpLinePen10;
+    public SKPaint? _helpLinePen;
+    public SKPaint? _helpLinePen10;
 
     readonly PenSet _dithered = new PenSet();
     readonly PenSet _selected = new PenSet();
@@ -687,22 +687,22 @@ public class GCodeBitmapDraw : IOutputCommand
 
         var    current      = new Point3D(ptFrom.X0, ptFrom.Y0, ptFrom.Z0);
         var    last         = new Point3D(ptFrom.X0, ptFrom.Y0, ptFrom.Z0);
-        double center_axis0 = current[axis_0].Value + offset0;
-        double center_axis1 = current[axis_1].Value + offset1;
+        double center_axis0 = current[axis_0]!.Value + offset0;
+        double center_axis1 = current[axis_1]!.Value + offset1;
 
-        double linear_travel_max = (ptTo[axis_linear] ?? 0.0) - current[axis_linear].Value;
+        double linear_travel_max = (ptTo[axis_linear] ?? 0.0) - current[axis_linear]!.Value;
 /*
-			mm1000_t dist_linear[NUM_AXIS] = { 0 };
+            mm1000_t dist_linear[NUM_AXIS] = { 0 };
 
-			for (axis_t x = 0; x<NUM_AXIS; x++)
-			{
-				if (x != axis_0 && x != axis_1)
-				{
-					dist_linear[x] = to[x] - current[x];
-					if (dist_linear[x] > linear_travel_max)
-						linear_travel_max = dist_linear[x];
-				}
-		}
+            for (axis_t x = 0; x<NUM_AXIS; x++)
+            {
+                if (x != axis_0 && x != axis_1)
+                {
+                    dist_linear[x] = to[x] - current[x];
+                    if (dist_linear[x] > linear_travel_max)
+                        linear_travel_max = dist_linear[x];
+                }
+        }
 */
         double radius = Hypot(offset0, offset1);
 
@@ -853,11 +853,11 @@ public class GCodeBitmapDraw : IOutputCommand
 
     private SKPaint GetPen(DrawType moveType, LineDrawType drawType)
     {
-        PenSet set = (moveType & DrawType.Selected) == DrawType.Selected ? _selected : _dithered;
+        var set = (moveType & DrawType.Selected) == DrawType.Selected ? _selected : _dithered;
 
         if ((moveType & DrawType.Draw) == 0)
         {
-            return set._noMovePen;
+            return set._noMovePen!;
         }
 
         bool isCut   = (moveType & DrawType.Cut) == DrawType.Cut;
@@ -865,10 +865,10 @@ public class GCodeBitmapDraw : IOutputCommand
 
         if (isLaser)
         {
-            return isCut ? set._laserCutPen : set._laserFastPen;
+            return isCut ? set._laserCutPen! : set._laserFastPen!;
         }
 
-        return isCut ? set._cutPens[(int)drawType] : set._fastPen;
+        return isCut ? set._cutPens![(int)drawType] : set._fastPen!;
     }
 
     #endregion

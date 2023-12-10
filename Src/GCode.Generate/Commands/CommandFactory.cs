@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.GCode.Generate.Commands;
@@ -40,7 +40,7 @@ public class CommandFactory
         _commandTypes.Add(name, shape);
     }
 
-    public Command Create(string name)
+    public Command? Create(string name)
     {
         if (name.Contains(" "))
         {
@@ -50,7 +50,7 @@ public class CommandFactory
         if (IsRegistered(name))
         {
             Type shape = _commandTypes[name.ToUpper()];
-            return (Command)Activator.CreateInstance(shape);
+            return (Command)Activator.CreateInstance(shape)!;
         }
 
         return null;
@@ -75,7 +75,7 @@ public class CommandFactory
             name        = "";
         }
 
-        Command r = Create(commandName);
+        var r = Create(commandName)!;
         if (name.Length > 0)
         {
             r.GCodeAdd = name;
@@ -105,7 +105,7 @@ public class CommandFactory
                 var isGcode = t.GetCustomAttribute<IsGCommandAttribute>();
                 if (isGcode != null)
                 {
-                    string asCodes = isGcode.RegisterAs;
+                    var asCodes = isGcode.RegisterAs;
                     if (string.IsNullOrEmpty(asCodes))
                     {
                         asCodes = t.Name.Substring(0, 3);

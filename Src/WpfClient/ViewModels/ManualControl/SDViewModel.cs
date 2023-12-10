@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.WpfClient.ViewModels.ManualControl;
@@ -92,7 +92,7 @@ public class SDViewModel : DetailViewModel
                 var lines = new List<string>();
                 using (var sr = new StreamReader(filename))
                 {
-                    string line;
+                    string? line;
                     while ((line = sr.ReadLine()) != null)
                     {
                         lines.Add(_global.Machine.PrepareCommand(line));
@@ -155,14 +155,14 @@ public class SDViewModel : DetailViewModel
         RunAndUpdate(
             async () =>
             {
-                string message = await _global.Com.Current.SendCommandAndReadOKReplyAsync(_global.Machine.PrepareCommand("m114"), 10000);
+                var message = await _global.Com.Current.SendCommandAndReadOKReplyAsync(_global.Machine.PrepareCommand("m114"), 10000);
                 if (!string.IsNullOrEmpty(message))
                 {
                     message = message.Replace("ok", "");
                     message = message.Replace(" ",  "");
-                    string[] positions = message.Split(':');
+                    var positions = message.Split(':');
 
-                    using (var sw = new StreamWriter(Environment.ExpandEnvironmentVariables(FileName), true))
+                    await using (var sw = new StreamWriter(Environment.ExpandEnvironmentVariables(FileName), true))
                     {
                         await sw.WriteAsync("g1");
                         if (positions.Length >= 1)
@@ -203,7 +203,7 @@ public class SDViewModel : DetailViewModel
 
     public bool CanSendSDCommand()
     {
-        return CanSend() && _global.Machine.SDSupport;
+        return CanSend() && (_global.Machine?.SDSupport ?? false);
     }
 
     public bool CanSendFileNameCommand()
@@ -241,7 +241,7 @@ public class SDViewModel : DetailViewModel
     public ICommand BrowseForSDFileCommand => new DelegateCommand(
         () =>
         {
-            string filename = BrowseFileNameFunc?.Invoke(FileName, false);
+            var filename = BrowseFileNameFunc?.Invoke(FileName, false);
             if (filename != null)
             {
                 FileName = filename;

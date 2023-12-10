@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.GCode.Generate.Load;
@@ -29,8 +29,8 @@ public partial class LoadHpgl
 {
     private class InvertLine
     {
-        public LoadOptions LoadOptions { get; set; }
-        public LoadHpgl    LoadX       { get; set; }
+        public LoadOptions LoadOptions { get; set; } = default!;
+        public LoadHpgl    LoadX       { get; set; } = default!;
 
         public IList<HpglCommand> ConvertInvert(IList<HpglCommand> list)
         {
@@ -38,9 +38,9 @@ public partial class LoadHpgl
 
             int startIdx = 0;
 
-            var                      lineList     = new List<HpglLine>();
-            IEnumerable<HpglCommand> postCommands = null;
-            IEnumerable<HpglCommand> preCommands  = list.Skip(startIdx).TakeWhile(e => !e.IsPenCommand);
+            var                       lineList     = new List<HpglLine>();
+            IEnumerable<HpglCommand>? postCommands = null;
+            IEnumerable<HpglCommand>  preCommands  = list.Skip(startIdx).TakeWhile(e => !e.IsPenCommand).ToList();
 
             startIdx += preCommands.Count();
 
@@ -48,7 +48,7 @@ public partial class LoadHpgl
             {
                 HpglLine line = GetHpglLine(list, ref startIdx);
 
-                if (startIdx >= list.Count && !line.Commands.Any())
+                if (startIdx >= list.Count && !line.Commands!.Any())
                 {
                     postCommands = line.PreCommands;
                 }
@@ -69,9 +69,9 @@ public partial class LoadHpgl
 
             foreach (var line in lines)
             {
-                newList.AddRange(line.PreCommands);
-                newList.AddRange(line.Commands);
-                newList.AddRange(line.PostCommands);
+                newList.AddRange(line.PreCommands!);
+                newList.AddRange(line.Commands!);
+                newList.AddRange(line.PostCommands!);
             }
 
             if (postCommands != null)
@@ -82,16 +82,16 @@ public partial class LoadHpgl
             return newList;
         }
 
-        private IEnumerable<HpglLine> OrderLines(IEnumerable<HpglLine> lines)
+        private IList<HpglLine> OrderLines(IList<HpglLine> lines)
         {
             var newList = new List<HpglLine>();
             newList.AddRange(lines.Where(l => !l.IsClosed));
-            newList.AddRange(OrderClosedLine(lines.Where(l => l.IsClosed)));
+            newList.AddRange(OrderClosedLine(lines.Where(l => l.IsClosed).ToList()));
 
             return newList;
         }
 
-        private void CalcClosedLineParent(IEnumerable<HpglLine> closedLines)
+        private void CalcClosedLineParent(IList<HpglLine> closedLines)
         {
             foreach (var line in closedLines)
             {
@@ -107,7 +107,7 @@ public partial class LoadHpgl
 
         const double _scale = 1000;
 
-        private IEnumerable<HpglLine> OrderClosedLine(IEnumerable<HpglLine> closedLines)
+        private IEnumerable<HpglLine> OrderClosedLine(IList<HpglLine> closedLines)
         {
             var orderedList = new List<HpglLine>();
             if (closedLines.Any())
@@ -117,7 +117,7 @@ public partial class LoadHpgl
 
                 for (int level = maxLevel; level >= 0; level--)
                 {
-                    var linesOnLevel = closedLines.Where(l => l.Level == level);
+                    var linesOnLevel = (IList<HpglLine>)closedLines.Where(l => l.Level == level).ToList();
 
                     if (LoadOptions.CutterSize != 0)
                     {
@@ -131,7 +131,7 @@ public partial class LoadHpgl
             return orderedList;
         }
 
-        private IEnumerable<HpglLine> OffsetLines(double offset, IEnumerable<HpglLine> lines)
+        private IList<HpglLine> OffsetLines(double offset, IList<HpglLine> lines)
         {
             var newlines = new List<HpglLine>();
 
@@ -150,15 +150,15 @@ public partial class LoadHpgl
             var co        = new ClipperOffset();
             var solution  = new List<List<IntPoint>>();
             var solution2 = new List<List<IntPoint>>();
-            solution.Add(line.Commands.Select(x => new IntPoint(_scale * x.PointFrom.X0, _scale * x.PointFrom.Y0)).ToList());
+            solution.Add(line.Commands!.Select(x => new IntPoint(_scale * x.PointFrom!.X0, _scale * x.PointFrom.Y0)).ToList());
             co.AddPaths(solution, JoinType.jtRound, EndType.etClosedPolygon);
             co.Execute(ref solution2, offset);
             var existingLine = line;
 
             foreach (var polygon in solution2)
             {
-                var         newCmds = new List<HpglCommand>();
-                HpglCommand last    = null;
+                var          newCmds = new List<HpglCommand>();
+                HpglCommand? last    = null;
 
                 foreach (var pt in polygon)
                 {
@@ -177,7 +177,7 @@ public partial class LoadHpgl
                     last = hpgl;
                 }
 
-                last.PointTo = newCmds.First().PointFrom;
+                last!.PointTo = newCmds.First().PointFrom!;
 
                 if (existingLine == null)
                 {
@@ -194,15 +194,15 @@ public partial class LoadHpgl
                     newlines.Add(existingLine);
                 }
 
-                existingLine.Commands                                      = newCmds;
-                existingLine.PreCommands.Last(l => l.IsPenCommand).PointTo = newCmds.First().PointFrom;
-                existingLine                                               = null;
+                existingLine.Commands                                       = newCmds;
+                existingLine.PreCommands!.Last(l => l.IsPenCommand).PointTo = newCmds.First().PointFrom!;
+                existingLine                                                = null;
             }
 
             return newlines;
         }
 
-        private static IEnumerable<HpglLine> OptimizeDistance(IEnumerable<HpglLine> lines)
+        private static IList<HpglLine> OptimizeDistance(IList<HpglLine> lines)
         {
             var newList = new List<HpglLine> { lines.First() };
             var list    = new List<HpglLine>();
@@ -210,13 +210,13 @@ public partial class LoadHpgl
 
             while (list.Any())
             {
-                Point3D  fromPt      = newList.Last().Commands.Last().PointTo;
-                double   maxDist     = double.MaxValue;
-                HpglLine minDistLine = null;
+                Point3D   fromPt      = newList.Last().Commands!.Last().PointTo;
+                double    maxDist     = double.MaxValue;
+                HpglLine? minDistLine = null;
 
                 foreach (var l in list)
                 {
-                    Point3D pt   = l.Commands.First().PointFrom;
+                    Point3D pt   = l.Commands!.First().PointFrom!;
                     double  dx   = (pt.X ?? 0.0) - (fromPt.X ?? 0.0);
                     double  dy   = (pt.Y ?? 0.0) - (fromPt.Y ?? 0.0);
                     double  dist = Math.Sqrt(dx * dx + dy * dy);
@@ -228,8 +228,11 @@ public partial class LoadHpgl
                     }
                 }
 
-                list.Remove(minDistLine);
-                newList.Add(minDistLine);
+                if (minDistLine != null)
+                {
+                    list.Remove(minDistLine);
+                    newList.Add(minDistLine);
+                }
             }
 
             return newList;

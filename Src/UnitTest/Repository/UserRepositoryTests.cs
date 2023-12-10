@@ -3,20 +3,19 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.UnitTest.Repository;
 
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -66,7 +65,7 @@ public class UserRepositoryTests : RepositoryTests
     [Fact]
     public async Task GetAllTest()
     {
-        var entities = (await CreateTestContext().GetAll()).OrderBy(u => u.Name);
+        var entities = (await CreateTestContext().GetAll()).OrderBy(u => u.Name).ToList();
         entities.Should().HaveCountGreaterOrEqualTo(1);
         entities.ElementAt(0).Name.Should().Be(CNCLibConst.AdminUser);
     }
@@ -112,10 +111,10 @@ public class UserRepositoryTests : RepositoryTests
     {
         using (var ctx = CreateTestContext().CreateTestDbContext())
         {
-            var users = await ctx.Repository.GetAsync(1);
+            var users = (await ctx.Repository.GetAsync(1))!;
             users.UserId.Should().Be(1);
 
-            var usersByName = await ctx.Repository.GetByNameAsync(users.Name);
+            var usersByName = (await ctx.Repository.GetByNameAsync(users.Name))!;
             usersByName.UserId.Should().Be(users.UserId);
         }
     }
@@ -137,7 +136,7 @@ public class UserRepositoryTests : RepositoryTests
 
         using (var ctx = CreateTestContext().CreateTestDbContext())
         {
-            existingUserName = (await ctx.Repository.GetAsync(1)).Name;
+            existingUserName = (await ctx.Repository.GetAsync(1))!.Name;
         }
 
         using (var ctx = CreateTestContext().CreateTestDbContext())
@@ -147,11 +146,11 @@ public class UserRepositoryTests : RepositoryTests
 
             //[SkippableFact(typeof(DbUpdateException))]
 
-            Func<Task> act = async () => await ctx.UnitOfWork.SaveChangesAsync();
+            async Task Act() => await ctx.UnitOfWork.SaveChangesAsync();
 
             //assert
 
-            await Assert.ThrowsAsync<Microsoft.EntityFrameworkCore.DbUpdateException>(act);
+            await Assert.ThrowsAsync<Microsoft.EntityFrameworkCore.DbUpdateException>(Act);
         }
     }
 

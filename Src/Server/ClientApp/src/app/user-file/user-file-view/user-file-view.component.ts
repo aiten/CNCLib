@@ -45,8 +45,8 @@ export class UserFileViewComponent {
 
   displayedColumns: string[] = [/* 'Id', */ 'fileName', 'fileSize', 'uploadTime', 'update','delete', 'download'];
 
-  @ViewChild("fileUpload", { static: false })
-  fileUpload: ElementRef;
+  //@ViewChild("fileUpload", { static: false })
+  //fileUpload: ElementRef;
 
   constructor(
     private router: Router,
@@ -80,6 +80,7 @@ export class UserFileViewComponent {
       let userFile = new UserFile();
       userFile.image = file;
       userFile.fileName = tmpFileName;
+      console.log(userFile);
       await this.userFileService.update(tmpFileName, userFile);
       await this.reload();
     }
@@ -87,6 +88,7 @@ export class UserFileViewComponent {
 
   async uploadNewFile(event) {
     let files = event.target.files;
+    console.log("uploadNewFile");
     if (files.length > 0) {
       const file = event.target.files[0];
       let userFile = new UserFile();

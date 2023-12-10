@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.WpfClient.ViewModels;
@@ -69,7 +69,7 @@ public class MachineViewModel : BaseViewModel
 
     public ObservableCollection<MachineCommand> MachineCommands => _currentMachine.MachineCommands;
 
-    public ObservableCollection<MachineInitCommand> MachineInitCommands => _currentMachine.MachineInitCommands;
+    public ObservableCollection<MachineInitCommand> MachineInitCommands => _currentMachine.MachineInitCommands!;
 
     public bool AddNewMachine { get; set; }
 
@@ -95,7 +95,7 @@ public class MachineViewModel : BaseViewModel
         }
         else
         {
-            dto = await scope.Instance.GetAsync(machineId);
+            dto = (await scope.Instance.GetAsync(machineId))!;
         }
 
         SetCurrentMachine(dto);
@@ -130,7 +130,7 @@ public class MachineViewModel : BaseViewModel
             await MyLoadMachine(id, scope);
         }
 
-        CloseAction();
+        CloseAction?.Invoke();
     }
 
     public bool CanSaveMachine()
@@ -145,7 +145,7 @@ public class MachineViewModel : BaseViewModel
             await scope.Instance.DeleteAsync(_currentMachine.Convert(_mapper));
         }
 
-        CloseAction();
+        CloseAction?.Invoke();
     }
 
     public bool CanDeleteMachine()
@@ -172,12 +172,12 @@ public class MachineViewModel : BaseViewModel
         {
             try
             {
-                _global.Com.SetCurrent(Machine.SerialServer);
+                _global.Com.SetCurrent(Machine!.SerialServer!);
                 _global.Com.Current.DtrIsReset     = Machine.DtrIsReset;
                 _global.Com.Current.ResetOnConnect = _global.ResetOnConnect;
                 _global.Com.Current.CommandToUpper = Machine.CommandToUpper;
                 _global.Com.Current.BaudRate       = Machine.BaudRate;
-                await _global.Com.Current.ConnectAsync(Machine.ComPort, Machine.SerialServer, Machine.SerialServerUser, Machine.SerialServerPassword);
+                await _global.Com.Current.ConnectAsync(Machine.ComPort!, Machine.SerialServer, Machine.SerialServerUser, Machine.SerialServerPassword);
 
                 await _global.Com.Current.SendCommandAsync("?", 3000);
                 await Task.Delay(100);

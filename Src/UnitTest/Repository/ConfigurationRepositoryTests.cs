@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.UnitTest.Repository;
@@ -65,7 +65,7 @@ public class ConfigurationRepositoryTests : RepositoryTests
     [Fact]
     public async Task GetAllTest()
     {
-        var entities = (await CreateTestContext().GetAll()).OrderBy(cfg => cfg.Name);
+        var entities = (await CreateTestContext().GetAll()).OrderBy(cfg => cfg.Name).ToList();
         entities.Should().HaveCountGreaterOrEqualTo(3);
         var entity = entities.First();
         entity.Group.Should().Be("TestGroup");
@@ -174,7 +174,15 @@ public class ConfigurationRepositoryTests : RepositoryTests
     {
         using (var ctx = CreateTestContext().CreateTestDbContext())
         {
-            await ctx.Repository.StoreAsync(new ConfigurationEntity(1, "Test", "TestNew1", "Content"));
+            var cfg = new ConfigurationEntity(1, "Test", "TestNew1", "Content")
+                // if I remove the following line, I get some compiler errors => this is a compiler error 
+                {
+                    Name  = 1.ToString(),
+                    Group = "Test",
+                    Type  = 1.GetType().ToString()
+                };
+            /////////////////
+            await ctx.Repository.StoreAsync(cfg);
             await ctx.UnitOfWork.SaveChangesAsync();
         }
     }

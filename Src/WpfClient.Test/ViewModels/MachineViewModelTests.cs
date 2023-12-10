@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.WpfClient.Test.ViewModels;
@@ -52,14 +52,14 @@ public class MachineViewModelTests : WpfUnitTestBase
         Machine machine = CreateMachine(1);
         rep.GetAsync(1).Returns(machine);
 
-        var mv = new MachineViewModel(new FactoryInstance<IMachineService>(rep), Mapper, new Global());
+        var mv = new MachineViewModel(new FactoryInstance<IMachineService>(rep), Mapper!, new Global());
         await mv.LoadMachine(1);
 
         mv.AddNewMachine.Should().Be(false);
         mv.Machine.Name.Should().Be(machine.Name);
 
-        mv.MachineCommands.Count.Should().Be(machine.MachineCommands.Count());
-        mv.MachineInitCommands.Count.Should().Be(machine.MachineInitCommands.Count());
+        mv.MachineCommands.Count.Should().Be(machine.MachineCommands!.Count());
+        mv.MachineInitCommands.Count.Should().Be(machine.MachineInitCommands!.Count());
 
         mv.Machine.Name.Should().Be(machine.Name);
         mv.Machine.ComPort.Should().Be(machine.ComPort);
@@ -87,7 +87,7 @@ public class MachineViewModelTests : WpfUnitTestBase
     }
 
     [Fact]
-    public void GetMachineAddNew()
+    public async Task GetMachineAddNew()
     {
         var rep = CreateMock<IMachineService>();
 
@@ -97,14 +97,14 @@ public class MachineViewModelTests : WpfUnitTestBase
         Machine machineDef = CreateMachine(0);
         rep.Default().Returns(machineDef);
 
-        var mv = new MachineViewModel(new FactoryInstance<IMachineService>(rep), Mapper, new Global());
-        mv.LoadMachine(-1);
+        var mv = new MachineViewModel(new FactoryInstance<IMachineService>(rep), Mapper!, new Global());
+        await mv.LoadMachine(-1);
 
         mv.AddNewMachine.Should().BeTrue();
         mv.Machine.Name.Should().Be(machineDef.Name);
 
-        mv.MachineCommands.Count.Should().Be(machineDef.MachineCommands.Count());
-        mv.MachineInitCommands.Count.Should().Be(machineDef.MachineInitCommands.Count());
+        mv.MachineCommands.Count.Should().Be(machineDef.MachineCommands!.Count());
+        mv.MachineInitCommands.Count.Should().Be(machineDef.MachineInitCommands!.Count());
     }
 
     private Machine CreateMachine(int machineId)

@@ -3,15 +3,15 @@
 
   Copyright (c) Herbert Aitenbichler
 
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
   and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 namespace CNCLib.Server
@@ -70,7 +70,7 @@ namespace CNCLib.Server
 
         private static readonly TimeSpan _flushStatisticsTime = TimeSpan.FromMinutes(1);
 
-        private IJobExecutor _flushCallStatisticsJob;
+        private IJobExecutor? _flushCallStatisticsJob;
 
         public Startup(IConfiguration configuration)
         {
@@ -84,9 +84,9 @@ namespace CNCLib.Server
             GlobalDiagnosticsContext.Set("username",         Environment.UserName);
         }
 
-        public        IConfiguration                           Configuration { get; }
-        public static IServiceProvider                         Services      { get; private set; }
-        public static IHubContext<CNCLibHub, ICNCLibHubClient> Hub           => Services.GetService<IHubContext<CNCLibHub, ICNCLibHubClient>>();
+        public        IConfiguration                            Configuration { get; }
+        public static IServiceProvider                          Services      { get; private set; } = default!;
+        public static IHubContext<CNCLibHub, ICNCLibHubClient>? Hub           => Services.GetService<IHubContext<CNCLibHub, ICNCLibHubClient>>();
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -98,7 +98,7 @@ namespace CNCLib.Server
 
             services.AddControllers();
 
-            services.AddCors(options => options.AddPolicy(CorsAllowAllName, options => options.SetIsOriginAllowed(x => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
+            services.AddCors(options => options.AddPolicy(CorsAllowAllName, config => config.SetIsOriginAllowed(x => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
 
             services.AddSignalR(hu => hu.EnableDetailedErrors = true);
 
@@ -208,9 +208,9 @@ namespace CNCLib.Server
             app.UseAuthentication();
             app.UseAuthorization();
 
-            void callback(object x)
+            void callback(object? x)
             {
-                Hub.Clients.All.HeartBeat();
+                Hub!.Clients.All.HeartBeat();
             }
 
             var timer = new Timer(callback);
