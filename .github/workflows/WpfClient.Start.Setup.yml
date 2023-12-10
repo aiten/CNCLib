@@ -1,0 +1,74 @@
+name: WpfClient Setup
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  SolutionPath: Src                         # sub-directory of sln file location
+  SolutionName: CNCLib.sln                  # Replace with your solution name, i.e. MyWpfApp.sln.
+  AppProject: WpfClient.Start/WpfClient.Start.csproj            # Replace with the path to your app project, i.e. MyWpfApp\MyWpfApp.csproj.
+  TestProject: UnitTest/UnitTest.csproj             # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
+
+jobs:
+
+  build:
+  
+    defaults:
+      run:
+        working-directory: ${{ env.SolutionPath }}
+        
+    strategy:
+      matrix:
+        configuration: [Release]   # [Debug, Release]
+
+    runs-on: windows-latest  # For a list of available runner types, refer to
+                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+   
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        submodules: recursive
+        
+    # Install the .NET Core workload
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v1.3
+      
+    # Restore the application to populate the obj folder with RuntimeIdentifiers
+    - name: Restore the application
+      run: dotnet restore ${{ env.SolutionName }}
+    
+    # Execute all unit tests in the solution
+    #- name: Execute unit tests
+    #  run: dotnet test ${{ env.SolutionName }} --no-restore
+
+    # Publish the application (WpfClient.Start)
+    - name: Publish the application
+      run: dotnet publish $env:AppProject -r win-x86 --configuration $env:Configuration --output .\Publish.WpfClient.Start\ --self-contained true -p:PublishSingleFile=true
+      env:
+        Configuration: ${{ matrix.configuration }}
+
+    # Build nsis setup
+    - name: Build nsis setup
+      shell: pwsh
+      working-directory: ${{ env.SolutionPath }}\NsisSetup
+      run: | 
+       ./makensis.ps1 -SourceBinFolder ..\Publish.WpfClient.Start
+      env:
+        Configuration: ${{ matrix.configuration }}
+        
+    - name: Upload build artifacts (CNCLib_install.exe)
+      uses: actions/upload-artifact@v3
+      with:
+        name: CNCLib_install.exe
+        path: ${{ env.SolutionPath }}\NsisSetup\Output\CNCLib_install.exe

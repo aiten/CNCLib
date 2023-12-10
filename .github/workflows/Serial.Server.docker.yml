@@ -1,0 +1,46 @@
+
+name: Serial.Server Docker (for Rasperry/Linux)
+
+env:
+  ContainerName: cnclibserialserver              # Name of he (docker-)container
+  SolutionPath: Src                              # sub-directory of sln file location
+  SolutionName: CNCLib.sln                       # Replace with your solution name, i.e. MyWpfApp.sln.
+  AppProject: Serial.Server/Serial.Server.csproj # Replace with the path to your app project, i.e. MyWpfApp\MyWpfApp.csproj.
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+     
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+     
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          #context: "{{defaultContext}}:Src"
+          context: ./Src
+          file: ./Src/Serial.Server/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.ContainerName}}:latest
+          
