@@ -219,3 +219,4 @@ Thumbs.db
 .angular
 
 !/Src/NsisSetup/nsis/Bin
+/Src/Serial.Server/ClientApp/dist
