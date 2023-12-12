@@ -126,13 +126,14 @@ namespace CNCLib.Serial.Server
             services.AddArduinoSerial();
             services.AddFrwTools();
 
-            AppService.ServiceCollection = services;
-            AppService.BuildServiceProvider();
+            // AppService.ServiceCollection = services;
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             // app.UsePathBase("/Serial.Server");
+
+            AppService.ServiceProvider = app.ApplicationServices;
 
             Services = app.ApplicationServices;
 

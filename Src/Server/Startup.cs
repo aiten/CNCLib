@@ -168,9 +168,6 @@ namespace CNCLib.Server
 
 
             services.AddScoped<ICNCLibUserContext, CNCLibUserContext>();
-
-            AppService.ServiceCollection = services;
-            AppService.BuildServiceProvider();
         }
 
         private void OnShutdown()
@@ -182,6 +179,8 @@ namespace CNCLib.Server
         {
             var applicationLifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
             applicationLifetime.ApplicationStopping.Register(OnShutdown);
+
+            AppService.ServiceProvider = app.ApplicationServices;
 
             Services = app.ApplicationServices;
 
