@@ -221,3 +221,4 @@ Thumbs.db
 !/Src/NsisSetup/nsis/Bin
 /Src/Serial.Server/ClientApp/dist
 /Src/Server/ClientApp/dist
+/Src/.idea/.idea.CNCLib/.idea

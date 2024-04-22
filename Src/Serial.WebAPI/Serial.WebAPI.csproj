@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.4" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.8" />
   </ItemGroup>
 
