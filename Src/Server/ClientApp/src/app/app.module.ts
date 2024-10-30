@@ -17,7 +17,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ColorPickerModule } from 'ngx-color-picker';
@@ -55,64 +55,55 @@ import { MachineControlState } from './machine-control/machine-control-state';
 import { PreviewGlobal } from './preview/preview.global';
 import { SerialPortHistoryPreviewGlobal } from "./serialporthistory/models/serialporthistory.global";
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    NavMenuComponent,
-    HomeComponent,
-    MessageBoxComponent,
-    MouseWheelDirective,
-    ...userComponents,
-    ...machineComponents,
-    ...machineControlComponents,
-    ...previewComponents,
-    ...gcodeComponents,
-    ...userFileComponents,
-    ...eepromConfigComponents,
-    ...serialPortHistoryComponents,
-    ...servicesComponents
-  ],
-  imports: [
-    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
-    BrowserAnimationsModule,
-    ColorPickerModule,
-  //  NgxFilesizeModule,    
-    HttpClientModule,
-    FormsModule,
-    FontAwesomeModule,
-    ReactiveFormsModule,
-    MaterialModule,
-    RouterModule.forRoot([
-        { path: '', redirectTo: 'home', pathMatch: 'full' },
-        { path: 'home', component: HomeComponent },
-        ...eepromConfigRoutes,
-        ...machineRoutes,
-        ...userRoutes,
-        ...machineControlRoutes,
-        ...gcodeRoutes,
-        ...previewRoutes,
-        ...userFileRoutes,
-        ...serialPortHistoryRoutes,
-      ],
-      {
+@NgModule({ declarations: [
+        AppComponent,
+        NavMenuComponent,
+        HomeComponent,
+        MessageBoxComponent,
+        MouseWheelDirective,
+        ...userComponents,
+        ...machineComponents,
+        ...machineControlComponents,
+        ...previewComponents,
+        ...gcodeComponents,
+        ...userFileComponents,
+        ...eepromConfigComponents,
+        ...serialPortHistoryComponents,
+        ...servicesComponents
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+        BrowserAnimationsModule,
+        ColorPickerModule,
+        FormsModule,
+        FontAwesomeModule,
+        ReactiveFormsModule,
+        MaterialModule,
+        RouterModule.forRoot([
+            { path: '', redirectTo: 'home', pathMatch: 'full' },
+            { path: 'home', component: HomeComponent },
+            ...eepromConfigRoutes,
+            ...machineRoutes,
+            ...userRoutes,
+            ...machineControlRoutes,
+            ...gcodeRoutes,
+            ...previewRoutes,
+            ...userFileRoutes,
+            ...serialPortHistoryRoutes,
+        ], {
         // onSameUrlNavigation: 'ignore',
         // onSameUrlNavigation: 'reload'
-      
-      })
-  ],
-  providers: [
-    ...servicesProvides,
-    { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    MachineControlState,
-    SerialServerConnection,
-    JoystickServerConnection,
-    MachineControlGlobal,
-    PreviewGlobal,
-    SerialPortHistoryPreviewGlobal,
-  ],
-  bootstrap: [AppComponent]
-})
+        })], providers: [
+        ...servicesProvides,
+        { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+        MachineControlState,
+        SerialServerConnection,
+        JoystickServerConnection,
+        MachineControlGlobal,
+        PreviewGlobal,
+        SerialPortHistoryPreviewGlobal,
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule {
   constructor(library: FaIconLibrary) {
 

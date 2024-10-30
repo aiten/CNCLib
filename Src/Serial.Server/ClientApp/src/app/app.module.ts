@@ -17,7 +17,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ColorPickerModule } from 'ngx-color-picker';
@@ -51,44 +51,38 @@ import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontaweso
 import { faHome, faSync, faPlug, faCalculator, faToolbox, faCogs, faEllipsisV, faArrowDown, faChevronDown, faChevronUp, faChevronLeft, faChevronRight, faDrawPolygon } from '@fortawesome/free-solid-svg-icons';
 
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    NavMenuComponent,
-    HomeComponent,
-    LoginComponent,
-    SerialPortHistoryComponent,
-    SerialPortPendingComponent,
-    SerialCommandListComponent,
-    MouseWheelDirective,
-    ...machineControlComponents,
-    ...previewComponents,
-  ],
-  imports: [
-    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
-    BrowserAnimationsModule,
-    ColorPickerModule,
-    HttpClientModule,
-    FormsModule,
-    FontAwesomeModule,
-    ReactiveFormsModule,
-    MaterialModule,
-    RouterModule.forRoot([
-      { path: '', redirectTo: 'home', pathMatch: 'full' },
-      { path: 'home', component: HomeComponent },
-      ...machineControlRoutes,
-    ])
-  ],
-  providers: [
-    { provide: SerialServerService, useClass: LocalSerialServerService },
-    { provide: CNCLibInfoService, useClass: LocalCNCLibInfoService },
-    { provide: CNCLibLoggedinService, useClass: LocalCNCLibLoggedinService },
-    { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    PreviewGlobal,
-  ],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        NavMenuComponent,
+        HomeComponent,
+        LoginComponent,
+        SerialPortHistoryComponent,
+        SerialPortPendingComponent,
+        SerialCommandListComponent,
+        MouseWheelDirective,
+        ...machineControlComponents,
+        ...previewComponents,
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+        BrowserAnimationsModule,
+        ColorPickerModule,
+        FormsModule,
+        FontAwesomeModule,
+        ReactiveFormsModule,
+        MaterialModule,
+        RouterModule.forRoot([
+            { path: '', redirectTo: 'home', pathMatch: 'full' },
+            { path: 'home', component: HomeComponent },
+            ...machineControlRoutes,
+        ])], providers: [
+        { provide: SerialServerService, useClass: LocalSerialServerService },
+        { provide: CNCLibInfoService, useClass: LocalCNCLibInfoService },
+        { provide: CNCLibLoggedinService, useClass: LocalCNCLibLoggedinService },
+        { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+        PreviewGlobal,
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule {
   constructor(library: FaIconLibrary) {
 
