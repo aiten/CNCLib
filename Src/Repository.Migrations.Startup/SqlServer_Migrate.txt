@@ -1,5 +1,6 @@
 
 Add-Migration -Name V11 -StartupProject Repository\Repository.Migrations.Startup -Project Repository\Repository.SqlServer -OutputDir Migrations
+Add-Migration -Name V12 -StartupProject Repository\Repository.Migrations.Startup -Project Repository\Repository.SqlServer -OutputDir Migrations
 
 
 Remove-Migration -StartupProject Repository\Repository.Migrations.Startup -Project Repository\Repository.SqlServer

@@ -3,57 +3,53 @@ using System;
 using CNCLib.Repository.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace CNCLib.Repository.SqlServer.Migrations
+namespace CNCLib.Repository.SqLite.Migrations
 {
     [DbContext(typeof(CNCLibContext))]
-    partial class CNCLibContextModelSnapshot : ModelSnapshot
+    [Migration("20241220191530_V12")]
+    partial class V12
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
-
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
 
             modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.ConfigurationEntity", b =>
                 {
                     b.Property<int>("ConfigurationId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ConfigurationId"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Group")
                         .IsRequired()
                         .HasMaxLength(256)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(256)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasMaxLength(256)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Value")
                         .HasMaxLength(4000)
-                        .HasColumnType("nvarchar(4000)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("ConfigurationId");
 
@@ -67,24 +63,22 @@ namespace CNCLib.Repository.SqlServer.Migrations
                 {
                     b.Property<int>("ItemId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ItemId"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("ClassName")
                         .IsRequired()
                         .HasMaxLength(255)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(64)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("ItemId");
 
@@ -97,15 +91,15 @@ namespace CNCLib.Repository.SqlServer.Migrations
             modelBuilder.Entity("CNCLib.Repository.Abstraction.Entities.ItemPropertyEntity", b =>
                 {
                     b.Property<int>("ItemId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .HasMaxLength(255)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("ItemId", "Name");
 
@@ -116,34 +110,32 @@ namespace CNCLib.Repository.SqlServer.Migrations
                 {
                     b.Property<int>("MachineCommandId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MachineCommandId"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("CommandName")
                         .IsRequired()
                         .HasMaxLength(64)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("CommandString")
                         .IsRequired()
                         .HasMaxLength(64)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("JoystickMessage")
                         .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("MachineId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("PosX")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("PosY")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("MachineCommandId");
 
@@ -156,111 +148,109 @@ namespace CNCLib.Repository.SqlServer.Migrations
                 {
                     b.Property<int>("MachineId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MachineId"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Axis")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("BaudRate")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("BufferSize")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("ComPort")
                         .IsRequired()
                         .HasMaxLength(32)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(32)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("CommandSyntax")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("CommandToUpper")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Coolant")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("DtrIsReset")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Laser")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(64)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("ProbeDist")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("ProbeDistUp")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("ProbeFeed")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("ProbeSizeX")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("ProbeSizeY")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("ProbeSizeZ")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("Rotate")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("SDSupport")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("SerialServer")
                         .HasMaxLength(128)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("SerialServerPassword")
                         .HasMaxLength(64)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("SerialServerUser")
                         .HasMaxLength(32)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(32)");
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("SizeA")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("SizeB")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("SizeC")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("SizeX")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("SizeY")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("SizeZ")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("Spindle")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("WorkOffsets")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("MachineId");
 
@@ -274,21 +264,19 @@ namespace CNCLib.Repository.SqlServer.Migrations
                 {
                     b.Property<int>("MachineInitCommandId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MachineInitCommandId"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("CommandString")
                         .IsRequired()
                         .HasMaxLength(64)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("MachineId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("SeqNo")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("MachineInitCommandId");
 
@@ -301,26 +289,24 @@ namespace CNCLib.Repository.SqlServer.Migrations
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("LastLogin")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(128)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
                         .HasMaxLength(255)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("UserId");
 
@@ -334,28 +320,26 @@ namespace CNCLib.Repository.SqlServer.Migrations
                 {
                     b.Property<int>("UserFileId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserFileId"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<byte[]>("Content")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("BLOB");
 
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasMaxLength(1024)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(1024)");
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("IsSystem")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("UploadTime")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("UserFileId");
 
@@ -369,77 +353,75 @@ namespace CNCLib.Repository.SqlServer.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Application")
                         .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Exception")
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Level")
                         .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("LogDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Logger")
                         .HasMaxLength(250)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(250)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("MachineName")
                         .HasMaxLength(64)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Message")
                         .IsRequired()
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Port")
                         .HasMaxLength(256)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("RemoteAddress")
                         .HasMaxLength(100)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ServerAddress")
                         .HasMaxLength(100)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ServerName")
                         .HasMaxLength(64)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("StackTrace")
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Url")
                         .HasMaxLength(500)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(250)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(250)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 

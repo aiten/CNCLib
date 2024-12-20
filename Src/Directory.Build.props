@@ -3,7 +3,7 @@
 	<PropertyGroup Label="Versioning">
 		<Authors>Herbert Aitenbichler</Authors>
 		<Company>Herbert Aitenbichler</Company>
-		<VersionPrefix>1.7.1</VersionPrefix>
+		<VersionPrefix>1.8.0</VersionPrefix>
 		<Copyright>Herbert Aitenbichler</Copyright>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 	</PropertyGroup>
@@ -12,10 +12,10 @@
 
 		<SolutionNamespace>CNCLib</SolutionNamespace>
 
-		<TargetFrameworkForProject>net8.0</TargetFrameworkForProject>
-		<TargetFrameworkForApp>net8.0</TargetFrameworkForApp>
-		<TargetFrameworkForUnitTest>net8.0</TargetFrameworkForUnitTest>
-		<TargetFrameworkForWpf>net8.0-windows</TargetFrameworkForWpf>
+		<TargetFrameworkForProject>net9.0</TargetFrameworkForProject>
+		<TargetFrameworkForApp>net9.0</TargetFrameworkForApp>
+		<TargetFrameworkForUnitTest>net9.0</TargetFrameworkForUnitTest>
+		<TargetFrameworkForWpf>net9.0-windows</TargetFrameworkForWpf>
 
 	</PropertyGroup>
 
