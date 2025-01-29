@@ -31,6 +31,7 @@ static class Converter
     {
         var to = mapper.Map<Machine>(from);
 
+        /* => this is not true with automapper version >= 13.
         // AutoMapper do not mapper readonly observable collections
         foreach (var m in from.MachineCommands!)
         {
@@ -41,7 +42,7 @@ static class Converter
         {
             to.MachineInitCommands!.Add(mapper.Map<MachineInitCommand>(mi));
         }
-
+        */
         return to;
     }
 }

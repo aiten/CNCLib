@@ -66,7 +66,7 @@ public class ConfigurationRepositoryTests : RepositoryTests
     public async Task GetAllTest()
     {
         var entities = (await CreateTestContext().GetAll()).OrderBy(cfg => cfg.Name).ToList();
-        entities.Should().HaveCountGreaterOrEqualTo(3);
+        entities.Should().HaveCountGreaterThanOrEqualTo(3);
         var entity = entities.First();
         entity.Group.Should().Be("TestGroup");
         entity.Name.Should().Be("TestBool");
@@ -157,7 +157,7 @@ public class ConfigurationRepositoryTests : RepositoryTests
 
     #endregion
 
-    #region Additiona Tests
+    #region Additional Tests
 
     [Fact]
     public async Task GetEmptyConfiguration()
@@ -174,12 +174,14 @@ public class ConfigurationRepositoryTests : RepositoryTests
     {
         using (var ctx = CreateTestContext().CreateTestDbContext())
         {
-            var cfg = new ConfigurationEntity(1, "Test", "TestNew1", "Content")
-                // if I remove the following line, I get some compiler errors => this is a compiler error 
+            var cfg = new ConfigurationEntity()
                 {
-                    Name  = 1.ToString(),
-                    Group = "Test",
-                    Type  = 1.GetType().ToString()
+                    ConfigurationId = 17,
+                    Name  = "TestNew1",
+                    Group = "TestX",
+                    Value = "Content",
+                    Type  = "Content".GetType().ToString(),
+                    UserId = 1
                 };
             /////////////////
             await ctx.Repository.StoreAsync(cfg);

@@ -25,18 +25,4 @@ public class ConfigurationEntity
     public required string      Name            { get; set; }
     public required string      Type            { get; set; }
     public          string?     Value           { get; set; }
-
-    public ConfigurationEntity()
-    {
-    }
-
-    public ConfigurationEntity(int userId, string group, string name, object value)
-    {
-        Name   = name;
-        Group  = group;
-        Value  = value.ToString();
-        UserId = userId;
-
-        Type = value.GetType().ToString();
-    }
 }

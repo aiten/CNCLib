@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Serial.Server": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:59233;http://localhost:59234"
+    }
+  }
+}

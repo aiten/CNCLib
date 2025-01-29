@@ -66,7 +66,7 @@ public class UserRepositoryTests : RepositoryTests
     public async Task GetAllTest()
     {
         var entities = (await CreateTestContext().GetAll()).OrderBy(u => u.Name).ToList();
-        entities.Should().HaveCountGreaterOrEqualTo(1);
+        entities.Should().HaveCountGreaterThanOrEqualTo(1);
         entities.ElementAt(0).Name.Should().Be(CNCLibConst.AdminUser);
     }
 
