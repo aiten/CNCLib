@@ -58,7 +58,7 @@ jobs:
 
     # Publish the application (WpfClient.Start)
     - name: Publish the application
-      run: dotnet publish $env:AppProject -r win-x86 --configuration $env:Configuration --output .\Publish.Serial.Server\ --self-contained true
+      run: dotnet publish $env:AppProject -r win-x64 --configuration $env:Configuration --output .\Publish.Serial.Server\ --self-contained true
       env:
         Configuration: ${{ matrix.configuration }}
 
