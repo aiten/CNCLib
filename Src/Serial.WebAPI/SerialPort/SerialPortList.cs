@@ -91,6 +91,13 @@ public class SerialPortList
             {
                 newList.Add(port);
             }
+            else if (port.IsConnected)
+            {
+                //add existing open ports not listed
+                //// usb disconnected but closed => we must close the connection
+
+                newList.Add(port);
+            }
         }
 
         //add new ports 

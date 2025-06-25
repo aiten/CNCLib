@@ -70,11 +70,11 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Extended.Wpf.Toolkit">
-      <Version>4.6.1</Version>
+      <Version>4.7.25104.5739</Version>
     </PackageReference>
     <PackageReference Include="MahApps.Metro">
       <Version>2.4.10</Version>
     </PackageReference>
-    <PackageReference Include="NLog" Version="5.3.4" />
+    <PackageReference Include="NLog" Version="6.0.0" />
   </ItemGroup>
 </Project>
