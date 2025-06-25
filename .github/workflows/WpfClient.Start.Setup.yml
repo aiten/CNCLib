@@ -38,7 +38,7 @@ jobs:
     - name: Install .NET Core
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: 9.0.x
 
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
@@ -68,7 +68,7 @@ jobs:
         Configuration: ${{ matrix.configuration }}
         
     - name: Upload build artifacts (CNCLib_install.exe)
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: CNCLib_install.exe
         path: ${{ env.SolutionPath }}\NsisSetup\Output\CNCLib_install.exe
