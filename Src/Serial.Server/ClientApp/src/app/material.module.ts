@@ -58,7 +58,6 @@ import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
     MatPaginatorModule,
     MatSortModule,
     MatProgressSpinnerModule,
-    MatDialogModule,
     MatSelectModule,
     MatDatepickerModule,
     MatMomentDateModule,

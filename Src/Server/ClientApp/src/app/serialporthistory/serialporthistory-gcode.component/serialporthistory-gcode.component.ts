@@ -15,12 +15,14 @@
 */
 
 import { Component, Input, OnChanges, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { SerialCommand } from '../../models/serial.command';
 import { SerialServerService } from '../../services/serial-server.service';
 import { HubConnection } from '@microsoft/signalr';
 import { HubConnectionBuilder } from '@microsoft/signalr';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { MaterialModule } from '../../material.module';
 
 import { SerialServerConnection } from '../../serial-server/serial-server-connection';
 import { SerialPortHistoryPreviewGlobal } from "../models/serialporthistory.global";
@@ -28,7 +30,8 @@ import { SerialPortHistoryPreviewGlobal } from "../models/serialporthistory.glob
 @Component({
   selector: 'serialporthistorygcode',
   templateUrl: './serialporthistory-gcode.component.html',
-  styleUrls: ['./serialporthistory-gcode.component.css']
+  styleUrls: ['./serialporthistory-gcode.component.css'],
+  imports: [CommonModule, MaterialModule]
 })
 export class SerialPortHistoryGCodeComponent implements OnChanges, OnInit, OnDestroy {
 

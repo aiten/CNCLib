@@ -25,9 +25,14 @@
 </ul>
 -->
 
-<login *ngIf="!cncLibloggedinService.isUserLoggedIn()"></login>
-
-<div *ngIf="cncLibloggedinService.isUserLoggedIn()">
+@if(cncLibloggedinService.isUserLoggedIn())
+{
+<div>
   <p>Login in as : {{cncLibloggedinService.username()}}</p>
   <button class="btn btn-warning" (click)="cncLibloggedinService.logout()">Logout</button>
 </div>
+}
+@else
+{
+<login></login>
+}

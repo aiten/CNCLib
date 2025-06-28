@@ -16,11 +16,15 @@
 
 import { Router } from '@angular/router';
 import { Component, Inject, Input } from '@angular/core';
+import { SerialPortHistoryComponent } from '../serialporthistory/serialporthistory.component';
+import { SerialPortPendingComponent } from '../serialportpending/serialportpending.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'serialcommandlist',
   templateUrl: './serialcommandlist.component.html',
-  styleUrls: ['./serialcommandlist.component.css']
+  styleUrls: ['./serialcommandlist.component.css'],
+  imports: [SerialPortHistoryComponent, SerialPortPendingComponent, CommonModule]
 })
 export class SerialCommandListComponent {
   @Input()

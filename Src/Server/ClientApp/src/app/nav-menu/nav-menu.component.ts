@@ -15,13 +15,18 @@
 */
 
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {RouterLink} from '@angular/router';
 
 import { CNCLibLoggedinService } from '../services/CNCLib-loggedin.service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 
 @Component({
   selector: 'app-nav-menu',
   templateUrl: './nav-menu.component.html',
-  styleUrls: ['./nav-menu.component.css']
+  styleUrls: ['./nav-menu.component.css'],
+  imports: [FontAwesomeModule,CommonModule,RouterLink]
 })
 export class NavMenuComponent {
 

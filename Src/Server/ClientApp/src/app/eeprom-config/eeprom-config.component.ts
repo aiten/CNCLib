@@ -15,11 +15,16 @@
 */
 
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterOutlet } from '@angular/router';
+
 
 @Component(
   {
     templateUrl: 'eeprom-config.component.html',
     styleUrls: ['./eeprom-config.component.css'],
+    imports: [CommonModule,RouterOutlet]
+
 
   })
 export class EepromConfigComponent {

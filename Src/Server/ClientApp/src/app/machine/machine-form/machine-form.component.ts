@@ -15,7 +15,9 @@
 */
 
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormGroup, FormArray, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+
+import { UntypedFormGroup, FormArray, FormControl, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { MatDialog } from "@angular/material/dialog";
@@ -31,11 +33,15 @@ import { MessageBoxComponent } from "../../modal/message-box/message-box.compone
 import { MessageBoxResult } from "../../modal/message-box-data";
 import { SerialServerConnection } from "../../serial-server/serial-server-connection";
 
+import { MaterialModule } from '../../material.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'machine-form',
   templateUrl: './machine-form.component.html',
-  styleUrls: ['./machine-form.component.css']
+  styleUrls: ['./machine-form.component.css'],  
+  imports: [CommonModule,MaterialModule,ReactiveFormsModule,FontAwesomeModule]
+
 })
 export class MachineFormComponent implements OnInit {
   machine: Machine;
@@ -263,7 +269,7 @@ export class MachineFormComponent implements OnInit {
       const dialogRef = this.dialog.open(MessageBoxComponent,
         {
           width: '250px',
-          data: { title: "OK", message: "sucessfully connected!" }
+          data: { title: "OK", message: "sucessfully connected!", haveClose: true }
         });
     } catch(error) {
       console.log(error);
@@ -271,7 +277,7 @@ export class MachineFormComponent implements OnInit {
       const dialogRef = this.dialog.open(MessageBoxComponent,
         {
           width: '250px',
-          data: { title: "Error", message: error }
+          data: { title: "Error", message: error, haveClose: true }
         });
     }    
 

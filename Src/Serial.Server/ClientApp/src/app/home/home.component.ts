@@ -19,10 +19,12 @@ import { CNCLibServerInfo } from '../models/CNCLib.Server.Info'
 import { CNCLibInfoService } from '../services/CNCLib-Info.service';
 
 import { CNCLibLoggedinService } from '../services/CNCLib-loggedin.service';
+import { LoginComponent } from '../login';
 
 @Component({
   selector: 'home',
-  templateUrl: './home.component.html'
+  templateUrl: './home.component.html',
+  imports: [LoginComponent]
 })
 export class HomeComponent implements OnInit {
   appName: string = '';

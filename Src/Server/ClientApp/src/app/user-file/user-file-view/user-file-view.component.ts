@@ -28,14 +28,17 @@ import { MessageBoxResult } from "../../modal/message-box-data";
 import { CNCLibUserFileService } from '../../services/CNCLib-userFile.service';
 
 import { MatDialog } from "@angular/material/dialog";
+import { MaterialModule } from '../../material.module';
 
 import { UserFileGlobal } from '../user-file.global';
+import { CommonModule } from '@angular/common';
 
 @Component(
   {
     selector: 'user-file-detail',
     templateUrl: './user-file-view.component.html',
-    styleUrls: ['./user-file-view.component.css']
+    styleUrls: ['./user-file-view.component.css'],
+    imports:[CommonModule,MaterialModule]
   })
 export class UserFileViewComponent {
 

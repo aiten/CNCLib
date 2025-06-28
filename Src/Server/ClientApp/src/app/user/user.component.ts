@@ -15,11 +15,13 @@
 */
 
 import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component(
   {
     templateUrl: 'user.component.html',
     styleUrls: ['./user.component.css'],
+    imports:[RouterOutlet]
   })
 export class UserComponent {
 }

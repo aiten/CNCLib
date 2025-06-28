@@ -17,11 +17,14 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MessageBoxData, MessageBoxResult } from '../message-box-data';
+import { CommonModule } from '@angular/common';
+import { MaterialModule } from '../../material.module';
 
 @Component({
   selector: 'app-modal',
   templateUrl: './message-box.component.html',
-  styleUrls: ['./message-box.component.css']
+  styleUrls: ['./message-box.component.css'],
+  imports: [CommonModule,MaterialModule]
 })
 export class MessageBoxComponent implements OnInit {
 
@@ -44,6 +47,10 @@ export class MessageBoxComponent implements OnInit {
 
   onCloseCancel() {
     this.onClose(MessageBoxResult.Cancel);
+  }
+
+  onCloseClose() {
+    this.onClose(MessageBoxResult.Ok);
   }
 
   onClose(result: MessageBoxResult) {

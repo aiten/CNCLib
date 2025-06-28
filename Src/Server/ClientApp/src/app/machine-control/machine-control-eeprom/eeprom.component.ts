@@ -15,7 +15,9 @@
 */
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UntypedFormGroup, FormArray, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+
+import { UntypedFormGroup, FormArray, FormControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog } from "@angular/material/dialog";
 
 import { SerialServerConnection } from '../../serial-server/serial-server-connection';
@@ -29,11 +31,15 @@ import { MessageBoxComponent } from "../../modal/message-box/message-box.compone
 import { MessageBoxResult } from "../../modal/message-box-data";
 import { EReverenceType } from "../../models/eeprom-axis";
 
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MaterialModule } from '../../material.module'; 
+
 
 @Component({
   selector: 'eeprom',
   templateUrl: './eeprom.component.html',
   styleUrls: ['./eeprom.component.css'],
+  imports: [CommonModule,ReactiveFormsModule,FontAwesomeModule,MaterialModule]
 })
 export class EepromComponent implements OnInit, OnDestroy {
 

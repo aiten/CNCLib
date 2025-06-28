@@ -19,11 +19,16 @@ import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
 import { SerialPortDefinition } from '../../models/serial.port.definition';
 import { SerialServerService } from '../../services/serial-server.service';
+import { MachineControlConnectComponent } from '../machine-control-connect/machine-control-connect.component';
+import { CommonModule } from '@angular/common';
+import { MaterialModule } from '../../material.module';
+import { SerialCommandListComponent } from '../../serialcommandlist/serialcommandlist.component';
 
 @Component({
   selector: 'machinecontroldetail',
   templateUrl: './machine-control-detail.component.html',
-  styleUrls: ['./machine-control-detail.component.css']
+  styleUrls: ['./machine-control-detail.component.css'],
+  imports: [MachineControlConnectComponent,CommonModule,MaterialModule,SerialCommandListComponent]
 })
 export class MachineControlDetailComponent {
   serialport!: SerialPortDefinition;

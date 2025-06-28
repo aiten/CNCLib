@@ -6,7 +6,7 @@
     <button *ngIf="!machineControlGlobal.showCommand" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showCommand = true'>Command</button>
     <button *ngIf="!machineControlGlobal.showPosition" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showPosition = true'>Position</button>
     <button *ngIf="!machineControlGlobal.showOffset" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showOffset = true'>Offset</button>
-    <button *ngIf="serialServer.getMachine().workOffsets > 0 && !machineControlGlobal.showWorkOffset" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showWorkOffset = true'>Work Offset</button>
+    <button *ngIf="serialServer.getMachine().workOffsets > 0 && !machineControlGlobal.showWorkOffset" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showWorkOffset = true'>WorkOffset</button>
     <button *ngIf="serialServer.getMachine().spindle && !machineControlGlobal.showSpindle" at-stroked-button class="menuShow-button" (click)='machineControlGlobal.showSpindle = true'>Spindle</button>
     <button *ngIf="serialServer.getMachine().coolant && !machineControlGlobal.showCoolant" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showCoolant = true'>Coolant</button>
     <button *ngIf="serialServer.getMachine().laser && !machineControlGlobal.showLaser" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showLaser = true'>Laser</button>

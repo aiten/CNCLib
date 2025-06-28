@@ -26,12 +26,17 @@ import { PreviewGCode } from '../../models/preview-input';
 
 import { interval, Observable } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
+import { MaterialModule } from '../../material.module';
+import { CommonModule } from '@angular/common';
+import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { PreviewInputComponent } from '../preview-input/preview-input.component';
 
 @Component(
   {
     selector: 'preview-detail',
     templateUrl: './preview-view.component.html',
-    styleUrls: ['./preview-view.component.css']
+    styleUrls: ['./preview-view.component.css'],
+    imports: [CommonModule, MaterialModule, FontAwesomeModule, PreviewInputComponent ]
   })
 export class PreviewViewComponent implements OnInit, AfterViewInit {
   public previewOpt: PreviewGCode;

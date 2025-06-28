@@ -15,6 +15,8 @@
 */
 
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
 import { LoadOptions } from "../../models/load-options";
 import { SerialServerConnection } from '../../serial-server/serial-server-connection';
 import { CNCLibLoadOptionService } from '../../services/CNCLib-load-option.service';
@@ -22,12 +24,17 @@ import { CNCLibGCodeService } from '../../services/CNCLib-gcode.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PreviewGlobal } from '../../preview/preview.global';
 import { previewURL } from '../../app.global';
+import { GcodeRunInputComponent } from '../gcode-run-input/gcode-run-input.component';
+
+import { MaterialModule } from '../../material.module';
 
 @Component(
   {
     selector: 'gcode-run',
     templateUrl: './gcode-run.component.html',
-    styleUrls: ['./gcode-run.component.css']
+    styleUrls: ['./gcode-run.component.css'],
+    imports: [CommonModule,MaterialModule,GcodeRunInputComponent]
+
   })
 export class GcodeRunComponent implements OnInit {
   entry: LoadOptions;

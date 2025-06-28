@@ -15,14 +15,22 @@
 */
 
 import { Component, OnInit, Input } from '@angular/core';
-import { UntypedFormGroup, FormBuilder, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+
+import { UntypedFormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { SerialPortHistoryInput } from '../models/serialporthistory.input';
+import { ColorPickerDirective } from 'ngx-color-picker';
+import { MaterialModule } from '../../material.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { F } from '@angular/cdk/scrolling-module.d-C_w4tIrZ';
 
 @Component(
   {
     selector: 'serialporthistory-preview-input',
     templateUrl: './serialporthistory-preview-input.component.html',
-    styleUrls: ['./serialporthistory-preview-input.component.css']
+    styleUrls: ['./serialporthistory-preview-input.component.css'],
+    imports: [CommonModule, ColorPickerDirective, ReactiveFormsModule, FontAwesomeModule, MaterialModule]
+ 
   })
 export class SerialPortHistoryPreviewInputComponent implements OnInit {
   @Input()

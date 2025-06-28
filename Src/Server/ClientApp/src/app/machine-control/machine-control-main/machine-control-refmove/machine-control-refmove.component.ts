@@ -15,12 +15,15 @@
 */
 
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
 import { MachineControlState } from "../../machine-control-state";
 
 @Component({
   selector: 'machinecontrolrefmove',
   templateUrl: './machine-control-refmove.component.html',
   styleUrls: ['./machine-control-refmove.component.css'],
+  imports: [CommonModule]
 })
 export class MachineControlRefMoveComponent {
 

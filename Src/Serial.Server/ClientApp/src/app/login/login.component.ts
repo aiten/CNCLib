@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 
 import { AuthenticationService } from '../services/authentication.service';
+import { NgClass } from '@angular/common';
+
 
 @Component({
   templateUrl: 'login.component.html',
-  selector: 'login'
+  selector: 'login',
+  imports: [ReactiveFormsModule, NgClass],
 
 })
 export class LoginComponent implements OnInit {

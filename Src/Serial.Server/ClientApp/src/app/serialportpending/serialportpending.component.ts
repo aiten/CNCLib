@@ -22,11 +22,14 @@ import { SerialServerService } from '../services/serial-server.service';
 import { HubConnection, HubConnectionBuilder, HttpTransportType, LogLevel } from '@microsoft/signalr';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { CommonModule } from '@angular/common';
+import { MaterialModule } from '../material.module';
 
 @Component({
   selector: 'serialportpending',
   templateUrl: './serialportpending.component.html',
-  styleUrls: ['./serialportpending.component.css']
+  styleUrls: ['./serialportpending.component.css'],
+  imports: [CommonModule,MaterialModule]
 })
 export class SerialPortPendingComponent implements OnChanges, OnInit, OnDestroy {
 

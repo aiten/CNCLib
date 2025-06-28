@@ -15,11 +15,15 @@
 */
 
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
 import { LoadOptions, EHoleType, ELoadType, PenType, SmoothTypeEnum, ConvertTypeEnum, DitherFilter } from "../../models/load-options";
-import { UntypedFormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CNCLibLoadOptionService } from '../../services/CNCLib-load-option.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from "@angular/material/dialog";
+import { MaterialModule } from '../../material.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { saveAs } from 'file-saver';
 
@@ -31,7 +35,9 @@ import { gcodeURL } from '../../app.global';
   {
     selector: 'gcode-detail',
     templateUrl: './gcode-detail.component.html',
-    styleUrls: ['./gcode-detail.component.css']
+    styleUrls: ['./gcode-detail.component.css'],
+    imports: [CommonModule, ReactiveFormsModule,MaterialModule,FontAwesomeModule]
+
   })
 export class GcodeDetailComponent implements OnInit {
   entry: LoadOptions;

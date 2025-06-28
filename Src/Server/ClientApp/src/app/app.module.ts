@@ -15,12 +15,11 @@
 */
 
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { APP_ID, NgModule, ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { ColorPickerModule } from 'ngx-color-picker';
 
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faHome, faSync, faPlug, faCalculator, faToolbox, faCogs, faDatabase, faEllipsisV, faArrowDown, faChevronDown, faChevronUp, faChevronLeft, faChevronRight, faDrawPolygon } from '@fortawesome/free-solid-svg-icons';
@@ -29,6 +28,8 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { MaterialModule } from './material.module';
+
+import { provideClientHydration } from '@angular/platform-browser';
 
 //import { NgxFilesizeModule } from 'ngx-filesize';
 
@@ -56,24 +57,24 @@ import { PreviewGlobal } from './preview/preview.global';
 import { SerialPortHistoryPreviewGlobal } from "./serialporthistory/models/serialporthistory.global";
 
 @NgModule({ declarations: [
-        AppComponent,
-        NavMenuComponent,
-        HomeComponent,
-        MessageBoxComponent,
-        MouseWheelDirective,
-        ...userComponents,
-        ...machineComponents,
-        ...machineControlComponents,
-        ...previewComponents,
-        ...gcodeComponents,
-        ...userFileComponents,
-        ...eepromConfigComponents,
-        ...serialPortHistoryComponents,
-        ...servicesComponents
+//        AppComponent,
+//        NavMenuComponent,
+//        HomeComponent,
+//        MessageBoxComponent,
+//        MouseWheelDirective,
+//        ...userComponents,
+//        ...machineComponents,
+//        ...machineControlComponents,
+//        ...previewComponents,
+//        ...gcodeComponents,
+//        ...userFileComponents,
+//        ...eepromConfigComponents,
+ //       ...serialPortHistoryComponents,
+ //       ...servicesComponents
     ],
-    bootstrap: [AppComponent], imports: [BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    bootstrap: [AppComponent], imports: 
+    [
         BrowserAnimationsModule,
-        ColorPickerModule,
         FormsModule,
         FontAwesomeModule,
         ReactiveFormsModule,
@@ -89,10 +90,9 @@ import { SerialPortHistoryPreviewGlobal } from "./serialporthistory/models/seria
             ...previewRoutes,
             ...userFileRoutes,
             ...serialPortHistoryRoutes,
-        ], {
-        // onSameUrlNavigation: 'ignore',
-        // onSameUrlNavigation: 'reload'
-        })], providers: [
+        ])], providers: [
+        { provide: APP_ID, useValue: 'your-app-id' },
+        provideClientHydration(),
         ...servicesProvides,
         { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

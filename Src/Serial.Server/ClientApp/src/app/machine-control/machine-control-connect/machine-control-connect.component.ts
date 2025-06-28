@@ -15,17 +15,20 @@
 */
 
 import { Component, Inject, Input, OnInit } from '@angular/core';
-import { UntypedFormGroup, FormArray, FormControl, UntypedFormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, FormArray, FormControl, UntypedFormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SerialPortDefinition } from '../../models/serial.port.definition';
 import { SerialConnect } from '../../models/serial.connect';
 import { SerialServerService } from '../../services/serial-server.service';
+import { CommonModule } from '@angular/common';
+import { MaterialModule } from '../../material.module';
 
 @Component(
   {
     selector: 'machinecontrolconnect',
     templateUrl: './machine-control-connect.component.html',
-    styleUrls: ['./machine-control-connect.component.css']
+    styleUrls: ['./machine-control-connect.component.css'],
+    imports: [ReactiveFormsModule, CommonModule, MaterialModule]
   })
 export class MachineControlConnectComponent {
   @Input()

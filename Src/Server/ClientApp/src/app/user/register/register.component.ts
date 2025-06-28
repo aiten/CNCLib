@@ -15,8 +15,9 @@
 */
 
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, UntypedFormGroup, Validators, ValidatorFn } from '@angular/forms';
+import { FormBuilder, UntypedFormGroup, Validators, ValidatorFn, ReactiveFormsModule } from '@angular/forms';
 
 import { AuthenticationService } from '../../services/authentication.service';
 import { CNCLibUserService } from "../../services/CNCLib-user.service";
@@ -31,8 +32,8 @@ const passwordValidator: ValidatorFn = (fg: UntypedFormGroup) => {
 
 @Component({
   templateUrl: 'register.component.html',
-  selector: 'register'
-
+  selector: 'register',
+  imports: [CommonModule, ReactiveFormsModule]
 })
 export class RegisterComponent implements OnInit {
   registerForm: UntypedFormGroup;

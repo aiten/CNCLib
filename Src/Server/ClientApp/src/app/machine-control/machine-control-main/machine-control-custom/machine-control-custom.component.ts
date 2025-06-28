@@ -15,12 +15,15 @@
 */
 
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
 import { MachineControlState } from "../../machine-control-state";
 
 @Component({
   selector: 'machinecontrolcustom',
   templateUrl: './machine-control-custom.component.html',
   styleUrls: ['./machine-control-custom.component.css'],
+  imports: [CommonModule]
 })
 export class MachineControlCustomComponent {
 

@@ -15,8 +15,10 @@
 */
 
 import { Component, OnInit, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
 import { LoadOptions, ELoadType, PenType, ConvertTypeEnum, SmoothTypeEnum } from '../../models/load-options';
-import { UntypedFormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 
 import { UserFile } from "../../models/userFile";
 import { CNCLibUserFileService } from '../../services/CNCLib-userFile.service';
@@ -25,7 +27,9 @@ import { CNCLibUserFileService } from '../../services/CNCLib-userFile.service';
   {
     selector: 'gcode-run-input',
     templateUrl: './gcode-run-input.component.html',
-    styleUrls: ['./gcode-run-input.component.css']
+    styleUrls: ['./gcode-run-input.component.css'],
+    imports: [CommonModule,ReactiveFormsModule]
+
   })
 export class GcodeRunInputComponent implements OnInit {
   @Input()

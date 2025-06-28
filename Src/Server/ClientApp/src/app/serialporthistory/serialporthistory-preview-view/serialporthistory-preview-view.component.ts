@@ -15,6 +15,7 @@
 */
 
 import { Component, OnInit, OnDestroy, Inject, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 import { ActivatedRoute } from '@angular/router';
 
@@ -24,6 +25,11 @@ import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signal
 import { SerialPortHistoryPreviewGlobal } from '../models/serialporthistory.global';
 import { SerialPortHistoryInput } from '../models/serialporthistory.input';
 
+import { SerialPortHistoryPreviewInputComponent } from  '../serialporthistory-preview-input/serialporthistory-preview-input.component';
+import { SerialPortHistoryGCodeComponent } from '../serialporthistory-gcode.component/serialporthistory-gcode.component';
+import { MaterialModule } from '../../material.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 import { interval } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 import { SerialServerConnection } from "../../serial-server/serial-server-connection";
@@ -32,7 +38,8 @@ import { SerialServerConnection } from "../../serial-server/serial-server-connec
   {
     selector: 'serialporthistroy-preview-view',
     templateUrl: './serialporthistory-preview-view.component.html',
-    styleUrls: ['./serialporthistory-preview-view.component.css']
+    styleUrls: ['./serialporthistory-preview-view.component.css'],
+    imports: [CommonModule,SerialPortHistoryPreviewInputComponent,MaterialModule,FontAwesomeModule]
   })
 export class SerialPortHistoryPreviewViewComponent implements OnInit, OnDestroy, AfterViewInit {
   public previewOpt: SerialPortHistoryInput;

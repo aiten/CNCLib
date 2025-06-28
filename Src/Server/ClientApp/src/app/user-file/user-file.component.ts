@@ -15,10 +15,13 @@
 */
 
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterOutlet } from '@angular/router'; 
 
 @Component(
   {
     templateUrl: 'user-file.component.html',
+    imports: [RouterOutlet, CommonModule]
   })
 export class UserFileComponent {
 }

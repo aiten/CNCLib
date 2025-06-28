@@ -15,8 +15,10 @@
 */
 
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { MaterialModule } from '../../material.module';
 
 import { PreviewGlobal } from '../preview.global';
 
@@ -25,7 +27,8 @@ import { PreviewGlobal } from '../preview.global';
   {
     selector: 'preview-gcode',
     templateUrl: './preview-gcode.component.html',
-    styleUrls: ['./preview-gcode.component.css']
+    styleUrls: ['./preview-gcode.component.css'],
+    imports: [CommonModule, MaterialModule]
   })
 export class PreviewGCodeComponent implements OnInit {
 

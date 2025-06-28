@@ -15,13 +15,18 @@
 */
 
 import { Component, OnInit, Input } from '@angular/core';
-import { UntypedFormGroup, FormBuilder, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+
+import { UntypedFormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { EepromConfigInput } from '../../models/eeprom-config-input';
+
+import { MaterialModule } from '../../material.module';
 
 @Component({
   selector: 'eeprom-config-form',
   templateUrl: './eeprom-config-form.component.html',
-  styleUrls: ['./eeprom-config-form.component.css']
+  styleUrls: ['./eeprom-config-form.component.css'],
+  imports: [CommonModule,MaterialModule,ReactiveFormsModule]
 })
 export class EepromConfigFormComponent implements OnInit {
   @Input()

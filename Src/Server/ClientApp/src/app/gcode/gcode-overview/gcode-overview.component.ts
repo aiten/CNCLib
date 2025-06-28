@@ -15,6 +15,8 @@
 */
 
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
 import { LoadOptions } from "../../models/load-options";
 import { CNCLibLoadOptionService } from '../../services/CNCLib-load-option.service';
 
@@ -24,12 +26,15 @@ import { gcodeURL } from '../../app.global';
 
 import { MessageBoxComponent } from "../../modal/message-box/message-box.component";
 
+import { MaterialModule } from '../../material.module';
 
 @Component(
   {
     selector: 'gcode-overview',
     templateUrl: './gcode-overview.component.html',
-    styleUrls: ['./gcode-overview.component.css']
+    styleUrls: ['./gcode-overview.component.css'],
+    imports: [CommonModule,MaterialModule]
+
   })
 export class GcodeOverviewComponent implements OnInit {
   entries: LoadOptions[] = [];
@@ -53,7 +58,7 @@ export class GcodeOverviewComponent implements OnInit {
     const dialogRef = this.dialog.open(MessageBoxComponent,
       {
         width: '250px',
-        data: { title: "Error", message: "Not implemented yet" }
+        data: { title: "Error", message: "Not implemented yet", haveClose: true }
       });
 
     dialogRef.afterClosed().subscribe(result => {

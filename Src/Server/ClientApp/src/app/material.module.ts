@@ -40,6 +40,8 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+
 @NgModule({
   exports: [
     MatDialogModule,
@@ -57,7 +59,6 @@ import { FormsModule } from '@angular/forms';
     MatPaginatorModule,
     MatSortModule,
     MatProgressSpinnerModule,
-    MatDialogModule,
     MatSelectModule,
     MatDatepickerModule,
     MatMomentDateModule,

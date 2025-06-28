@@ -15,10 +15,12 @@
 */
 
 import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component(
   {
     templateUrl: 'preview.component.html',
+    imports:[RouterOutlet]
   })
 export class PreviewComponent {
 }

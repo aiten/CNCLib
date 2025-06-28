@@ -15,6 +15,8 @@
 */
 
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
 import { Machine } from '../../models/machine';
 import { CNCLibMachineService } from '../../services/CNCLib-machine.service';
 
@@ -23,12 +25,16 @@ import { SerialServerConnection } from '../../serial-server/serial-server-connec
 import { machineURL, machineControlURL } from '../../app.global';
 import { Router } from '@angular/router';
 
+import { MaterialModule } from '../../material.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component(
   {
     selector: 'machine-overview',
     templateUrl: './machine-overview.component.html',
     styleUrls: ['./machine-overview.component.css'],
+    imports: [CommonModule,MaterialModule,FontAwesomeModule]
+
   })
 export class MachineOverviewComponent implements OnInit {
   entries: Machine[] = [];

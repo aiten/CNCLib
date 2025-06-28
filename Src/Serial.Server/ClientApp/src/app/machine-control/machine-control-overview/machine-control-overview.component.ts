@@ -18,6 +18,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SerialPortDefinition } from '../../models/serial.port.definition';
 import { SerialServerService } from '../../services/serial-server.service';
+import { CommonModule } from '@angular/common';
+import { SerialCommandListComponent } from '../../serialcommandlist/serialcommandlist.component';
+import { MaterialModule } from '../../material.module';
 
 //import { machinecontrolURL } from '../machinecontrol.routing';
 const machinecontrolURL = '/machinecontrol';
@@ -25,7 +28,8 @@ const machinecontrolURL = '/machinecontrol';
 @Component({
   selector: 'machinecontroloverview',
   templateUrl: './machine-control-overview.component.html',
-  styleUrls: ['./machine-control-overview.component.css']
+  styleUrls: ['./machine-control-overview.component.css'],
+  imports: [CommonModule, SerialCommandListComponent,MaterialModule]
 })
 export class MachineControlOverviewComponent {
   serialports!: SerialPortDefinition[];

@@ -15,6 +15,8 @@
 */
 
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, UntypedFormGroup, Validators, ValidatorFn } from '@angular/forms';
 
@@ -34,8 +36,8 @@ const passwordValidator: ValidatorFn = (fg: UntypedFormGroup) => {
 
 @Component({
   templateUrl: 'change-password.component.html',
-  selector: 'change-password'
-
+  selector: 'change-password',
+  imports: [CommonModule, ReactiveFormsModule]
 })
 export class ChangePasswordComponent implements OnInit {
   changePasswordForm: UntypedFormGroup;

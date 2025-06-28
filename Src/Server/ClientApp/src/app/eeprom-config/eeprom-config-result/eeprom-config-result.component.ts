@@ -15,12 +15,17 @@
 */
 
 import { Component, OnInit, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { MaterialModule } from '../../material.module';
+
 import { EepromConfig } from '../../models/eeprom-config';
 
 @Component({
   selector: 'eeprom-config-result',
   templateUrl: './eeprom-config-result.component.html',
-  styleUrls: ['./eeprom-config-result.component.css']
+  styleUrls: ['./eeprom-config-result.component.css'],
+  imports: [CommonModule,MaterialModule]
 })
 export class EepromConfigResultComponent implements OnInit {
   @Input()

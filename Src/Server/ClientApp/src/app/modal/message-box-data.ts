@@ -29,6 +29,7 @@ export interface MessageBoxData {
   haveNo: boolean;
   haveCancel: boolean;
   haveOk: boolean;
+  haveClose: boolean;
 
   result: MessageBoxResult;
 

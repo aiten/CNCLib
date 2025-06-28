@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row" *ngIf="previewGlobal.isShowGCode">
     <div class="col inputhide" *ngIf="!previewGlobal.isShowParam">
-      <button mat-stroked-button class="hidebuttons" (click)="reRun()">Run ...</button>
+      <button mat-stroked-button class="hidebuttons" (click)="reRun()">Run...</button>
       <button mat-stroked-button class="hidebuttons" (click)="previewGlobal.isShowGCode = false">Image</button>
     </div>
     <div class="col">
@@ -17,9 +17,9 @@
           <p>Hold "Ctrl" or "Alt" and click on position where you want to move to.</p>
         </div>
         <div *ngIf="!machineMoveTo">
-          <button mat-stroked-button class="hidebuttons" (click)="reRun()" matTooltipPosition="after" matTooltip="Run the GCode generation again.">Run ...</button>
-          <button mat-stroked-button class="hidebuttons" *ngIf="canSendToMachine()" (click)="sendToMachine()" matTooltipPosition="after" matTooltip="Send the GCode to the connecte machine.">Send to</button>
-          <button mat-stroked-button class="hidebuttons" *ngIf="canSendToMachine()" (click)="machineMoveTo = true" matTooltipPosition="after" matTooltip="When pressing the Alt or Ctrl key and clicking on the image, the machine will move to the position.">Move To</button>
+          <button mat-stroked-button class="hidebuttons" (click)="reRun()" matTooltipPosition="after" matTooltip="Run the GCode generation again.">Run...</button>
+          <button mat-stroked-button class="hidebuttons" *ngIf="canSendToMachine()" (click)="sendToMachine()" matTooltipPosition="after" matTooltip="Send the GCode to the connecte machine.">SendTo</button>
+          <button mat-stroked-button class="hidebuttons" *ngIf="canSendToMachine()" (click)="machineMoveTo = true" matTooltipPosition="after" matTooltip="When pressing the Alt or Ctrl key and clicking on the image, the machine will move to the position.">MoveTo</button>
           <button mat-stroked-button class="hidebuttons" (click)="previewGlobal.isShowGCode = true">GCode</button>
           <button mat-stroked-button class="hidebuttons" (click)='refreshImage()'>Refresh</button>
           <button mat-stroked-button class="hidebuttons" (click)='setXY()' matTooltipPosition="after" matTooltip="Reset the image to the default XY pane (usual for CNC router).">XY</button>

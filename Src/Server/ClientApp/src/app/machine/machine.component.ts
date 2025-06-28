@@ -15,11 +15,13 @@
 */
 
 import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component(
   {
     templateUrl: 'machine.component.html',
     styleUrls: ['./machine.component.css'],
+    imports: [RouterOutlet]
   })
 export class MachineComponent {
 }

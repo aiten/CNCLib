@@ -15,12 +15,15 @@
 */
 
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
 import { MachineControlState } from "../../machine-control-state";
 
 @Component({
   selector: 'machinecontrolworkoffset',
   templateUrl: './machine-control-workoffset.component.html',
   styleUrls: ['./machine-control-workoffset.component.css'],
+  imports: [CommonModule]
 })
 export class MachineControlWorkOffsetComponent {
 

@@ -15,16 +15,21 @@
 */
 
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+
 import { EepromConfig } from '../../models/eeprom-config';
 import { EepromConfigInput } from '../../models/eeprom-config-input';
 import { CNCLibEepromConfigService } from '../../services/CNCLib-eeprom-config.service';
-import { Router } from '@angular/router';
+import { EepromConfigFormComponent } from '../eeprom-config-form/eeprom-config-form.component';
+import { EepromConfigResultComponent } from '../eeprom-config-result/eeprom-config-result.component';
 
 @Component(
   {
     selector: 'eeprom-config-overview',
     templateUrl: './eeprom-config-overview.component.html',
-    styleUrls: ['./eeprom-config-overview.component.css']
+    styleUrls: ['./eeprom-config-overview.component.css'],
+    imports: [CommonModule,EepromConfigFormComponent,EepromConfigResultComponent]
   })
 export class EepromConfigOverviewComponent implements OnInit {
   isCalculated: boolean = false;

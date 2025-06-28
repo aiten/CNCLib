@@ -15,14 +15,16 @@
 */
 
 import { Component } from '@angular/core';
-
+import { NavMenuComponent } from './nav-menu/nav-menu.component';
+import { RouterOutlet } from '@angular/router';
 import { PreviewGlobal } from "./preview/preview.global";
 import { CNCLibGCodeService } from "./services/CNCLib-gcode.service";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  imports: [NavMenuComponent, RouterOutlet]
 })
 export class AppComponent {
 

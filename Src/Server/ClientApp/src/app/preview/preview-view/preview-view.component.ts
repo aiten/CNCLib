@@ -26,14 +26,25 @@ import { SerialServerService } from '../../services/serial-server.service';
 import { PreviewGlobal } from '../preview.global';
 import { gcodeURL } from '../../app.global';
 
+import { PreviewGCodeComponent } from '../preview-gcode/preview-gcode.component';
+
 import { interval } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
+
+import { CommonModule } from '@angular/common';
+import { MaterialModule } from '../../material.module';
+
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MouseWheelDirective } from '../../_helpers/mousewheel.directive';
+
+import { PreviewInputComponent } from '../preview-input/preview-input.component';
 
 @Component(
   {
     selector: 'preview-detail',
     templateUrl: './preview-view.component.html',
-    styleUrls: ['./preview-view.component.css']
+    styleUrls: ['./preview-view.component.css'],
+    imports:[CommonModule,MaterialModule,PreviewGCodeComponent,FontAwesomeModule,MouseWheelDirective,PreviewInputComponent]
   })
 export class PreviewViewComponent implements OnInit, AfterViewInit {
   public previewOpt: PreviewGCode;

@@ -15,14 +15,20 @@
 */
 
 import { Component, OnInit, Input } from '@angular/core';
-import { UntypedFormGroup, FormArray, FormControl, UntypedFormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, FormArray, FormControl, UntypedFormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { PreviewGCode } from '../../models/preview-input';
+import { ColorPickerDirective } from 'ngx-color-picker';
+import { CommonModule } from '@angular/common';
+import { MaterialModule } from '../../material.module';
+import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 
 @Component(
   {
     selector: 'preview-input',
     templateUrl: './preview-input.component.html',
-    styleUrls: ['./preview-input.component.css']
+    styleUrls: ['./preview-input.component.css'],
+    imports: [CommonModule, ColorPickerDirective, ReactiveFormsModule, MaterialModule,FontAwesomeModule]
+
   })
 export class PreviewInputComponent implements OnInit {
   @Input()

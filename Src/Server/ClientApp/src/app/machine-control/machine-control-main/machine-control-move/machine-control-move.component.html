@@ -1,3 +1,4 @@
+
 <div class="grid-container">
   <div class="grid-item"></div>
   <div class="grid-item">
@@ -16,6 +17,8 @@
     <div class="select-grid-container">
       <input class="inputMoveDist" type="number" step="0.1" min="0.001" max="100" [value]="machineControlState.machineControlGlobal.moveDist" (input)="machineControlState.machineControlGlobal.moveDist=$event.target.value"/>
       <div class="inputMoveDist">
+        <button mat-stroked-button class="select-button" (click)='machineControlState.machineControlGlobal.moveDist = 0.01'>0.01</button>
+        <button mat-stroked-button class="select-button" (click)='machineControlState.machineControlGlobal.moveDist = 0.05'>0.05</button>
         <button mat-stroked-button class="select-button" (click)='machineControlState.machineControlGlobal.moveDist = 0.1'>0.1</button>
         <button mat-stroked-button class="select-button" (click)='machineControlState.machineControlGlobal.moveDist = 1'>1</button>
         <button mat-stroked-button class="select-button" (click)='machineControlState.machineControlGlobal.moveDist = 10'>10</button>

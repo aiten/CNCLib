@@ -15,6 +15,8 @@
 */
 
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
@@ -22,8 +24,8 @@ import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   templateUrl: 'login.component.html',
-  selector: 'login'
-
+  selector: 'login',
+  imports: [CommonModule, ReactiveFormsModule]
 })
 export class LoginComponent implements OnInit {
   loginForm: UntypedFormGroup;

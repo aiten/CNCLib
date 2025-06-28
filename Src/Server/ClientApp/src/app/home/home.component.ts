@@ -15,6 +15,8 @@
 */
 
 import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
 import { CNCLibServerInfo } from '../models/CNCLib.Server.Info'
 import { CNCLibInfoService } from '../services/CNCLib-Info.service';
 
@@ -23,9 +25,13 @@ import { CNCLibLoggedinService } from '../services/CNCLib-loggedin.service';
 import { HubConnection } from '@microsoft/signalr';
 import { HubConnectionBuilder } from '@microsoft/signalr';
 
+import { UserAdminComponent } from '../user/user-admin/user-admin.component';
+
 @Component({
   selector: 'home',
-  templateUrl: './home.component.html'
+  templateUrl: './home.component.html',
+  imports: [CommonModule, UserAdminComponent]
+
 })
 export class HomeComponent implements OnInit, OnDestroy {
   appName: string = '';
