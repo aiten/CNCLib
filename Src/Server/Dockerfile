@@ -7,9 +7,13 @@ EXPOSE 8081
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
-RUN apt-get update && \
-    apt-get install nodejs -y && \ 
-    apt-get install npm -y
+RUN apt-get -y update \
+    && curl -sL https://deb.nodesource.com/setup_24.x | bash - \ 
+    && apt-get install -y nodejs \
+    && apt-get clean \
+    && echo 'node verions:' $(node -v) \
+    && echo 'npm version:' $(npm -v) \
+    && echo 'dotnet version:' $(dotnet --version)
 WORKDIR /Src
 COPY ["Directory.Build.props", "."]
 COPY ["Framework/Directory.Build.props", "Framework/"]
