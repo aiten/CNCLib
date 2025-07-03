@@ -1,5 +1,5 @@
 
-name: Serial.Server Docker (for Rasperry/Linux)
+name: Serial.Server Docker (for Raspberry/Linux)
 
 env:
   ContainerName: cnclibserialserver              # Name of he (docker-)container
