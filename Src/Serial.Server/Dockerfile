@@ -5,7 +5,7 @@ EXPOSE 80
 EXPOSE 8080
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0-bookworm-slim-arm64v8 AS build
 RUN apt-get -y update \
     && curl -sL https://deb.nodesource.com/setup_24.x | bash - \ 
     && apt-get install -y nodejs \
