@@ -1,5 +1,5 @@
 
-name: CNCLib.Server Docker (for Rasperry/Linux)
+name: CNCLib.Server Docker (for Raspberry/Linux)
 
 env:
   ContainerName: cnclibserver      # Name of he (docker-)container
@@ -13,7 +13,7 @@ on:
 
 jobs:
   docker:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
      
@@ -22,9 +22,6 @@ jobs:
         with:
           fetch-depth: 0
           submodules: recursive
-     
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
         
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
