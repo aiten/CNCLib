@@ -14,6 +14,7 @@
     <button *ngIf="serialServer.getMachine().sdSupport && !machineControlGlobal.showSd" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showSd = true'>SD</button>
     <button *ngIf="!machineControlGlobal.showRefMove" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showRefMove = true'>Ref</button>
     <button *ngIf="!machineControlGlobal.showCustom" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showCustom = true'>Custom</button>
+    <button *ngIf="!machineControlGlobal.showFile" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showFile = true'>File</button>
     <button *ngIf="!machineControlGlobal.showJoystick" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showJoystick = true'>Joystick</button>
   </div>
 </div>

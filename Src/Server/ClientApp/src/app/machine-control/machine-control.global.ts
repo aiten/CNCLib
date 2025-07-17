@@ -36,6 +36,7 @@ export class MachineControlGlobal {
   positionAbs: number[] = [null, null, null, null, null, null];
 
   sdFileName: string = 'auto0.g';
+  fileName: string = 'db:Examples\\snoopy.plt';
 
   showSpindle: boolean = true;
   showLaser: boolean = true;
@@ -51,6 +52,7 @@ export class MachineControlGlobal {
   showOffset: boolean = true;
   showWorkOffset: boolean = false;
   showJoystick: boolean = false;
+  showFile: boolean = false;
 
   joystickEnabled: boolean = false;
 

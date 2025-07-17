@@ -18,31 +18,43 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MachineControlState } from "../../machine-control-state";
+import { UserFile } from "../../../models/userFile";
+import { CNCLibUserFileService } from '../../../services/CNCLib-userFile.service';
 
 @Component({
-  selector: 'machinecontrolcommand',
-  templateUrl: './machine-control-command.component.html',
-  styleUrls: ['./machine-control-command.component.css'],
+  selector: 'machinecontrolfile',
+  templateUrl: './machine-control-file.component.html',
+  styleUrls: ['./machine-control-file.component.css'],
   imports: [CommonModule]
 })
-export class MachineControlCommandComponent {
+export class MachineControlFileComponent {
 
   constructor(
+    public userFileService: CNCLibUserFileService,
   ) {
   }
 
   @Input()
   machineControlState: MachineControlState;
 
-  async sendcommand(command: string): Promise<void> {
-    if (command.length > 0) {
-      await this.machineControlState.postRawCommand(command);
-      if (this.machineControlState.machineControlGlobal.lastCommands.find(elem => elem === command) == undefined) {
-        this.machineControlState.machineControlGlobal.lastCommands.unshift(command);
-        if (this.machineControlState.machineControlGlobal.lastCommands.length > 10) {
-          this.machineControlState.machineControlGlobal.lastCommands = this.machineControlState.machineControlGlobal.lastCommands.slice(0, 10);
-        }
-      }
+  async uploadFile(event) {
+    let files = event.target.files;
+    if (files.length > 0) {
+      let tmpFileName = "$$$";
+      const file = event.target.files[0];
+      let userFile = new UserFile();
+      userFile.image = file;
+      userFile.fileName = tmpFileName;
+      await this.userFileService.update(tmpFileName, userFile);
+      this.machineControlState.machineControlGlobal.fileName = 'db:' + tmpFileName;
     }
+  }
+  async sendFile() {
+    const action = await this.userFileService.get(this.machineControlState.machineControlGlobal.fileName);
+    console.log(action);
+    const commands = await action.text();
+    //console.log(commands);
+
+    await this.machineControlState.postFile(commands);
   }
 }

@@ -126,6 +126,11 @@ public class UserFileManager : CrudManager<UserFile, int, UserFileEntity>, IUser
 
     public async Task<int> GetFileIdAsync(string fileName)
     {
+        if (fileName.StartsWith(@"db:"))
+        {
+            fileName = fileName.Substring(3);
+        }
+
         return await _repository.GetFileIdAsync(_userContext.UserId, fileName);
     }
 }

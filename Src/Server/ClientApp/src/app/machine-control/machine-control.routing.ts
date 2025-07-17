@@ -29,6 +29,7 @@ import { MachineControlCoolantComponent } from './machine-control-main/machine-c
 import { MachineControlCustomComponent } from './machine-control-main/machine-control-custom/machine-control-custom.component';
 import { MachineControlCommandComponent } from './machine-control-main/machine-control-command/machine-control-command.component';
 import { MachineControlInfoComponent } from './machine-control-main/machine-control-info/machine-control-info.component';
+import { MachineControlFileComponent } from './machine-control-main/machine-control-file/machine-control-file.component';
 import { MachineControlJoystickComponent } from './machine-control-main/machine-control-joystick/machine-control-joystick.component';
 import { MachineControlComponent } from './machine-control.component';
 
@@ -70,6 +71,7 @@ export const machineControlComponents =
   MachineControlCustomComponent,
   MachineControlCommandComponent,
   MachineControlInfoComponent,
+  MachineControlFileComponent,
   MachineControlJoystickComponent,
   EepromComponent
 ];

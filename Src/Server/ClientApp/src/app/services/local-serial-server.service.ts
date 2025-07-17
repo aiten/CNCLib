@@ -203,6 +203,12 @@ export class LocalSerialServerService implements SerialServerService {
       .catch(this.handleErrorPromise);
   }
 
+  splitHpgl(commands: string[]): Promise<string[]> {
+    return this.http.post<string[]>(this.baseUrl + 'api/Hpgl/split', commands, { headers: this.getHeaders() })
+      .toPromise()
+      .catch(this.handleErrorPromise);
+  }
+
   private handleErrorPromise(error: Response | any) {
     console.error(error.message || error);
     return Promise.reject(error.message || error);

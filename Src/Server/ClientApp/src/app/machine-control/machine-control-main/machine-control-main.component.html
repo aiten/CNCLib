@@ -180,6 +180,18 @@
           </mat-card-content>
         </mat-card>
 
+        <mat-card appearance="outlined" class="detail-card" *ngIf="machineControlGlobal.showFile">
+          <mat-card-title>
+            File
+            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showFile = false'>
+              <fa-icon icon="chevron-down"></fa-icon>
+            </button>
+          </mat-card-title>
+          <mat-card-content>
+            <machinecontrolfile [machineControlState]="machineControlState"></machinecontrolfile>
+          </mat-card-content>
+        </mat-card>
+
         <mat-card appearance="outlined" class="detail-card" *ngIf="machineControlGlobal.showJoystick">
           <mat-card-title>
             Joystick

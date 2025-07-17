@@ -1,0 +1,13 @@
+<div class="container-fluid nopadding">
+  <div class="row ofsRow nopadding">
+    <div class="form-group input-group">
+      <span class="input-group-addon">Filename</span>
+      <input class="fileName" [value]="machineControlState.machineControlGlobal.fileName" (input)="machineControlState.machineControlGlobal.fileName=$event.target.value" />
+      <span class="btn mat-stroked-button btn-file">
+        Browse <input (change)="uploadFile($event)" type="file" accept=".nc,.plt,.hpgl">
+      </span>
+    </div>
+
+    <button mat-stroked-button class="file-button" (click)='sendFile()'>Send ...</button>
+  </div>
+</div>

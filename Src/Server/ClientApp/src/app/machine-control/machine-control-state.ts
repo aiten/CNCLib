@@ -32,7 +32,7 @@ import { JoystickServerConnection } from '../serial-server/joystick-server-conne
 import { MachineControlGlobal } from './machine-control.global';
 
 import { Joystick } from "../models/joystick";
-import { Eeprom } from "../models/eeprom";
+import { Eeprom, ECommandSyntax } from "../models/eeprom";
 
 
 @Injectable()
@@ -66,6 +66,10 @@ export class MachineControlState {
 
   isValid() {
     return this.serialServer.getMachine() != null;
+  }
+
+  isHpgl() {
+    return this.isValid() && this.serialServer.getMachine().commandSyntax == ECommandSyntax.Hpgl;
   }
 
   async getJoystick() {
@@ -180,11 +184,35 @@ export class MachineControlState {
   }
 
   async postcommand(command: string): Promise<void> {
-    if (command.length > 0 && this.serialServer.getMachine().commandSyntax == 7) {
+    if (command.length > 0 && this.serialServer.getMachine().commandSyntax == ECommandSyntax.Hpgl) {
       // this is a plotter, add command escape 27
       command = '\u001b' + command;
     }
     await this.serialServerService.queueCommands(this.serialServer.getSerialServerPortId(), [command], 1000);
+  }
+
+  async postRawCommand(command: string): Promise<void> {
+    await this.serialServerService.queueCommands(this.serialServer.getSerialServerPortId(), [command], 1000);
+  }
+
+  async postFile(command: string): Promise<void> {
+
+    if (command.length > 0) {
+
+      var lfcrRegexp = /\n\r?/g
+      command = command.replace(lfcrRegexp, ";")
+      lfcrRegexp = /\r\n?/g
+      command = command.replace(lfcrRegexp, ";")
+      var commands = command.split(';').filter((word) => word.length > 0);
+      console.log(commands.length);
+
+      if (this.isHpgl) {
+        commands = await this.serialServerService.splitHpgl(commands);
+        console.log(commands);
+      }
+
+      await this.serialServerService.queueCommands(this.serialServer.getSerialServerPortId(), commands, 1000);
+    }
   }
 
   async sendWhileOkcommands(commands: string[]): Promise<void> {

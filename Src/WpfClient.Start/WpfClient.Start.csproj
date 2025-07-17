@@ -52,6 +52,7 @@
       <Version>1.0.119</Version>
     </PackageReference>
     <PackageReference Include="System.Management" Version="9.0.6" />
+    <PackageReference Include="NLog.Targets.ConcurrentFile" Version="6.0.0" />
   </ItemGroup>
 
 </Project>

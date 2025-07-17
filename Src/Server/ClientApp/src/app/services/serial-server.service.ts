@@ -71,4 +71,6 @@ export abstract class SerialServerService {
 
   public abstract convertFromEeprom(value: Eeprom): Promise<number[]>;
 
+  public abstract splitHpgl(commands: string[]): Promise<string[]>;
+
 }
