@@ -87,12 +87,14 @@ public static class GCodeSerialEepromExtension
     {
         await serial.SendCommandAsync(@"$!", GCodeSerial.DefaultEpromTimeout);
         await serial.SendCommandsAsync(ee.ToGCode(), GCodeSerial.DefaultEpromTimeout);
+        await serial.SendCommandAsync(@"$w", GCodeSerial.DefaultEpromTimeout);
     }
 
     public static async Task EraseEepromValues(this ISerial serial)
     {
         await serial.SendCommandAsync(@"$!",   GCodeSerial.DefaultEpromTimeout);
         await serial.SendCommandAsync(@"$0=0", GCodeSerial.DefaultEpromTimeout);
+        await serial.SendCommandAsync(@"$w", GCodeSerial.DefaultEpromTimeout);
     }
 
     public static async Task<Eeprom?> ReadEeprom(this ISerial serial)
