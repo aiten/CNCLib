@@ -16,6 +16,7 @@
 
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MaterialModule } from '../../../material.module';
 
 import { MachineControlState } from "../../machine-control-state";
 import { UserFile } from "../../../models/userFile";
@@ -25,7 +26,7 @@ import { CNCLibUserFileService } from '../../../services/CNCLib-userFile.service
   selector: 'machinecontrolfile',
   templateUrl: './machine-control-file.component.html',
   styleUrls: ['./machine-control-file.component.css'],
-  imports: [CommonModule]
+  imports: [CommonModule,MaterialModule]
 })
 export class MachineControlFileComponent {
 

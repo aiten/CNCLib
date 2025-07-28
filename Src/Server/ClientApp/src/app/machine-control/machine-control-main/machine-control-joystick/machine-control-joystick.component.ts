@@ -16,6 +16,7 @@
 
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MaterialModule } from '../../../material.module';
 
 import { MachineControlState } from '../../machine-control-state';
 
@@ -23,7 +24,7 @@ import { MachineControlState } from '../../machine-control-state';
   selector: 'machinecontroljoystick',
   templateUrl: './machine-control-joystick.component.html',
   styleUrls: ['./machine-control-joystick.component.css'],
-  imports: [CommonModule]
+  imports: [CommonModule,MaterialModule]
 })
 export class MachineControlJoystickComponent {
 

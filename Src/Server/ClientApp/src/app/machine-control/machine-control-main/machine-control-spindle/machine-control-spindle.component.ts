@@ -16,6 +16,7 @@
 
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MaterialModule } from '../../../material.module';
 
 import { MachineControlState } from '../../machine-control-state';
 
@@ -23,7 +24,7 @@ import { MachineControlState } from '../../machine-control-state';
   selector: 'machinecontrolspindle',
   templateUrl: './machine-control-spindle.component.html',
   styleUrls: ['./machine-control-spindle.component.css'],
-  imports: [CommonModule]
+  imports: [CommonModule,MaterialModule]
 })
 export class MachineControlSpindleComponent {
 

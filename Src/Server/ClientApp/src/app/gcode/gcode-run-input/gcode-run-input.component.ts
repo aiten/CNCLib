@@ -23,12 +23,14 @@ import { UntypedFormGroup, FormBuilder, Validators, ReactiveFormsModule } from '
 import { UserFile } from "../../models/userFile";
 import { CNCLibUserFileService } from '../../services/CNCLib-userFile.service';
 
+import { MaterialModule } from '../../material.module';
+
 @Component(
   {
     selector: 'gcode-run-input',
     templateUrl: './gcode-run-input.component.html',
     styleUrls: ['./gcode-run-input.component.css'],
-    imports: [CommonModule,ReactiveFormsModule]
+    imports: [CommonModule,ReactiveFormsModule,MaterialModule]
 
   })
 export class GcodeRunInputComponent implements OnInit {

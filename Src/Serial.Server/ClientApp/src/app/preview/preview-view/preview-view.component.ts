@@ -30,13 +30,14 @@ import { MaterialModule } from '../../material.module';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { PreviewInputComponent } from '../preview-input/preview-input.component';
+import { MouseWheelDirective } from '../../_helpers/mousewheel.directive';
 
 @Component(
   {
     selector: 'preview-detail',
     templateUrl: './preview-view.component.html',
     styleUrls: ['./preview-view.component.css'],
-    imports: [CommonModule, MaterialModule, FontAwesomeModule, PreviewInputComponent ]
+    imports: [CommonModule, MaterialModule, FontAwesomeModule, PreviewInputComponent, MouseWheelDirective ]
   })
 export class PreviewViewComponent implements OnInit, AfterViewInit {
   public previewOpt: PreviewGCode;

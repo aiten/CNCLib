@@ -26,6 +26,7 @@ import { MessageBoxResult } from "../../modal/message-box-data";
 
 import { homeURL } from "../../app.global";
 import { CommonModule } from '@angular/common';
+import { MaterialModule } from '../../material.module';
 import { RegisterComponent } from '../register';
 import { LoginComponent } from '../login';
 import { ChangePasswordComponent } from '../change-password';
@@ -34,7 +35,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 @Component({
   selector: 'useradmin',
   templateUrl: './user-admin.component.html',
-  imports: [CommonModule, FontAwesomeModule, RegisterComponent, LoginComponent, ChangePasswordComponent]
+  imports: [CommonModule, FontAwesomeModule, RegisterComponent, LoginComponent, ChangePasswordComponent,MaterialModule]
 })
 export class UserAdminComponent {
 

@@ -16,6 +16,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MaterialModule } from '../../material.module';
 import { Router } from '@angular/router';
 
 import { EepromConfig } from '../../models/eeprom-config';
@@ -29,7 +30,7 @@ import { EepromConfigResultComponent } from '../eeprom-config-result/eeprom-conf
     selector: 'eeprom-config-overview',
     templateUrl: './eeprom-config-overview.component.html',
     styleUrls: ['./eeprom-config-overview.component.css'],
-    imports: [CommonModule,EepromConfigFormComponent,EepromConfigResultComponent]
+    imports: [CommonModule,EepromConfigFormComponent,EepromConfigResultComponent,MaterialModule]
   })
 export class EepromConfigOverviewComponent implements OnInit {
   isCalculated: boolean = false;

@@ -33,13 +33,14 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { interval } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 import { SerialServerConnection } from "../../serial-server/serial-server-connection";
+import { MouseWheelDirective } from '../../_helpers/mousewheel.directive';
 
 @Component(
   {
     selector: 'serialporthistroy-preview-view',
     templateUrl: './serialporthistory-preview-view.component.html',
     styleUrls: ['./serialporthistory-preview-view.component.css'],
-    imports: [CommonModule,SerialPortHistoryPreviewInputComponent,MaterialModule,FontAwesomeModule]
+    imports: [CommonModule,SerialPortHistoryPreviewInputComponent,MaterialModule,MouseWheelDirective,FontAwesomeModule]
   })
 export class SerialPortHistoryPreviewViewComponent implements OnInit, OnDestroy, AfterViewInit {
   public previewOpt: SerialPortHistoryInput;

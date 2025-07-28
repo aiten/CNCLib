@@ -16,6 +16,7 @@
 
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MaterialModule } from '../../../material.module';
 
 import { Router } from '@angular/router';
 
@@ -26,7 +27,7 @@ import { machineControlURL } from "../../../app.global";
   selector: 'machinecontrolinfo',
   templateUrl: './machine-control-info.component.html',
   styleUrls: ['./machine-control-info.component.css'],
-  imports: [CommonModule]
+  imports: [CommonModule,MaterialModule]
 })
 export class MachineControlInfoComponent {
 

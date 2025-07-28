@@ -18,7 +18,9 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { Router } from '@angular/router';
+import { MaterialModule } from '../../../material.module';
 
+import { MachineControlState } from "../../machine-control-state";
 import { MachineControlGlobal } from '../../machine-control.global';
 import { SerialServerConnection } from '../../../serial-server/serial-server-connection';
 
@@ -26,7 +28,7 @@ import { SerialServerConnection } from '../../../serial-server/serial-server-con
   selector: 'machinecontrolmenu',
   templateUrl: './machine-control-menu.component.html',
   styleUrls: ['./machine-control-menu.component.css'],
-  imports: [CommonModule]
+  imports: [CommonModule, MaterialModule]
 })
 export class MachineControlMenuComponent {
 
@@ -39,9 +41,14 @@ export class MachineControlMenuComponent {
   public machineControlGlobal: MachineControlGlobal
   @Input()
   public serialServer: SerialServerConnection 
+  @Input()
+    machineControlState: MachineControlState;
   
   async emergencyStop() {
     await this.serialServer.abort();
     await this.serialServer.resume();
+    await this.machineControlState.postcommand("!");    // send to machine
+    await this.machineControlState.postcommand("!!!");  // resurrect machine
+    await this.machineControlState.postcommand("m5");   // stop spindle / laser
   }
 }
