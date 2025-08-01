@@ -24,7 +24,7 @@ import { MachineControlState } from "../../machine-control-state";
   selector: 'machinecontrolworkoffset',
   templateUrl: './machine-control-workoffset.component.html',
   styleUrls: ['./machine-control-workoffset.component.css'],
-  imports: [CommonModule]
+  imports: [CommonModule, MaterialModule]
 })
 export class MachineControlWorkOffsetComponent {
 
