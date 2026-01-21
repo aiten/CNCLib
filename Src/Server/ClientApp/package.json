@@ -29,7 +29,7 @@
     "@angular/material-moment-adapter": "^20.0.4",
     "@angular/platform-browser": "^20.0.5",
     "@angular/platform-browser-dynamic": "^20.0.5",
-    "@angular/platform-server": "^20.0.5",
+    "@angular/platform-server": "^20.3.0",
     "@angular/router": "^20.0.5",
     "@fortawesome/angular-fontawesome": "^2.0.1",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
