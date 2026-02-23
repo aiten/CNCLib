@@ -15,7 +15,7 @@
 */
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 import { SerialServerConnection } from '../../serial-server/serial-server-connection';
 import { JoystickServerConnection } from '../../serial-server/joystick-server-connection';
@@ -31,7 +31,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   selector: 'machinecontrolmain',
   templateUrl: './machine-control-main.component.html',
   styleUrls: ['./machine-control-main.component.css'],
-  imports: [CommonModule,MaterialModule,FontAwesomeModule,...machineControlComponents,...serialPortHistoryComponents]
+  imports: [MaterialModule, FontAwesomeModule, ...machineControlComponents, ...serialPortHistoryComponents]
  
 })
 export class MachineControlMainComponent implements OnInit, OnDestroy {

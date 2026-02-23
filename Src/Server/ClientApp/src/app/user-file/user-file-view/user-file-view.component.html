@@ -28,16 +28,20 @@
   <ng-container matColumnDef="update">
     <th mat-header-cell *matHeaderCellDef> Update </th>
     <td mat-cell *matCellDef="let element">
-      <span *ngIf="!element.isSystem" class="btn mat-stroked-button btn-file">
-        Update <input (change)="updateUserFile($event, element)" type="file">
-      </span>
+      @if (!element.isSystem) {
+        <span class="btn mat-stroked-button btn-file">
+          Update <input (change)="updateUserFile($event, element)" type="file">
+        </span>
+      }
     </td>
   </ng-container>
 
   <ng-container matColumnDef="delete">
     <th mat-header-cell *matHeaderCellDef> Delete </th>
     <td mat-cell *matCellDef="let element">
-      <button mat-stroked-button *ngIf="!element.isSystem" (click)='deleteUserFile(element)'>Delete</button>
+      @if (!element.isSystem) {
+        <button mat-stroked-button (click)='deleteUserFile(element)'>Delete</button>
+      }
     </td>
   </ng-container>
 

@@ -31,7 +31,7 @@ import { PreviewGCodeComponent } from '../preview-gcode/preview-gcode.component'
 import { interval } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 
-import { CommonModule } from '@angular/common';
+
 import { MaterialModule } from '../../material.module';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -44,7 +44,7 @@ import { PreviewInputComponent } from '../preview-input/preview-input.component'
     selector: 'preview-detail',
     templateUrl: './preview-view.component.html',
     styleUrls: ['./preview-view.component.css'],
-    imports:[CommonModule,MaterialModule,PreviewGCodeComponent,FontAwesomeModule,MouseWheelDirective,PreviewInputComponent]
+    imports: [MaterialModule, PreviewGCodeComponent, FontAwesomeModule, MouseWheelDirective, PreviewInputComponent]
   })
 export class PreviewViewComponent implements OnInit, AfterViewInit {
   public previewOpt: PreviewGCode;

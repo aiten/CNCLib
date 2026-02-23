@@ -1,7 +1,11 @@
-<div *ngIf="previewGlobal.isGCode">
-  <serialporthistorygcode [autoreloadonempty]="autoreloadonempty">Loading...</serialporthistorygcode>
-</div>
+@if (previewGlobal.isGCode) {
+  <div>
+    <serialporthistorygcode [autoreloadonempty]="autoreloadonempty">Loading...</serialporthistorygcode>
+  </div>
+}
 
-<div *ngIf="!previewGlobal.isGCode">
-  <serialporthistroy-preview-view>Loading...</serialporthistroy-preview-view>
-</div>
+@if (!previewGlobal.isGCode) {
+  <div>
+    <serialporthistroy-preview-view>Loading...</serialporthistroy-preview-view>
+  </div>
+}

@@ -1,9 +1,9 @@
-<div *ngIf="isLoaded">
-
+@if (isLoaded) {
   <div>
-    <h1>create G-Code for: {{ entry.settingName }}</h1>
-    <gcode-run-input [entry]="entry"></gcode-run-input>
-    <button mat-stroked-button (click)='createGCode()'>Run ...</button>
+    <div>
+      <h1>create G-Code for: {{ entry.settingName }}</h1>
+      <gcode-run-input [entry]="entry"></gcode-run-input>
+      <button mat-stroked-button (click)='createGCode()'>Run ...</button>
+    </div>
   </div>
-
-</div>
+}

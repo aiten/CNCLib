@@ -15,7 +15,7 @@
 */
 
 import { Component, OnInit, OnDestroy, Inject, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 import { ActivatedRoute } from '@angular/router';
 
@@ -40,7 +40,7 @@ import { MouseWheelDirective } from '../../_helpers/mousewheel.directive';
     selector: 'serialporthistroy-preview-view',
     templateUrl: './serialporthistory-preview-view.component.html',
     styleUrls: ['./serialporthistory-preview-view.component.css'],
-    imports: [CommonModule,SerialPortHistoryPreviewInputComponent,MaterialModule,MouseWheelDirective,FontAwesomeModule]
+    imports: [SerialPortHistoryPreviewInputComponent, MaterialModule, MouseWheelDirective, FontAwesomeModule]
   })
 export class SerialPortHistoryPreviewViewComponent implements OnInit, OnDestroy, AfterViewInit {
   public previewOpt: SerialPortHistoryInput;

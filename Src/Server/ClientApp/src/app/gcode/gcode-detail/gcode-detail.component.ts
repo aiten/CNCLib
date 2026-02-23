@@ -15,7 +15,7 @@
 */
 
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 import { LoadOptions, EHoleType, ELoadType, PenType, SmoothTypeEnum, ConvertTypeEnum, DitherFilter } from "../../models/load-options";
 import { UntypedFormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
@@ -36,7 +36,7 @@ import { gcodeURL } from '../../app.global';
     selector: 'gcode-detail',
     templateUrl: './gcode-detail.component.html',
     styleUrls: ['./gcode-detail.component.css'],
-    imports: [CommonModule, ReactiveFormsModule,MaterialModule,FontAwesomeModule]
+    imports: [ReactiveFormsModule, MaterialModule, FontAwesomeModule]
 
   })
 export class GcodeDetailComponent implements OnInit {

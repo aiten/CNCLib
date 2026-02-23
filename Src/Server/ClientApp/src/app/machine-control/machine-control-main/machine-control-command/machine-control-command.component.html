@@ -3,6 +3,8 @@
     <label>G-Command:</label>
     <input class="inputGCode nopadding" #gCode (keyup.enter)="sendcommand(gCode.value); gCode.value=''"/>
     <button mat-stroked-button (click)="sendcommand(gCode.value); gCode.value=''">send ...</button>
-    <button *ngFor="let cmd of machineControlState.machineControlGlobal.lastCommands" mat-stroked-button (click)='machineControlState.postcommand(cmd)'>{{cmd}}</button>
+    @for (cmd of machineControlState.machineControlGlobal.lastCommands; track cmd) {
+      <button mat-stroked-button (click)='machineControlState.postcommand(cmd)'>{{cmd}}</button>
+    }
   </div>
 </div>

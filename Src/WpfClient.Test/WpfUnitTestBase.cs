@@ -31,7 +31,7 @@ public class WpfUnitTestBase
     {
         if (Mapper == null)
         {
-            var config = new MapperConfiguration(cfg => { cfg.AddProfile<WpfAutoMapperProfile>(); });
+            var config = new MapperConfiguration(cfg => { cfg.AddProfile<WpfAutoMapperProfile>(); }, new LoggerFactory());
             config.AssertConfigurationIsValid();
 
             Mapper = config.CreateMapper();

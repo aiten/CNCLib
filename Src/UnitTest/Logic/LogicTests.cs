@@ -22,6 +22,9 @@ using CNCLib.Logic;
 
 using Framework.UnitTest;
 
+using Microsoft.EntityFrameworkCore.Diagnostics.Internal;
+using Microsoft.Extensions.Logging;
+
 public class LogicTests : UnitTestBase
 {
     public static IMapper? Mapper { get; private set; }
@@ -37,7 +40,8 @@ public class LogicTests : UnitTestBase
 
                     //                cfg.AddProfile<WpfAutoMapperProfile>();
                     //                cfg.AddProfile<GCodeGUIAutoMapperProfile>();
-                });
+                },
+                new LoggerFactory());
             config.AssertConfigurationIsValid();
 
             Mapper = config.CreateMapper();

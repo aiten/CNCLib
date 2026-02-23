@@ -15,7 +15,7 @@
 */
 
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 import { Router } from '@angular/router';
 import { MaterialModule } from '../../../material.module';
@@ -28,7 +28,7 @@ import { SerialServerConnection } from '../../../serial-server/serial-server-con
   selector: 'machinecontrolmenu',
   templateUrl: './machine-control-menu.component.html',
   styleUrls: ['./machine-control-menu.component.css'],
-  imports: [CommonModule, MaterialModule]
+  imports: [MaterialModule]
 })
 export class MachineControlMenuComponent {
 

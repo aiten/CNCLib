@@ -39,6 +39,7 @@ using Framework.Logic;
 using Framework.Tools;
 
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore.Diagnostics.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -92,7 +93,8 @@ public partial class App : Application
                         cfg.AddProfile<LogicAutoMapperProfile>();
                         cfg.AddProfile<WpfAutoMapperProfile>();
                         cfg.AddProfile<GCodeGUIAutoMapperProfile>();
-                    }))
+                    },
+                    new LoggerFactory()))
             .AddCNCLibLogic()
             .AddCNCLibLogicClient()
             .AddCNCLibRepository(SqlServerDatabaseTools.OptionBuilder)

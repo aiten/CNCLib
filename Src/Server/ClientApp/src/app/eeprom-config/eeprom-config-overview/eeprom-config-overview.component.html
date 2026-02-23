@@ -11,13 +11,19 @@
       <button mat-stroked-button [disabled]="!eeinput.isValid()" (click)="eeinput.getFormValues(); calculateEepromConfig()">Calculate eeprom values</button>
     </div>
     <div class="col-sm">
-      <div *ngIf="isCalculated">
-        <h1>Result</h1>
-        <p *ngIf="isCalculating">Calculating ...</p>
-        <eeprom-config-result [entry]="eepromConfig" *ngIf="isCalculated">
-          Loading ...
-        </eeprom-config-result>
-      </div>
+      @if (isCalculated) {
+        <div>
+          <h1>Result</h1>
+          @if (isCalculating) {
+            <p>Calculating ...</p>
+          }
+          @if (isCalculated) {
+            <eeprom-config-result [entry]="eepromConfig">
+              Loading ...
+            </eeprom-config-result>
+          }
+        </div>
+      }
     </div>
   </div>
 </div>

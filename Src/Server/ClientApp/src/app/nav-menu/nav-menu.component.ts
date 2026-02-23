@@ -15,7 +15,7 @@
 */
 
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import {RouterLink} from '@angular/router';
 
 import { CNCLibLoggedinService } from '../services/CNCLib-loggedin.service';
@@ -26,7 +26,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   selector: 'app-nav-menu',
   templateUrl: './nav-menu.component.html',
   styleUrls: ['./nav-menu.component.css'],
-  imports: [FontAwesomeModule,CommonModule,RouterLink]
+  imports: [FontAwesomeModule, RouterLink]
 })
 export class NavMenuComponent {
 

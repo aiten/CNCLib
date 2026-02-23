@@ -15,7 +15,7 @@
 */
 
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 import { UntypedFormGroup, FormArray, FormControl, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -40,7 +40,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   selector: 'machine-form',
   templateUrl: './machine-form.component.html',
   styleUrls: ['./machine-form.component.css'],  
-  imports: [CommonModule,MaterialModule,ReactiveFormsModule,FontAwesomeModule]
+  imports: [MaterialModule, ReactiveFormsModule, FontAwesomeModule]
 
 })
 export class MachineFormComponent implements OnInit {

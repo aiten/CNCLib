@@ -55,7 +55,8 @@ namespace CNCLib.Server
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Microsoft.OpenApi.Models;
+    using Microsoft.Extensions.Logging;
+    using Microsoft.OpenApi;
 
     using Newtonsoft.Json.Serialization;
 
@@ -141,10 +142,13 @@ namespace CNCLib.Server
                     In          = ParameterLocation.Header,
                     Description = "Basic Authorization header using the Bearer scheme."
                 });
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                c.AddSecurityRequirement(document => new OpenApiSecurityRequirement
                 {
-                    {
-                        new OpenApiSecurityScheme
+                    [new OpenApiSecuritySchemeReference("basic", document)] = []
+                });
+/*
+                {
+                    new OpenApiSecurityScheme
                         {
                             Reference = new OpenApiReference
                             {
@@ -155,6 +159,7 @@ namespace CNCLib.Server
                         new string[] { }
                     }
                 });
+*/
                 c.OperationFilter<SecurityRequirementsOperationFilter>(true, "basic");
             });
 
@@ -164,7 +169,7 @@ namespace CNCLib.Server
                 .AddCNCLibServicesLogic()
                 .AddFrwTools()
                 .AddFrwSchedule()
-                .AddFrwLogic(new MapperConfiguration(cfg => { cfg.AddProfile<LogicAutoMapperProfile>(); }));
+                .AddFrwLogic(new MapperConfiguration(cfg => { cfg.AddProfile<LogicAutoMapperProfile>(); }, new LoggerFactory()));
 
 
             services.AddScoped<ICNCLibUserContext, CNCLibUserContext>();

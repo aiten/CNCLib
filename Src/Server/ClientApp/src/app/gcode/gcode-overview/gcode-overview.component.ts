@@ -15,7 +15,7 @@
 */
 
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 import { LoadOptions } from "../../models/load-options";
 import { CNCLibLoadOptionService } from '../../services/CNCLib-load-option.service';
@@ -33,7 +33,7 @@ import { MaterialModule } from '../../material.module';
     selector: 'gcode-overview',
     templateUrl: './gcode-overview.component.html',
     styleUrls: ['./gcode-overview.component.css'],
-    imports: [CommonModule,MaterialModule]
+    imports: [MaterialModule]
 
   })
 export class GcodeOverviewComponent implements OnInit {

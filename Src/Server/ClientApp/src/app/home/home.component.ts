@@ -15,7 +15,7 @@
 */
 
 import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 import { CNCLibServerInfo } from '../models/CNCLib.Server.Info'
 import { CNCLibInfoService } from '../services/CNCLib-Info.service';
@@ -30,7 +30,7 @@ import { UserAdminComponent } from '../user/user-admin/user-admin.component';
 @Component({
   selector: 'home',
   templateUrl: './home.component.html',
-  imports: [CommonModule, UserAdminComponent]
+  imports: [UserAdminComponent]
 
 })
 export class HomeComponent implements OnInit, OnDestroy {

@@ -15,7 +15,7 @@
 */
 
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MaterialModule } from '../../../material.module';
 
 import { MachineControlState } from "../../machine-control-state";
@@ -24,7 +24,7 @@ import { MachineControlState } from "../../machine-control-state";
   selector: 'machinecontroloffset',
   templateUrl: './machine-control-offset.component.html',
   styleUrls: ['./machine-control-offset.component.css'],
-  imports: [CommonModule,MaterialModule]
+  imports: [MaterialModule]
 })
 export class MachineControlOffsetComponent {
 

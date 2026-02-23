@@ -20,7 +20,7 @@ import { Router } from '@angular/router';
 import { SerialPortDefinition } from '../../models/serial.port.definition';
 import { SerialConnect } from '../../models/serial.connect';
 import { SerialServerService } from '../../services/serial-server.service';
-import { CommonModule } from '@angular/common';
+
 import { MaterialModule } from '../../material.module';
 
 @Component(
@@ -28,7 +28,7 @@ import { MaterialModule } from '../../material.module';
     selector: 'machinecontrolconnect',
     templateUrl: './machine-control-connect.component.html',
     styleUrls: ['./machine-control-connect.component.css'],
-    imports: [ReactiveFormsModule, CommonModule, MaterialModule]
+    imports: [ReactiveFormsModule, MaterialModule]
   })
 export class MachineControlConnectComponent {
   @Input()

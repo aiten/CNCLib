@@ -17,14 +17,14 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MessageBoxData, MessageBoxResult } from '../message-box-data';
-import { CommonModule } from '@angular/common';
+
 import { MaterialModule } from '../../material.module';
 
 @Component({
   selector: 'app-modal',
   templateUrl: './message-box.component.html',
   styleUrls: ['./message-box.component.css'],
-  imports: [CommonModule,MaterialModule]
+  imports: [MaterialModule]
 })
 export class MessageBoxComponent implements OnInit {
 

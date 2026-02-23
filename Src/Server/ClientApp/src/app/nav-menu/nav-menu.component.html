@@ -9,21 +9,31 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/home"><fa-icon icon="home"></fa-icon> Home</a>
         </li>
-        <li *ngIf="cncLibloggedinService.isUserLoggedIn()" class="nav-item">
-          <a class="nav-link" routerLink="/machine"><fa-icon icon="toolbox"></fa-icon> Machines</a>
-        </li>
-        <li *ngIf="cncLibloggedinService.isUserLoggedIn()" class="nav-item">
-          <a class="nav-link" routerLink="/machinecontrol"><fa-icon icon="sync"></fa-icon> Machinecontrol</a>
-        </li>
-        <li *ngIf="cncLibloggedinService.isUserLoggedIn()" class="nav-item">
-          <a class="nav-link" routerLink="/gcode"><fa-icon icon="cogs"></fa-icon> G-Code</a>
-        </li>
-        <li *ngIf="cncLibloggedinService.isUserLoggedIn()" class="nav-item">
-          <a class="nav-link" routerLink="/preview"><fa-icon icon="draw-polygon"></fa-icon> Preview</a>
-        </li>
-        <li *ngIf="cncLibloggedinService.isUserLoggedIn()" class="nav-item">
-          <a class="nav-link" routerLink="/file"><fa-icon icon="database"></fa-icon> File</a>
-        </li>
+        @if (cncLibloggedinService.isUserLoggedIn()) {
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/machine"><fa-icon icon="toolbox"></fa-icon> Machines</a>
+          </li>
+        }
+        @if (cncLibloggedinService.isUserLoggedIn()) {
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/machinecontrol"><fa-icon icon="sync"></fa-icon> Machinecontrol</a>
+          </li>
+        }
+        @if (cncLibloggedinService.isUserLoggedIn()) {
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/gcode"><fa-icon icon="cogs"></fa-icon> G-Code</a>
+          </li>
+        }
+        @if (cncLibloggedinService.isUserLoggedIn()) {
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/preview"><fa-icon icon="draw-polygon"></fa-icon> Preview</a>
+          </li>
+        }
+        @if (cncLibloggedinService.isUserLoggedIn()) {
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/file"><fa-icon icon="database"></fa-icon> File</a>
+          </li>
+        }
         <li class="nav-item">
           <a class="nav-link" routerLink="/eepromconfig"><fa-icon icon="calculator"></fa-icon> Eeprom-Config</a>
         </li>

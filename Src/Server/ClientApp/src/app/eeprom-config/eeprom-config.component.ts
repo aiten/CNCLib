@@ -15,7 +15,7 @@
 */
 
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { RouterOutlet } from '@angular/router';
 
 
@@ -23,7 +23,7 @@ import { RouterOutlet } from '@angular/router';
   {
     templateUrl: 'eeprom-config.component.html',
     styleUrls: ['./eeprom-config.component.css'],
-    imports: [CommonModule,RouterOutlet]
+    imports: [RouterOutlet]
 
 
   })

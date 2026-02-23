@@ -15,7 +15,7 @@
 */
 
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 import { SerialServerConnection } from '../serial-server/serial-server-connection';
 import { SerialPortHistoryPreviewGlobal } from "./models/serialporthistory.global";
@@ -25,7 +25,7 @@ import { serialPortHistoryComponents } from '../serialporthistory/serialporthist
   selector: 'serialporthistory',
   templateUrl: './serialporthistory.component.html',
   styleUrls: ['./serialporthistory.component.css'],
-  imports: [CommonModule,...serialPortHistoryComponents]
+  imports: [...serialPortHistoryComponents]
 })
 export class SerialPortHistoryComponent {
 

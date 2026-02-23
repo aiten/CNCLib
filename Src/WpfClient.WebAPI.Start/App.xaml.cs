@@ -39,6 +39,7 @@ using Framework.Tools;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 using NLog;
 
@@ -72,7 +73,8 @@ public partial class App : Application
                     {
                         cfg.AddProfile<WpfAutoMapperProfile>();
                         cfg.AddProfile<GCodeGUIAutoMapperProfile>();
-                    }))
+                    },
+                    new LoggerFactory()))
             .AddCNCLibLogicClient()
             .AddWpfClient()
             .AddCNCLibServicesWeb(

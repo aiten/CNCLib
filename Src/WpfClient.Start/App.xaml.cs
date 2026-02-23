@@ -18,6 +18,7 @@ namespace CNCLib.WpfClient.Start;
 
 using System;
 using System.Globalization;
+using System.Management;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
@@ -80,7 +81,8 @@ public partial class App : Application
                         cfg.AddProfile<LogicAutoMapperProfile>();
                         cfg.AddProfile<WpfAutoMapperProfile>();
                         cfg.AddProfile<GCodeGUIAutoMapperProfile>();
-                    }))
+                    }, new LoggerFactory() )
+                )
             .AddCNCLibLogic()
             .AddCNCLibLogicClient()
             .AddCNCLibRepository(SqliteDatabaseTools.OptionBuilder)

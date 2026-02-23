@@ -1,11 +1,11 @@
-FROM mcr.microsoft.com/dotnet/aspnet:9.0-bookworm-slim-arm64v8 AS base
-#FROM mcr.microsoft.com/dotnet/aspnet:7.0-bullseye-slim-arm32v7 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:10.0-noble-arm64v8 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 8080
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0-bookworm-slim-arm64v8 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+#FROM mcr.microsoft.com/dotnet/sdk:10.0-noble-arm64v8 AS build
 RUN apt-get -y update \
     && curl -sL https://deb.nodesource.com/setup_24.x | bash - \ 
     && apt-get install -y nodejs \

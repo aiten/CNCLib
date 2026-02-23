@@ -40,7 +40,7 @@ namespace CNCLib.Serial.Server
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Microsoft.OpenApi.Models;
+    using Microsoft.OpenApi;
 
     using Newtonsoft.Json.Serialization;
 
@@ -102,10 +102,12 @@ namespace CNCLib.Serial.Server
                     In          = ParameterLocation.Header,
                     Description = "Basic Authorization header using the Bearer scheme."
                 });
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                c.AddSecurityRequirement(document => new OpenApiSecurityRequirement
                 {
-                    {
-                        new OpenApiSecurityScheme
+                    [new OpenApiSecuritySchemeReference("basic", document)] = []
+                });
+/*
+                    {new OpenApiSecurityScheme
                         {
                             Reference = new OpenApiReference
                             {
@@ -114,8 +116,9 @@ namespace CNCLib.Serial.Server
                             }
                         },
                         new string[] { }
-                    }
+                   }
                 });
+*/
                 c.OperationFilter<SecurityRequirementsOperationFilter>(true, "basic");
 
                 var xmlFile = "CNCLib.Serial.WebAPI.xml";

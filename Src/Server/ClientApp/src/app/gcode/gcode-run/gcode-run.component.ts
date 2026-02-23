@@ -15,7 +15,7 @@
 */
 
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 import { LoadOptions } from "../../models/load-options";
 import { SerialServerConnection } from '../../serial-server/serial-server-connection';
@@ -33,7 +33,7 @@ import { MaterialModule } from '../../material.module';
     selector: 'gcode-run',
     templateUrl: './gcode-run.component.html',
     styleUrls: ['./gcode-run.component.css'],
-    imports: [CommonModule,MaterialModule,GcodeRunInputComponent]
+    imports: [MaterialModule, GcodeRunInputComponent]
 
   })
 export class GcodeRunComponent implements OnInit {

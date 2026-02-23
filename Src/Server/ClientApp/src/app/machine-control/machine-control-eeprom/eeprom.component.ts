@@ -15,7 +15,7 @@
 */
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 import { UntypedFormGroup, FormArray, FormControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog } from "@angular/material/dialog";
@@ -39,7 +39,7 @@ import { MaterialModule } from '../../material.module';
   selector: 'eeprom',
   templateUrl: './eeprom.component.html',
   styleUrls: ['./eeprom.component.css'],
-  imports: [CommonModule,ReactiveFormsModule,FontAwesomeModule,MaterialModule]
+  imports: [ReactiveFormsModule, FontAwesomeModule, MaterialModule]
 })
 export class EepromComponent implements OnInit, OnDestroy {
 

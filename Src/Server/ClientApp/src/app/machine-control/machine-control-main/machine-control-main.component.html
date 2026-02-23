@@ -1,212 +1,234 @@
-<p *ngIf="isLoading">
-  <em>Loading()...</em>
-</p>
+@if (isLoading) {
+  <p>
+    <em>Loading()...</em>
+  </p>
+}
 
-<div *ngIf="!isLoading">
-  <div *ngIf="!isConnected()">
-    <p>NOT Connected...</p>
-    <p>Please connect to machine using the "Machines" tab.</p>
-  </div>
-  <div *ngIf="isConnected()">
-    <div class="container-fluid">
-      <div class="row">
-
-        <mat-card appearance="outlined" class="menu-card">
-          <mat-card-title>Menu</mat-card-title>
-          <mat-card-content>
-            <machinecontrolmenu [machineControlGlobal]="machineControlGlobal" [serialServer]="serialServer" [machineControlState]="machineControlState"></machinecontrolmenu>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card appearance="outlined" class="detail-card" *ngIf="machineControlGlobal.showMove">
-          <mat-card-title>
-            Move
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showMove = false'>
-              <fa-icon icon="chevron-down"></fa-icon>
-            </button>
-          </mat-card-title>
-          <mat-card-content>
-            <machinecontrolmove [machineControlState]="machineControlState"></machinecontrolmove>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card appearance="outlined" class="detail-card" *ngIf="machineControlGlobal.showInfo">
-          <mat-card-title>
-            Info
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showInfo = false'>
-              <fa-icon icon="chevron-down"></fa-icon>
-            </button>
-          </mat-card-title>
-          <mat-card-content>
-            <machinecontrolinfo [machineControlState]="machineControlState"></machinecontrolinfo>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card appearance="outlined" class="detail-card" *ngIf="machineControlGlobal.showCommand">
-          <mat-card-title>
-            Command
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showCommand = false'>
-              <fa-icon icon="chevron-down"></fa-icon>
-            </button>
-          </mat-card-title>
-          <mat-card-content>
-            <machinecontrolcommand [machineControlState]="machineControlState"></machinecontrolcommand>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card appearance="outlined" class="detail-card" *ngIf="machineControlGlobal.showPosition">
-          <mat-card-title>
-            Position
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showPosition = false'>
-              <fa-icon icon="chevron-down"></fa-icon>
-            </button>
-          </mat-card-title>
-          <mat-card-content>
-            <machinecontrolposition [machineControlState]="machineControlState"></machinecontrolposition>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card appearance="outlined" class="detail-card" *ngIf="machineControlGlobal.showOffset">
-          <mat-card-title>
-            Offset
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showOffset = false'>
-              <fa-icon icon="chevron-down"></fa-icon>
-            </button>
-          </mat-card-title>
-          <mat-card-content>
-            <machinecontroloffset [machineControlState]="machineControlState"></machinecontroloffset>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card appearance="outlined" class="detail-card" *ngIf="serialServer.getMachine().workOffsets > 0 && machineControlGlobal.showWorkOffset">
-          <mat-card-title>
-            Work Offset
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showWorkOffset = false'>
-              <fa-icon icon="chevron-down"></fa-icon>
-            </button>
-          </mat-card-title>
-          <mat-card-content>
-            <div class="container-fluid">
-              <div class="row">
-                <div class="col colWorkOfs" *ngFor="let item of [].constructor(serialServer.getMachine().workOffsets); let i = index">
-                  <machinecontrolworkoffset [machineControlState]="machineControlState" [offsetId]=i></machinecontrolworkoffset>
-                </div>
-              </div>
-            </div>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card appearance="outlined" class="detail-card" *ngIf="serialServer.getMachine().spindle && machineControlGlobal.showSpindle">
-          <mat-card-title>
-            Spindle
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showSpindle = false'>
-              <fa-icon icon="chevron-down"></fa-icon>
-            </button>
-          </mat-card-title>
-          <mat-card-content>
-            <machinecontrolspindle [machineControlState]="machineControlState"></machinecontrolspindle>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card appearance="outlined" class="detail-card" *ngIf="serialServer.getMachine().coolant && machineControlGlobal.showCoolant">
-          <mat-card-title>
-            Coolant
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showCoolant = false'>
-              <fa-icon icon="chevron-down"></fa-icon>
-            </button>
-          </mat-card-title>
-          <mat-card-content>
-            <machinecontrolcoolant [machineControlState]="machineControlState"></machinecontrolcoolant>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card appearance="outlined" class="detail-card" *ngIf="serialServer.getMachine().laser && machineControlGlobal.showLaser">
-          <mat-card-title>
-            Laser
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showLaser = false'>
-              <fa-icon icon="chevron-down"></fa-icon>
-            </button>
-          </mat-card-title>
-          <mat-card-content>
-            <machinecontrollaser [machineControlState]="machineControlState"></machinecontrollaser>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card appearance="outlined" class="detail-card" *ngIf="serialServer.getMachine().rotate && machineControlGlobal.showRotate">
-          <mat-card-title>
-            Rotate
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showRotate = false'>
-              <fa-icon icon="chevron-down"></fa-icon>
-            </button>
-          </mat-card-title>
-          <mat-card-content>
-            <machinecontrolrotate [machineControlState]="machineControlState"></machinecontrolrotate>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card appearance="outlined" class="detail-card" *ngIf="serialServer.getMachine().sdSupport  && machineControlGlobal.showSd">
-          <mat-card-title>
-            SD
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showSd = false'>
-              <fa-icon icon="chevron-down"></fa-icon>
-            </button>
-          </mat-card-title>
-          <mat-card-content>
-            <machinecontrolsd [machineControlState]="machineControlState"></machinecontrolsd>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card appearance="outlined" class="detail-card" *ngIf="machineControlGlobal.showRefMove">
-          <mat-card-title>
-            Ref
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showRefMove = false'>
-              <fa-icon icon="chevron-down"></fa-icon>
-            </button>
-          </mat-card-title>
-          <mat-card-content>
-            <machinecontrolrefmove [machineControlState]="machineControlState"></machinecontrolrefmove>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card appearance="outlined" class="detail-card" *ngIf="machineControlGlobal.showCustom">
-          <mat-card-title>
-            Custom
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showCustom = false'>
-              <fa-icon icon="chevron-down"></fa-icon>
-            </button>
-          </mat-card-title>
-          <mat-card-content>
-            <machinecontrolcustom [machineControlState]="machineControlState"></machinecontrolcustom>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card appearance="outlined" class="detail-card" *ngIf="machineControlGlobal.showFile">
-          <mat-card-title>
-            File
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showFile = false'>
-              <fa-icon icon="chevron-down"></fa-icon>
-            </button>
-          </mat-card-title>
-          <mat-card-content>
-            <machinecontrolfile [machineControlState]="machineControlState"></machinecontrolfile>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card appearance="outlined" class="detail-card" *ngIf="machineControlGlobal.showJoystick">
-          <mat-card-title>
-            Joystick
-            <button mat-button class="menuHide-button" (click)='machineControlGlobal.showJoystick = false'>
-              <fa-icon icon="chevron-down"></fa-icon>
-            </button>
-          </mat-card-title>
-          <mat-card-content>
-            <machinecontroljoystick [machineControlState]="machineControlState"></machinecontroljoystick>
-          </mat-card-content>
-        </mat-card>
-
+@if (!isLoading) {
+  <div>
+    @if (!isConnected()) {
+      <div>
+        <p>NOT Connected...</p>
+        <p>Please connect to machine using the "Machines" tab.</p>
       </div>
-
-      <serialporthistory [autoreloadonempty]=true>Loading...</serialporthistory>
-    </div>
+    }
+    @if (isConnected()) {
+      <div>
+        <div class="container-fluid">
+          <div class="row">
+            <mat-card appearance="outlined" class="menu-card">
+              <mat-card-title>Menu</mat-card-title>
+              <mat-card-content>
+                <machinecontrolmenu [machineControlGlobal]="machineControlGlobal" [serialServer]="serialServer" [machineControlState]="machineControlState"></machinecontrolmenu>
+              </mat-card-content>
+            </mat-card>
+            @if (machineControlGlobal.showMove) {
+              <mat-card appearance="outlined" class="detail-card">
+                <mat-card-title>
+                  Move
+                  <button mat-button class="menuHide-button" (click)='machineControlGlobal.showMove = false'>
+                    <fa-icon icon="chevron-down"></fa-icon>
+                  </button>
+                </mat-card-title>
+                <mat-card-content>
+                  <machinecontrolmove [machineControlState]="machineControlState"></machinecontrolmove>
+                </mat-card-content>
+              </mat-card>
+            }
+            @if (machineControlGlobal.showInfo) {
+              <mat-card appearance="outlined" class="detail-card">
+                <mat-card-title>
+                  Info
+                  <button mat-button class="menuHide-button" (click)='machineControlGlobal.showInfo = false'>
+                    <fa-icon icon="chevron-down"></fa-icon>
+                  </button>
+                </mat-card-title>
+                <mat-card-content>
+                  <machinecontrolinfo [machineControlState]="machineControlState"></machinecontrolinfo>
+                </mat-card-content>
+              </mat-card>
+            }
+            @if (machineControlGlobal.showCommand) {
+              <mat-card appearance="outlined" class="detail-card">
+                <mat-card-title>
+                  Command
+                  <button mat-button class="menuHide-button" (click)='machineControlGlobal.showCommand = false'>
+                    <fa-icon icon="chevron-down"></fa-icon>
+                  </button>
+                </mat-card-title>
+                <mat-card-content>
+                  <machinecontrolcommand [machineControlState]="machineControlState"></machinecontrolcommand>
+                </mat-card-content>
+              </mat-card>
+            }
+            @if (machineControlGlobal.showPosition) {
+              <mat-card appearance="outlined" class="detail-card">
+                <mat-card-title>
+                  Position
+                  <button mat-button class="menuHide-button" (click)='machineControlGlobal.showPosition = false'>
+                    <fa-icon icon="chevron-down"></fa-icon>
+                  </button>
+                </mat-card-title>
+                <mat-card-content>
+                  <machinecontrolposition [machineControlState]="machineControlState"></machinecontrolposition>
+                </mat-card-content>
+              </mat-card>
+            }
+            @if (machineControlGlobal.showOffset) {
+              <mat-card appearance="outlined" class="detail-card">
+                <mat-card-title>
+                  Offset
+                  <button mat-button class="menuHide-button" (click)='machineControlGlobal.showOffset = false'>
+                    <fa-icon icon="chevron-down"></fa-icon>
+                  </button>
+                </mat-card-title>
+                <mat-card-content>
+                  <machinecontroloffset [machineControlState]="machineControlState"></machinecontroloffset>
+                </mat-card-content>
+              </mat-card>
+            }
+            @if (serialServer.getMachine().workOffsets > 0 && machineControlGlobal.showWorkOffset) {
+              <mat-card appearance="outlined" class="detail-card">
+                <mat-card-title>
+                  Work Offset
+                  <button mat-button class="menuHide-button" (click)='machineControlGlobal.showWorkOffset = false'>
+                    <fa-icon icon="chevron-down"></fa-icon>
+                  </button>
+                </mat-card-title>
+                <mat-card-content>
+                  <div class="container-fluid">
+                    <div class="row">
+                      @for (item of [].constructor(serialServer.getMachine().workOffsets); track item; let i = $index) {
+                        <div class="col colWorkOfs">
+                          <machinecontrolworkoffset [machineControlState]="machineControlState" [offsetId]=i></machinecontrolworkoffset>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            }
+            @if (serialServer.getMachine().spindle && machineControlGlobal.showSpindle) {
+              <mat-card appearance="outlined" class="detail-card">
+                <mat-card-title>
+                  Spindle
+                  <button mat-button class="menuHide-button" (click)='machineControlGlobal.showSpindle = false'>
+                    <fa-icon icon="chevron-down"></fa-icon>
+                  </button>
+                </mat-card-title>
+                <mat-card-content>
+                  <machinecontrolspindle [machineControlState]="machineControlState"></machinecontrolspindle>
+                </mat-card-content>
+              </mat-card>
+            }
+            @if (serialServer.getMachine().coolant && machineControlGlobal.showCoolant) {
+              <mat-card appearance="outlined" class="detail-card">
+                <mat-card-title>
+                  Coolant
+                  <button mat-button class="menuHide-button" (click)='machineControlGlobal.showCoolant = false'>
+                    <fa-icon icon="chevron-down"></fa-icon>
+                  </button>
+                </mat-card-title>
+                <mat-card-content>
+                  <machinecontrolcoolant [machineControlState]="machineControlState"></machinecontrolcoolant>
+                </mat-card-content>
+              </mat-card>
+            }
+            @if (serialServer.getMachine().laser && machineControlGlobal.showLaser) {
+              <mat-card appearance="outlined" class="detail-card">
+                <mat-card-title>
+                  Laser
+                  <button mat-button class="menuHide-button" (click)='machineControlGlobal.showLaser = false'>
+                    <fa-icon icon="chevron-down"></fa-icon>
+                  </button>
+                </mat-card-title>
+                <mat-card-content>
+                  <machinecontrollaser [machineControlState]="machineControlState"></machinecontrollaser>
+                </mat-card-content>
+              </mat-card>
+            }
+            @if (serialServer.getMachine().rotate && machineControlGlobal.showRotate) {
+              <mat-card appearance="outlined" class="detail-card">
+                <mat-card-title>
+                  Rotate
+                  <button mat-button class="menuHide-button" (click)='machineControlGlobal.showRotate = false'>
+                    <fa-icon icon="chevron-down"></fa-icon>
+                  </button>
+                </mat-card-title>
+                <mat-card-content>
+                  <machinecontrolrotate [machineControlState]="machineControlState"></machinecontrolrotate>
+                </mat-card-content>
+              </mat-card>
+            }
+            @if (serialServer.getMachine().sdSupport  && machineControlGlobal.showSd) {
+              <mat-card appearance="outlined" class="detail-card">
+                <mat-card-title>
+                  SD
+                  <button mat-button class="menuHide-button" (click)='machineControlGlobal.showSd = false'>
+                    <fa-icon icon="chevron-down"></fa-icon>
+                  </button>
+                </mat-card-title>
+                <mat-card-content>
+                  <machinecontrolsd [machineControlState]="machineControlState"></machinecontrolsd>
+                </mat-card-content>
+              </mat-card>
+            }
+            @if (machineControlGlobal.showRefMove) {
+              <mat-card appearance="outlined" class="detail-card">
+                <mat-card-title>
+                  Ref
+                  <button mat-button class="menuHide-button" (click)='machineControlGlobal.showRefMove = false'>
+                    <fa-icon icon="chevron-down"></fa-icon>
+                  </button>
+                </mat-card-title>
+                <mat-card-content>
+                  <machinecontrolrefmove [machineControlState]="machineControlState"></machinecontrolrefmove>
+                </mat-card-content>
+              </mat-card>
+            }
+            @if (machineControlGlobal.showCustom) {
+              <mat-card appearance="outlined" class="detail-card">
+                <mat-card-title>
+                  Custom
+                  <button mat-button class="menuHide-button" (click)='machineControlGlobal.showCustom = false'>
+                    <fa-icon icon="chevron-down"></fa-icon>
+                  </button>
+                </mat-card-title>
+                <mat-card-content>
+                  <machinecontrolcustom [machineControlState]="machineControlState"></machinecontrolcustom>
+                </mat-card-content>
+              </mat-card>
+            }
+            @if (machineControlGlobal.showFile) {
+              <mat-card appearance="outlined" class="detail-card">
+                <mat-card-title>
+                  File
+                  <button mat-button class="menuHide-button" (click)='machineControlGlobal.showFile = false'>
+                    <fa-icon icon="chevron-down"></fa-icon>
+                  </button>
+                </mat-card-title>
+                <mat-card-content>
+                  <machinecontrolfile [machineControlState]="machineControlState"></machinecontrolfile>
+                </mat-card-content>
+              </mat-card>
+            }
+            @if (machineControlGlobal.showJoystick) {
+              <mat-card appearance="outlined" class="detail-card">
+                <mat-card-title>
+                  Joystick
+                  <button mat-button class="menuHide-button" (click)='machineControlGlobal.showJoystick = false'>
+                    <fa-icon icon="chevron-down"></fa-icon>
+                  </button>
+                </mat-card-title>
+                <mat-card-content>
+                  <machinecontroljoystick [machineControlState]="machineControlState"></machinecontroljoystick>
+                </mat-card-content>
+              </mat-card>
+            }
+          </div>
+          <serialporthistory [autoreloadonempty]=true>Loading...</serialporthistory>
+        </div>
+      </div>
+    }
   </div>
-</div>
+}

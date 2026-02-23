@@ -3,9 +3,19 @@
   <p>{{data.message}}</p>
 </div>
 <div mat-dialog-actions>
-  <button *ngIf="data.haveOk" mat-button (click)="onCloseOk()" cdkFocusInitial>Ok</button>
-  <button *ngIf="data.haveYes" mat-button (click)="onCloseYes()" cdkFocusInitial>Yes</button>
-  <button *ngIf="data.haveNo" mat-button (click)="onCloseNo()" cdkFocusInitial>No</button>
-  <button *ngIf="data.haveCancel" mat-button (click)="onCloseCancel()" cdkFocusInitial>Cancel</button>
-  <button *ngIf="data.haveClose" mat-button (click)="onCloseClose()" cdkFocusInitial>Close</button>
+  @if (data.haveOk) {
+    <button mat-button (click)="onCloseOk()" cdkFocusInitial>Ok</button>
+  }
+  @if (data.haveYes) {
+    <button mat-button (click)="onCloseYes()" cdkFocusInitial>Yes</button>
+  }
+  @if (data.haveNo) {
+    <button mat-button (click)="onCloseNo()" cdkFocusInitial>No</button>
+  }
+  @if (data.haveCancel) {
+    <button mat-button (click)="onCloseCancel()" cdkFocusInitial>Cancel</button>
+  }
+  @if (data.haveClose) {
+    <button mat-button (click)="onCloseClose()" cdkFocusInitial>Close</button>
+  }
 </div>

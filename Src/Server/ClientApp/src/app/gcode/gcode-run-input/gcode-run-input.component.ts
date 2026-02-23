@@ -15,7 +15,7 @@
 */
 
 import { Component, OnInit, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 import { LoadOptions, ELoadType, PenType, ConvertTypeEnum, SmoothTypeEnum } from '../../models/load-options';
 import { UntypedFormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
@@ -30,7 +30,7 @@ import { MaterialModule } from '../../material.module';
     selector: 'gcode-run-input',
     templateUrl: './gcode-run-input.component.html',
     styleUrls: ['./gcode-run-input.component.css'],
-    imports: [CommonModule,ReactiveFormsModule,MaterialModule]
+    imports: [ReactiveFormsModule, MaterialModule]
 
   })
 export class GcodeRunInputComponent implements OnInit {

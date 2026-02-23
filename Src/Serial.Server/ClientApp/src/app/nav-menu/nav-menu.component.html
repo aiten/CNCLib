@@ -14,9 +14,11 @@
           <a class="nav-link" routerLink="/serialports"><fa-icon icon="plug"></fa-icon> Serial Ports</a>
         </li>
         -->
-        <li *ngIf="cncLibloggedinService.isUserLoggedIn()" class="nav-item">
-          <a class="nav-link" routerLink="/machinecontrol"><fa-icon icon="sync"></fa-icon> Machinecontrol</a>
-        </li>
+        @if (cncLibloggedinService.isUserLoggedIn()) {
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/machinecontrol"><fa-icon icon="sync"></fa-icon> Machinecontrol</a>
+          </li>
+        }
       </ul>
     </div>
   </div>

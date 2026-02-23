@@ -15,7 +15,7 @@
 */
 
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 import { Machine } from '../../models/machine';
 import { CNCLibMachineService } from '../../services/CNCLib-machine.service';
@@ -33,7 +33,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     selector: 'machine-overview',
     templateUrl: './machine-overview.component.html',
     styleUrls: ['./machine-overview.component.css'],
-    imports: [CommonModule,MaterialModule,FontAwesomeModule]
+    imports: [MaterialModule, FontAwesomeModule]
 
   })
 export class MachineOverviewComponent implements OnInit {

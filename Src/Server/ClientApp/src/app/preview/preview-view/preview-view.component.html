@@ -1,50 +1,68 @@
 <div class="container-fluid">
-  <div class="row" *ngIf="previewGlobal.isShowGCode">
-    <div class="col inputhide" *ngIf="!previewGlobal.isShowParam">
-      <button mat-stroked-button class="hidebuttons" (click)="reRun()">Run...</button>
-      <button mat-stroked-button class="hidebuttons" (click)="previewGlobal.isShowGCode = false">Image</button>
-    </div>
-    <div class="col">
-      <preview-gcode></preview-gcode>
-    </div>
-  </div>
-  <div class="row" *ngIf="!previewGlobal.isShowGCode">
-    <div class="col inputhide" *ngIf="!previewGlobal.isShowParam">
-      <div class="container-fluid">
-        <div *ngIf="machineMoveTo">
-          <button mat-stroked-button class="hidebuttons" (click)="machineMoveTo = false">Done</button>
-          <p>{{clickPos}}</p>
-          <p>Hold "Ctrl" or "Alt" and click on position where you want to move to.</p>
+  @if (previewGlobal.isShowGCode) {
+    <div class="row">
+      @if (!previewGlobal.isShowParam) {
+        <div class="col inputhide">
+          <button mat-stroked-button class="hidebuttons" (click)="reRun()">Run...</button>
+          <button mat-stroked-button class="hidebuttons" (click)="previewGlobal.isShowGCode = false">Image</button>
         </div>
-        <div *ngIf="!machineMoveTo">
-          <button mat-stroked-button class="hidebuttons" (click)="reRun()" matTooltipPosition="after" matTooltip="Run the GCode generation again.">Run...</button>
-          <button mat-stroked-button class="hidebuttons" *ngIf="canSendToMachine()" (click)="sendToMachine()" matTooltipPosition="after" matTooltip="Send the GCode to the connecte machine.">SendTo</button>
-          <button mat-stroked-button class="hidebuttons" *ngIf="canSendToMachine()" (click)="machineMoveTo = true" matTooltipPosition="after" matTooltip="When pressing the Alt or Ctrl key and clicking on the image, the machine will move to the position.">MoveTo</button>
-          <button mat-stroked-button class="hidebuttons" (click)="previewGlobal.isShowGCode = true">GCode</button>
-          <button mat-stroked-button class="hidebuttons" (click)='refreshImage()'>Refresh</button>
-          <button mat-stroked-button class="hidebuttons" (click)='setXY()' matTooltipPosition="after" matTooltip="Reset the image to the default XY pane (usual for CNC router).">XY</button>
-          <button mat-stroked-button class="hidebuttons" (click)='setXZ()'>XZ</button>
-          <button mat-stroked-button class="hidebuttons" (click)='setYZ()'>YZ</button>
-          <button mat-stroked-button class="hidebuttons" (click)="toggleShowParam(true)">
-            <fa-icon icon="chevron-down"></fa-icon>
-          </button>
-        </div>
+      }
+      <div class="col">
+        <preview-gcode></preview-gcode>
       </div>
     </div>
-    <div class="col inputshow" *ngIf="previewGlobal.isShowParam">
-      <button mat-stroked-button (click)="toggleShowParam(false)">
-        <fa-icon icon="chevron-up"></fa-icon>
-      </button>
-      <button mat-stroked-button (click)='refreshImage()'>Refresh</button>
-      <preview-input [previewOpt]="previewOpt"> </preview-input>
-    </div>
-    <div #imagediv class="col">
-      <img mouseWheel [src]="imageBlobUrl"
-           (mouseWheelUp)="mouseWheelUpFunc()"
-           (mouseWheelDown)="mouseWheelDownFunc()"
-           (mousedown)="onMouseDown($event)"
-           (mouseup)="onMouseUp($event)"
-           (mousemove)="onMouseMove($event)"/>
-    </div>
+  }
+  @if (!previewGlobal.isShowGCode) {
+    <div class="row">
+      @if (!previewGlobal.isShowParam) {
+        <div class="col inputhide">
+          <div class="container-fluid">
+            @if (machineMoveTo) {
+              <div>
+                <button mat-stroked-button class="hidebuttons" (click)="machineMoveTo = false">Done</button>
+                <p>{{clickPos}}</p>
+                <p>Hold "Ctrl" or "Alt" and click on position where you want to move to.</p>
+              </div>
+            }
+            @if (!machineMoveTo) {
+              <div>
+                <button mat-stroked-button class="hidebuttons" (click)="reRun()" matTooltipPosition="after" matTooltip="Run the GCode generation again.">Run...</button>
+                @if (canSendToMachine()) {
+                  <button mat-stroked-button class="hidebuttons" (click)="sendToMachine()" matTooltipPosition="after" matTooltip="Send the GCode to the connecte machine.">SendTo</button>
+                }
+                @if (canSendToMachine()) {
+                  <button mat-stroked-button class="hidebuttons" (click)="machineMoveTo = true" matTooltipPosition="after" matTooltip="When pressing the Alt or Ctrl key and clicking on the image, the machine will move to the position.">MoveTo</button>
+                }
+                <button mat-stroked-button class="hidebuttons" (click)="previewGlobal.isShowGCode = true">GCode</button>
+                <button mat-stroked-button class="hidebuttons" (click)='refreshImage()'>Refresh</button>
+                <button mat-stroked-button class="hidebuttons" (click)='setXY()' matTooltipPosition="after" matTooltip="Reset the image to the default XY pane (usual for CNC router).">XY</button>
+                <button mat-stroked-button class="hidebuttons" (click)='setXZ()'>XZ</button>
+                <button mat-stroked-button class="hidebuttons" (click)='setYZ()'>YZ</button>
+                <button mat-stroked-button class="hidebuttons" (click)="toggleShowParam(true)">
+                  <fa-icon icon="chevron-down"></fa-icon>
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      }
+      @if (previewGlobal.isShowParam) {
+        <div class="col inputshow">
+          <button mat-stroked-button (click)="toggleShowParam(false)">
+            <fa-icon icon="chevron-up"></fa-icon>
+          </button>
+          <button mat-stroked-button (click)='refreshImage()'>Refresh</button>
+          <preview-input [previewOpt]="previewOpt"> </preview-input>
+        </div>
+      }
+      <div #imagediv class="col">
+        <img mouseWheel [src]="imageBlobUrl"
+          (mouseWheelUp)="mouseWheelUpFunc()"
+          (mouseWheelDown)="mouseWheelDownFunc()"
+          (mousedown)="onMouseDown($event)"
+          (mouseup)="onMouseUp($event)"
+          (mousemove)="onMouseMove($event)"/>
+        </div>
+      </div>
+    }
   </div>
-</div>

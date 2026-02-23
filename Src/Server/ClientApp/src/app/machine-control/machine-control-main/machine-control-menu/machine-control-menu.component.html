@@ -1,20 +1,50 @@
 <div class="container-fluid nopadding">
   <div class="row menu-row nopadding">
     <button mat-raised-button color="warn" class="menuShow-button" (click)='emergencyStop()'>E-Stop</button>
-    <button *ngIf="!machineControlGlobal.showMove" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showMove = true'>Move</button>
-    <button *ngIf="!machineControlGlobal.showInfo" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showInfo = true'>Info</button>
-    <button *ngIf="!machineControlGlobal.showCommand" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showCommand = true'>Command</button>
-    <button *ngIf="!machineControlGlobal.showPosition" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showPosition = true'>Position</button>
-    <button *ngIf="!machineControlGlobal.showOffset" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showOffset = true'>Offset</button>
-    <button *ngIf="serialServer.getMachine().workOffsets > 0 && !machineControlGlobal.showWorkOffset" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showWorkOffset = true'>WorkOffset</button>
-    <button *ngIf="serialServer.getMachine().spindle && !machineControlGlobal.showSpindle" at-stroked-button class="menuShow-button" (click)='machineControlGlobal.showSpindle = true'>Spindle</button>
-    <button *ngIf="serialServer.getMachine().coolant && !machineControlGlobal.showCoolant" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showCoolant = true'>Coolant</button>
-    <button *ngIf="serialServer.getMachine().laser && !machineControlGlobal.showLaser" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showLaser = true'>Laser</button>
-    <button *ngIf="serialServer.getMachine().rotate && !machineControlGlobal.showRotate" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showRotate = true'>Rotate</button>
-    <button *ngIf="serialServer.getMachine().sdSupport && !machineControlGlobal.showSd" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showSd = true'>SD</button>
-    <button *ngIf="!machineControlGlobal.showRefMove" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showRefMove = true'>Ref</button>
-    <button *ngIf="!machineControlGlobal.showCustom" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showCustom = true'>Custom</button>
-    <button *ngIf="!machineControlGlobal.showFile" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showFile = true'>File</button>
-    <button *ngIf="!machineControlGlobal.showJoystick" mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showJoystick = true'>Joystick</button>
+    @if (!machineControlGlobal.showMove) {
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showMove = true'>Move</button>
+    }
+    @if (!machineControlGlobal.showInfo) {
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showInfo = true'>Info</button>
+    }
+    @if (!machineControlGlobal.showCommand) {
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showCommand = true'>Command</button>
+    }
+    @if (!machineControlGlobal.showPosition) {
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showPosition = true'>Position</button>
+    }
+    @if (!machineControlGlobal.showOffset) {
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showOffset = true'>Offset</button>
+    }
+    @if (serialServer.getMachine().workOffsets > 0 && !machineControlGlobal.showWorkOffset) {
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showWorkOffset = true'>WorkOffset</button>
+    }
+    @if (serialServer.getMachine().spindle && !machineControlGlobal.showSpindle) {
+      <button at-stroked-button class="menuShow-button" (click)='machineControlGlobal.showSpindle = true'>Spindle</button>
+    }
+    @if (serialServer.getMachine().coolant && !machineControlGlobal.showCoolant) {
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showCoolant = true'>Coolant</button>
+    }
+    @if (serialServer.getMachine().laser && !machineControlGlobal.showLaser) {
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showLaser = true'>Laser</button>
+    }
+    @if (serialServer.getMachine().rotate && !machineControlGlobal.showRotate) {
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showRotate = true'>Rotate</button>
+    }
+    @if (serialServer.getMachine().sdSupport && !machineControlGlobal.showSd) {
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showSd = true'>SD</button>
+    }
+    @if (!machineControlGlobal.showRefMove) {
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showRefMove = true'>Ref</button>
+    }
+    @if (!machineControlGlobal.showCustom) {
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showCustom = true'>Custom</button>
+    }
+    @if (!machineControlGlobal.showFile) {
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showFile = true'>File</button>
+    }
+    @if (!machineControlGlobal.showJoystick) {
+      <button mat-stroked-button class="menuShow-button" (click)='machineControlGlobal.showJoystick = true'>Joystick</button>
+    }
   </div>
 </div>
