@@ -27,7 +27,7 @@ using Framework.Tools;
 public class AzureWebApiTest : UnitTestBase
 {
     //public static readonly string AzureUri = @"http://localhost:55586/";
-    public static readonly string _AzureUri = @"https://cnclib.azurewebsites.net/";
+    public static readonly string _AzureUri = @"https://cnclib.aitenbichler.cc/";
 
     public HttpClient? _httpClient;
 
