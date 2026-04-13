@@ -75,6 +75,6 @@
     <PackageReference Include="MahApps.Metro">
       <Version>2.4.11</Version>
     </PackageReference>
-    <PackageReference Include="NLog" Version="6.1.0" />
+    <PackageReference Include="NLog" Version="6.1.2" />
   </ItemGroup>
 </Project>
