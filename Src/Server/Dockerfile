@@ -1,10 +1,10 @@
-FROM mcr.microsoft.com/dotnet/aspnet:10.0-noble-arm64v8 AS base
+#FROM mcr.microsoft.com/dotnet/aspnet:10.0-noble-arm64v8 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
 USER app
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-#FROM mcr.microsoft.com/dotnet/sdk:10.0-noble-arm64v8 AS build
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 RUN apt-get -y update \
@@ -60,7 +60,8 @@ COPY . .
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 WORKDIR "/Src/Server"
-RUN dotnet publish "Server.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false -r linux-arm64
+#RUN dotnet publish "Server.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false -r linux-arm64
+RUN dotnet publish "Server.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
