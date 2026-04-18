@@ -71,7 +71,3 @@ Image - for cut holes
 <img src="Doc/PreviewHole.jpg" alt="Drawing" style="width: 100px;"/>   <img src="Doc/PreviewHoleDetail.jpg" alt="Drawing" style="width: 100px;"/>
 
 With this import option a CNC program is created to cut holes into e.g. a paper. The width of the holes are calculated from the image depending on the brightness.  
-
-
-
-
